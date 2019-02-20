@@ -1,0 +1,46 @@
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\bin\Debug\0035.exe.config
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\bin\Debug\0035.exe
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\bin\Debug\0035.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\bin\Debug\Common.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\bin\Debug\HtmlAgilityPack.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\bin\Debug\QbeiAgencies_BL.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\bin\Debug\LumenWorks.Framework.IO.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\bin\Debug\WebDriver.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\bin\Debug\Common.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\bin\Debug\QbeiAgencies_BL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\bin\Debug\WebDriver.xml
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\obj\Debug\0035.csprojAssemblyReference.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\obj\Debug\_0035.frm035.resources
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\obj\Debug\_0035.Properties.Resources.resources
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\obj\Debug\0035.csproj.GenerateResource.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\obj\Debug\0035.csproj.CoreCompileInputs.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\obj\Debug\0035.csproj.CopyComplete
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\obj\Debug\0035.exe
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\0035\obj\Debug\0035.pdb
+C:\Project\Inventory\0035\bin\Debug\0035.exe.config
+C:\Project\Inventory\0035\bin\Debug\0035.exe
+C:\Project\Inventory\0035\bin\Debug\0035.pdb
+C:\Project\Inventory\0035\bin\Debug\Common.dll
+C:\Project\Inventory\0035\bin\Debug\mscorlib.dll
+C:\Project\Inventory\0035\bin\Debug\WebDriver.dll
+C:\Project\Inventory\0035\bin\Debug\LumenWorks.Framework.IO.dll
+C:\Project\Inventory\0035\bin\Debug\Common.pdb
+C:\Project\Inventory\0035\bin\Debug\WebDriver.xml
+C:\Project\Inventory\0035\bin\Debug\ja\mscorlib.resources.dll
+C:\Project\Inventory\0035\bin\Debug\normidna.nlp
+C:\Project\Inventory\0035\bin\Debug\normnfc.nlp
+C:\Project\Inventory\0035\bin\Debug\normnfd.nlp
+C:\Project\Inventory\0035\bin\Debug\normnfkc.nlp
+C:\Project\Inventory\0035\bin\Debug\normnfkd.nlp
+C:\Project\Inventory\0035\obj\Debug\0035.csprojResolveAssemblyReference.cache
+C:\Project\Inventory\0035\obj\Debug\Interop.SHDocVw.dll
+C:\Project\Inventory\0035\obj\Debug\0035.csproj.ResolveComReference.cache
+C:\Project\Inventory\0035\obj\Debug\_0035.frm035.resources
+C:\Project\Inventory\0035\obj\Debug\_0035.Properties.Resources.resources
+C:\Project\Inventory\0035\obj\Debug\0035.csproj.GenerateResource.Cache
+C:\Project\Inventory\0035\obj\Debug\0035.exe
+C:\Project\Inventory\0035\obj\Debug\0035.pdb
