@@ -1,0 +1,3 @@
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\019\obj\x86\Release\_019深谷_フカヤ_.frm019.resources
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\019\obj\x86\Release\_019深谷_フカヤ_.Properties.Resources.resources
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\019\obj\x86\Release\019.csproj.GenerateResource.Cache
