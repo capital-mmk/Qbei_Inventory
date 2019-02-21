@@ -1,0 +1,106 @@
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\916_Chrome.exe.config
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\916_Chrome.exe
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\916_Chrome.pdb
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\Common.dll
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\QbeiAgencies_BL.dll
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\QbeiAgencies_Common.dll
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\WebDriver.dll
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\LumenWorks.Framework.IO.dll
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\QbeiAgencies_DL.dll
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\Common.pdb
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\QbeiAgencies_BL.pdb
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\QbeiAgencies_Common.pdb
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\WebDriver.xml
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\QbeiAgencies_DL.pdb
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\obj\Debug\916_Chrome.csprojResolveAssemblyReference.cache
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\obj\Debug\916_Chrome.exe
+D:\Inventory\sourcecode\Qbei_Inventory\916_Chrome\obj\Debug\916_Chrome.pdb
+C:\Projects\Test_Inventory\916_Chrome\bin\Debug\916_Chrome.exe.config
+C:\Projects\Test_Inventory\916_Chrome\bin\Debug\916_Chrome.exe
+C:\Projects\Test_Inventory\916_Chrome\bin\Debug\916_Chrome.pdb
+C:\Projects\Test_Inventory\916_Chrome\bin\Debug\Common.dll
+C:\Projects\Test_Inventory\916_Chrome\bin\Debug\QbeiAgencies_BL.dll
+C:\Projects\Test_Inventory\916_Chrome\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\Test_Inventory\916_Chrome\bin\Debug\WebDriver.dll
+C:\Projects\Test_Inventory\916_Chrome\bin\Debug\LumenWorks.Framework.IO.dll
+C:\Projects\Test_Inventory\916_Chrome\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\Test_Inventory\916_Chrome\bin\Debug\Common.pdb
+C:\Projects\Test_Inventory\916_Chrome\bin\Debug\QbeiAgencies_BL.pdb
+C:\Projects\Test_Inventory\916_Chrome\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\Test_Inventory\916_Chrome\bin\Debug\WebDriver.xml
+C:\Projects\Test_Inventory\916_Chrome\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\Test_Inventory\916_Chrome\obj\Debug\916_Chrome.csprojResolveAssemblyReference.cache
+C:\Projects\Test_Inventory\916_Chrome\obj\Debug\916_Chrome.exe
+C:\Projects\Test_Inventory\916_Chrome\obj\Debug\916_Chrome.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\916_Chrome.exe.config
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\916_Chrome.exe
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\916_Chrome.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\QbeiAgencies_BL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\WebDriver.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\LumenWorks.Framework.IO.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\QbeiAgencies_BL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\WebDriver.xml
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\obj\Debug\916_Chrome.csprojResolveAssemblyReference.cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\obj\Debug\916_Chrome.exe
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\916_Chrome\obj\Debug\916_Chrome.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\bin\Debug\916_Chrome.exe.config
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\bin\Debug\916_Chrome.exe
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\bin\Debug\916_Chrome.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\bin\Debug\Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_BL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\bin\Debug\WebDriver.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\bin\Debug\LumenWorks.Framework.IO.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\bin\Debug\Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_BL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\bin\Debug\WebDriver.xml
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\obj\Debug\916_Chrome.csprojResolveAssemblyReference.cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\obj\Debug\916_Chrome.exe
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\916_Chrome\obj\Debug\916_Chrome.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\916_Chrome.exe.config
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\916_Chrome.exe
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\916_Chrome.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\Common.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_BL.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\WebDriver.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\LumenWorks.Framework.IO.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\Common.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_BL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\WebDriver.xml
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\obj\Debug\916_Chrome.csprojAssemblyReference.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\obj\Debug\916_Chrome.csproj.CoreCompileInputs.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\obj\Debug\916_Chrome.csproj.CopyComplete
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\obj\Debug\916_Chrome.exe
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\obj\Debug\916_Chrome.pdb
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\916_Chrome.exe.config
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\916_Chrome.exe
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\916_Chrome.pdb
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\Common.dll
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_BL.dll
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_Common.dll
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\WebDriver.dll
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_DL.dll
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\LumenWorks.Framework.IO.dll
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\Common.pdb
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_BL.pdb
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_Common.pdb
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\WebDriver.xml
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\bin\Debug\QbeiAgencies_DL.pdb
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\obj\Debug\916_Chrome.csprojAssemblyReference.cache
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\obj\Debug\916_Chrome.csproj.CoreCompileInputs.cache
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\obj\Debug\916_Chrome.csproj.CopyComplete
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\obj\Debug\916_Chrome.exe
+D:\Project\Inventory\sourcecode\Qbei_Inventory(29.8.2018)\Inventory_Management\916_Chrome\obj\Debug\916_Chrome.pdb

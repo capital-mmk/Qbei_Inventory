@@ -1,0 +1,297 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
+using Common;
+using HtmlAgilityPack;
+using QbeiAgencies_BL;
+using QbeiAgencies_Common;
+using System.Text.RegularExpressions;
+
+
+namespace _018日直_ニチナオ_
+{
+    public partial class frm018 : Form
+    {
+        DataTable dt = new DataTable();
+        CommonFunction fun = new CommonFunction();
+        Qbeisetting_BL qubl = new Qbeisetting_BL();
+        Qbeisetting_Entity qe = new Qbeisetting_Entity();
+        DataTable dt018 = new DataTable();
+        Qbei_Entity entity = new Qbei_Entity();
+        public static string st = string.Empty;
+        int i = 0;
+
+        public frm018()
+        {
+            InitializeComponent();
+            testflag();
+
+        }
+
+        private void testflag()
+        {
+            qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            qe.site = 18;
+            //st = qe.starttime;
+            qe.flag = 1;
+            DataTable dtflag = fun.SelectFlag(18);
+            int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
+            if (flag == 0)
+            {
+
+                fun.ChangeFlag(qe);
+                StartRun();
+            }
+            else if (flag == 1)
+            {
+                fun.deleteData(18);
+                fun.ChangeFlag(qe);
+                StartRun();
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
+        }
+
+        public void StartRun()
+        {
+            try
+            {
+                fun.setURL("018");
+                fun.CreateFileAndFolder();
+                fun.Qbei_Delete(18);
+                fun.Qbei_ErrorDelete(18);
+                dt018 = fun.GetDatatable("018");
+                dt018 = fun.GetOrderData(dt018, "https://1908.nichinao.com/shop/g/g", "018", string.Empty);
+                fun.GetTotalCount("018");
+                ReadData();
+            }
+            catch (Exception) { }
+        }
+
+        private void ReadData()
+        {
+            qe.SiteID = 18;
+            dt = qubl.Qbei_Setting_Select(qe);
+            fun.url = dt.Rows[0]["Url"].ToString();
+            Thread.Sleep(2000);
+            webBrowser1.AllowNavigation = true;
+            webBrowser1.Navigate(fun.url);
+            webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
+        }
+
+        private void webBrowser1_Start(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            try
+            {
+                SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
+                instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
+                webBrowser1.DocumentCompleted -= webBrowser1_Start;
+                webBrowser1.ScriptErrorsSuppressed = true;
+                fun.WriteLog("Navigation to Site Url success-----+", "018-");
+                //qe.sitecode = "018";
+                qe.SiteID = 18;
+                dt = qubl.Qbei_Setting_Select(qe);
+                string username = dt.Rows[0]["UserName"].ToString();
+                fun.GetElement("input", "uid", "name", webBrowser1).InnerText = username;
+                string password = dt.Rows[0]["Password"].ToString();
+                fun.GetElement("input", "pwd", "name", webBrowser1).InnerText = password;
+                fun.GetElement("input", "order", "name", webBrowser1).InvokeMember("click");
+
+                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Login);
+            }
+            catch (Exception ex)
+            {
+                fun.Qbei_ErrorInsert(18, fun.GetSiteName("018"), ex.Message, dt018.Rows[0]["JANコード"].ToString(), dt018.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "018");
+                fun.WriteLog(ex.Message + dt018.Rows[i]["発注コード"].ToString(), "018-");
+                Application.Exit();
+                Environment.Exit(0);
+            }
+        }
+
+        private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            webBrowser1.ScriptErrorsSuppressed = true;
+            webBrowser1.DocumentCompleted -= webBrowser1_Login;
+            string body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;
+            if (body.Contains("ログインできません。お客様ID・パスワードをご確認ください。"))
+            {
+                fun.Qbei_ErrorInsert(18, fun.GetSiteName("018"), "Login Failed", dt018.Rows[0]["JANコード"].ToString(), dt018.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "018");
+                fun.WriteLog("Login Failed", "018-");
+                Application.Exit();
+            }
+            else
+            {
+                fun.WriteLog("Login success             ------", "018-");
+                string ordercode = dt018.Rows[i]["発注コード"].ToString();
+                webBrowser1.Navigate(fun.url + "/shop/g/g" + ordercode);
+                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
+            }
+        }
+
+        private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
+            webBrowser1.ScriptErrorsSuppressed = true;
+            entity = new Qbei_Entity();
+            entity.siteID = 18;
+            entity.sitecode = "018";
+            entity.janCode = dt018.Rows[i]["JANコード"].ToString();
+            entity.partNo = dt018.Rows[i]["自社品番"].ToString();
+            entity.makerDate = fun.getCurrentDate();
+            entity.reflectDate = dt018.Rows[i]["最終反映日"].ToString();
+            entity.orderCode = dt018.Rows[i]["発注コード"].ToString();
+            entity.purchaseURL = fun.url + "/shop/g/g" + entity.orderCode;
+            entity.stockDate = string.Empty;
+            try
+            {
+                string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
+                if (body.Contains("申し訳ございません。"))
+                {
+                    entity.price = dt018.Rows[i]["下代"].ToString();
+                    //2018/04/25 Start
+                    if (dt018.Rows[i]["在庫情報"].ToString().Contains("empty") && dt018.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
+                    {
+                        entity.stockDate = dt018.Rows[i]["入荷予定"].ToString();
+                        entity.qtyStatus = dt018.Rows[i]["在庫情報"].ToString();
+                    }
+                    else
+                    {
+                        //2018/04/25 End
+                        //2018/01/10 Start
+                        entity.price = dt018.Rows[i]["下代"].ToString();
+                        entity.qtyStatus = "empty";
+                        entity.stockDate = "2100-02-01";
+                        //fun.Qbei_ErrorInsert(18, fun.GetSiteName("018"), "Item doesn't Exists!", entity.janCode, entity.orderCode, 2, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "018");
+                        //2018/01/10 End
+                    }
+                }
+                else
+                {
+                    string html = webBrowser1.Document.Body.InnerHtml;
+                    HtmlAgilityPack.HtmlDocument hdoc = new HtmlAgilityPack.HtmlDocument();
+                    hdoc.LoadHtml(html);
+                    //Check Element Exist or not
+                    if ((hdoc.DocumentNode.SelectSingleNode("div/div[2]/div/div[3]/div/table/tbody/tr/td[2]/table[1]/tbody/tr[7]/td") == null) && (hdoc.DocumentNode.SelectSingleNode("div/div[2]/div/div[3]/div/table/tbody/tr/td[2]/table[1]/tbody/tr[8]/td") == null))
+                    {
+                        fun.Qbei_ErrorInsert(18, fun.GetSiteName("018"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "018");
+                        fun.WriteLog("Access Denied! " + entity.orderCode, "018-");
+                        Application.Exit();
+                    }
+
+                    int rowCount = hdoc.DocumentNode.SelectNodes("div/div[2]/div/div[3]/div/table/tbody/tr/td[2]/table[1]/tbody/tr[1]").Count;
+
+                    if (rowCount > 0)
+                    {
+                        entity.price = hdoc.DocumentNode.SelectSingleNode("div/div[2]/div/div[3]/div/table/tbody/tr/td[2]/table[1]/tbody/tr[5]/td/span").InnerText.Replace("円", string.Empty).Replace(",", string.Empty);
+
+                        string qtypath = hdoc.DocumentNode.SelectSingleNode("div/div[2]/div/div[3]/div/table/tbody/tr/td[2]/table[1]/tbody/tr[7]/td").InnerText;
+                        entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") || fun.IsNumber(qtypath) ? "small" : qtypath.Equals("×") || qtypath.Equals("予約") ? "empty" : "No status code";
+                        //if (qtypath.Contains("予約"))
+                        //{
+                        HtmlNode node = hdoc.DocumentNode.SelectSingleNode("div/div[2]/div/div[3]/div/table/tbody/tr/td[2]/table[1]/tbody/tr[8]/td");
+                        if (node != null)
+                        {
+
+                            if (node.InnerText.Contains("次回入荷"))
+                            {
+                                if (node.InnerText.Contains("次回入荷分はメーカー出荷準備中"))
+                                {
+                                    entity.stockDate = "2100-01-01";
+                                }
+                                else
+                                {
+                                    string day = string.Empty;
+                                    if (node.InnerText.Contains("下旬"))
+                                    {
+                                        day = DateTime.DaysInMonth(DateTime.Now.Year, int.Parse(Regex.Replace(node.InnerText, "[^0-9]+", string.Empty))).ToString();
+                                    }
+                                    else if (node.InnerText.Contains("上旬"))
+                                        day = "10";
+                                    else if (node.InnerText.Contains("中旬"))
+                                        day = "20";
+                                    string month = string.Empty;
+                                    month = Regex.Replace(node.InnerText, "[^0-9]+", string.Empty);
+                                    string year = DateTime.Now.ToString("yyyy");
+                                    DateTime dt = Convert.ToDateTime(year + "-" + month + "-" + day);
+                                    string d = fun.getCurrentDate();
+                                    if (dt < Convert.ToDateTime(d))
+                                        dt = dt.AddYears(1);
+                                    entity.stockDate = dt.ToString("yyyy-MM-dd");
+                                }
+                            }
+                            else
+                                entity.stockDate = "2100-01-01";
+                        }
+                        else
+                            entity.stockDate = "2100-01-01";
+                        //}
+                        //else
+                        //{
+                        if (string.IsNullOrEmpty(entity.stockDate))
+                            entity.stockDate = qtypath.Equals("×") ? "2100-02-01" : "2100-01-01";
+                        //}
+                    }
+                    else
+                    {
+                        //2018/01/10 Start
+                        entity.price = dt018.Rows[i]["下代"].ToString();
+                        entity.qtyStatus = "empty";
+                        entity.stockDate = "2100-02-01";
+                        //2018/01/10 End
+                    }
+                }
+                //2018/01/10 Start
+                if ((dt018.Rows[i]["在庫情報"].ToString().Contains("empty") || dt018.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt018.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
+                {
+                    if ((entity.qtyStatus.Contains("empty") && (entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry"))
+                    {
+                        entity.qtyStatus = dt018.Rows[i]["在庫情報"].ToString();
+                        entity.stockDate = dt018.Rows[i]["入荷予定"].ToString();
+                        entity.price = dt018.Rows[i]["下代"].ToString();
+                    }
+                    fun.Qbei_Inserts(entity);
+                }
+                else
+                    fun.Qbei_Inserts(entity);
+                //2018/01/10 End
+            }
+            catch (Exception ex)
+            {
+                fun.Qbei_ErrorInsert(18, fun.GetSiteName("018"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "018");
+                fun.WriteLog(ex.Message + entity.orderCode, "018-");
+            }
+            if (i < dt018.Rows.Count - 1)
+            {
+                //string ordercode = fun.ReplaceOrderCode(dt018.Rows[++i]["発注コード"].ToString(), new string[] { "在庫処分/inquiry/", "在庫処分/small/", "在庫処分/empry/在庫処分/empry/inquiry/", "在庫処分/empry/", "在庫処分/good/", "-", "在庫処分/empty/", "バラ注文できない為発注禁止/", "発注禁止/" });
+                string ordercode = dt018.Rows[++i]["発注コード"].ToString();
+                webBrowser1.Navigate(fun.url + "/shop/g/g" + ordercode);
+                webBrowser1.ScriptErrorsSuppressed = true;
+                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
+            }
+            else
+            {
+                qe.site = 18;
+                qe.flag = 2;
+                qe.starttime = string.Empty;
+                qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                fun.ChangeFlag(qe);
+                Application.Exit();
+                Environment.Exit(0);
+            }
+        }
+        private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
+        {
+            fun.Qbei_ErrorInsert(18, fun.GetSiteName("018"), "Access Denied!", dt018.Rows[i]["JANコード"].ToString(), dt018.Rows[i]["発注コード"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "018");
+            fun.WriteLog(StatusCode.ToString() + " " + dt018.Rows[i]["発注コード"].ToString(), "018-");
+            Application.Exit();
+        }
+    }
+}
