@@ -24,7 +24,6 @@ namespace _36PRインターナショナル
         DataTable dt036 = new DataTable();
         Qbei_Entity entity = new Qbei_Entity();
         int i = 0;
-        public static string st = string.Empty;
 
         public frm036()
         {
@@ -34,27 +33,35 @@ namespace _36PRインターナショナル
 
         private void testflag()
         {
-            Qbeisetting_Entity qe = new Qbeisetting_Entity();
-            qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            qe.site = 36;
-            //st = qe.starttime;
-            qe.flag = 1;
-            DataTable dtflag = fun.SelectFlag(36);
-            int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
-            if (flag == 0)
+            try
             {
-
-                fun.ChangeFlag(qe);
-                StartRun();
+                Qbeisetting_Entity qe = new Qbeisetting_Entity();
+                qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                qe.site = 36;
+                qe.flag = 1;
+                DataTable dtflag = fun.SelectFlag(36);
+                int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
+                if (flag == 0)
+                {
+                    fun.ChangeFlag(qe);
+                    StartRun();
+                }
+                else if (flag == 1)
+                {
+                    fun.deleteData(36);
+                    fun.ChangeFlag(qe);
+                    StartRun();
+                }
+                else
+                {
+                    Application.Exit();
+                    Environment.Exit(0);
+                }
             }
-            else if (flag == 1)
+            catch (Exception ex)
             {
-                fun.deleteData(36);
-                fun.ChangeFlag(qe);
-                StartRun();
-            }
-            else
-            {
+                fun.WriteLog(ex, "036-");
+                Application.Exit();
                 Environment.Exit(0);
             }
         }
@@ -73,7 +80,12 @@ namespace _36PRインターナショナル
                 fun.GetTotalCount("036");
                 ReadData();
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                fun.WriteLog(ex, "036-");
+                Application.Exit();
+                Environment.Exit(0);
+            }
         }
 
         private void ReadData()
@@ -82,8 +94,6 @@ namespace _36PRインターナショナル
             qe.SiteID = 36;
             dt = qubl.Qbei_Setting_Select(qe);
             fun.url = dt.Rows[0]["Url"].ToString();
-            //Thread.Sleep(1000);
-            //webBrowser1.Navigate(fun.url + "/mypage/login.php?transactionid=ff25f821aa370b0e6629df286c1c28af5860e6a1");
             webBrowser1.Navigate(fun.url);
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
         }
@@ -92,10 +102,12 @@ namespace _36PRインターナショナル
         {
             try
             {
+                fun.ClearMemory();
+
                 SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
                 instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
-                String url = webBrowser1.Url.ToString();
-                fun.WriteLog("Navigation to Site Url success------", "036--");
+                
+                fun.WriteLog("Navigation to Site Url success------", "036-");
                 webBrowser1.ScriptErrorsSuppressed = true;
                 qe.SiteID = 36;
                 dt = qubl.Qbei_Setting_Select(qe);
@@ -110,8 +122,12 @@ namespace _36PRインターナショナル
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, dt036.Rows[0]["JANコード"].ToString(), dt036.Rows[0]["purchaserURL"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
-                fun.WriteLog(ex.Message + dt036.Rows[0]["purchaserURL"].ToString(), "036-");
+                string janCode = dt036.Rows[0]["JANコード"].ToString();
+                string orderCode = dt036.Rows[0]["発注コード"].ToString();
+                fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");                
+                fun.WriteLog(ex, "036-", janCode, orderCode);
+                fun.Qbei_Maker_Insert("036", dt036);
+
                 Application.Exit();
                 Environment.Exit(0);
             }
@@ -121,18 +137,19 @@ namespace _36PRインターナショナル
         {
             try
             {
-                String url = webBrowser1.Url.ToString();
                 webBrowser1.DocumentCompleted -= webBrowser1_Login;
                 string body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;
                 if (body.Contains("メールアドレスもしくはパスワードが正しくありません。"))
                 {
-                    fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Login Failed", entity.janCode, entity.purchaseURL, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
+                    fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Login Failed", entity.janCode, entity.purchaseURL, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");                    
+                    fun.WriteLog("Login Failed", "036-");
+                    fun.Qbei_Maker_Insert("036", dt036);
                     Application.Exit();
+                    Environment.Exit(0);
                 }
                 else
                 {
                     fun.WriteLog("Login success             ------", "036-");
-                    // string purchaserURL = "https://order.g-style.ne.jp/products/detail.php?product_id=5523";
                     string purchaserURL = dt036.Rows[0]["purchaserURL"].ToString();
                     webBrowser1.Navigate(purchaserURL);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
@@ -140,8 +157,12 @@ namespace _36PRインターナショナル
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, dt036.Rows[0]["JANコード"].ToString(), dt036.Rows[0]["purchaserURL"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
-                fun.WriteLog(ex.Message + dt036.Rows[0]["purchaserURL"].ToString(), "036-");
+                string janCode = dt036.Rows[0]["JANコード"].ToString();
+                string orderCode = dt036.Rows[0]["発注コード"].ToString();
+                fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");                
+                fun.WriteLog(ex, "036-", janCode, orderCode);
+                fun.Qbei_Maker_Insert("036", dt036);
+
                 Application.Exit();
                 Environment.Exit(0);
             }
@@ -152,6 +173,9 @@ namespace _36PRインターナショナル
             try
             {
                 string strStockDate = string.Empty;
+
+                fun.ClearMemory();
+
                 webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 webBrowser1.ScriptErrorsSuppressed = true;
                 entity = new Qbei_Entity();
@@ -163,7 +187,6 @@ namespace _36PRインターナショナル
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt036.Rows[i]["最終反映日"].ToString();
                 entity.orderCode = dt036.Rows[i]["発注コード"].ToString();
-                //entity.purchaseURL = "https://order.g-style.ne.jp/products/detail.php?product_id=5523";
                 entity.purchaseURL = dt036.Rows[i]["purchaserURL"].ToString();
                 if (!string.IsNullOrWhiteSpace(entity.purchaseURL))
                 {
@@ -189,14 +212,15 @@ namespace _36PRインターナショナル
                         try
                         {
                             string html = webBrowser1.Document.Body.InnerHtml;
-                            //string html = webBrowser1.Document.GetElementById("form1").OuterHtml;
                             HtmlAgilityPack.HtmlDocument hdoc = new HtmlAgilityPack.HtmlDocument();
                             hdoc.LoadHtml(html);
                             if ((hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]") == null))
                             {
-                                fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Access Denied!", entity.janCode, entity.purchaseURL, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
-                                fun.WriteLog("Access Denied! " + entity.orderCode, "036--");
+                                fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Access Denied!", entity.janCode, entity.purchaseURL, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");                                
+                                fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "036-");
+                                fun.Qbei_Maker_Insert("036", dt036, i);
                                 Application.Exit();
+                                Environment.Exit(0);
                             }
                             else
                             {
@@ -222,8 +246,7 @@ namespace _36PRインターナショナル
                                 if (nc == null)
                                 {
                                     entity.stockDate = qtypath.Equals("○") || qtypath.Equals("△") || qtypath.Equals("×") ? "2100-01-01" : qtypath.Equals("限定") ? "2100/02/01" : "unknown date";
-                                }
-                                //entity.stockDate = hdoc.DocumentNode.SelectSingleNode("div[1]/div[3]/div[2]/table/tbody/tr/td[2]").InnerText;
+                                }                                
                                 else
                                 {
                                     entity.stockDate = hdoc.DocumentNode.SelectSingleNode(stockpath).InnerText;
@@ -240,9 +263,7 @@ namespace _36PRインターナショナル
                                     else if (entity.stockDate.Contains("販売終了品"))
                                     {
                                         entity.stockDate = "2100-02-01";
-                                    }
-
-                                    // else if (entity.stockDate.Contains("月頃入荷予定") || entity.stockDate.Contains("頃入荷予定"))
+                                    }                                   
                                     else if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃"))
                                     {
                                         string year = DateTime.Now.ToString("yyyy");
@@ -258,15 +279,7 @@ namespace _36PRインターナショナル
                                         {
                                             if (entity.stockDate.Contains("初旬"))
                                             {
-
-                                                //if(entity.stockDate.Contains("初旬頃予定"))
-                                                //{
-                                                //    entity.stockDate = year + "-" + entity.stockDate.Replace("月", "-").Replace("初旬頃予定", "10");
-                                                //}
-                                                //else
-
                                                 entity.stockDate = year + "-" + entity.stockDate.Replace("月", "-").Replace("初旬頃入荷予定", "10").Replace("初旬頃予定", "10");
-
                                             }
                                             else
                                             {
@@ -284,11 +297,9 @@ namespace _36PRインターナショナル
                                                         entity.stockDate = year + "-" + arr[1].Replace("月", "-").Replace("頃入金予定", "30");
                                                     }
                                                 }
-
                                             }
                                         }
                                     }
-
                                     else if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
                                     {
                                         entity.stockDate = entity.stockDate.Replace("年", "-") + entity.stockDate.Replace("月", "-").Replace("頃入荷予定", "30");
@@ -305,7 +316,6 @@ namespace _36PRインターナショナル
                                     else
                                         entity.stockDate = DateTime.Parse(entity.stockDate).ToString("yyyy-MM-dd");
                                     //2018-04-20 End
-
                                 }
                                 //2018-04-20 Start
                                 //fun.Qbei_Inserts(entity);
@@ -326,12 +336,10 @@ namespace _36PRインターナショナル
                         }
                         catch (Exception ex)
                         {
-                            fun.Qbei_ErrorInsert(36, "PRインターナショナル", ex.Message, entity.janCode, entity.purchaseURL, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
-                            fun.WriteLog(ex.Message + entity.orderCode, "036-");
+                            fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, entity.janCode, entity.purchaseURL, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");                            
+                            fun.WriteLog(ex, "036-", entity.janCode, entity.orderCode);
                         }
                     }
-
-
                 }
                 else
                 {
@@ -346,6 +354,8 @@ namespace _36PRインターナショナル
                 }
                 else
                 {
+                    fun.Qbei_Maker_Insert("036", dt036, i);
+
                     qe.site = 36;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
@@ -358,9 +368,11 @@ namespace _36PRインターナショナル
             catch (Exception ex)
             {
                 fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, entity.janCode, entity.purchaseURL, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
-                fun.WriteLog(ex.Message + entity.orderCode, "036-");
+                fun.WriteLog(ex, "036-", entity.janCode, entity.orderCode);
+                fun.Qbei_Maker_Insert("036", dt036, i);
+                Application.Exit();
+                Environment.Exit(0);
             }
-
         }
 
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
@@ -398,6 +410,8 @@ namespace _36PRインターナショナル
                 }
                 else
                 {
+                    fun.Qbei_Maker_Insert("036", dt036, i);
+
                     qe.site = 36;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
@@ -409,9 +423,13 @@ namespace _36PRインターナショナル
             }
             else
             {
-                fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Access Denied!", dt036.Rows[i]["JANコード"].ToString(), dt036.Rows[i]["purchaserURL"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
-                fun.WriteLog(StatusCode.ToString() + " " + dt036.Rows[i]["purchaserURL"].ToString(), "036--");
+                string janCode = dt036.Rows[i]["JANコード"].ToString();
+                string orderCode = dt036.Rows[i]["発注コード"].ToString();
+                fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
+                fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "036-");
+                fun.Qbei_Maker_Insert("036", dt036, i);
                 Application.Exit();
+                Environment.Exit(0);                
             }
         }
     }

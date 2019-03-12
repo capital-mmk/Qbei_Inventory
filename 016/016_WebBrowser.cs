@@ -36,7 +36,6 @@ namespace _016ライトウェイ
             try
             {
                 qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                //st = qe.starttime;
                 qe.site = 16;
                 qe.flag = 1;
                 DataTable dtflag = fun.SelectFlag(16);

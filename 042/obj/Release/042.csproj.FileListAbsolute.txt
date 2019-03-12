@@ -1,0 +1,4 @@
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\042\obj\Release\042.csprojResolveAssemblyReference.cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\042\obj\Release\_042.frm042.resources
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\042\obj\Release\_042.Properties.Resources.resources
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\042\obj\Release\042.csproj.GenerateResource.Cache

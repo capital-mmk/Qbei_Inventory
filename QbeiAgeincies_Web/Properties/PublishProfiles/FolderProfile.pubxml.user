@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\inetpub\wwwroot\Zaiko</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="About.aspx">
+      <publishTime>10/03/2018 17:13:49</publishTime>
+    </File>
+    <File Include="assets/.DS_Store">
+      <publishTime>06/28/2018 14:20:36</publishTime>
+    </File>
+    <File Include="assets/css/animate.min.css">
+      <publishTime>06/28/2018 14:09:24</publishTime>
+    </File>
+    <File Include="assets/css/bootstrap.min.css">
+      <publishTime>06/28/2018 14:09:55</publishTime>
+    </File>
+    <File Include="assets/css/demo.css">
+      <publishTime>06/28/2018 14:10:21</publishTime>
+    </File>
+    <File Include="assets/css/light-bootstrap-dashboard.css">
+      <publishTime>06/28/2018 14:10:32</publishTime>
+    </File>
+    <File Include="assets/css/pe-icon-7-stroke.css">
+      <publishTime>06/28/2018 14:10:47</publishTime>
+    </File>
+    <File Include="assets/fonts/glyphicons-halflings-regular.eot">
+      <publishTime>07/06/2018 17:58:14</publishTime>
+    </File>
+    <File Include="assets/fonts/glyphicons-halflings-regular.svg">
+      <publishTime>07/06/2018 17:58:24</publishTime>
+    </File>
+    <File Include="assets/fonts/glyphicons-halflings-regular.ttf">
+      <publishTime>07/06/2018 17:58:31</publishTime>
+    </File>
+    <File Include="assets/fonts/glyphicons-halflings-regular.woff">
+      <publishTime>07/06/2018 17:58:38</publishTime>
+    </File>
+    <File Include="assets/fonts/glyphicons-halflings-regular.woff2">
+      <publishTime>07/06/2018 17:58:45</publishTime>
+    </File>
+    <File Include="assets/img/.DS_Store">
+      <publishTime>06/28/2018 14:13:55</publishTime>
+    </File>
+    <File Include="assets/img/default-avatar.png">
+      <publishTime>06/28/2018 14:14:08</publishTime>
+    </File>
+    <File Include="assets/img/faces/face-0.jpg">
+      <publishTime>06/28/2018 14:16:20</publishTime>
+    </File>
+    <File Include="assets/img/faces/face-1.jpg">
+      <publishTime>06/28/2018 14:16:28</publishTime>
+    </File>
+    <File Include="assets/img/faces/face-2.jpg">
+      <publishTime>06/28/2018 14:16:36</publishTime>
+    </File>
+    <File Include="assets/img/faces/face-3.jpg">
+      <publishTime>06/28/2018 14:16:46</publishTime>
+    </File>
+    <File Include="assets/img/faces/face-4.jpg">
+      <publishTime>06/28/2018 14:16:53</publishTime>
+    </File>
+    <File Include="assets/img/faces/face-5.jpg">
+      <publishTime>06/28/2018 14:16:59</publishTime>
+    </File>
+    <File Include="assets/img/faces/face-6.jpg">
+      <publishTime>06/28/2018 14:17:06</publishTime>
+    </File>
+    <File Include="assets/img/faces/face-7.jpg">
+      <publishTime>06/28/2018 14:17:15</publishTime>
+    </File>
+    <File Include="assets/img/faces/tim_vector.jpe">
+      <publishTime>06/28/2018 14:17:23</publishTime>
+    </File>
+    <File Include="assets/img/favicon.ico">
+      <publishTime>06/28/2018 14:14:14</publishTime>
+    </File>
+    <File Include="assets/img/full-screen-image-3.jpg">
+      <publishTime>06/28/2018 14:14:22</publishTime>
+    </File>
+    <File Include="assets/img/loading-bubbles.svg">
+      <publishTime>06/28/2018 14:14:28</publishTime>
+    </File>
+    <File Include="assets/img/mask.png">
+      <publishTime>06/28/2018 14:14:34</publishTime>
+    </File>
+    <File Include="assets/img/new_logo.png">
+      <publishTime>06/28/2018 14:14:41</publishTime>
+    </File>
+    <File Include="assets/img/sidebar-1.jpg">
+      <publishTime>06/28/2018 14:14:51</publishTime>
+    </File>
+    <File Include="assets/img/sidebar-2.jpg">
+      <publishTime>06/28/2018 14:14:59</publishTime>
+    </File>
+    <File Include="assets/img/sidebar-3.jpg">
+      <publishTime>06/28/2018 14:15:09</publishTime>
+    </File>
+    <File Include="assets/img/sidebar-4.jpg">
+      <publishTime>06/28/2018 14:15:16</publishTime>
+    </File>
+    <File Include="assets/img/sidebar-5.jpg">
+      <publishTime>06/28/2018 14:15:23</publishTime>
+    </File>
+    <File Include="assets/img/tim_80x80.png">
+      <publishTime>06/28/2018 14:15:30</publishTime>
+    </File>
+    <File Include="assets/js/bootstrap-notify.js">
+      <publishTime>06/28/2018 14:18:09</publishTime>
+    </File>
+    <File Include="assets/js/bootstrap-select.js">
+      <publishTime>06/28/2018 14:18:17</publishTime>
+    </File>
+    <File Include="assets/js/bootstrap.min.js">
+      <publishTime>06/28/2018 14:18:02</publishTime>
+    </File>
+    <File Include="assets/js/chartist.min.js">
+      <publishTime>06/28/2018 14:18:25</publishTime>
+    </File>
+    <File Include="assets/js/demo.js">
+      <publishTime>06/28/2018 14:18:33</publishTime>
+    </File>
+    <File Include="assets/js/jquery.3.2.1.min.js">
+      <publishTime>06/28/2018 14:18:42</publishTime>
+    </File>
+    <File Include="assets/js/light-bootstrap-dashboard.js">
+      <publishTime>06/28/2018 14:18:50</publishTime>
+    </File>
+    <File Include="assets/sass/.DS_Store">
+      <publishTime>06/28/2018 14:19:39</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/.DS_Store">
+      <publishTime>06/28/2018 14:20:53</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/_alerts.scss">
+      <publishTime>06/28/2018 14:21:05</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/_buttons.scss">
+      <publishTime>06/28/2018 14:21:14</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/_cards.scss">
+      <publishTime>06/28/2018 14:21:23</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/_chartist.scss">
+      <publishTime>06/28/2018 14:21:33</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/_checkbox-radio-switch.scss">
+      <publishTime>06/28/2018 14:21:44</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/_dropdown.scss">
+      <publishTime>06/28/2018 14:21:54</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/_footers.scss">
+      <publishTime>06/28/2018 14:22:05</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/_inputs.scss">
+      <publishTime>06/28/2018 14:22:13</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/_misc.scss">
+      <publishTime>06/28/2018 14:22:22</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/_mixins.scss">
+      <publishTime>06/28/2018 14:22:34</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/_navbars.scss">
+      <publishTime>06/28/2018 14:22:42</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/_responsive.scss">
+      <publishTime>06/28/2018 14:22:54</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/_sidebar-and-main-panel.scss">
+      <publishTime>06/28/2018 14:23:54</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/_tables.scss">
+      <publishTime>06/28/2018 14:24:12</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/_typography.scss">
+      <publishTime>06/28/2018 14:24:20</publishTime>
+    </File>
+    <File Include="assets/sass/lbd/_variables.scss">
+      <publishTime>06/28/2018 14:24:28</publishTime>
+    </File>
+    <File Include="assets/sass/light-bootstrap-dashboard.scss">
+      <publishTime>06/28/2018 14:19:48</publishTime>
+    </File>
+    <File Include="bin/AjaxControlToolkit.dll">
+      <publishTime>05/03/2017 22:33:48</publishTime>
+    </File>
+    <File Include="bin/DropDownListChosen.dll">
+      <publishTime>07/16/2018 13:30:16</publishTime>
+    </File>
+    <File Include="bin/QbeiAgeincies_Web.dll">
+      <publishTime>01/07/2019 13:45:12</publishTime>
+    </File>
+    <File Include="bin/QbeiAgeincies_Web.pdb">
+      <publishTime>01/07/2019 13:45:12</publishTime>
+    </File>
+    <File Include="bin/QbeiAgencies_BL.dll">
+      <publishTime>01/07/2019 13:17:55</publishTime>
+    </File>
+    <File Include="bin/QbeiAgencies_BL.pdb">
+      <publishTime>01/07/2019 13:17:55</publishTime>
+    </File>
+    <File Include="bin/QbeiAgencies_Common.dll">
+      <publishTime>01/07/2019 12:21:00</publishTime>
+    </File>
+    <File Include="bin/QbeiAgencies_Common.pdb">
+      <publishTime>01/07/2019 12:21:00</publishTime>
+    </File>
+    <File Include="bin/QbeiAgencies_DL.dll">
+      <publishTime>01/07/2019 13:17:54</publishTime>
+    </File>
+    <File Include="bin/QbeiAgencies_DL.pdb">
+      <publishTime>01/07/2019 13:17:54</publishTime>
+    </File>
+    <File Include="Content/bootstrap-theme.css">
+      <publishTime>05/03/2017 22:33:47</publishTime>
+    </File>
+    <File Include="Content/bootstrap-theme.min.css">
+      <publishTime>05/03/2017 22:33:47</publishTime>
+    </File>
+    <File Include="Content/bootstrap.css">
+      <publishTime>05/03/2017 22:33:47</publishTime>
+    </File>
+    <File Include="Content/bootstrap.min.css">
+      <publishTime>05/03/2017 22:33:48</publishTime>
+    </File>
+    <File Include="Content/Switch.css">
+      <publishTime>09/20/2018 13:57:59</publishTime>
+    </File>
+    <File Include="Content/tab_style.css">
+      <publishTime>09/19/2018 15:54:14</publishTime>
+    </File>
+    <File Include="Content/textboxStyle.css">
+      <publishTime>09/19/2018 15:54:14</publishTime>
+    </File>
+    <File Include="css/.DS_Store">
+      <publishTime>06/28/2018 14:27:46</publishTime>
+    </File>
+    <File Include="css/bootstrap-datetimepicker.min.css">
+      <publishTime>07/18/2018 14:21:10</publishTime>
+    </File>
+    <File Include="css/bootstrap.css">
+      <publishTime>06/28/2018 14:27:54</publishTime>
+    </File>
+    <File Include="css/ct-navbar.css">
+      <publishTime>09/13/2018 15:37:04</publishTime>
+    </File>
+    <File Include="css/dropdown.css">
+      <publishTime>05/03/2017 20:03:47</publishTime>
+    </File>
+    <File Include="css/iconMoon.css">
+      <publishTime>07/16/2018 12:54:06</publishTime>
+    </File>
+    <File Include="css/pe-icon-7-stroke.css">
+      <publishTime>06/28/2018 14:28:08</publishTime>
+    </File>
+    <File Include="css/theme.css">
+      <publishTime>05/03/2017 20:03:48</publishTime>
+    </File>
+    <File Include="css/triangle.css">
+      <publishTime>05/03/2017 20:03:48</publishTime>
+    </File>
+    <File Include="DashBoard.aspx">
+      <publishTime>10/05/2018 17:23:32</publishTime>
+    </File>
+    <File Include="dll_File/AjaxControlToolkit.dll">
+      <publishTime>05/03/2017 22:33:48</publishTime>
+    </File>
+    <File Include="ErrorCheck/ErrorList.aspx">
+      <publishTime>10/05/2018 19:34:16</publishTime>
+    </File>
+    <File Include="ErrorCheck/ErrorList_Backup.aspx">
+      <publishTime>10/11/2018 14:36:14</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.svg">
+      <publishTime>05/03/2017 22:33:48</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>05/03/2017 22:33:47</publishTime>
+    </File>
+    <File Include="Images/23586f50342ddbb.jpg">
+      <publishTime>07/10/2018 12:54:29</publishTime>
+    </File>
+    <File Include="Images/aa.jpg">
+      <publishTime>07/06/2018 15:44:06</publishTime>
+    </File>
+    <File Include="Images/bg.png">
+      <publishTime>05/03/2017 22:33:48</publishTime>
+    </File>
+    <File Include="Images/bodyimg.jpg">
+      <publishTime>10/05/2018 19:34:16</publishTime>
+    </File>
+    <File Include="Images/c6%28130x60%29.png">
+      <publishTime>05/03/2017 22:33:48</publishTime>
+    </File>
+    <File Include="Images/calendar1.png">
+      <publishTime>05/03/2017 22:33:48</publishTime>
+    </File>
+    <File Include="Images/calendar2.png">
+      <publishTime>05/03/2017 22:33:48</publishTime>
+    </File>
+    <File Include="Images/calendar3.png">
+      <publishTime>05/03/2017 22:33:48</publishTime>
+    </File>
+    <File Include="Images/ebca1e89-f337-4f1f-8f4e-bf53e1ae3856.jpg">
+      <publishTime>07/11/2018 17:02:25</publishTime>
+    </File>
+    <File Include="Images/logo.png">
+      <publishTime>05/03/2017 22:33:48</publishTime>
+    </File>
+    <File Include="Images/q1.png">
+      <publishTime>05/04/2017 03:39:04</publishTime>
+    </File>
+    <File Include="Images/q2.jpg">
+      <publishTime>05/04/2017 03:39:04</publishTime>
+    </File>
+    <File Include="Images/QbeiLogo.png">
+      <publishTime>05/03/2017 22:33:48</publishTime>
+    </File>
+    <File Include="Images/qimg.jpg">
+      <publishTime>05/04/2017 03:39:04</publishTime>
+    </File>
+    <File Include="inventory.Master">
+      <publishTime>01/07/2019 13:21:04</publishTime>
+    </File>
+    <File Include="Login/Login.aspx">
+      <publishTime>10/03/2018 17:13:49</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>07/16/2018 13:30:17</publishTime>
+    </File>
+    <File Include="QbeiAgencies.Master">
+      <publishTime>01/06/2019 20:41:15</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap-datetimepicker.js">
+      <publishTime>07/12/2018 15:54:01</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap-hover-dropdown.js">
+      <publishTime>05/03/2017 20:03:48</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap-hover-dropdown.min.js">
+      <publishTime>05/03/2017 20:03:48</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.js">
+      <publishTime>05/03/2017 20:03:48</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.min.js">
+      <publishTime>05/03/2017 20:03:48</publishTime>
+    </File>
+    <File Include="Scripts/Common.js">
+      <publishTime>09/20/2018 13:57:59</publishTime>
+    </File>
+    <File Include="Scripts/ct-navbar.js">
+      <publishTime>09/20/2018 13:57:59</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.4.1-vsdoc.js">
+      <publishTime>05/03/2017 20:03:48</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.4.1.js">
+      <publishTime>05/03/2017 20:03:48</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.4.1.min.js">
+      <publishTime>05/03/2017 20:03:48</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.7.1.min.js">
+      <publishTime>06/28/2018 14:30:52</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.8.3.min.js">
+      <publishTime>09/20/2018 13:58:00</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.9.1.js">
+      <publishTime>09/20/2018 13:58:00</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.9.1.min.js">
+      <publishTime>09/20/2018 13:58:00</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.9.1.min.map">
+      <publishTime>09/20/2018 13:57:59</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.1.1.js">
+      <publishTime>05/25/2017 18:26:43</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.1.1.min.js">
+      <publishTime>05/25/2017 18:26:43</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.1.1.min.map">
+      <publishTime>05/25/2017 18:26:42</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.1.1.slim.js">
+      <publishTime>05/25/2017 18:26:42</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.1.1.slim.min.js">
+      <publishTime>05/25/2017 18:26:42</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.1.1.slim.min.map">
+      <publishTime>05/25/2017 18:26:42</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.2.0.min.js">
+      <publishTime>05/03/2017 20:03:49</publishTime>
+    </File>
+    <File Include="Scripts/jquery-ui-1.8.20.min.js">
+      <publishTime>06/28/2018 14:32:21</publishTime>
+    </File>
+    <File Include="Scripts/jquery.easing.1.3.js">
+      <publishTime>06/28/2018 14:32:32</publishTime>
+    </File>
+    <File Include="Site.Master">
+      <publishTime>05/03/2017 22:33:47</publishTime>
+    </File>
+    <File Include="siteCountTest.aspx">
+      <publishTime>03/07/2018 16:27:39</publishTime>
+    </File>
+    <File Include="Site_Setting/SiteSetting.aspx">
+      <publishTime>10/03/2018 17:13:50</publishTime>
+    </File>
+    <File Include="Site_Setting/SiteSetting_Edit.aspx">
+      <publishTime>09/26/2018 09:46:26</publishTime>
+    </File>
+    <File Include="Styles/Bootstrap.css">
+      <publishTime>05/03/2017 20:03:49</publishTime>
+    </File>
+    <File Include="Styles/bootstrap.min.css">
+      <publishTime>09/13/2018 16:06:24</publishTime>
+    </File>
+    <File Include="Styles/Common.css">
+      <publishTime>05/05/2017 21:39:22</publishTime>
+    </File>
+    <File Include="Styles/Login.css">
+      <publishTime>07/04/2018 16:46:25</publishTime>
+    </File>
+    <File Include="Styles/Master.css">
+      <publishTime>07/03/2018 11:11:41</publishTime>
+    </File>
+    <File Include="Styles/Site.css">
+      <publishTime>05/03/2017 20:03:49</publishTime>
+    </File>
+    <File Include="Styles/style123.css">
+      <publishTime>06/28/2018 14:34:04</publishTime>
+    </File>
+    <File Include="Styles/styleforFooter.css">
+      <publishTime>07/10/2018 17:27:52</publishTime>
+    </File>
+    <File Include="Styles/StyleSheet2.css">
+      <publishTime>05/03/2017 20:03:49</publishTime>
+    </File>
+    <File Include="Users/UserEntry.aspx">
+      <publishTime>10/03/2018 17:13:50</publishTime>
+    </File>
+    <File Include="Users/UserList.aspx">
+      <publishTime>10/03/2018 17:13:50</publishTime>
+    </File>
+    <File Include="Users/User_Entry.aspx">
+      <publishTime>01/07/2019 13:22:45</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>01/07/2019 13:47:45</publishTime>
+    </File>
+    <File Include="Web.sitemap">
+      <publishTime>05/03/2017 22:33:47</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

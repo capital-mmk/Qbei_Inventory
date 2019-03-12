@@ -1,0 +1,531 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.0,Profile=Client": {
+      "Selenium.Firefox.WebDriver/0.23.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.Firefox.WebDriver.targets": {}
+        }
+      },
+      "Selenium.WebDriver/3.2.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Drawing"
+        ],
+        "compile": {
+          "lib/net40/WebDriver.dll": {}
+        },
+        "runtime": {
+          "lib/net40/WebDriver.dll": {}
+        }
+      },
+      "Selenium.WebDriver.ChromeDriver/2.32.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.WebDriver.ChromeDriver.targets": {}
+        }
+      },
+      "Selenium.WebDriver.GeckoDriver.Win64/0.19.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.WebDriver.GeckoDriver.Win64.targets": {}
+        }
+      },
+      "Selenium.WebDriver.IEDriver/3.4.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.WebDriver.IEDriver.targets": {}
+        }
+      },
+      "Common/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "QbeiAgencies_Common": "1.0.0",
+          "QbeiAgencies_DL": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Common.dll": {}
+        }
+      },
+      "QbeiAgencies_BL/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "QbeiAgencies_Common": "1.0.0",
+          "QbeiAgencies_DL": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/QbeiAgencies_BL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/QbeiAgencies_BL.dll": {}
+        }
+      },
+      "QbeiAgencies_Common/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/QbeiAgencies_Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/QbeiAgencies_Common.dll": {}
+        }
+      },
+      "QbeiAgencies_DL/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "QbeiAgencies_Common": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/QbeiAgencies_DL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/QbeiAgencies_DL.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.0,Profile=Client/win": {
+      "Selenium.Firefox.WebDriver/0.23.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.Firefox.WebDriver.targets": {}
+        }
+      },
+      "Selenium.WebDriver/3.2.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Drawing"
+        ],
+        "compile": {
+          "lib/net40/WebDriver.dll": {}
+        },
+        "runtime": {
+          "lib/net40/WebDriver.dll": {}
+        }
+      },
+      "Selenium.WebDriver.ChromeDriver/2.32.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.WebDriver.ChromeDriver.targets": {}
+        }
+      },
+      "Selenium.WebDriver.GeckoDriver.Win64/0.19.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.WebDriver.GeckoDriver.Win64.targets": {}
+        }
+      },
+      "Selenium.WebDriver.IEDriver/3.4.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.WebDriver.IEDriver.targets": {}
+        }
+      },
+      "Common/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "QbeiAgencies_Common": "1.0.0",
+          "QbeiAgencies_DL": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Common.dll": {}
+        }
+      },
+      "QbeiAgencies_BL/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "QbeiAgencies_Common": "1.0.0",
+          "QbeiAgencies_DL": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/QbeiAgencies_BL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/QbeiAgencies_BL.dll": {}
+        }
+      },
+      "QbeiAgencies_Common/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/QbeiAgencies_Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/QbeiAgencies_Common.dll": {}
+        }
+      },
+      "QbeiAgencies_DL/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "QbeiAgencies_Common": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/QbeiAgencies_DL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/QbeiAgencies_DL.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.0,Profile=Client/win-x64": {
+      "Selenium.Firefox.WebDriver/0.23.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.Firefox.WebDriver.targets": {}
+        }
+      },
+      "Selenium.WebDriver/3.2.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Drawing"
+        ],
+        "compile": {
+          "lib/net40/WebDriver.dll": {}
+        },
+        "runtime": {
+          "lib/net40/WebDriver.dll": {}
+        }
+      },
+      "Selenium.WebDriver.ChromeDriver/2.32.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.WebDriver.ChromeDriver.targets": {}
+        }
+      },
+      "Selenium.WebDriver.GeckoDriver.Win64/0.19.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.WebDriver.GeckoDriver.Win64.targets": {}
+        }
+      },
+      "Selenium.WebDriver.IEDriver/3.4.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.WebDriver.IEDriver.targets": {}
+        }
+      },
+      "Common/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "QbeiAgencies_Common": "1.0.0",
+          "QbeiAgencies_DL": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Common.dll": {}
+        }
+      },
+      "QbeiAgencies_BL/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "QbeiAgencies_Common": "1.0.0",
+          "QbeiAgencies_DL": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/QbeiAgencies_BL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/QbeiAgencies_BL.dll": {}
+        }
+      },
+      "QbeiAgencies_Common/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/QbeiAgencies_Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/QbeiAgencies_Common.dll": {}
+        }
+      },
+      "QbeiAgencies_DL/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "QbeiAgencies_Common": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/QbeiAgencies_DL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/QbeiAgencies_DL.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.0,Profile=Client/win-x86": {
+      "Selenium.Firefox.WebDriver/0.23.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.Firefox.WebDriver.targets": {}
+        }
+      },
+      "Selenium.WebDriver/3.2.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Drawing"
+        ],
+        "compile": {
+          "lib/net40/WebDriver.dll": {}
+        },
+        "runtime": {
+          "lib/net40/WebDriver.dll": {}
+        }
+      },
+      "Selenium.WebDriver.ChromeDriver/2.32.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.WebDriver.ChromeDriver.targets": {}
+        }
+      },
+      "Selenium.WebDriver.GeckoDriver.Win64/0.19.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.WebDriver.GeckoDriver.Win64.targets": {}
+        }
+      },
+      "Selenium.WebDriver.IEDriver/3.4.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.WebDriver.IEDriver.targets": {}
+        }
+      },
+      "Common/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "QbeiAgencies_Common": "1.0.0",
+          "QbeiAgencies_DL": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Common.dll": {}
+        }
+      },
+      "QbeiAgencies_BL/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "QbeiAgencies_Common": "1.0.0",
+          "QbeiAgencies_DL": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/QbeiAgencies_BL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/QbeiAgencies_BL.dll": {}
+        }
+      },
+      "QbeiAgencies_Common/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/QbeiAgencies_Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/QbeiAgencies_Common.dll": {}
+        }
+      },
+      "QbeiAgencies_DL/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "QbeiAgencies_Common": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/QbeiAgencies_DL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/QbeiAgencies_DL.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Selenium.Firefox.WebDriver/0.23.0": {
+      "sha512": "0kMAOPIm5Hbvr6yGr9bItBDld4+8V4PiBJOnGVvOuEfOzKrF4kUlF1zUmb8BJ3W4D/JfPAJEr+BOJx0tf7Q00Q==",
+      "type": "package",
+      "path": "selenium.firefox.webdriver/0.23.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/Selenium.Firefox.WebDriver.targets",
+        "driver/geckodriver.exe",
+        "selenium.firefox.webdriver.0.23.0.nupkg.sha512",
+        "selenium.firefox.webdriver.nuspec"
+      ]
+    },
+    "Selenium.WebDriver/3.2.0": {
+      "sha512": "J/U7nKEVo8IvCAF6qa+G9dwp5UlnK0pi2BJaGK6UfZADqXbRyCBsl0Bj4ejOoYgdl9ItyXxZQaWHx4ZAcI+C2w==",
+      "type": "package",
+      "path": "selenium.webdriver/3.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net35/WebDriver.dll",
+        "lib/net35/WebDriver.xml",
+        "lib/net40/WebDriver.dll",
+        "lib/net40/WebDriver.xml",
+        "selenium.webdriver.3.2.0.nupkg.sha512",
+        "selenium.webdriver.nuspec"
+      ]
+    },
+    "Selenium.WebDriver.ChromeDriver/2.32.0": {
+      "sha512": "1a/lHIF/48ffaGObSkm4835m11XyIj+a6HTMuG5ip6QV2INDsBBl6MX3fkku6gxJhg8B6tlCqsvbTlISa+2C4g==",
+      "type": "package",
+      "path": "selenium.webdriver.chromedriver/2.32.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/Selenium.WebDriver.ChromeDriver.targets",
+        "driver/linux64/chromedriver",
+        "driver/mac64/chromedriver",
+        "driver/win32/chromedriver.exe",
+        "selenium.webdriver.chromedriver.2.32.0.nupkg.sha512",
+        "selenium.webdriver.chromedriver.nuspec"
+      ]
+    },
+    "Selenium.WebDriver.GeckoDriver.Win64/0.19.0": {
+      "sha512": "+4HLlXqLa3xblMTbWM0yuDbGgdXZsOFOeCCPwAmoMv7zQi96wkBETg3eXRYSmz3vVvp7jNEDjQWWygYrzQFakg==",
+      "type": "package",
+      "path": "selenium.webdriver.geckodriver.win64/0.19.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/Selenium.WebDriver.GeckoDriver.Win64.targets",
+        "driver/geckodriver.exe",
+        "selenium.webdriver.geckodriver.win64.0.19.0.nupkg.sha512",
+        "selenium.webdriver.geckodriver.win64.nuspec"
+      ]
+    },
+    "Selenium.WebDriver.IEDriver/3.4.0": {
+      "sha512": "kTpiE0OAmNrIWv4qRjwRrLjZXKYg8lWYuWDSBiNB2DOO0dZlZPApwStkIrLZFRtUJ0ctue2i1xyYZpmSJnsYHQ==",
+      "type": "package",
+      "path": "selenium.webdriver.iedriver/3.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/Selenium.WebDriver.IEDriver.targets",
+        "driver/IEDriverServer.exe",
+        "selenium.webdriver.iedriver.3.4.0.nupkg.sha512",
+        "selenium.webdriver.iedriver.nuspec"
+      ]
+    },
+    "Common/1.0.0": {
+      "type": "project",
+      "path": "../Common/Common.csproj",
+      "msbuildProject": "../Common/Common.csproj"
+    },
+    "QbeiAgencies_BL/1.0.0": {
+      "type": "project",
+      "path": "../QbeiAgencies_BL/QbeiAgencies_BL.csproj",
+      "msbuildProject": "../QbeiAgencies_BL/QbeiAgencies_BL.csproj"
+    },
+    "QbeiAgencies_Common/1.0.0": {
+      "type": "project",
+      "path": "../QbeiAgencies_Common/QbeiAgencies_Common.csproj",
+      "msbuildProject": "../QbeiAgencies_Common/QbeiAgencies_Common.csproj"
+    },
+    "QbeiAgencies_DL/1.0.0": {
+      "type": "project",
+      "path": "../QbeiAgencies_DL/QbeiAgencies_DL.csproj",
+      "msbuildProject": "../QbeiAgencies_DL/QbeiAgencies_DL.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.0,Profile=Client": [
+      "Common >= 1.0.0",
+      "QbeiAgencies_BL >= 1.0.0",
+      "QbeiAgencies_Common >= 1.0.0",
+      "QbeiAgencies_DL >= 1.0.0",
+      "Selenium.Firefox.WebDriver >= 0.23.0",
+      "Selenium.WebDriver >= 3.2.0",
+      "Selenium.WebDriver.ChromeDriver >= 2.32.0",
+      "Selenium.WebDriver.GeckoDriver.Win64 >= 0.19.0",
+      "Selenium.WebDriver.IEDriver >= 3.4.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Khin Nandar Zaw\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\014_Firefox\\014_Firefox.csproj",
+      "projectName": "014_Firefox",
+      "projectPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\014_Firefox\\014_Firefox.csproj",
+      "packagesPath": "C:\\Users\\Khin Nandar Zaw\\.nuget\\packages\\",
+      "outputPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\014_Firefox\\obj\\",
+      "projectStyle": "PackageReference",
+      "skipContentFileWrite": true,
+      "configFilePaths": [
+        "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\.nuget\\NuGet.Config",
+        "C:\\Users\\Khin Nandar Zaw\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net40-client"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net40-client": {
+          "projectReferences": {
+            "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\Common\\Common.csproj": {
+              "projectPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\Common\\Common.csproj"
+            },
+            "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\QbeiAgencies_BL\\QbeiAgencies_BL.csproj": {
+              "projectPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\QbeiAgencies_BL\\QbeiAgencies_BL.csproj"
+            },
+            "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\QbeiAgencies_Common\\QbeiAgencies_Common.csproj": {
+              "projectPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\QbeiAgencies_Common\\QbeiAgencies_Common.csproj"
+            },
+            "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\QbeiAgencies_DL\\QbeiAgencies_DL.csproj": {
+              "projectPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\QbeiAgencies_DL\\QbeiAgencies_DL.csproj"
+            }
+          }
+        }
+      }
+    },
+    "frameworks": {
+      "net40-client": {
+        "dependencies": {
+          "Selenium.Firefox.WebDriver": {
+            "target": "Package",
+            "version": "[0.23.0, )"
+          },
+          "Selenium.WebDriver": {
+            "target": "Package",
+            "version": "[3.2.0, )"
+          },
+          "Selenium.WebDriver.ChromeDriver": {
+            "target": "Package",
+            "version": "[2.32.0, )"
+          },
+          "Selenium.WebDriver.GeckoDriver.Win64": {
+            "target": "Package",
+            "version": "[0.19.0, )"
+          },
+          "Selenium.WebDriver.IEDriver": {
+            "target": "Package",
+            "version": "[3.4.0, )"
+          }
+        }
+      }
+    },
+    "runtimes": {
+      "win": {
+        "#import": []
+      },
+      "win-x64": {
+        "#import": []
+      },
+      "win-x86": {
+        "#import": []
+      }
+    }
+  }
+}

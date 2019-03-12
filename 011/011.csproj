@@ -13,14 +13,10 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -42,11 +38,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\QbeiAgeincies_Web\dll_File\HtmlAgilityPack.dll</HintPath>
+    <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="Interop.SHDocVw">
-      <HintPath>..\053\obj\x86\Debug\Interop.SHDocVw.dll</HintPath>
+      <HintPath>..\DLL\Interop.SHDocVw.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -95,12 +92,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{893063B5-5DB0-4838-9C51-4655069B4B4F}</Project>
+      <Project>{893063b5-5db0-4838-9c51-4655069b4b4f}</Project>
       <Name>Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\QbeiAgeincies_Web\QbeiAgeincies_Web.csproj">
-      <Project>{eb6339eb-c22e-476c-98cb-bdd103ac9d28}</Project>
-      <Name>QbeiAgeincies_Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\QbeiAgencies_BL\QbeiAgencies_BL.csproj">
       <Project>{722b5627-ec33-451a-97a2-b7da9d49e409}</Project>

@@ -36,25 +36,35 @@ namespace _139
 
         private void testFlag()
         {
-            int intFlag;
-            entitySetting.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            entitySetting.site = 139;
-            entitySetting.flag = 1;
-            dtSetting = objCom.SelectFlag(139);
-            intFlag = int.Parse(dtSetting.Rows[0]["FlagIsFinished"].ToString());
-            if (intFlag == 0)
+            try
             {
-                objCom.ChangeFlag(entitySetting);
-                startRun();
+                int intFlag;
+                entitySetting.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                entitySetting.site = 139;
+                entitySetting.flag = 1;
+                dtSetting = objCom.SelectFlag(139);
+                intFlag = int.Parse(dtSetting.Rows[0]["FlagIsFinished"].ToString());
+                if (intFlag == 0)
+                {
+                    objCom.ChangeFlag(entitySetting);
+                    startRun();
+                }
+                else if (intFlag == 1)
+                {
+                    objCom.deleteData(139);
+                    objCom.ChangeFlag(entitySetting);
+                    startRun();
+                }
+                else
+                {
+                    Application.Exit();
+                    Environment.Exit(0);
+                }
             }
-            else if (intFlag == 1)
+            catch (Exception ex)
             {
-                objCom.deleteData(139);
-                objCom.ChangeFlag(entitySetting);
-                startRun();
-            }
-            else
-            {
+                objCom.WriteLog(ex, "139-");
+                Application.Exit();
                 Environment.Exit(0);
             }
         }
@@ -75,33 +85,30 @@ namespace _139
             }
             catch (Exception ex)
             {
-                objCom.WriteLog(ex.Message, "139-");
+                objCom.WriteLog(ex, "139-");
+                Application.Exit();
+                Environment.Exit(0);
             }
         }
 
         private void readData()
-        {
-            try
-            {
-                webBrowser1.ScriptErrorsSuppressed = true;
-                entitySetting.SiteID = 139;
-                dtSetting = blQbei.Qbei_Setting_Select(entitySetting);
-                objCom.url = dtSetting.Rows[0]["Url"].ToString();
-                strUrl = "https://www.wave-one.com/oroshi/";
-                webBrowser1.AllowNavigation = true;
-                webBrowser1.Navigate(objCom.url + "login");
-                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Login);
-            }
-            catch (Exception ex)
-            {
-                objCom.WriteLog(ex.Message, "139-");
-            }
+        {           
+            webBrowser1.ScriptErrorsSuppressed = true;
+            entitySetting.SiteID = 139;
+            dtSetting = blQbei.Qbei_Setting_Select(entitySetting);
+            objCom.url = dtSetting.Rows[0]["Url"].ToString();
+            strUrl = "https://www.wave-one.com/oroshi/";
+            webBrowser1.AllowNavigation = true;
+            webBrowser1.Navigate(objCom.url + "login");
+            webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Login);
         }
 
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
             {
+                objCom.ClearMemory();
+
                 SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
                 instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
                 webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_Login);
@@ -123,9 +130,14 @@ namespace _139
             }
             catch (Exception ex)
             {
-                objCom.Qbei_ErrorInsert(139, objCom.GetSiteName("139"), ex.Message, dt139.Rows[0]["JANコード"].ToString(), dt139.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "139");
-                objCom.WriteLog(ex.Message, "139-");
+                string janCode = dt139.Rows[0]["JANコード"].ToString();
+                string orderCode = dt139.Rows[0]["発注コード"].ToString();
+                objCom.Qbei_ErrorInsert(139, objCom.GetSiteName("139"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "139");                
+                objCom.WriteLog(ex, "139-", janCode, orderCode);
+                objCom.Qbei_Maker_Insert("139", dt139);
+
                 Application.Exit();
+                Environment.Exit(0);
             }
         }
 
@@ -133,6 +145,8 @@ namespace _139
         {
             try
             {
+                objCom.ClearMemory();
+
                 webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_Search);
                 if (intCnt < dt139.Rows.Count)
                 {
@@ -141,19 +155,23 @@ namespace _139
                     {
                         objCom.Qbei_ErrorInsert(139, objCom.GetSiteName("139"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "139");
                         objCom.WriteLog("Login Failed", "139-");
+                        objCom.Qbei_Maker_Insert("139", dt139);
                         Application.Exit();
+                        Environment.Exit(0);
                     }
                     else
                     {
                         objCom.WriteLog("Login success             ------", "139-");
                         entity.orderCode = dt139.Rows[intCnt]["発注コード"].ToString();
-                        dtGroupData = dt139.Select("発注コード ='" + entity.orderCode + "'").CopyToDataTable();
+                        dtGroupData = dt139.Select("発注コード ='" + entity.orderCode + "'").CopyToDataTable();                        
                         webBrowser1.Navigate(objCom.url + "item/" + entity.orderCode);
                         webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Item);
                     }
                 }
                 else
                 {
+                    objCom.Qbei_Maker_Insert("139", dt139, intCnt);
+
                     entitySetting.site = 139;
                     entitySetting.flag = 2;
                     entitySetting.starttime = string.Empty;
@@ -165,8 +183,13 @@ namespace _139
             }
             catch (Exception ex)
             {
-                objCom.WriteLog(ex.Message, "139-");
-                Application.Exit();
+                string janCode = dt139.Rows[intCnt]["JANコード"].ToString();
+                objCom.Qbei_ErrorInsert(139, objCom.GetSiteName("139"), ex.Message, janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "139");
+                objCom.WriteLog(ex, "139-", janCode, entity.orderCode);
+
+                ++intCnt;
+                webBrowser1.Navigate(strUrl);
+                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Search);
             }
         }
 
@@ -175,13 +198,14 @@ namespace _139
             int intLCnt = 0;
 
             string[] strData;
-            HtmlNodeCollection data;
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_Item);
             foreach (DataRow dr in dtGroupData.Rows)
             {
+                objCom.ClearMemory();
                 try
                 {
                     intLCnt++;
+                    entity = new Qbei_Entity();
                     entity.siteID = 139;
                     entity.sitecode = "139";
                     entity.partNo = dr["自社品番"].ToString();
@@ -201,7 +225,6 @@ namespace _139
                         entity.price = dr["下代"].ToString();
                         entity.qtyStatus = "empty";
                         entity.stockDate = "2100-02-01";
-                        //objCom.Qbei_ErrorInsert(139, objCom.GetSiteName("139"), "Item doesn't Exists!", entity.janCode, entity.orderCode, 2, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "139");
                     }
                     else
                     {
@@ -209,8 +232,10 @@ namespace _139
                         if (webBrowser1.Document.GetElementById("c_sale_price") == null)
                         {
                             objCom.Qbei_ErrorInsert(139, objCom.GetSiteName("139"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "139");
-                            objCom.WriteLog("Access Denied! " + entity.orderCode, "139-");
+                            objCom.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "139-");
+                            objCom.Qbei_Maker_Insert("139", dt139, intCnt);
                             Application.Exit();
+                            Environment.Exit(0);
                         }
                         else
                         {
@@ -223,14 +248,6 @@ namespace _139
                             {
                                 entity.qtyStatus = "empty";
                                 entity.stockDate = "2100-02-01";
-                                //if (!(entity.qtyStatus.Contains(dr["在庫情報"].ToString()) && dr["入荷予定"].Equals("2100-01-10")))
-                                //{
-                                //    objCom.Qbei_OrderDataInsert(entity);
-                                //}
-                                //entity.stockDate = dr["入荷予定"].ToString();   //Set CSV 入荷予定 
-                                //entity.qtyStatus = dr["在庫情報"].ToString();
-                                //entity.price = dr["下代"].ToString();
-                                //objCom.Qbei_Inserts(entity);
                             }
                             else
                             {
@@ -275,10 +292,10 @@ namespace _139
                                                 entity.stockDate = DateTime.Now.Year.ToString() + "-" + strData[0].PadLeft(2, '0') + "-" + strData[1].PadLeft(2, '0');
                                             }
                                         }
-                                        //2018-06-21 Start 
+                                            //2018-06-21 Start 
                                         else if (entity.qtyStatus.Equals("empty") && String.IsNullOrEmpty(entity.stockDate))
                                             entity.stockDate = "2100-02-01";
-                                        //2018-06-21 End
+                                            //2018-06-21 End
                                         else entity.stockDate = "2100-01-01";
                                     }
                                 }
@@ -303,8 +320,8 @@ namespace _139
                 }
                 catch (Exception ex)
                 {
-                    objCom.Qbei_ErrorInsert(139, objCom.GetSiteName("139"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "139");
-                    objCom.WriteLog(ex.Message + entity.orderCode, "139-");
+                    objCom.Qbei_ErrorInsert(139, objCom.GetSiteName("139"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "139");                    
+                    objCom.WriteLog(ex, "139-", entity.janCode, entity.orderCode);
                 }
                 intCnt++;
             }
@@ -314,9 +331,14 @@ namespace _139
 
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
-            objCom.Qbei_ErrorInsert(139, objCom.GetSiteName("139"), "Access Denied!", dt139.Rows[intCnt]["JANコード"].ToString(), dt139.Rows[intCnt]["発注コード"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "139");
-            objCom.WriteLog(StatusCode.ToString() + " " + dt139.Rows[intCnt]["発注コード"].ToString(), "139-");
+            string janCode = dt139.Rows[intCnt]["JANコード"].ToString();
+            string orderCode = dt139.Rows[intCnt]["発注コード"].ToString();
+            objCom.Qbei_ErrorInsert(139, objCom.GetSiteName("139"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "139");
+            objCom.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "139-");
+
+            objCom.Qbei_Maker_Insert("139", dt139, intCnt);
             Application.Exit();
+            Environment.Exit(0);
         }
     }
 }

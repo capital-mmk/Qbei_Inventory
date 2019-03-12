@@ -1,0 +1,77 @@
+﻿body{
+	background-image: url(../Images/bg.png);
+	font-family: 'Oleo Script', cursive;
+}
+
+.lg_container{
+	width:280px;
+	margin:100px auto;
+	 color: white;
+	  text-align: center;
+	padding:20px 40px;
+	border:1px solid #f4f4f4;
+	 box-shadow:0px 0px 10px gray;
+		background: transparent;
+	/*background:rgba(255,255,255,.5);*/
+	/*background-color: rgba(51,51,51,.5);*/
+     background-color:#F4AFD0 !important;
+	-webkit-border-radius:10px;
+	-moz-border-radius:10px;
+   
+	-webkit-box-shadow: 0 0 2px #aaa;
+	-moz-box-shadow: 0 0 2px #aaa;
+}
+.lg_container h1{
+	font-size:40px;
+	text-align:center;
+}
+#lg_form input[type="text"],
+#lg_form input[type="password"]{
+	border:1px solid rgba(51,51,51,.5);
+	-webkit-border-radius:10px;
+	-moz-border-radius:10px;
+	padding: 5px;
+	font-size: 16px;
+	line-height: 20px;
+	width: 100%;
+	font-family: 'Oleo Script', cursive;
+	text-align:center;
+}
+#lg_form div:nth-child(5) {
+	text-align:center;
+}
+
+#lg_form div:nth-child(4){
+    margin:10px 5px;
+	padding:5px 0;
+}
+
+#lg_form input[type="submit"]{
+	font-family: 'Oleo Script', cursive;
+	font-size: 18px;
+	border:1px solid #000;
+	padding:5px 10px;
+	border:1px solid rgba(51,51,51,.5);
+	-webkit-border-radius:10px;
+	-moz-border-radius:10px;
+	-webkit-box-shadow: 2px 1px 1px #aaa;
+	-moz-box-shadow: 2px 1px 1px #aaa;
+	cursor:pointer;
+}
+.lg_container:hover:before, .lg_container:hover:after {
+	background:#E097F0;
+}
+#lg_form input[type="submit"]:active{
+	-webkit-box-shadow: 0px 0px 1px #aaa;
+	-moz-box-shadow: 0px 0px 1px #aaa;
+}
+#lg_form input[type="submit"]:hover{
+	background:#f4f4f4;
+}
+#message{width:100%;text-align:center}
+.success {
+	color: #E2A9F3;
+}
+.error {
+	color: red;
+}

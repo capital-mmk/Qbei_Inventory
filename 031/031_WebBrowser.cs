@@ -33,26 +33,35 @@ namespace _031アキボウ
 
         private void testflag()
         {
-            qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            //st = qe.starttime;
-            qe.site = 31;
-            qe.flag = 1;
-            DataTable dtflag = fun.SelectFlag(31);
-            int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
-            if (flag == 0)
+            try
             {
-
-                fun.ChangeFlag(qe);
-                StartRun();
+                qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                //st = qe.starttime;
+                qe.site = 31;
+                qe.flag = 1;
+                DataTable dtflag = fun.SelectFlag(31);
+                int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
+                if (flag == 0)
+                {
+                    fun.ChangeFlag(qe);
+                    StartRun();
+                }
+                else if (flag == 1)
+                {
+                    fun.deleteData(31);
+                    fun.ChangeFlag(qe);
+                    StartRun();
+                }
+                else
+                {
+                    Application.Exit();
+                    Environment.Exit(0);
+                }
             }
-            else if (flag == 1)
+            catch (Exception ex)
             {
-                fun.deleteData(31);
-                fun.ChangeFlag(qe);
-                StartRun();
-            }
-            else
-            {
+                fun.WriteLog(ex, "031-");
+                Application.Exit();
                 Environment.Exit(0);
             }
         }
@@ -69,10 +78,14 @@ namespace _031アキボウ
                 dt031 = fun.GetDatatable("031");
                 dt031 = fun.GetOrderData(dt031, "https://joto-order.jp/jotwebb2b/itemList/searchItemList?searchKeiWord=", "031", "");
                 fun.GetTotalCount("031");
-                string dtcount = Convert.ToString(dt031.Rows.Count);
                 ReadData();
+            }            
+            catch (Exception ex)
+            {
+                fun.WriteLog(ex, "031-");
+                Application.Exit();
+                Environment.Exit(0);
             }
-            catch (Exception) { }
         }
 
         private void ReadData()
@@ -93,9 +106,11 @@ namespace _031アキボウ
         {
             try
             {
+                fun.ClearMemory();
+
                 SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
                 instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
-                string url = webBrowser1.Url.ToString();
+                
                 string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
                 //  webBrowser1.ScriptErrorsSuppressed = true;
                 fun.WriteLog("Navigation to Site Url success------", "031-");
@@ -110,7 +125,6 @@ namespace _031アキボウ
                 //webBrowser1.Document.GetElementsByTagName("input")[1].InnerText = fun.user;
                 fun.GetElement("input", "login_id", "name", webBrowser1).InnerText = fun.user;
 
-
                 string password = dt.Rows[0]["Password"].ToString();
                 //  webBrowser1.Document.GetElementsByTagName("input")[2].InnerText = password;
                 fun.GetElement("input", "password", "name", webBrowser1).InnerText = password;
@@ -123,46 +137,66 @@ namespace _031アキボウ
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), ex.Message, dt031.Rows[0]["JANコード"].ToString(), dt031.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
-                fun.WriteLog(ex.Message, "031-");
+                string janCode = dt031.Rows[0]["JANコード"].ToString();
+                string orderCode = dt031.Rows[0]["発注コード"].ToString();
+                fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");                
+                fun.WriteLog(ex, "031-", janCode, orderCode);
+                fun.Qbei_Maker_Insert("031", dt031);
+
                 Application.Exit();
+                Environment.Exit(0);
             }
         }
 
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            webBrowser1.ScriptErrorsSuppressed = true;
-            webBrowser1.DocumentCompleted -= webBrowser1_Login;
-            string body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;
-            if (body.Contains("入力されていません。") || body.Contains("得意先コードまたはIDまたはパスワードが誤っています"))
+            string orderCode = string.Empty;
+            try
             {
-                fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
-                fun.WriteLog("Login Faliled", "031");
-                Application.Exit();
-            }
-            else
-            {
-
-                escapeBlankOrderCode();
-                if (exit)
+                webBrowser1.ScriptErrorsSuppressed = true;
+                webBrowser1.DocumentCompleted -= webBrowser1_Login;
+                string body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;
+                if (body.Contains("入力されていません。") || body.Contains("得意先コードまたはIDまたはパスワードが誤っています"))
                 {
+                    fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
+                    fun.WriteLog("Login Faliled", "031-");
+                    fun.Qbei_Maker_Insert("031", dt031);
                     Application.Exit();
+                    Environment.Exit(0);
                 }
                 else
                 {
-                    fun.WriteLog("Login success             ------", "031-");
-                    string ordercode = dt031.Rows[i]["発注コード"].ToString();
+                    escapeBlankOrderCode();
+                    if (exit)
+                    {
+                        Application.Exit();
+                        Environment.Exit(0);
+                    }
+                    else
+                    {
+                        fun.WriteLog("Login success             ------", "031-");
+                        orderCode = dt031.Rows[i]["発注コード"].ToString();
 
-                    webBrowser1.Navigate("http://weborder.akibo.jp/item_detail/item_detail.html?goods_code=" + ordercode);
-                    Thread.Sleep(2000);
-                    webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
+                        webBrowser1.Navigate("http://weborder.akibo.jp/item_detail/item_detail.html?goods_code=" + orderCode);
+                        Thread.Sleep(2000);
+                        webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                string janCode = dt031.Rows[i]["JANコード"].ToString();
+                fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
+                fun.WriteLog(ex, "031-", janCode, orderCode);
+                fun.Qbei_Maker_Insert("031", dt031);
+
+                Application.Exit();
+                Environment.Exit(0);
             }
         }
 
         private void escapeBlankOrderCode()
         {
-
             while (string.IsNullOrWhiteSpace((dt031.Rows[i]["発注コード"].ToString())))
             {
                 entity = new Qbei_Entity();
@@ -173,6 +207,8 @@ namespace _031アキボウ
                 fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
                 if (i >= dt031.Rows.Count)
                 {
+                    fun.Qbei_Maker_Insert("031", dt031, i);
+
                     qe.site = 31;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
@@ -186,6 +222,8 @@ namespace _031アキボウ
 
         private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
+            fun.ClearMemory();
+
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
             webBrowser1.ScriptErrorsSuppressed = true;
             entity = new Qbei_Entity();
@@ -197,7 +235,7 @@ namespace _031アキボウ
             entity.reflectDate = dt031.Rows[i]["最終反映日"].ToString();
             entity.orderCode = dt031.Rows[i]["発注コード"].ToString();
             entity.purchaseURL = "https://weborder.akibo.jp/item_detail/item_detail.html?goods_code=" + entity.orderCode;
-            string url = webBrowser1.Url.ToString();
+            
             string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
             if (!(body.Contains("上代")))
             {
@@ -229,8 +267,10 @@ namespace _031アキボウ
                     if (hdoc.DocumentNode.SelectSingleNode("/html/body/div/div/table/tbody/tr/td[2]/table[2]/tbody/tr[2]/td[1]") == null)
                     {
                         fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
-                        fun.WriteLog("Access Denied! " + entity.orderCode, "031-");
+                        fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "031-");
+                        fun.Qbei_Maker_Insert("031", dt031, i);
                         Application.Exit();
+                        Environment.Exit(0);
                     }
                     else
                     {
@@ -259,15 +299,14 @@ namespace _031アキボウ
                             }
                             fun.Qbei_Inserts(entity);
                         }
-
                         else
                             fun.Qbei_Inserts(entity);
                     }
                 }
                 catch (Exception ex)
                 {
-                    fun.Qbei_ErrorInsert(31, "アキボウ", ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
-                    fun.WriteLog(ex.Message, "031-");
+                    fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");                    
+                    fun.WriteLog(ex, "031-", entity.janCode, entity.orderCode);
                 }
             }
 
@@ -277,6 +316,7 @@ namespace _031アキボウ
                 if (exit)
                 {
                     Application.Exit();
+                    Environment.Exit(0);
                 }
                 else
                 {
@@ -288,6 +328,8 @@ namespace _031アキボウ
             }
             else
             {
+                fun.Qbei_Maker_Insert("031", dt031, i);
+
                 qe.site = 31;
                 qe.flag = 2;
                 qe.starttime = string.Empty;
@@ -299,9 +341,14 @@ namespace _031アキボウ
         }
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
-            fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), "Access Denied!", dt031.Rows[i]["JANコード"].ToString(), dt031.Rows[i]["発注コード"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
-            fun.WriteLog(StatusCode.ToString() + " " + dt031.Rows[i]["発注コード"].ToString(), "031-");
+            string janCode = dt031.Rows[i]["JANコード"].ToString();
+            string orderCode = dt031.Rows[i]["発注コード"].ToString();
+            fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
+            fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "031-");
+
+            fun.Qbei_Maker_Insert("031", dt031, i);
             Application.Exit();
+            Environment.Exit(0);
         }
     }
 }

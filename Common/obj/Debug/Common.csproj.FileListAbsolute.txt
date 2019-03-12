@@ -1,0 +1,83 @@
+D:\Projects\Inventory_management\Inventory_Management\Common\bin\Debug\Common.dll
+D:\Projects\Inventory_management\Inventory_Management\Common\bin\Debug\Common.pdb
+D:\Projects\Inventory_management\Inventory_Management\Common\bin\Debug\LumenWorks.Framework.IO.dll
+D:\Projects\Inventory_management\Inventory_Management\Common\bin\Debug\WebDriver.dll
+D:\Projects\Inventory_management\Inventory_Management\Common\bin\Debug\WebDriver.xml
+D:\Projects\Inventory_management\Inventory_Management\Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
+D:\Projects\Inventory_management\Inventory_Management\Common\obj\Debug\Common.dll
+D:\Projects\Inventory_management\Inventory_Management\Common\obj\Debug\Common.pdb
+C:\Project\Qbei_Latest\Common\bin\Debug\Common.dll
+C:\Project\Qbei_Latest\Common\bin\Debug\Common.pdb
+C:\Project\Qbei_Latest\Common\bin\Debug\LumenWorks.Framework.IO.dll
+C:\Project\Qbei_Latest\Common\bin\Debug\QbeiAgencies_DL.dll
+C:\Project\Qbei_Latest\Common\bin\Debug\WebDriver.dll
+C:\Project\Qbei_Latest\Common\bin\Debug\QbeiAgencies_Common.dll
+C:\Project\Qbei_Latest\Common\bin\Debug\QbeiAgencies_DL.pdb
+C:\Project\Qbei_Latest\Common\bin\Debug\WebDriver.xml
+C:\Project\Qbei_Latest\Common\bin\Debug\QbeiAgencies_Common.pdb
+C:\Project\Qbei_Latest\Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
+C:\Project\Qbei_Latest\Common\obj\Debug\Common.dll
+C:\Project\Qbei_Latest\Common\obj\Debug\Common.pdb
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\Common\bin\Debug\Common.dll
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\Common\bin\Debug\Common.pdb
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\Common\bin\Debug\LumenWorks.Framework.IO.dll
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\Common\bin\Debug\QbeiAgencies_DL.dll
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\Common\bin\Debug\WebDriver.dll
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\Common\bin\Debug\QbeiAgencies_Common.dll
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\Common\bin\Debug\QbeiAgencies_DL.pdb
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\Common\bin\Debug\WebDriver.xml
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\Common\bin\Debug\QbeiAgencies_Common.pdb
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\Common\obj\Debug\Common.dll
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\Common\obj\Debug\Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\Common\bin\Debug\Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\Common\bin\Debug\Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\Common\bin\Debug\LumenWorks.Framework.IO.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\Common\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\Common\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\Common\bin\Debug\WebDriver.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\Common\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\Common\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\Common\bin\Debug\WebDriver.xml
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\Common\obj\Debug\Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\Common\obj\Debug\Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\Common\bin\Debug\Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\Common\bin\Debug\Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\Common\bin\Debug\LumenWorks.Framework.IO.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\Common\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\Common\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\Common\bin\Debug\WebDriver.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\Common\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\Common\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\Common\bin\Debug\WebDriver.xml
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\Common\obj\Debug\Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\Common\obj\Debug\Common.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\Common\bin\Debug\Common.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\Common\bin\Debug\Common.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\Common\bin\Debug\LumenWorks.Framework.IO.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\Common\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\Common\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\Common\bin\Debug\WebDriver.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\Common\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\Common\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\Common\bin\Debug\WebDriver.xml
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\Common\obj\Debug\Common.csprojAssemblyReference.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\Common\obj\Debug\Common.csproj.CopyComplete
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\Common\obj\Debug\Common.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\Common\obj\Debug\Common.pdb
+D:\WORK\Source\152\Inventory_Management\Common\bin\Debug\Common.dll
+D:\WORK\Source\152\Inventory_Management\Common\bin\Debug\Common.pdb
+D:\WORK\Source\152\Inventory_Management\Common\bin\Debug\HtmlAgilityPack.dll
+D:\WORK\Source\152\Inventory_Management\Common\bin\Debug\LumenWorks.Framework.IO.dll
+D:\WORK\Source\152\Inventory_Management\Common\bin\Debug\QbeiAgencies_Common.dll
+D:\WORK\Source\152\Inventory_Management\Common\bin\Debug\QbeiAgencies_DL.dll
+D:\WORK\Source\152\Inventory_Management\Common\bin\Debug\WebDriver.dll
+D:\WORK\Source\152\Inventory_Management\Common\bin\Debug\QbeiAgencies_Common.pdb
+D:\WORK\Source\152\Inventory_Management\Common\bin\Debug\QbeiAgencies_DL.pdb
+D:\WORK\Source\152\Inventory_Management\Common\bin\Debug\WebDriver.xml
+D:\WORK\Source\152\Inventory_Management\Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
+D:\WORK\Source\152\Inventory_Management\Common\obj\Debug\Common.dll
+D:\WORK\Source\152\Inventory_Management\Common\obj\Debug\Common.pdb

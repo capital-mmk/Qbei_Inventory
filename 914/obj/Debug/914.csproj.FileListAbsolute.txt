@@ -1,0 +1,88 @@
+C:\Projects\Test_Inventory\914\bin\Debug\914.exe
+C:\Projects\Test_Inventory\914\bin\Debug\914.pdb
+C:\Projects\Test_Inventory\914\bin\Debug\Common.dll
+C:\Projects\Test_Inventory\914\bin\Debug\HtmlAgilityPack.dll
+C:\Projects\Test_Inventory\914\bin\Debug\QbeiAgencies_BL.dll
+C:\Projects\Test_Inventory\914\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\Test_Inventory\914\bin\Debug\WebDriver.dll
+C:\Projects\Test_Inventory\914\bin\Debug\LumenWorks.Framework.IO.dll
+C:\Projects\Test_Inventory\914\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\Test_Inventory\914\bin\Debug\Common.pdb
+C:\Projects\Test_Inventory\914\bin\Debug\QbeiAgencies_BL.pdb
+C:\Projects\Test_Inventory\914\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\Test_Inventory\914\bin\Debug\WebDriver.xml
+C:\Projects\Test_Inventory\914\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\Test_Inventory\914\obj\Debug\914.csprojResolveAssemblyReference.cache
+C:\Projects\Test_Inventory\914\obj\Debug\Interop.SHDocVw.dll
+C:\Projects\Test_Inventory\914\obj\Debug\914.csproj.ResolveComReference.cache
+C:\Projects\Test_Inventory\914\obj\Debug\_914.frm914.resources
+C:\Projects\Test_Inventory\914\obj\Debug\_914.Properties.Resources.resources
+C:\Projects\Test_Inventory\914\obj\Debug\914.csproj.GenerateResource.Cache
+C:\Projects\Test_Inventory\914\obj\Debug\914.exe
+C:\Projects\Test_Inventory\914\obj\Debug\914.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\bin\Debug\914.exe
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\bin\Debug\914.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\bin\Debug\Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\bin\Debug\HtmlAgilityPack.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\bin\Debug\QbeiAgencies_BL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\bin\Debug\WebDriver.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\bin\Debug\LumenWorks.Framework.IO.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\bin\Debug\Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\bin\Debug\QbeiAgencies_BL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\bin\Debug\WebDriver.xml
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\obj\Debug\914.csprojResolveAssemblyReference.cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\obj\Debug\Interop.SHDocVw.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\obj\Debug\914.csproj.ResolveComReference.cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\obj\Debug\_914.frm914.resources
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\obj\Debug\_914.Properties.Resources.resources
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\obj\Debug\914.csproj.GenerateResource.Cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\obj\Debug\914.exe
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\914\obj\Debug\914.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\bin\Debug\914.exe
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\bin\Debug\914.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\bin\Debug\Common.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\bin\Debug\HtmlAgilityPack.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\bin\Debug\QbeiAgencies_BL.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\bin\Debug\LumenWorks.Framework.IO.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\bin\Debug\WebDriver.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\bin\Debug\Common.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\bin\Debug\QbeiAgencies_BL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\bin\Debug\WebDriver.xml
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\obj\Debug\914.csprojAssemblyReference.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\obj\Debug\Interop.SHDocVw.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\obj\Debug\914.csproj.ResolveComReference.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\obj\Debug\_914.frm914.resources
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\obj\Debug\_914.Properties.Resources.resources
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\obj\Debug\914.csproj.GenerateResource.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\obj\Debug\914.csproj.CoreCompileInputs.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\obj\Debug\914.csproj.CopyComplete
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\obj\Debug\914.exe
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\914\obj\Debug\914.pdb
+D:\WORK\Source\152\Inventory_Management\914\bin\Debug\914.exe
+D:\WORK\Source\152\Inventory_Management\914\bin\Debug\914.pdb
+D:\WORK\Source\152\Inventory_Management\914\bin\Debug\Common.dll
+D:\WORK\Source\152\Inventory_Management\914\bin\Debug\HtmlAgilityPack.dll
+D:\WORK\Source\152\Inventory_Management\914\bin\Debug\QbeiAgencies_BL.dll
+D:\WORK\Source\152\Inventory_Management\914\bin\Debug\QbeiAgencies_Common.dll
+D:\WORK\Source\152\Inventory_Management\914\bin\Debug\QbeiAgencies_DL.dll
+D:\WORK\Source\152\Inventory_Management\914\bin\Debug\WebDriver.dll
+D:\WORK\Source\152\Inventory_Management\914\bin\Debug\LumenWorks.Framework.IO.dll
+D:\WORK\Source\152\Inventory_Management\914\bin\Debug\Common.pdb
+D:\WORK\Source\152\Inventory_Management\914\bin\Debug\QbeiAgencies_BL.pdb
+D:\WORK\Source\152\Inventory_Management\914\bin\Debug\QbeiAgencies_Common.pdb
+D:\WORK\Source\152\Inventory_Management\914\bin\Debug\QbeiAgencies_DL.pdb
+D:\WORK\Source\152\Inventory_Management\914\bin\Debug\WebDriver.xml
+D:\WORK\Source\152\Inventory_Management\914\obj\Debug\914.csprojResolveAssemblyReference.cache
+D:\WORK\Source\152\Inventory_Management\914\obj\Debug\_914.frm914.resources
+D:\WORK\Source\152\Inventory_Management\914\obj\Debug\_914.Properties.Resources.resources
+D:\WORK\Source\152\Inventory_Management\914\obj\Debug\914.csproj.GenerateResource.Cache
+D:\WORK\Source\152\Inventory_Management\914\obj\Debug\914.exe
+D:\WORK\Source\152\Inventory_Management\914\obj\Debug\914.pdb

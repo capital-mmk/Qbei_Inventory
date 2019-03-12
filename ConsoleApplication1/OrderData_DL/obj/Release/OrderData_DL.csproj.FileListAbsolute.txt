@@ -1,0 +1,6 @@
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\OrderData_DL\bin\Release\OrderData_DL.exe.config
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\OrderData_DL\bin\Release\OrderData_DL.exe
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\OrderData_DL\bin\Release\OrderData_DL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\OrderData_DL\obj\Release\OrderData_DL.csprojResolveAssemblyReference.cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\OrderData_DL\obj\Release\OrderData_DL.exe
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\OrderData_DL\obj\Release\OrderData_DL.pdb

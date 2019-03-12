@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)selenium.webdriver.iedriver\3.4.0\build\Selenium.WebDriver.IEDriver.targets" Condition="Exists('$(NuGetPackageRoot)selenium.webdriver.iedriver\3.4.0\build\Selenium.WebDriver.IEDriver.targets')" />
+    <Import Project="$(NuGetPackageRoot)selenium.webdriver.geckodriver.win64\0.19.0\build\Selenium.WebDriver.GeckoDriver.Win64.targets" Condition="Exists('$(NuGetPackageRoot)selenium.webdriver.geckodriver.win64\0.19.0\build\Selenium.WebDriver.GeckoDriver.Win64.targets')" />
+    <Import Project="$(NuGetPackageRoot)selenium.webdriver.chromedriver\2.32.0\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('$(NuGetPackageRoot)selenium.webdriver.chromedriver\2.32.0\build\Selenium.WebDriver.ChromeDriver.targets')" />
+    <Import Project="$(NuGetPackageRoot)selenium.firefox.webdriver\0.23.0\build\Selenium.Firefox.WebDriver.targets" Condition="Exists('$(NuGetPackageRoot)selenium.firefox.webdriver\0.23.0\build\Selenium.Firefox.WebDriver.targets')" />
+  </ImportGroup>
+</Project>

@@ -24,7 +24,6 @@ namespace _24東_アズマ_
         Qbei_Entity entity = new Qbei_Entity();
         int i = 0;
         public static string st = string.Empty;
-        int epoch;
         public frm024()
         {
             InitializeComponent();
@@ -33,25 +32,35 @@ namespace _24東_アズマ_
 
         private void testflag()
         {
-            qe.starttime = DateTime.Now.ToString();
-            qe.site = 24;
-            st = qe.starttime;
-            qe.flag = 1;
-            DataTable dtflag = fun.SelectFlag(24);
-            int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
-            if (flag == 0)
+            try
             {
-                fun.ChangeFlag(qe);
-                StartRun();
+                qe.starttime = DateTime.Now.ToString();
+                qe.site = 24;
+                st = qe.starttime;
+                qe.flag = 1;
+                DataTable dtflag = fun.SelectFlag(24);
+                int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
+                if (flag == 0)
+                {
+                    fun.ChangeFlag(qe);
+                    StartRun();
+                }
+                else if (flag == 1)
+                {
+                    fun.deleteData(24);
+                    fun.ChangeFlag(qe);
+                    StartRun();
+                }
+                else
+                {
+                    Application.Exit();
+                    Environment.Exit(0);
+                }
             }
-            else if (flag == 1)
+            catch (Exception ex)
             {
-                fun.deleteData(24);
-                fun.ChangeFlag(qe);
-                StartRun();
-            }
-            else
-            {
+                fun.WriteLog(ex, "024-");
+                Application.Exit();
                 Environment.Exit(0);
             }
         }
@@ -69,7 +78,12 @@ namespace _24東_アズマ_
                 fun.GetTotalCount("024");
                 ReadData();
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                fun.WriteLog(ex, "024-");
+                Application.Exit();
+                Environment.Exit(0);
+            }
         }
 
         private void ReadData()
@@ -87,6 +101,8 @@ namespace _24東_アズマ_
         {
             try
             {
+                fun.ClearMemory();
+
                 SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
                 instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
                 entity.orderCode = dt024.Rows[i]["発注コード"].ToString();
@@ -111,18 +127,20 @@ namespace _24東_アズマ_
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
-                fun.WriteLog(ex.Message + entity.orderCode, "024-");
+                fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");                
+                fun.WriteLog(ex, "024-", entity.janCode, entity.orderCode);
+                fun.Qbei_Maker_Insert("024", dt024);
+
                 Application.Exit();
                 Environment.Exit(0);
             }
         }
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
+        {   
             try
             {
-                entity.orderCode = dt024.Rows[i]["発注コード"].ToString();
-                entity.janCode = dt024.Rows[i]["JANコード"].ToString();
+                entity.orderCode = dt024.Rows[i]["発注コード"].ToString().Trim();
+                entity.janCode = dt024.Rows[i]["JANコード"].ToString().Trim();
                 string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
                 if (body.Contains("This page can't be displayed"))
                 {
@@ -135,21 +153,22 @@ namespace _24東_アズマ_
                 {
                     fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
                     fun.WriteLog("Login Failed", "024");
+                    fun.Qbei_Maker_Insert("024", dt024);
                     Application.Exit();
+                    Environment.Exit(0);
                 }
                 else
                 {
                     fun.WriteLog("Login success             ------", "024-");
-                    epoch = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
-                    string ordercode = dt024.Rows[i]["発注コード"].ToString().Trim();
-                    webBrowser1.Navigate(fun.url + "/azuma/product_detail/multi_request?id=" + ordercode);
+                    webBrowser1.Navigate(fun.url + "/azuma/product_detail/multi_request?id=" + entity.orderCode);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
                 }
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
-                fun.WriteLog(ex.Message + entity.orderCode, "024-");
+                fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
+                fun.WriteLog(ex, "024-", entity.janCode, entity.orderCode);
+                fun.Qbei_Maker_Insert("024", dt024);
                 Application.Exit();
                 Environment.Exit(0);
             }
@@ -158,27 +177,26 @@ namespace _24東_アズマ_
         {
             try
             {
-                entity.orderCode = dt024.Rows[i]["発注コード"].ToString();
-                entity.janCode = dt024.Rows[i]["JANコード"].ToString();
+                entity.orderCode = dt024.Rows[i]["発注コード"].ToString().Trim();
+                entity.janCode = dt024.Rows[i]["JANコード"].ToString().Trim();
                 string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
                 if (body.Contains("This page can't be displayed"))
                 {
                     fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), "This site can't reach", entity.janCode, entity.orderCode, 6, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
                 }
                 webBrowser1.ScriptErrorsSuppressed = true;
-                string ordercode = dt024.Rows[i]["発注コード"].ToString().Trim();
-                webBrowser1.Navigate(fun.url + "/azuma/product_detail/multi_request?id=" + ordercode);
+                webBrowser1.Navigate(fun.url + "/azuma/product_detail/multi_request?id=" + entity.orderCode);
                 if (webBrowser1.Url.ToString().Contains("/product_detail/"))
                 {
                     webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
-                    string url = webBrowser1.Url.ToString();
                 }
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
-                fun.WriteLog(ex.Message + entity.orderCode, "024-");
+                fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");                
+                fun.WriteLog(ex, "024-", entity.janCode, entity.orderCode);
+                fun.Qbei_Maker_Insert("024", dt024, i);
                 Application.Exit();
                 Environment.Exit(0);
             }
@@ -187,6 +205,8 @@ namespace _24東_アズマ_
         {
             try
             {
+                fun.ClearMemory();
+
                 entity.orderCode = dt024.Rows[i]["発注コード"].ToString();
                 entity.janCode = dt024.Rows[i]["JANコード"].ToString();
                 string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
@@ -212,8 +232,10 @@ namespace _24東_アズマ_
                     if (webBrowser1.Document.GetElementsByTagName("html")[0] == null)
                     {
                         fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
-                        fun.WriteLog("Access Denied! " + entity.orderCode, "024-");
+                        fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "024-");
+                        fun.Qbei_Maker_Insert("024", dt024, i);
                         Application.Exit();
+                        Environment.Exit(0);
                     }
                     body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
                     string Date = DateTime.Now.ToString("yyyy-MM-dd");
@@ -232,7 +254,6 @@ namespace _24東_アズマ_
                         { entity.stockDate = "2100-02-01"; }
                         fun.Qbei_Inserts(entity);
                     }
-
                     else
                     {
                         string url = webBrowser1.Document.Url.ToString();
@@ -265,8 +286,6 @@ namespace _24東_アズマ_
                             entity.qtyStatus = "unknown status";
                         }
 
-
-
                         if (dateexists != "")
                         {
                             entity.stockDate = dateexists;
@@ -276,10 +295,8 @@ namespace _24東_アズマ_
                             entity.stockDate = qtyStatus.Equals("○") || qtyStatus.Equals("◎") || qtyStatus.Equals("△") || qtyStatus.Equals("台|個|ロット") ? "2100-01-01" : qtyStatus.Equals("×") || qtyStatus.Equals("入荷予定") || qtyStatus.Equals("予約受付中") ? "2100-02-01" : "unknown date";
                         }
 
-
                         if ((dt024.Rows[i]["在庫情報"].ToString().Contains("empty") || dt024.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt024.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
                         {
-
                             if ((entity.qtyStatus.Contains("empty") && (entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry"))
                             {
                                 entity.qtyStatus = dt024.Rows[i]["在庫情報"].ToString();
@@ -296,7 +313,15 @@ namespace _24東_アズマ_
                 else
                 {
                     fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
-                }
+                }                
+            }
+            catch (Exception ex)
+            {
+                fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");                
+                fun.WriteLog(ex, "024-", entity.janCode, entity.orderCode);
+            }
+            finally
+            {
                 if (i < dt024.Rows.Count - 1)
                 {
                     string ordercode = fun.ReplaceOrderCode(dt024.Rows[++i]["発注コード"].ToString(), new string[] { "在庫処分/inquiry/", "在庫処分/empty/", "/", "20161027ワイヤービードのため-/", "在庫処分/empry/-", "在庫処分/good/", "在庫処分empry-", "在庫処分empry", "在庫処分/empry/", "在庫処分good", "在庫処分/small/", "在庫処分small", "東特価のため完売/", "東特価のため完売", "未契約", "バラ注文できない為発注禁止/" });
@@ -311,6 +336,8 @@ namespace _24東_アズマ_
                 }
                 else
                 {
+                    fun.Qbei_Maker_Insert("024", dt024, i);
+ 
                     qe.site = 24;
                     qe.flag = 2;
                     qe.starttime = st;
@@ -320,17 +347,17 @@ namespace _24東_アズマ_
                     Environment.Exit(0);
                 }
             }
-            catch (Exception ex)
-            {
-                fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
-                fun.WriteLog(ex.Message + entity.orderCode, "024-");
-            }
         }
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
-            fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), "Access Denied!", dt024.Rows[i]["JANコード"].ToString(), dt024.Rows[i]["発注コード"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
-            fun.WriteLog(StatusCode.ToString() + " " + dt024.Rows[i]["発注コード"].ToString(), "024-");
+            string janCode = dt024.Rows[i]["JANコード"].ToString();
+            string orderCode = dt024.Rows[i]["発注コード"].ToString();
+            fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
+            fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "024-");
+
+            fun.Qbei_Maker_Insert("024", dt024, i);
             Application.Exit();
+            Environment.Exit(0);
         }
     }
 }

@@ -1,0 +1,37 @@
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\FileUpload\bin\Debug\FileUpload.exe.config
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\FileUpload\bin\Debug\FileUpload.exe
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\FileUpload\bin\Debug\FileUpload.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\FileUpload\obj\Debug\FileUpload.exe
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\FileUpload\obj\Debug\FileUpload.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\bin\Debug\FileUpload.exe.config
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\bin\Debug\FileUpload.exe
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\bin\Debug\FileUpload.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\bin\Debug\Common.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\bin\Debug\LumenWorks.Framework.IO.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\bin\Debug\WebDriver.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\bin\Debug\Common.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\bin\Debug\WebDriver.xml
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\obj\Debug\FileUpload.csprojAssemblyReference.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\obj\Debug\FileUpload.csproj.CoreCompileInputs.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\obj\Debug\FileUpload.csproj.CopyComplete
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\obj\Debug\FileUpload.exe
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\FileUpload\obj\Debug\FileUpload.pdb
+D:\WORK\Source\152\Inventory_Management\FileUpload\bin\Debug\FileUpload.exe.config
+D:\WORK\Source\152\Inventory_Management\FileUpload\bin\Debug\FileUpload.exe
+D:\WORK\Source\152\Inventory_Management\FileUpload\bin\Debug\FileUpload.pdb
+D:\WORK\Source\152\Inventory_Management\FileUpload\bin\Debug\Common.dll
+D:\WORK\Source\152\Inventory_Management\FileUpload\bin\Debug\WebDriver.dll
+D:\WORK\Source\152\Inventory_Management\FileUpload\bin\Debug\QbeiAgencies_Common.dll
+D:\WORK\Source\152\Inventory_Management\FileUpload\bin\Debug\LumenWorks.Framework.IO.dll
+D:\WORK\Source\152\Inventory_Management\FileUpload\bin\Debug\QbeiAgencies_DL.dll
+D:\WORK\Source\152\Inventory_Management\FileUpload\bin\Debug\Common.pdb
+D:\WORK\Source\152\Inventory_Management\FileUpload\bin\Debug\WebDriver.xml
+D:\WORK\Source\152\Inventory_Management\FileUpload\bin\Debug\QbeiAgencies_Common.pdb
+D:\WORK\Source\152\Inventory_Management\FileUpload\bin\Debug\QbeiAgencies_DL.pdb
+D:\WORK\Source\152\Inventory_Management\FileUpload\obj\Debug\FileUpload.csprojResolveAssemblyReference.cache
+D:\WORK\Source\152\Inventory_Management\FileUpload\obj\Debug\FileUpload.exe
+D:\WORK\Source\152\Inventory_Management\FileUpload\obj\Debug\FileUpload.pdb

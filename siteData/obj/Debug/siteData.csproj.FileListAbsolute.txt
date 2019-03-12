@@ -1,0 +1,38 @@
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\siteData\bin\Debug\siteData.exe.config
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\siteData\bin\Debug\siteData.exe
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\siteData\bin\Debug\siteData.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\siteData\bin\Debug\QbeiAgencies_BL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\siteData\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\siteData\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\siteData\bin\Debug\QbeiAgencies_BL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\siteData\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\siteData\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\siteData\obj\Debug\siteData.csprojResolveAssemblyReference.cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\siteData\obj\Debug\siteData.exe
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\siteData\obj\Debug\siteData.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\siteData\bin\Debug\siteData.exe.config
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\siteData\bin\Debug\siteData.exe
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\siteData\bin\Debug\siteData.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\siteData\bin\Debug\QbeiAgencies_BL.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\siteData\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\siteData\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\siteData\bin\Debug\QbeiAgencies_BL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\siteData\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\siteData\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\siteData\obj\Debug\siteData.csprojAssemblyReference.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\siteData\obj\Debug\siteData.csproj.CoreCompileInputs.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\siteData\obj\Debug\siteData.csproj.CopyComplete
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\siteData\obj\Debug\siteData.exe
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\siteData\obj\Debug\siteData.pdb
+D:\WORK\Source\152\Inventory_Management\siteData\bin\Debug\siteData.exe.config
+D:\WORK\Source\152\Inventory_Management\siteData\bin\Debug\siteData.exe
+D:\WORK\Source\152\Inventory_Management\siteData\bin\Debug\siteData.pdb
+D:\WORK\Source\152\Inventory_Management\siteData\bin\Debug\QbeiAgencies_BL.dll
+D:\WORK\Source\152\Inventory_Management\siteData\bin\Debug\QbeiAgencies_Common.dll
+D:\WORK\Source\152\Inventory_Management\siteData\bin\Debug\QbeiAgencies_DL.dll
+D:\WORK\Source\152\Inventory_Management\siteData\bin\Debug\QbeiAgencies_BL.pdb
+D:\WORK\Source\152\Inventory_Management\siteData\bin\Debug\QbeiAgencies_Common.pdb
+D:\WORK\Source\152\Inventory_Management\siteData\bin\Debug\QbeiAgencies_DL.pdb
+D:\WORK\Source\152\Inventory_Management\siteData\obj\Debug\siteData.csprojResolveAssemblyReference.cache
+D:\WORK\Source\152\Inventory_Management\siteData\obj\Debug\siteData.exe
+D:\WORK\Source\152\Inventory_Management\siteData\obj\Debug\siteData.pdb

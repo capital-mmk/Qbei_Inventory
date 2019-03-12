@@ -23,42 +23,43 @@ namespace _46トライスポーツ
         DataTable dt046 = new DataTable();
         Qbei_Entity entity = new Qbei_Entity();
         int i = 0;
-        public static string st = string.Empty;
-        string strParam = string.Empty;
+        
         public frm046()
         {
             InitializeComponent();
             testflag();
-
         }
 
-        public frm046(string strObj)
-        {
-            InitializeComponent();
-            strParam = strObj;
-            testflag();
-        }
         private void testflag()
         {
-            qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            qe.site = 46;
-            qe.flag = 1;
-            DataTable dtflag = fun.SelectFlag(46);
-            int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
-            if (flag == 0)
+            try
             {
-
-                fun.ChangeFlag(qe);
-                StartRun();
+                qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                qe.site = 46;
+                qe.flag = 1;
+                DataTable dtflag = fun.SelectFlag(46);
+                int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
+                if (flag == 0)
+                {
+                    fun.ChangeFlag(qe);
+                    StartRun();
+                }
+                else if (flag == 1)
+                {
+                    fun.deleteData(46);
+                    fun.ChangeFlag(qe);
+                    StartRun();
+                }
+                else
+                {
+                    Application.Exit();
+                    Environment.Exit(0);
+                }
             }
-            else if (flag == 1)
+            catch (Exception ex)
             {
-                fun.deleteData(46);
-                fun.ChangeFlag(qe);
-                StartRun();
-            }
-            else
-            {
+                fun.WriteLog(ex, "046-");
+                Application.Exit();
                 Environment.Exit(0);
             }
         }
@@ -71,26 +72,17 @@ namespace _46トライスポーツ
                 fun.Qbei_Delete(46);
                 fun.CreateFileAndFolder();
                 fun.Qbei_ErrorDelete(46);
-                if (String.IsNullOrEmpty(strParam))
-                {
-                    dt046 = fun.GetDatatable("046");
-                    dt046 = fun.GetOrderData(dt046, "http://www.trisportsdesu.com/products/list.php?mode=search&category_id=&name=", "046", "");
-                }
-                else
-                    dt046 = fun.GetRerunData("046");
+                dt046 = fun.GetDatatable("046");
+                dt046 = fun.GetOrderData(dt046, "http://www.trisportsdesu.com/products/list.php?mode=search&category_id=&name=", "046", "");
                 fun.GetTotalCount("046");
-                string dtcount = Convert.ToString(dt046.Rows.Count);
-
-
-                if (dt046 != null)
-                    ReadData();
-                else
-                {
-                    Application.Exit();
-                    Environment.Exit(0);
-                }
+                ReadData();
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                fun.WriteLog(ex, "046-");
+                Application.Exit();
+                Environment.Exit(0);
+            }
         }
 
         private void ReadData()
@@ -108,11 +100,10 @@ namespace _46トライスポーツ
         {
             try
             {
-                SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
-                instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
+                fun.ClearMemory();
+
                 fun.WriteLog("Navigation to Site Url success------", "046-");
                 webBrowser1.ScriptErrorsSuppressed = true;
-                //qe.sitecode = "046";
                 qe.SiteID = 46;
                 dt = qubl.Qbei_Setting_Select(qe);
                 string username = dt.Rows[0]["UserName"].ToString();
@@ -126,42 +117,60 @@ namespace _46トライスポーツ
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), ex.Message, dt046.Rows[0]["JANコード"].ToString(), dt046.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
-                fun.WriteLog(ex.Message, "046-");
-                Application.Exit();
-            }
+                string janCode = dt046.Rows[0]["JANコード"].ToString();
+                string orderCode = dt046.Rows[0]["発注コード"].ToString();
+                fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
+                fun.WriteLog(ex, "046-", janCode, orderCode);
+                fun.Qbei_Maker_Insert("046", dt046);
 
+                Application.Exit();
+                Environment.Exit(0);
+            }
         }
+
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
-
-
-
-            webBrowser1.DocumentCompleted -= webBrowser1_Login;
-            webBrowser1.ScriptErrorsSuppressed = true;
-            string body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;
-            if (body.Contains("お客様IDもしくはパスワードが正しくありません。"))
+        {   
+            try
             {
-                entity.janCode = string.Empty;
-                entity.orderCode = string.Empty;
-                fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
-                fun.WriteLog("Login Failed", "046-");
-                Application.Exit();
+                SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
+                instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
+                webBrowser1.DocumentCompleted -= webBrowser1_Login;
+                webBrowser1.ScriptErrorsSuppressed = true;
+                string body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;
+                if (body.Contains("お客様IDもしくはパスワードが正しくありません。"))
+                {
+                    entity.janCode = dt046.Rows[i]["JANコード"].ToString();
+                    entity.orderCode = dt046.Rows[i]["発注コード"].ToString();
+                    fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
+                    fun.WriteLog("Login Failed", "046-");
+                    fun.Qbei_Maker_Insert("046", dt046);
+                    Application.Exit();
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    fun.WriteLog("Login success             ------", "046-");                    
+                    webBrowser1.Navigate(fun.url + "/products/list.php?mode=search&category_id=&name=" + entity.orderCode);
+                    webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
+                }
             }
-            else
-            {
-                fun.WriteLog("Login success             ------", "046-");
-                string ordercode = dt046.Rows[i]["発注コード"].ToString().Trim();
+            catch (Exception ex)
+            {   
+                fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), ex.Message, entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
+                fun.WriteLog(ex, "046-", entity.janCode, entity.orderCode);
+                fun.Qbei_Maker_Insert("046", dt046);
 
-                // string ordercode = "000000008";
-                webBrowser1.Navigate(fun.url + "/products/list.php?mode=search&category_id=&name=" + ordercode);
-                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
+                Application.Exit();
+                Environment.Exit(0);
             }
         }
         private void webBrowser1_WaitForSearchPage(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
+            string orderCode = string.Empty;
             try
             {
+                fun.ClearMemory();
+
                 webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
                 webBrowser1.ScriptErrorsSuppressed = true;
                 entity = new Qbei_Entity();
@@ -171,17 +180,14 @@ namespace _46トライスポーツ
                 entity.partNo = dt046.Rows[i]["自社品番"].ToString();
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt046.Rows[i]["最終反映日"].ToString();
-                entity.orderCode = dt046.Rows[i]["発注コード"].ToString();
-
-                // entity.orderCode = "000000008";
+                entity.orderCode = dt046.Rows[i]["発注コード"].ToString();                
                 entity.purchaseURL = fun.url + "/products/list.php?mode=search&category_id=&name=" + entity.orderCode;
+                
                 if ((!string.IsNullOrWhiteSpace(entity.purchaseURL)) && (entity.orderCode != ""))
                 {
                     string url = webBrowser1.Url.ToString();
                     string colName = string.Empty;
-                    string ordercode = dt046.Rows[i]["発注コード"].ToString().Trim();
-
-                    //  string ordercode = "000000008";
+                    orderCode = dt046.Rows[i]["発注コード"].ToString().Trim();
                     HtmlElement tBody = webBrowser1.Document.GetElementById("undercolumn_list");
                     string html = webBrowser1.Document.Body.InnerHtml;
                     HtmlAgilityPack.HtmlDocument hdoc = new HtmlAgilityPack.HtmlDocument();
@@ -191,7 +197,7 @@ namespace _46トライスポーツ
                     for (int j = 1; j <= iTableCount; j++)
                     {
                         colName = (hdoc.DocumentNode.SelectSingleNode("div/div[3]/div[2]/div/div/div/table/tbody/tr[" + j + "]/td[3]").InnerText).Trim();
-                        if (colName == ordercode)
+                        if (colName == orderCode)
                         {
                             string linktext = hdoc.DocumentNode.SelectSingleNode("div/div[3]/div[2]/div/div/div/table/tbody/tr[" + j + "]/td[6]/a").GetAttributeValue("href", "");
                             webBrowser1.Navigate(fun.url + linktext); break;
@@ -199,7 +205,7 @@ namespace _46トライスポーツ
                     }
                     webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
-                    if (colName != ordercode)
+                    if (colName != orderCode)
                     {
                         webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                         entity.qtyStatus = "empty";
@@ -214,15 +220,16 @@ namespace _46トライスポーツ
                         }
                         entity.purchaseURL = fun.url;
                         fun.Qbei_Inserts(entity);
-                        // fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), "Item doesn't Exists!", entity.janCode, entity.orderCode, 2, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
                         if (i < dt046.Rows.Count - 1)
                         {
-                            string oc = fun.ReplaceOrderCode(dt046.Rows[++i]["発注コード"].ToString(), new string[] { "shiyouhenkou/", "-", "在庫処分/inquiry/", "在庫処分/empty/", "在庫処分/empry/", "在庫処分/good/", "在庫処分/small/" });
-                            webBrowser1.Navigate(fun.url + "/products/list.php?mode=search&category_id=&name=" + oc);
+                            orderCode = fun.ReplaceOrderCode(dt046.Rows[++i]["発注コード"].ToString(), new string[] { "shiyouhenkou/", "-", "在庫処分/inquiry/", "在庫処分/empty/", "在庫処分/empry/", "在庫処分/good/", "在庫処分/small/" });
+                            webBrowser1.Navigate(fun.url + "/products/list.php?mode=search&category_id=&name=" + orderCode);
                             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
                         }
                         else
                         {
+                            fun.Qbei_Maker_Insert("046", dt046, i);
+
                             qe.SiteID = 42;
                             qe.flag = 2;
                             qe.starttime = string.Empty;
@@ -238,12 +245,14 @@ namespace _46トライスポーツ
                     fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
                     if (i < dt046.Rows.Count - 1)
                     {
-                        string oc = fun.ReplaceOrderCode(dt046.Rows[++i]["発注コード"].ToString(), new string[] { "shiyouhenkou/", "-", "在庫処分/inquiry/", "在庫処分/empty/", "在庫処分/empry/", "在庫処分/good/", "在庫処分/small/" });
-                        webBrowser1.Navigate(fun.url + "/products/list.php?mode=search&category_id=&name=" + oc);
+                        orderCode = fun.ReplaceOrderCode(dt046.Rows[++i]["発注コード"].ToString(), new string[] { "shiyouhenkou/", "-", "在庫処分/inquiry/", "在庫処分/empty/", "在庫処分/empry/", "在庫処分/good/", "在庫処分/small/" });
+                        webBrowser1.Navigate(fun.url + "/products/list.php?mode=search&category_id=&name=" + orderCode);
                         webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
                     }
                     else
                     {
+                        fun.Qbei_Maker_Insert("046", dt046, i);
+
                         qe.SiteID = 46;
                         qe.starttime = string.Empty;
                         qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -255,18 +264,22 @@ namespace _46トライスポーツ
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(46, "アキボウ", ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
-                fun.WriteLog(ex.Message + entity.orderCode, "046-");
-                Application.Exit();
-            }
+                fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
+                fun.WriteLog(ex, "046-", entity.janCode, entity.orderCode);
 
+                orderCode = fun.ReplaceOrderCode(dt046.Rows[++i]["発注コード"].ToString(), new string[] { "shiyouhenkou/", "-", "在庫処分/inquiry/", "在庫処分/empty/", "在庫処分/empry/", "在庫処分/good/", "在庫処分/small/" });
+                webBrowser1.Navigate(fun.url + "/products/list.php?mode=search&category_id=&name=" + orderCode);
+                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
+            }
         }
 
         private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
+            fun.ClearMemory();
+
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
             webBrowser1.ScriptErrorsSuppressed = true;
-            string url = webBrowser1.Url.ToString();
+            
             try
             {
                 string html = webBrowser1.Document.Body.InnerHtml;
@@ -274,7 +287,7 @@ namespace _46トライスポーツ
                 hdoc.LoadHtml(html);
 
                 string qty = "div/div[3]/div[2]/div[3]/div[2]/table/tbody/tr[2]/td[3]/img";
-
+                             
                 HtmlNodeCollection nc = hdoc.DocumentNode.SelectNodes(qty);
                 if (nc == null)
                 {
@@ -285,7 +298,7 @@ namespace _46トライスポーツ
                 entity.stockDate = alt.Contains("○") || alt.Contains("△") || alt.Contains("▲") || alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("×") ? "2100-01-01" : alt.Contains("受付終了") ? "2100-02-01" : "unknown date";
                 entity.price = webBrowser1.Document.GetElementById("price02_default").InnerText; ;
                 entity.price = entity.price.Replace(",", string.Empty);
-                entity.purchaseURL = webBrowser1.Url.ToString();
+                entity.purchaseURL = webBrowser1.Url.ToString(); 
                 //fun.Qbei_Inserts(entity);
 
                 if ((dt046.Rows[i]["在庫情報"].ToString().Contains("empty") || dt046.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt046.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
@@ -298,24 +311,15 @@ namespace _46トライスポーツ
                     }
                     fun.Qbei_Inserts(entity);
                 }
-
-                else if ((!String.IsNullOrEmpty(strParam)) && ((entity.qtyStatus.Contains("empty") && (String.IsNullOrEmpty(entity.stockDate) || entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry")))
-                {
-                    fun.RerunOrder(entity);
-                }
                 else
                     //2018/1/12
                     fun.Qbei_Inserts(entity);
-
             }
-            // }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(46, "アキボウ", ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
-                fun.WriteLog(ex.Message, "046-");
-                Application.Exit();
+                fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),"046");
+                fun.WriteLog(ex, "046-", entity.janCode, entity.orderCode);
             }
-
 
             if (i < dt046.Rows.Count - 1)
             {
@@ -326,7 +330,9 @@ namespace _46トライスポーツ
             }
             else
             {
-                qe.site = 46;
+                fun.Qbei_Maker_Insert("046", dt046, i);
+
+                qe.site =46;
                 qe.flag = 2;
                 qe.starttime = string.Empty;
                 qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -337,9 +343,14 @@ namespace _46トライスポーツ
         }
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
-            fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), "Access Denied!", dt046.Rows[i]["JANコード"].ToString(), dt046.Rows[i]["発注コード"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
-            fun.WriteLog(StatusCode.ToString() + " " + dt046.Rows[i]["発注コード"].ToString(), "046--");
+            string janCode = dt046.Rows[i]["JANコード"].ToString();
+            string orderCode = dt046.Rows[i]["発注コード"].ToString();
+            fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");            
+            fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "046-");
+            fun.Qbei_Maker_Insert("046", dt046, i);
+
             Application.Exit();
+            Environment.Exit(0);
         }
     }
 }

@@ -21,8 +21,6 @@ namespace _65野口
         CommonFunction fun = new CommonFunction();
         DataTable dt065 = new DataTable();
         Qbei_Entity entity = new Qbei_Entity();
-        public static string st = string.Empty;
-        string Date = string.Empty;
         int i = -1;
         public frm065()
         {
@@ -31,25 +29,34 @@ namespace _65野口
         }
         private void testflag()
         {
-            qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            qe.site = 65;
-            qe.flag = 1;
-            DataTable dtflag = fun.SelectFlag(65);
-            int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
-            if (flag == 0)
+            try
             {
-
-                fun.ChangeFlag(qe);
-                StartRun();
+                qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                qe.site = 65;
+                qe.flag = 1;
+                DataTable dtflag = fun.SelectFlag(65);
+                int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
+                if (flag == 0)
+                {
+                    fun.ChangeFlag(qe);
+                    StartRun();
+                }
+                else if (flag == 1)
+                {
+                    fun.deleteData(65);
+                    fun.ChangeFlag(qe);
+                    StartRun();
+                }
+                else
+                {
+                    Application.Exit();
+                    Environment.Exit(0);
+                }
             }
-            else if (flag == 1)
+            catch (Exception ex)
             {
-                fun.deleteData(65);
-                fun.ChangeFlag(qe);
-                StartRun();
-            }
-            else
-            {
+                fun.WriteLog(ex, "065-");
+                Application.Exit();
                 Environment.Exit(0);
             }
         }
@@ -62,7 +69,6 @@ namespace _65野口
                 fun.CreateFileAndFolder();
                 fun.Qbei_Delete(65);
                 fun.Qbei_ErrorDelete(65);
-                Date = fun.getCurrentDate();
                 dt065 = fun.GetDatatable("065");
                 dt065 = fun.GetOrderData(dt065, "http://www.noguchi-shokai.co.jp/nachos/site/item_list", "065", "");
                 fun.GetTotalCount("065");
@@ -73,13 +79,20 @@ namespace _65野口
                     qe.starttime = string.Empty;
                     qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     fun.ChangeFlag(qe);
-                    Environment.Exit(0);
                     Application.Exit();
+                    Environment.Exit(0);
                 }
-                fun.GetTotalCount("065");
-                ReadData();
+                else
+                {
+                    ReadData();
+                }
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                fun.WriteLog(ex, "065-");
+                Application.Exit();
+                Environment.Exit(0);
+            }
         }
 
         private void ReadData()
@@ -91,10 +104,13 @@ namespace _65野口
             webBrowser1.Navigate(fun.url + "/nachos/account/login");
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
         }
+
         private void webBrowser1_Start(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
             {
+                fun.ClearMemory();
+
                 fun.WriteLog("Navigation to Site Url success------", "065-");
                 webBrowser1.ScriptErrorsSuppressed = true;
                 SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
@@ -113,27 +129,49 @@ namespace _65野口
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), ex.Message, dt065.Rows[0]["JANコード"].ToString(), dt065.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
-                fun.WriteLog(ex.Message, "065-");
+                string janCode = dt065.Rows[0]["JANコード"].ToString();
+                string orderCode = dt065.Rows[0]["発注コード"].ToString();
+                fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");               
+                fun.WriteLog(ex, "065-", janCode, orderCode);
+                fun.Qbei_Maker_Insert("065", dt065);
+
                 Application.Exit();
+                Environment.Exit(0);
             }
         }
+
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            webBrowser1.DocumentCompleted -= webBrowser1_Login;
-            webBrowser1.ScriptErrorsSuppressed = true;
-            string body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;
-            if (body.Contains("野口商会Web発注システム ログイン画面"))
+            try
             {
-                fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), "Login Failed", dt065.Rows[0]["JANコード"].ToString(), dt065.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
-                fun.WriteLog("Login Failed", "065-");
-                Application.Exit();
+                webBrowser1.DocumentCompleted -= webBrowser1_Login;
+                webBrowser1.ScriptErrorsSuppressed = true;
+                string body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;
+                if (body.Contains("野口商会Web発注システム ログイン画面"))
+                {
+                    fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), "Login Failed", dt065.Rows[0]["JANコード"].ToString(), dt065.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
+                    fun.WriteLog("Login Failed", "065-");                   
+                    fun.Qbei_Maker_Insert("065", dt065);
+                    Application.Exit();
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    fun.WriteLog("Login success             ------", "065-");
+                    webBrowser1.Navigate(fun.url + "/nachos/site/item_list");
+                    webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                fun.WriteLog("Login success             ------", "065-");
-                webBrowser1.Navigate(fun.url + "/nachos/site/item_list");
-                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
+                string janCode = dt065.Rows[0]["JANコード"].ToString();
+                string orderCode = dt065.Rows[0]["発注コード"].ToString();
+                fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
+                fun.WriteLog(ex, "065-", janCode, orderCode);
+                fun.Qbei_Maker_Insert("065", dt065);
+
+                Application.Exit();
+                Environment.Exit(0);
             }
         }
         private void webBrowser1_WaitForSearchPage(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -145,24 +183,31 @@ namespace _65野口
                 webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Search);
             }
-        }
+        }       
         private void webBrowser1_Search(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
+            string janCode = string.Empty;
+            string orderCode = string.Empty;
+            
             try
             {
+                fun.ClearMemory();
+
                 webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_Search);
                 webBrowser1.ScriptErrorsSuppressed = true;
 
                 System.Windows.Forms.HtmlDocument doc = this.webBrowser1.Document;
                 if (i < dt065.Rows.Count - 1)
                 {
-                    string orderCode = dt065.Rows[++i]["発注コード"].ToString();
+                    orderCode = dt065.Rows[++i]["発注コード"].ToString();
                     doc.GetElementById("item_code").SetAttribute("Value", orderCode);
                     fun.GetElement("input", "search_button", "value", webBrowser1).InvokeMember("click");
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemClick);
                 }
                 else
                 {
+                    fun.Qbei_Maker_Insert("065", dt065, i);
+
                     qe.site = 65;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
@@ -174,15 +219,22 @@ namespace _65野口
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), ex.Message, dt065.Rows[i]["JANコード"].ToString(), dt065.Rows[i]["発注コード"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
-                fun.WriteLog(ex.Message + dt065.Rows[i]["発注コード"].ToString(), "065-");
-                Application.Exit();
+                janCode = dt065.Rows[i]["JANコード"].ToString();
+                fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
+                fun.WriteLog(ex, "065-", janCode, orderCode);
+
+                webBrowser1.Navigate(fun.url + "/nachos/site/item_list");
+                webBrowser1.ScriptErrorsSuppressed = true;
+                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
             }
         }
+
         private void webBrowser1_ItemClick(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
             {
+                fun.ClearMemory();
+
                 webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemClick);
                 webBrowser1.ScriptErrorsSuppressed = true;
                 entity = new Qbei_Entity();
@@ -222,21 +274,21 @@ namespace _65野口
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), ex.Message, dt065.Rows[i]["JANコード"].ToString(), dt065.Rows[i]["発注コード"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
-                fun.WriteLog(ex.Message + dt065.Rows[i]["発注コード"].ToString(), "065-");
-                Application.Exit();
-            }
+                fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
+                fun.WriteLog(ex, "065-", entity.janCode, entity.orderCode);
 
+                webBrowser1.Navigate(fun.url + "/nachos/site/item_list");
+                webBrowser1.ScriptErrorsSuppressed = true;
+                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
+            }
         }
         private void webBrowser1_ItemProcessing(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            //entity.purchaseURL = webBrowser1.Url.ToString();
-            //if(!entity.purchaseURL.Contains("back_to=%2Fnachos%2Fsite%2Fitem_list")) {return;}
+            fun.ClearMemory();
 
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemProcessing);
             webBrowser1.ScriptErrorsSuppressed = true;
-            string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerHtml;
-            string url = (webBrowser1.Document.Url).ToString();
+                        
             try
             {
                 string html = webBrowser1.Document.Body.InnerHtml;
@@ -245,8 +297,10 @@ namespace _65野口
                 if ((hdoc.DocumentNode.SelectSingleNode("div[1]/div[3]/table/tbody/tr[1]/td[1]/table/tbody/tr[7]/td") == null))
                 {
                     fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
-                    fun.WriteLog("Access Denied! " + entity.orderCode, "065--");
+                    fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "065-");
+                    fun.Qbei_Maker_Insert("065", dt065, i);
                     Application.Exit();
+                    Environment.Exit(0);
                 }
                 else
                 {
@@ -261,7 +315,6 @@ namespace _65野口
                     entity.price = entity.price.Replace(",", string.Empty);
                     if (entity.stockDate.Contains("2月"))
                     {
-                        //entity.stockDate = "2018-02-28";
                         entity.stockDate = new DateTime(DateTime.Now.Year, 2, DateTime.DaysInMonth(DateTime.Now.Year, 2)).ToString("yyyy-MM-dd");
                     }
                     if ((dt065.Rows[i]["在庫情報"].ToString().Contains("empty") || dt065.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt065.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
@@ -274,7 +327,6 @@ namespace _65野口
                         }
                         fun.Qbei_Inserts(entity);
                     }
-
                     else
                         fun.Qbei_Inserts(entity);
                 }
@@ -282,19 +334,23 @@ namespace _65野口
             catch (Exception ex)
             {
                 fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
-                fun.WriteLog(ex.Message + entity.orderCode, "065-");
-                Application.Exit();
+                fun.WriteLog(ex, "065-", entity.janCode, entity.orderCode);
             }
+
             webBrowser1.Navigate(fun.url + "/nachos/site/item_list");
             webBrowser1.ScriptErrorsSuppressed = true;
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
-        }
+        }    
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
-            fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), "Access Denied!", dt065.Rows[i]["JANコード"].ToString(), dt065.Rows[i]["発注コード"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
-            fun.WriteLog(StatusCode.ToString() + " " + dt065.Rows[i]["発注コード"].ToString(), "065--");
+            string janCode = dt065.Rows[i]["JANコード"].ToString();
+            string orderCode = dt065.Rows[i]["発注コード"].ToString();
+            fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
+            fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "065-");
+            fun.Qbei_Maker_Insert("065", dt065, i);
+
             Application.Exit();
+            Environment.Exit(0);
         }
     }
 }
-

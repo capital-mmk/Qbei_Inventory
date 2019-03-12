@@ -1,0 +1,56 @@
+c:\users\may thagyan aung\documents\visual studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+c:\users\may thagyan aung\documents\visual studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+c:\users\may thagyan aung\documents\visual studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+c:\users\may thagyan aung\documents\visual studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_BL.exe
+c:\users\may thagyan aung\documents\visual studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_DL.exe
+c:\users\may thagyan aung\documents\visual studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_BL.pdb
+c:\users\may thagyan aung\documents\visual studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_DL.pdb
+c:\users\may thagyan aung\documents\visual studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.csprojResolveAssemblyReference.cache
+c:\users\may thagyan aung\documents\visual studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+c:\users\may thagyan aung\documents\visual studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_BL.exe
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\ConsoleApplication1\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\ConsoleApplication1\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_DL.exe
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\ConsoleApplication1\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_BL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\ConsoleApplication1\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_DL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.csprojResolveAssemblyReference.cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_BL.exe
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_DL.exe
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_BL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_BL.exe.config
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_DL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_DL.exe.config
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.csprojAssemblyReference.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.csproj.CoreCompileInputs.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.csproj.CopyComplete
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
+D:\WORK\Source\152\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+D:\WORK\Source\152\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+D:\WORK\Source\152\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+D:\WORK\Source\152\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_BL.exe
+D:\WORK\Source\152\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\QbeiAgencies_DL.dll
+D:\WORK\Source\152\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\QbeiAgencies_Common.dll
+D:\WORK\Source\152\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_DL.exe
+D:\WORK\Source\152\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\QbeiAgencies_DL.pdb
+D:\WORK\Source\152\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_BL.pdb
+D:\WORK\Source\152\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\QbeiAgencies_Common.pdb
+D:\WORK\Source\152\Inventory_Management\ConsoleApplication1\ConsoleApplication1\bin\Debug\OrderData_DL.pdb
+D:\WORK\Source\152\Inventory_Management\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.csprojResolveAssemblyReference.cache
+D:\WORK\Source\152\Inventory_Management\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+D:\WORK\Source\152\Inventory_Management\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb

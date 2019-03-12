@@ -1,0 +1,419 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="inventory.master.cs" Inherits="QbeiAgeincies_Web.inventory" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title></title>
+    <%--<script type="text/javascript" src="https://www.malot.fr/bootstrap-datetimepicker/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js?t=20130302"></script>
+    <link href="https://www.malot.fr/bootstrap-datetimepicker/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />--%>
+    <%--<script src="https://localhost:12616/Scripts/bootstrap-datetimepicker.js"></script>--%>
+    <%--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>--%>
+     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap-datetimepicker.js") %>"></script>
+        <link rel="Stylesheet" href="<%= Page.ResolveClientUrl("~/css/bootstrap-datetimepicker.min.css") %>"/>
+<link href="css/styledemo.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.min.js" type="text/javascript"></script>
+    <link href="~/Styles/Common.css" rel="stylesheet" type="text/css" />
+          <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
+ <link rel="stylesheet" href="assets/css/Footer-with-button-logo.css"/>
+  <link rel="stylesheet" type="text/css" href="csshake-slow.min.css"/>
+<!-- or from surge.sh -->
+<link rel="stylesheet" type="text/css" href="http://csshake.surge.sh/csshake-slow.min.css"/>
+  <link href="css/bootstrap.css" rel="stylesheet" />
+    <link rel="Stylesheet" type="text/css" href="https://cdn.bootcss.com/pixeden-stroke-7-icon/1.2.3/dist/pe-icon-7-stroke.min.css" />
+    <link href="css/pe-icon-7-stroke.css" rel="stylesheet" />
+<link href="Styles/Common.css" rel="stylesheet" />
+	<link href="css/ct-navbar.css" rel="stylesheet" />  
+    <link href="css/pe-icon-7-stroke.css" rel="stylesheet" />
+  <script src="js/jquery-1.10.2.js" type="text/javascript"></script>
+	<script src="js/bootstrap.js" type="text/javascript"></script>
+  <link type="text/css" rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link href="css/pe-icon-7-stroke.css" rel="stylesheet" />
+<link href="css/ct-navbar.css" rel="stylesheet" />
+        <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+        <script type="text/javascript" src="js/bootstrap.js"></script>
+        <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/jquery-3.2.0.min.js") %>"></script> 
+     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap.min.js") %>"></script> 
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Scripts/bootstrap-hover-dropdown.js") %>"></script>
+
+
+             <link  type="text/css" href="Styles/styleforFooter.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"> 
+
+    <style type="text/css">
+        .footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color: red;
+   color: white;
+   text-align: center;
+   z-index:1400;
+}
+         .edit {
+        width: 60px;
+
+height: 30px;
+
+line-height: 30px;
+
+vertical-align: middle;
+
+padding-top: 5px;
+
+background-color: #e40765;
+        }
+        .text30
+        {
+            /*padding-top:30px;*/
+        }
+        .footer-top1 {
+        margin-top:0px !important;
+        }
+        ul.nav.navbar-nav.navbar-right {
+        background-color:black !important;
+        }
+        element.style {
+            font-family:initial;
+        }
+        [class^="pe-7s-"], [class*=" pe-7s-"] {
+	display: inline-block;
+	font-family: 'Pe-icon-7-stroke';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	padding: 8px 20px;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+.dropdown-menu > li > a {
+    /*padding: 8px 20px;*/
+    color: #333333;
+
+}
+.dropdown-menu > li:first-child > a{
+    border-radius: 10px 10px 0 0;
+}
+.dropdown-menu > li:last-child > a{
+    border-bottom: 0 none;
+    border-radius: 0 0 10px 10px;
+}
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+    background-color: #F5F5F5;
+    color: #333333;
+    opacity: 1;
+    text-decoration: none;
+}
+        .open {
+            max-height:90px !important;
+        }
+        .nav > li > a {
+            padding:0px 10px !important;
+        }
+        .footer-top1 a {
+            color: blue;
+          font-style:italic;
+          font-weight:bold;
+            padding: 10px;
+            font-size:15px;
+            text-decoration:underline;
+            border-radius:5px;
+        }
+        .navbar-nav > li > a {
+            padding-top:0px !important;
+        }
+        .navbar-inverse .navbar-nav > li > a {
+        color:white !important;
+        }
+        li.dropdown {
+        max-height:90px !important;
+        }
+            .footer-top1 a :hover, .container a:hover {
+            text-decoration:none;
+            font-size:15px;
+            color:green;
+            }
+
+        a {
+            color:white;
+        }
+
+            a:hover, a:focus {
+                color: yellow;
+                text-decoration:none
+            }
+
+        /*.navbar:not(.navbar-transparent).navbar-ct-blue {
+            background-color: rgba(52, 172, 220, 0.98);
+        }*/
+        .shake-slow:hover, .shake-trigger:hover .shake-slow, .shake-slow.shake-freeze, .shake-slow.shake-constant {
+            animation-duration: 30s;
+        }
+
+        
+    .bg {
+    /* The image used */
+    background-image: url('../Images/bodyimg.jpg') ;
+
+    /* Full height */
+   
+     height :100%;
+     /*padding-bottom:20%;*/
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+       
+    </style>
+
+   
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style type="text/css">
+
+    </style>
+</head>
+<body>
+<%--<body style>--%>
+    <div class="bg" >
+    <form id="form1" runat="server">
+
+
+
+        <div   style="">
+            <div class="navbar-fixed-top" style="margin-top:-1%;">
+
+
+                <nav class="navbar-inverse navbar" role="navigation" style="max-height:90px !important;margin-top:1%">
+          
+    
+      <div class="container-fluid">
+          
+  <!-- Brand and toggle get grouped for better mobile display -->
+      
+     <div class="navbar-header">
+          
+   <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+      
+   
+           
+     <span class="icon-bar"></span>
+               
+ <span class="icon-bar"></span>
+      
+          <span class="icon-bar"></span>
+  
+            </button>
+
+          <a class="navbar-brand navbar-brand-logo" href="#">
+                    <div class="rectangle" style="margin-top:-15px">
+                        <img src="<%=Page.ResolveUrl("~/Images/ebca1e89-f337-4f1f-8f4e-bf53e1ae3856.jpg")%>" width="144px" height="64px" />
+                    </div>
+                                
+                </a>
+          
+        
+                <%-- <a class="navbar-brand navbar-brand-logo" href="#">
+           
+                    <div class="rectangle" style="margin-top:-15px">
+                        <img src="../Images/ebca1e89-f337-4f1f-8f4e-bf53e1ae3856.jpg" width="144px" height="64px"  style="margin-left:0px !important"/>
+                   </div>
+                 
+              </a>--%>
+         
+   </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+       
+     <div   class="collapse navbar-collapse" id="navbar">
+           
+   <ul class="nav navbar-nav  navbar-right "  >
+        
+                    <li>
+                                   <a  href="<%= Page.ResolveUrl("~/DashBoard.aspx")%>" title="Dash_board">
+                            <i class="pe-7s-graph"></i>
+                                        <p>ダッシュボード</p>
+                                    </a>
+                   </li>
+                     <li class="dropdown" runat="server" id="admin_role">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  
+                             <i class="pe-7s-note2"></i>
+                                    <p>代理店設定</p>
+                                </a>
+                  
+                                  <ul class="dropdown-menu">
+                                          <li style="vertical-align:middle; "><a href="<%= Page.ResolveUrl("~/Site_Setting/SiteSetting.aspx")%>">  
+                                               <i class="pe-7s-check"   style="font-size:17px;">&nbsp;代理店設定</i>
+                                                </a>
+                                          </li>
+                                          <li style="vertical-align:middle; "><a href="<%= Page.ResolveUrl("~/Site_Setting/SiteSetting_Edit.aspx")%>">
+                                           <i class="pe-7s-diskette" style="font-size:17px;"  >&nbsp;代理店編集</i>
+                                                </a>
+                                          </li>
+                                         
+                                   </ul>
+                    </li>
+                     <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  
+                             <i class="pe-7s-note2"></i>
+                                    <p>エラーリスト </p>
+                                </a>
+                  
+                                  <ul class="dropdown-menu">
+                                          <li style="vertical-align:middle; "><a href="<%= Page.ResolveUrl("~/ErrorCheck/ErrorList.aspx")%>">  
+                                               <i class="pe-7s-check"   style="font-size:17px;">&nbsp; エラーログ</i>
+                                                </a>
+                                          </li>
+                                          <li style="vertical-align:middle; "><a href="<%= Page.ResolveUrl("~/ErrorCheck/ErrorList_Backup.aspx")%>">
+                                           <i class="pe-7s-diskette" style="font-size:17px;"  >&nbsp; エラーバックアップ</i>
+                                                </a>
+                                          </li>
+                                         
+                                   </ul>
+                    </li>
+                     <li class="dropdown" runat="server" visible="false">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  
+                             <i class="pe-7s-config"></i>
+                                    <p>ユーザー</p>
+                                </a>
+                  
+                                  <ul class="dropdown-menu">
+                                           <li style="vertical-align:middle; "><a href="<%= Page.ResolveUrl("~/Users/UserEntry.aspx")%>">  
+                                               <i class="pe-7s-cart"   style="font-size:17px;">&nbsp;ユーザー作成</i>
+                                                </a>
+                                          </li>
+                                  
+                                    
+                                      <li style="vertical-align:middle; "><a href="<%= Page.ResolveUrl("~/Users/UserList.aspx")%>">  
+                                               <i class="pe-7s-add-user"   style="font-size:17px;">&nbsp; ユーザー一覧</i>
+                                                </a>
+                                       </li>
+                                       <%-- <li style="vertical-align:middle; "><a href="<%= Page.ResolveUrl("~/Users/User_Entry.aspx")%>">  
+                                               <i class="pe-7s-cart"   style="font-size:17px;">&nbsp;ユーザー作成test</i>
+                                                </a>
+                                          </li>--%>
+                                   
+                                   </ul>
+                    </li>
+                       
+                 <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  
+                             <i class="pe-7s-user"></i>
+                                    <p>                        
+                                                     <asp:Label runat="server" ID="lblID" CssClass="displaynone"></asp:Label>
+          <asp:Label runat="server" ID="lblUserID" Text="User"></asp:Label>'s プロフィール </p>
+                                </a>
+                  
+                                  <ul class="dropdown-menu">
+                                          <li style="vertical-align:middle; "><a id="A1"  runat="server" onserverclick="Setting_Click" >  
+                                               <i class="pe-7s-edit"   style="font-size:17px;">&nbsp; 編集 プロフィール</i>
+                                              <%-- <i class="pe-7s-edit"   style="font-size:17px;">&nbsp; Edit Profile</i>--%>
+                                                </a>
+                                          </li>
+                                       <li style="vertical-align:middle; "><a id="A2" runat="server"  onserverClick="Anchor_Click">  
+        
+                                               <i class="pe-7s-back"   style="font-size:17px;">&nbsp; ログアウト</i>
+                                                </a>
+                                          </li>
+                                         
+                                   </ul>
+                    </li>
+                   <li>
+                        <a href="<%= Page.ResolveUrl("~/About.aspx")%>">
+               
+                                <i class="pe-7s-info">
+                                <%--<span class="label">23</span>--%>
+     
+                                 </i>
+                            <p>約</p>
+                        </a>
+                    </li> 
+       
+                
+       
+   </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
+
+            </div>
+            <!--  end navbar -->
+
+        </div>
+     
+        <!-- end main -->
+
+
+
+              <div style="height:100%; width:100%; padding-top:6.6%">
+
+
+            <asp:ContentPlaceHolder ID="Main" runat="server" >
+                        
+          
+            </asp:ContentPlaceHolder>
+                  
+                       </div>
+     
+   
+
+   <%-- <footer style="background-color:rgba(9, 88, 75, 0.98); height:60px; width:100%; background-size:cover; ">--%>
+         <footer  class="navbar-fixed-bottom footer" style="vertical-align:middle;line-height:50px; position:inherit; display:none " >
+        
+       <%--style="background-color:#58ACFA; height:60px; width:100%; background-size:cover; "--%>
+        
+        <div class="footer-top1 footer" style=" background-color:black;vertical-align:middle; " runat="server" visible="false"> 
+           <div class="container" style="color:white; vertical-align:middle ">
+              <div style="vertical-align:middle" >
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-center text30">
+                   <a href="<%= Page.ResolveUrl("~/ErrorCheck/ErrorList.aspx")%>" style="color:white"><i class=""></i>&nbsp;エラーリスト</a>
+                </div>
+              
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-center text30">
+                   <a href="<%= Page.ResolveUrl("~/ErrorCheck/ErrorList_Backup.aspx")%>" style="color:white"><i class=""></i>&nbsp;エラーバックアップ</a>
+                </div>
+        
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-center text30">
+                   <a href="<%= Page.ResolveUrl("~/Users/UserEntry.aspx")%>" style="color:white"><i class=""></i>&nbsp;ユーザー作成</a>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-center text30">
+                    <a href="<%= Page.ResolveUrl("~/Users/UserList.aspx")%>" style="color:white"><i class=""></i>&nbsp;ユーザー一覧</a>
+                </div>
+             
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-center text30">
+                    <a id="A3"  runat="server" onserverclick="Setting_Click" style="color:white"><i class=""></i>&nbsp;私のプロフィール</a>
+                </div>
+              
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-center text30">
+                    <a id="A4" runat="server"  onserverClick="Anchor_Click" style="color:white"><i class=""></i>&nbsp;ログアウト</a>
+                </div>
+            
+                  </div>
+           
+           </div> 
+        </div>  
+        
+  
+        
+    </footer>
+    
+    
+ 
+
+    </form>
+    </div>
+</body>
+</html>

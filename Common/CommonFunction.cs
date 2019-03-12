@@ -1,0 +1,1413 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data;
+using System.Configuration;
+using System.IO;
+using System.Diagnostics;
+using System.Threading;
+using System.Data.SqlClient;
+using LumenWorks.Framework.IO.Csv;
+using HtmlAgilityPack;
+using OpenQA.Selenium;
+using System.Windows.Forms;
+using QbeiAgencies_DL;
+using QbeiAgencies_Common;
+
+namespace Common
+{
+    public class CommonFunction
+    {
+        public string url = string.Empty;
+        public string user = string.Empty;
+        public string password = string.Empty;
+        public string downloadPath014 = string.Empty;
+        public string downloadPath015 = string.Empty;
+        public string downloadPath035 = string.Empty;
+        public string logPath = string.Empty;
+        public string csvPath = string.Empty;
+        public string trashPath = string.Empty;
+        public string logFilepath = string.Empty;
+        public string excelPath016 = string.Empty;
+        public const int MAKER_TYPE = 1; // maker_status night file flag
+        int ddr;
+        int makerCount;        
+        DataTable dtOrder = new DataTable();
+      
+        public String DataTableToXml(DataTable dt)
+        {
+            dt.TableName = "test";
+            System.IO.StringWriter writer = new System.IO.StringWriter();
+            dt.WriteXml(writer, XmlWriteMode.WriteSchema, false);
+            string result = writer.ToString();
+            return result;
+        }
+
+
+        public void setURL(string shopID)
+        {
+            createConfig(shopID);
+        }
+
+        private static void createConfig(string shopID)
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");
+
+            if (config.ConnectionStrings.ConnectionStrings["Qbei_DB"] == null)
+            {
+                ConnectionStringSettings setting = new ConnectionStringSettings("Qbei_DB", "Data Source= WIN-OIL4TFU9NBH\\LOCAL2014;Initial Catalog=Qbei_Inventory;Persist Security Info=True;User ID=sa;Password=admin123456!", "System.Data.SqlClient");
+                config.ConnectionStrings.ConnectionStrings.Add(setting);
+            }
+            
+            config.Save(ConfigurationSaveMode.Modified);
+        }
+
+        public static void UpdateSetting(string key, string value)
+        {
+            Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            configuration.AppSettings.Settings[key].Value = value;
+            configuration.Save();
+
+            ConfigurationManager.RefreshSection("appSettings");
+        }
+
+        private static void AddtoConfig(Configuration config, string key, string value)
+        {
+            if (config.AppSettings.Settings[key] == null)
+                config.AppSettings.Settings.Add(key, value);
+            else
+                config.AppSettings.Settings[key].Value = value;
+        }
+
+        private static void AddtoConfig(Configuration config, string shopID, string url, string user, string password)
+        {
+            if (config.AppSettings.Settings["url" + shopID] == null)
+                config.AppSettings.Settings.Add("url" + shopID, url);
+            else
+                config.AppSettings.Settings["url" + shopID].Value = url;
+
+            if (config.AppSettings.Settings["user" + shopID] == null)
+                config.AppSettings.Settings.Add("user" + shopID, user);
+            else
+                config.AppSettings.Settings["user" + shopID].Value = user;
+
+            if (config.AppSettings.Settings["password" + shopID] == null)
+                config.AppSettings.Settings.Add("password" + shopID, password);
+            config.AppSettings.Settings["password" + shopID].Value = password;
+        }
+
+        public void CreateFileAndFolder()
+        {            
+            CreateDirectory(@"C:\Qbei_Log");
+            CreateDirectory(@"C:\Qbei_Log\Csv");
+            CreateFilePath(@"C:\Qbei_Log\logfile\log.txt");
+            CreateDirectory(@"C:\Qbei_Log\Trash\");
+            CreateDirectory(@"C:\Qbei_Log\014_Download\");
+            CreateDirectory(@"C:\Qbei_Log\015_Download\");
+            CreateDirectory(@"C:\Qbei_Log\035_Download\");
+            CreateDirectory(@"C:\Qbei_Log\016_Excel\");
+        }
+
+        public void WritetoLog(string message)
+        {
+            File.AppendAllText(logFilepath, Environment.NewLine + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + " " + message);
+        }
+        
+        public DataTable GetDatatable(string shopID)
+        {
+            DataTable dtResult = new DataTable();
+            DataTable dtNotNull = new DataTable();
+            DataTable dtNotInteger = new DataTable();
+            DataTable dtNotRun = new DataTable();
+            DataColumn dc = new DataColumn("SiteName");
+            string xml;
+            Connection con;
+            SqlConnection sqlcon;
+            Configuration config;
+            SqlCommand cmd;
+            string constr;
+            makerCount = 0;
+            dc.DefaultValue = GetSiteName(shopID);
+            string[] columns = { "代理店ID", "JANコード", "在庫情報", "入荷予定", "自社品番", "メーカー情報日", "最終反映日" };
+            //string[] filelist = Directory.GetFiles(csvPath);
+            string[] filelist = Directory.GetFiles(@"C:\Qbei_Log\Csv");
+            foreach (string file in filelist)
+            {
+                string ext = Path.GetExtension(file);
+                if (ext.Equals(".csv"))
+                {
+                    using (var csv = new CachedCsvReader(new StreamReader(file, Encoding.GetEncoding(932)), true))
+                    {
+                        DataTable dtCsv = new DataTable();
+                        dtCsv.Load(csv);
+                        if (dtResult.Columns.Count <= 0)
+                            dtResult = dtCsv.Clone();
+                        if (checkCsvFormat(dtCsv, columns))
+                        {
+                            dtResult.Merge(dtCsv);
+                        }
+                        else
+                        {
+                            WritetoLog("CsvFile Format Wrong!");
+                            return null;
+                        }
+
+                    }
+
+                }
+                else
+                    //File.Move(file, trashPath + @"\" + Path.GetFileName(file));
+                    File.Move(file, @"C:\Qbei_Log\Trash\" + @"\" + Path.GetFileName(file));
+            }
+
+
+            if (!dtResult.Equals(null))
+            {
+                DataRow[] dr = dtResult.Select("代理店ID='" + shopID + "'");
+
+                ddr = dr.Count();
+                if (dr.Count() > 0)
+                {
+                    DataTable dtTemp = dtResult.Select("代理店ID='" + shopID + "'").CopyToDataTable();
+                    //if (shopID == "036")
+                    //{ return dtTemp; }
+                    if (shopID.Equals("053"))
+                    {
+                        dtTemp = GetBrandCode(dtTemp);
+                        ddr = dtTemp.Rows.Count;
+                    }
+                    //
+                    if (shopID.Equals("036"))
+                    {
+                        DataTable dtpblank = dtTemp.Select("purchaserURL =' ' OR purchaserURL = '' OR purchaserURL is NULL").CopyToDataTable();
+                        int dtcount = dtpblank.Rows.Count;
+                        if (dtpblank != null)
+                        {
+                            //Save Data into Qbei_ErrorLog
+                            xml = DataTableToXml(dtpblank);
+                            con = new Connection();
+                            sqlcon = con.GetConnection();
+                            config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");
+                            constr = config.ConnectionStrings.ConnectionStrings["Qbei_DB"].ConnectionString;
+                            //  SqlConnection con = new SqlConnection(constr);
+                            cmd = new SqlCommand("Qbei_ErrorLog_3_InsertXml", sqlcon);
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@xml", xml);
+                            cmd.Parameters.AddWithValue("@sitename", GetSiteName(shopID));
+                            cmd.Parameters.AddWithValue("@Description", "Item doesn't Run!");
+                            cmd.Parameters.AddWithValue("@ErrorType", 6);
+                            cmd.Parameters.AddWithValue("@SiteCode", shopID);
+                            cmd.CommandTimeout = 600;
+                            cmd.Connection.Open();
+                            cmd.ExecuteNonQuery();
+                            cmd.Connection.Close();
+                            var runData = dtTemp.AsEnumerable().Where(x => !dtpblank.AsEnumerable().Any(y => y.Field<string>("JANコード") == x.Field<string>("JANコード") && y.Field<string>("発注コード") == x.Field<string>("発注コード")));
+                            dtTemp = runData.Any() ? runData.CopyToDataTable() : null;
+                        }
+                    }
+                    //
+                    dr = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' OR 発注コード= '--'");
+                    if (dr.Count() > 0)
+                    {
+                        if (!shopID.Equals("036"))
+                        {
+                            DataTable dtBlankOrder = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード='-' OR 発注コード= '--'").CopyToDataTable();
+                            dtBlankOrder.Columns.Add(dc);
+                            int col = dtBlankOrder.Rows.Count;
+                            xml = DataTableToXml(dtBlankOrder);
+                            con = new Connection();
+                            sqlcon = con.GetConnection();
+                            config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");
+                            constr = config.ConnectionStrings.ConnectionStrings["Qbei_DB"].ConnectionString;
+                            //  SqlConnection con = new SqlConnection(constr);
+                            cmd = new SqlCommand("Qbei_ErrorLog_InsertXml", sqlcon);
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@xml", xml);
+                            //cmd.Parameters.AddWithValue("@sitename", GetSiteName(shopID));
+                            cmd.Parameters.AddWithValue("@SiteCode", shopID);
+                            cmd.CommandTimeout = 600;
+                            cmd.Connection.Open();
+                            cmd.ExecuteNonQuery();
+                            cmd.Connection.Close();
+                        }
+                    }
+
+                    dr = dtTemp.Select("発注コード<>' ' AND 発注コード <> '' AND 発注コード is not NULL AND 発注コード<> '-' AND 発注コード<> '--' ");
+                    if (dr.Count() > 0)
+                    {
+                        if (!shopID.Equals("036"))
+                        {
+                            dtNotNull = dtTemp.Select("発注コード<>' ' AND 発注コード <> '' AND 発注コード is not NULL AND 発注コード<> '-' AND 発注コード<> '--' ").CopyToDataTable();
+                            //Trim 
+                            dtNotNull.AsEnumerable().ToList().ForEach(r => r["発注コード"] = r.Field<string>("発注コード").Trim());
+                            //2018-05-07 Start
+                            //var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("/") || r.Field<string>("発注コード").Contains("データ登録")));
+                            var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録")));
+                            //2018-05-07 End
+                            if (notInteger.Any())
+                            {
+                                //2018-05-07 Start
+                                //dtNotInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("/") || r.Field<string>("発注コード").Contains("データ登録"))).CopyToDataTable();
+                                dtNotInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録"))).CopyToDataTable();
+                                //2018-05-07 End
+                                dc = new DataColumn("SiteName");
+                                dc.DefaultValue = GetSiteName(shopID);
+                                dtNotInteger.Columns.Add(dc);
+                                xml = DataTableToXml(dtNotInteger);
+
+                                con = new Connection();
+                                sqlcon = con.GetConnection();
+                                config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");
+                                constr = config.ConnectionStrings.ConnectionStrings["Qbei_DB"].ConnectionString;
+                                //  SqlConnection con = new SqlConnection(constr);
+                                cmd = new SqlCommand("Qbei_ErrorLog_2_InsertXml", sqlcon);
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.Parameters.AddWithValue("@xml", xml);
+                                //cmd.Parameters.AddWithValue("@sitename", GetSiteName(shopID));
+                                cmd.Parameters.AddWithValue("@SiteCode", shopID);
+                                cmd.CommandTimeout = 600;
+                                cmd.Connection.Open();
+                                cmd.ExecuteNonQuery();
+                                cmd.Connection.Close();
+
+                                var data = dtNotNull.AsEnumerable().Where(r => !dtNotInteger.AsEnumerable().Any(y => y.Field<string>("JANコード") == r.Field<string>("JANコード") && y.Field<string>("発注コード") == r.Field<string>("発注コード")));
+                                if (data.Any())
+                                    dtOrder = data.OrderBy(x => x.Field<string>("メーカー情報日")).CopyToDataTable();
+                                else
+                                    dtOrder = null;
+                            }
+                            else
+                                dtOrder = dtNotNull.AsEnumerable().OrderBy(x => x.Field<string>("メーカー情報日")).CopyToDataTable();
+                        }
+
+
+                        if (shopID.Equals("036"))
+                        {
+                            dtOrder = dtTemp.AsEnumerable().OrderBy(x => x.Field<string>("メーカー情報日")).CopyToDataTable();
+                        }
+                        //Check (ステータス変更日+6) <= today
+                        //2018-07-04 Start
+                        //var notRun = dtOrder.AsEnumerable().Where(x => x.Field<string>("在庫情報").Contains("empty") && x.Field<string>("ステータス変更日") != null && DateTime.Parse(x.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-6).Date);
+                        var notRun = dtOrder.AsEnumerable().Where(x => x.Field<string>("在庫情報").Contains("empty") && x.Field<string>("ステータス変更日") != null && DateTime.Parse(x.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-9).Date);
+                        //2018-07-04 End
+                        dtNotRun = notRun.Any() ? notRun.CopyToDataTable() : null;
+                        if (dtNotRun != null)
+                        {
+                            //Save Data into Qbei_ErrorLog
+                            xml = DataTableToXml(dtNotRun);
+                            con = new Connection();
+                            sqlcon = con.GetConnection();
+                            config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");
+                            constr = config.ConnectionStrings.ConnectionStrings["Qbei_DB"].ConnectionString;
+                            //  SqlConnection con = new SqlConnection(constr);
+                            cmd = new SqlCommand("Qbei_ErrorLog_3_InsertXml", sqlcon);
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@xml", xml);
+                            cmd.Parameters.AddWithValue("@sitename", GetSiteName(shopID));
+                            cmd.Parameters.AddWithValue("@Description", "Item doesn't Run!");
+                            cmd.Parameters.AddWithValue("@ErrorType", 6);
+                            cmd.Parameters.AddWithValue("@SiteCode", shopID);
+                            cmd.CommandTimeout = 600;
+                            cmd.Connection.Open();
+                            cmd.ExecuteNonQuery();
+                            cmd.Connection.Close();
+                            var runData = dtOrder.AsEnumerable().Where(x => !dtNotRun.AsEnumerable().Any(y => y.Field<string>("JANコード") == x.Field<string>("JANコード") && y.Field<string>("発注コード") == x.Field<string>("発注コード")));
+                            dtOrder = runData.Any() ? runData.CopyToDataTable() : null;
+                        }
+                    }
+                    return dtOrder;
+                }
+                return null;
+            }
+            else return null;
+        }
+        
+        public void StopApplication(int siteID)
+        {            
+            Qbeisetting_Entity qe = new Qbeisetting_Entity();
+            qe.site = siteID;
+            qe.flag = 2;
+            qe.starttime = string.Empty;
+            qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            ChangeFlag(qe);
+            Application.Exit();
+            Environment.Exit(0);            
+        }
+        public void GetTotalCount(string shopID)
+        {
+            Connection con = new Connection();
+            SqlConnection sqlcon = con.GetConnection();
+            SqlCommand cmd = new SqlCommand("TotalCount_Update", sqlcon);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@TotalCount", ddr);
+            cmd.Parameters.AddWithValue("@MakerCount", makerCount);
+            cmd.Parameters.AddWithValue("@SiteID", shopID);
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            cmd.Connection.Close();
+
+        }
+        public DataTable DeleteOldCode(DataTable dtResult, int shopID)
+        {
+            DataTable dtOrder;
+            if (!dtResult.Equals(null))
+            {
+                DataColumn dc = new DataColumn("SiteName");
+                DataTable dtoldcode = dtResult.AsEnumerable().Where(x => (x.Field<string>("発注コード").Contains("|"))).CopyToDataTable();
+                int col = dtoldcode.Rows.Count;
+                dtoldcode.Columns.Add("dc");
+                string xml = DataTableToXml(dtoldcode);
+                Connection con = new Connection();
+                SqlConnection sqlcon = con.GetConnection();
+                Configuration config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");
+                string constr = config.ConnectionStrings.ConnectionStrings["Qbei_DB"].ConnectionString;
+                SqlCommand cmd = new SqlCommand("Qbei_ErrorLog_OldCode_InsertXml", sqlcon);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@xml", xml);
+                cmd.Parameters.AddWithValue("@sitename", "ダイアテック");
+                cmd.Parameters.AddWithValue("@SiteCode", shopID);
+                cmd.CommandTimeout = 600;
+                cmd.Connection.Open();
+                cmd.ExecuteNonQuery();
+                cmd.Connection.Close();
+
+                dtOrder = dtResult.AsEnumerable().Where(x =>!(x.Field<string>("発注コード").Contains("|"))).CopyToDataTable();
+                
+
+                return dtOrder;
+            }
+            else return null;
+        }
+        public DataTable Qbei_Maker_Select(int siteID)
+        {
+            Connection con = new Connection();
+            SqlConnection sqlcon = con.GetConnection();
+            SqlCommand cmd = new SqlCommand("Qbei_Maker_Select", sqlcon);
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@siteID", siteID);
+            cmd.Parameters.AddWithValue("@makerType", MAKER_TYPE);
+
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dtQbei_Maker = new DataTable();
+            try
+            {                
+                cmd.Connection.Open();
+                da.Fill(dtQbei_Maker);
+                return dtQbei_Maker;
+            }
+            catch
+            { return new DataTable(); }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+        }
+        public bool Qbei_Maker_Insert(string siteID, DataTable dt, int startRow = -1)
+        {   
+            ++startRow;
+            dt.Columns.Add("ID");
+            dt.Columns.Add("makerType");
+            
+            var makerRows = dt.AsEnumerable().Skip(startRow);
+            string date = DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd");
+            foreach (DataRow dr in makerRows)
+            {
+                dr["メーカー情報日"] = date;
+                dr["makerType"] = MAKER_TYPE;
+            }
+
+            DataTable dtMaker = new DataTable();
+            if (makerRows != null && makerRows.Any())
+            {
+                dtMaker = makerRows.CopyToDataTable();
+                foreach (DataRow dr in dtMaker.Rows) dr.SetAdded();                
+            }
+
+            SqlTransaction tran;
+            SqlDataAdapter da;
+            Connection con = new Connection();            
+            SqlConnection sqlcon = con.GetConnection();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandTimeout = 0;            
+            cmd.CommandType = CommandType.Text;
+            
+            sqlcon.Open();
+            tran = sqlcon.BeginTransaction();
+            try
+            {                
+                cmd.Connection = sqlcon;
+                cmd.Transaction = tran;
+
+                cmd.CommandText = "DELETE FROM Qbei_Maker WHERE 代理店ID = '" + siteID + "' AND makerType = " + MAKER_TYPE;
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "SELECT * FROM Qbei_Maker";
+                da = new SqlDataAdapter(cmd);
+                SqlCommandBuilder scb = new SqlCommandBuilder(da);
+                da.Update(dtMaker);
+                tran.Commit();
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                try
+                {
+                    tran.Rollback();
+                }
+                catch
+                {
+                }
+                return false;
+            }
+            finally
+            {
+                sqlcon.Close();
+            }
+        }
+        
+        public DataTable Qbei_OrderSelect(string strSiteCode)
+        {
+
+            Connection con = new Connection();
+            SqlConnection sqlcon = con.GetConnection();
+            SqlCommand cmd = new SqlCommand("Qbei_OrderSelect", sqlcon);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@siteCode", strSiteCode);
+
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dtQbei_Order = new DataTable();
+            try
+            {
+                cmd.Connection.Open();
+                da.Fill(dtQbei_Order);
+                return dtQbei_Order;
+            }
+            catch (Exception)
+            { return new DataTable(); }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+        }
+        
+        public DataTable GetBrandCode(DataTable dtCsv)
+        {
+            try
+            {
+                DataTable dtcode = dtCsv.AsEnumerable().Where(x => (x.Field<string>("ブランドコード").Contains("00349"))).CopyToDataTable();
+                return dtcode;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+       
+        public DataTable GetOrderData(DataTable dtCsv, string strPurchaseUrl, string strSiteCd, string strPost)
+        {
+            Qbei_Entity objEntity;
+            DataTable dtData = new DataTable();
+            DataTable dtQbei_Maker = new DataTable();
+            DataTable dtUncheck;
+            DataTable dtOnceaWeek;
+            DataTable dtID = new DataTable();
+            DataView dvID;
+            string strCondition = string.Empty;
+            int siteID = int.Parse(strSiteCd);
+            try
+            {
+                //Retrieve Order Data
+                DataTable dtOrder = Qbei_OrderSelect(strSiteCd);
+                dtData = dtCsv.Copy();
+                //Retrieve Once a Week Data from CSV
+                var data = dtData.AsEnumerable().Where(r => (r.Field<string>("在庫情報").Equals("empty") && (r.Field<string>("入荷予定") == null || r.Field<string>("入荷予定").Equals("2100-01-01") || r.Field<string>("入荷予定").Equals("2100-02-01"))) || (r.Field<string>("在庫情報").Equals("inquiry") && (r.Field<string>("入荷予定") == null || !r.Field<string>("入荷予定").Equals("2100-01-10"))));
+                dtOnceaWeek = data.Any() ? data.CopyToDataTable() : null;
+                //var notexistdata = dtData.AsEnumerable().Where(r => !dtOnceaWeek.AsEnumerable().Any(y => y.Field<string>("JANコード") == r.Field<string>("JANコード")));
+                //dtData = notexistdata.Any() ? notexistdata.CopyToDataTable() : null;
+                if (dtOnceaWeek == null)
+                {
+                    dtData = null;
+                }
+                else
+                {
+                    var notexistdata = dtData.AsEnumerable().Where(r => !dtOnceaWeek.AsEnumerable().Any(y => y.Field<string>("JANコード") == r.Field<string>("JANコード")));
+                    dtData = notexistdata.Any() ? notexistdata.CopyToDataTable() : null;
+                }
+                if (dtOrder.Rows.Count > 0)
+                {
+                    var temp = dtOrder.AsEnumerable().Where(x => dtOnceaWeek.AsEnumerable().Any(y => y.Field<string>("JANコード") == x.Field<string>("jancode") && DateTime.Parse(x.Field<string>("checkDate")) <= DateTime.Now));
+                    if (temp.Any())
+                    {
+                        dtUncheck = temp.CopyToDataTable();
+                        dvID = new DataView(dtUncheck);
+                        dtID = dvID.ToTable(false, "jancode");
+                        var onceaweek = dtOnceaWeek.AsEnumerable().Where(r => !dtUncheck.AsEnumerable().Any(y => y.Field<string>("jancode") == r.Field<string>("JANコード")));
+                        if (onceaweek.Any())
+                        {
+                            dtOnceaWeek = onceaweek.CopyToDataTable();
+                            var tempdata = dtCsv.AsEnumerable().Where(x => !dtOnceaWeek.AsEnumerable().Any(y => y.Field<string>("JANコード") == x.Field<string>("JANコード")));
+                            dtData = tempdata.Any() ? tempdata.CopyToDataTable() : null;
+                        }
+                        else
+                        {
+                            dtOnceaWeek = null;
+                            dtData = dtCsv.Copy();
+                        }
+                        //Retrieve Old data 
+                        Qbei_OrderDataDelete(int.Parse(strSiteCd), dtID);
+                    }
+                }
+                if (dtOnceaWeek != null)
+                {
+                    var exist = dtOnceaWeek.AsEnumerable().Where(x => dtOrder.AsEnumerable().Any(y => x.Field<string>("JANコード") == y.Field<string>("jancode")));
+                    if (exist.Any())
+                    {
+                        foreach (DataRow dr in exist.CopyToDataTable().Rows)
+                        {
+                            objEntity = new Qbei_Entity();
+                            objEntity.siteID = int.Parse(strSiteCd);
+                            objEntity.sitecode = strSiteCd;
+                            objEntity.janCode = dr.Field<string>("JANコード");
+                            objEntity.orderCode = dr.Field<string>("発注コード");
+                            Qbei_ErrorInsert(objEntity.siteID, GetSiteName(strSiteCd), "Item doesn't Check!", objEntity.janCode, objEntity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), strSiteCd);
+                        }
+                    }
+                    var notexist = dtOnceaWeek.AsEnumerable().Where(x => !dtOrder.AsEnumerable().Any(y => x.Field<string>("JANコード") == y.Field<string>("jancode")));
+                    if (notexist.Any())
+                    {
+                        foreach (DataRow dr in notexist.CopyToDataTable().Rows)
+                        {
+                            objEntity = new Qbei_Entity();
+                            objEntity.siteID = int.Parse(strSiteCd);
+                            objEntity.sitecode = strSiteCd;
+                            objEntity.janCode = dr.Field<string>("JANコード");
+                            objEntity.orderCode = dr.Field<string>("発注コード");
+                            Qbei_OrderDataInsert(objEntity);
+                            Qbei_ErrorInsert(objEntity.siteID, GetSiteName(strSiteCd), "Item doesn't Check!", objEntity.janCode, objEntity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), strSiteCd);
+                        }
+                    }
+                }
+                if (dtData != null)
+                {
+                    //Trim 
+                    dtData.AsEnumerable().ToList().ForEach(r => r["発注コード"] = r.Field<string>("発注コード").Trim());
+                }
+            }
+            catch (Exception ex)
+            {
+                dtQbei_Maker = null;
+            }
+            finally
+            {
+                makerCount = 0;
+                if (dtQbei_Maker == null)
+                {
+                    GetTotalCount(strSiteCd);
+                    StopApplication(siteID);
+                }
+                else
+                {
+                    dtQbei_Maker = Qbei_Maker_Select(siteID);
+                    makerCount = dtQbei_Maker.Rows.Count;
+                    dtQbei_Maker.Merge(dtData);
+                }
+            }
+            return dtQbei_Maker;
+        }
+        
+        public void Qbei_OrderDataInsert(Qbei_Entity entity)
+        {
+            Connection con = new Connection();
+            SqlConnection sqlcon = con.GetConnection();
+            SqlCommand cmd = new SqlCommand("Qbei_OrderDataInsert", sqlcon);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@site", entity.siteID);
+            cmd.Parameters.AddWithValue("@jancode", entity.janCode);
+            cmd.Parameters.AddWithValue("@ordercode", entity.orderCode);
+            cmd.Parameters.AddWithValue("@sitecode", entity.sitecode);
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            cmd.Connection.Close();
+        }
+        public void Qbei_OrderDataDelete(int intSiteparam, DataTable dtCond)
+        {
+            string xml = string.Empty;
+
+            Connection con = new Connection();
+            SqlConnection sqlcon = con.GetConnection();
+            SqlCommand cmd = new SqlCommand("Qbei_OrderDelete", sqlcon);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@site", intSiteparam);
+            if (dtCond.Rows.Count > 0)
+            {
+                xml = DataTableToXml(dtCond);
+                cmd.Parameters.AddWithValue("@condition", xml);
+            }
+            else cmd.Parameters.AddWithValue("@condition", DBNull.Value);
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            cmd.Connection.Close();
+        }
+        public string GetSiteName(string shopID)
+        {
+            switch (shopID)
+            {
+                case "011": return "マルイ";
+                case "012": return "カワシマ";
+                case "013": return "ミズタニ";
+                case "014": return "イワイ";
+                case "015": return "アキ";
+                case "016": return "ライトウェイ";
+                case "017": return "インターマックス";
+                case "018": return "日直";
+                case "019": return "深谷";
+                case "020": return "ダイアテック";
+                case "024": return "東";
+                case "030": return "城東";
+                case "031": return "アキボウ";
+                case "034": return "シマノ";
+                case "035": return "インターテック";
+                case "036": return "PRインターナショナル";
+                case "038": return "フタバ";
+                case "046": return "トライスポーツ";
+                case "053": return "中川商会";
+                case "057": return "モトクロス";
+                case "065": return "野口";
+                case "084": return "NBS";
+                case "087": return "ダートフリーク";
+                //2017/12/06 Add
+                case "139": return "ウエイブワン";
+                //2017/12/06 Add
+                case "143": return "ポディウム";
+                //2018/06/12 Add
+                case "059": return "(株)ジェイピースポーツグループ";
+                case "916": return "(株)あさひ";
+                case "914": return "（株）イノセントデザインワークス";
+                default: return "unknwon site";
+
+
+
+            }
+
+        }
+        public DataTable GetDatatableFromDownloadPath(string path, string[] columns)
+        {
+            CachedCsvReader csv;
+            DataTable dtResult = new DataTable(); ;
+            string[] filelist = Directory.GetFiles(path);
+            foreach (string file in filelist)
+            {
+                string ext = Path.GetExtension(file);
+                if (ext.Equals(".csv"))
+                {
+                    if (path.Contains("916_Download"))
+                    {
+                        csv = new CachedCsvReader(new StreamReader(file, Encoding.GetEncoding(932)), true, ',', '\0', '\0', '#', LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.All);
+                    }
+                    else
+                    {
+                        csv = new CachedCsvReader(new StreamReader(file, Encoding.GetEncoding(932)), true);
+                    }
+                    //using (var csv = new CachedCsvReader(new StreamReader(file, Encoding.GetEncoding(932)), true, ',', '\0', '\0', '#', LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.All))
+                    //{
+                        DataTable dtCsv = new DataTable();
+                        dtCsv.Load(csv);
+                        if (dtResult.Columns.Count <= 0)
+                            dtResult = dtCsv.Clone();
+                        if (checkCsvFormat(dtCsv, columns))
+                        {
+                            dtResult.Merge(dtCsv);
+                        }
+                        else
+                        {
+                            WritetoLog("CsvFile Format Wrong!");
+                            return null;
+                        }
+
+                    //}
+                }
+                else
+                    File.Move(file, @"C:\Qbei_Log\Trash\" + @"\" + Path.GetFileName(file));
+                    //File.Move(file, trashPath + @"\" + Path.GetFileName(file));
+            }
+
+            if (!dtResult.Equals(null))
+                return dtResult;
+            else return null;
+        }
+
+        public void Qbei_Insert(string stockDate, string qtyStatus, string site, string janCode, string partNo, string makerDate, string reflectDate)
+        {
+            Connection con = new Connection();
+            SqlConnection sqlcon = con.GetConnection();
+            SqlCommand cmd = new SqlCommand("Qbei_Insert", sqlcon);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@stockDate", stockDate);
+            cmd.Parameters.AddWithValue("@quantity", qtyStatus);
+            cmd.Parameters.AddWithValue("@site", site);
+            cmd.Parameters.AddWithValue("@jancode", janCode);
+            cmd.Parameters.AddWithValue("@partNo", partNo);
+            cmd.Parameters.AddWithValue("@makerDate", makerDate);
+            cmd.Parameters.AddWithValue("@reflectDate", reflectDate);
+            cmd.Parameters.AddWithValue("@Updated_Date", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            cmd.Connection.Close();
+        }
+        
+        public void Qbei_Insert_XML(DataTable dtCsv, DataTable dtItem, string name, string strRerun = "")
+        {
+
+            string xmlCsv = DataTableToXml(dtCsv);
+
+            string xmlItem = DataTableToXml(dtItem);
+
+            Configuration config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");
+            string constr = config.ConnectionStrings.ConnectionStrings["Qbei_DB"].ConnectionString;
+            SqlConnection con = new SqlConnection(constr);
+            //  SqlDatabase db = new SqlDatabase(connectionManager.SqlConnection.ConnectionString);
+            // System.Data.Common.DbCommand cmd = db.GetStoredProcCommand(storedProc, parameterValues);
+
+            //  return db.ExecuteScalar(cmd);
+            SqlCommand cmd = new SqlCommand(name, con);
+            cmd.CommandTimeout = 600;
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@xmlCsv", xmlCsv);
+            cmd.Parameters.AddWithValue("@xmlItem", xmlItem);
+            cmd.Parameters.AddWithValue("@param", strRerun);
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+
+        public void Qbei_ErrorInsert(int site, string sitename, string description, string janCode, string orderCode, int errortype, string Date, string sitecode)
+        {
+            Connection con = new Connection();
+            SqlConnection sqlcon = con.GetConnection();
+            SqlCommand cmd = new SqlCommand("Qbei_ErrorInsert", sqlcon);
+            cmd.CommandType = CommandType.StoredProcedure;
+            // cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@site", site);
+            cmd.Parameters.AddWithValue("@sitename", sitename);
+            cmd.Parameters.AddWithValue("@jancode", janCode);
+            cmd.Parameters.AddWithValue("@OrderCode", orderCode);
+            cmd.Parameters.AddWithValue("@Description", description);
+            cmd.Parameters.AddWithValue("@errortype", errortype);
+            cmd.Parameters.AddWithValue("@Date", Date);
+            cmd.Parameters.AddWithValue("@sitecode", sitecode);
+
+            //  cmd.Parameters.AddWithValue("@Updated_Date", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            cmd.Connection.Close();
+        }
+
+        public void Qbei_ErrorDelete(int site)
+        {
+            Connection con = new Connection();
+            SqlConnection sqlcon = con.GetConnection();
+            SqlCommand cmd = new SqlCommand("Qbei_DeleteErrorLog", sqlcon);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@site", site);
+            cmd.Connection.Open();
+            cmd.CommandTimeout = 0;
+            cmd.ExecuteNonQuery();
+            cmd.Connection.Close();
+        }
+
+        public void Qbei_Delete(int site)
+        {
+            Connection con = new Connection();
+            SqlConnection sqlcon = con.GetConnection();
+            SqlCommand cmd = new SqlCommand("Qbei_DeleteSiteData", sqlcon);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@site", site);
+            cmd.CommandTimeout = 600;
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            cmd.Connection.Close();
+
+        }
+        protected static IWebElement FindElement(IWebDriver driver, By value, int sleeptime)
+        {
+            bool found = false;
+            int count = 0;
+            do
+            {
+                try
+                {
+                    driver.FindElement(value);
+                    found = true;
+                }
+                catch (Exception e)
+                {
+                    if (e.Message.Contains("Unable to locate element"))
+                    {
+                        count++;
+                        Thread.Sleep(sleeptime);
+                        found = false;
+                    }
+                    else throw e;
+                }
+            } while (!found && count < 5);
+            return driver.FindElement(value);
+        }
+
+        private static bool checkCsvFormat(DataTable dtCsv, string[] columns)
+        {
+            foreach (string colName in columns)
+            {
+                DataColumnCollection cols = dtCsv.Columns;
+                if (!cols.Contains(colName))
+                    return false;
+            }
+            return true;
+        }
+
+        private static void CreateFilePath(string path)
+        {
+            if (!File.Exists(path))
+                File.Create(path);
+        }
+
+        private static void CreateDirectory(string path)
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+        }
+
+        public string getCurrentDate()
+        {
+            return DateTime.Now.ToString("yyyy-MM-dd");
+        }
+
+        public void ChangeFlag(Qbeisetting_Entity qe)
+        {
+            Connection con = new Connection();
+            SqlConnection sqlcon = con.GetConnection();
+            SqlCommand cmd = new SqlCommand("Console_FlagChange", sqlcon);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@site", qe.site);
+            cmd.Parameters.AddWithValue("@flag", qe.flag);
+
+            if (qe.starttime == null)
+                cmd.Parameters.AddWithValue("@Start_time", DBNull.Value);
+            else cmd.Parameters.AddWithValue("@Start_time", qe.starttime);
+            if (qe.endtime == null)
+             cmd.Parameters.AddWithValue("@End_time", DBNull.Value);
+            else cmd.Parameters.AddWithValue("@End_time",qe.endtime);
+           // cmd.Parameters.AddWithValue("@End_time", qe.endtime);
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            cmd.Connection.Close();
+            
+        }
+
+
+        public DataTable SelectFlag(int site)
+        {
+            Connection con = new Connection();
+            SqlConnection sqlcon = con.GetConnection();
+            SqlCommand cmd = new SqlCommand("SelectFlag", sqlcon);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@site", site);
+
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            try
+            {
+                cmd.Connection.Open();
+                da.Fill(dt);
+                return dt;
+            }
+            catch (Exception)
+            { return new DataTable(); }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+        }
+
+        public DataTable deleteData(int site)
+        {
+            Connection con = new Connection();
+            SqlConnection sqlcon = con.GetConnection();
+            SqlCommand cmd = new SqlCommand("DeleteData", sqlcon);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@site", site);
+
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            try
+            {
+                cmd.Connection.Open();
+                da.Fill(dt);
+                return dt;
+            }
+            catch (Exception)
+            { return new DataTable(); }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+        }
+
+        public void KillProcess()
+        {
+            foreach (var process in Process.GetProcessesByName("Qbei_Agencies"))
+            {
+                process.Kill();
+            }
+        }
+        public void ClearMemory()
+        {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+        
+        public void Qbei_Inserts(Qbei_Entity entity)
+        {
+            ClearMemory();
+            SqlCommand cmd;
+            Connection con = new Connection();
+            SqlConnection sqlcon = con.GetConnection();
+            //Delete Order Data before inserting Qbei Table
+            cmd = new SqlCommand("Qbei_Rerun_ODelete", sqlcon);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.CommandTimeout = 0;
+            cmd.Parameters.AddWithValue("@site", entity.siteID);
+            cmd.Parameters.AddWithValue("@jancode", entity.janCode);
+            cmd.Parameters.AddWithValue("@ordercode", entity.orderCode);
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            cmd.Connection.Close();
+
+            cmd = new SqlCommand("Qbei_Insert", sqlcon);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@stockDate", entity.stockDate);
+            cmd.Parameters.AddWithValue("@price", entity.price);
+            cmd.Parameters.AddWithValue("@orderCode", entity.orderCode);
+            cmd.Parameters.AddWithValue("@purchaseURL", entity.purchaseURL);
+            cmd.Parameters.AddWithValue("@quantity", entity.qtyStatus);
+            cmd.Parameters.AddWithValue("@site", entity.sitecode);
+            cmd.Parameters.AddWithValue("@jancode", entity.janCode);
+            cmd.Parameters.AddWithValue("@partNo", entity.partNo);
+            cmd.Parameters.AddWithValue("@makerDate", entity.makerDate);
+            cmd.Parameters.AddWithValue("@reflectDate", entity.reflectDate);
+            cmd.Parameters.AddWithValue("@siteID", entity.siteID);
+
+            cmd.Parameters.AddWithValue("@Updated_Date", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            cmd.Connection.Close();
+        }
+
+        public bool IsNumber(string num)
+        {
+            try
+            {
+                Convert.ToInt32(num);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool IsGood(string value)
+        {
+            if (IsNumber(value))
+            {
+                if (Convert.ToInt32(value) > 10)
+                    return true;
+                return false;
+            }
+            return false;
+        }
+        public bool IsGood1(string value)
+        {
+            if (IsNumber(value))
+            {
+                if (Convert.ToInt32(value) > 9)
+                    return true;
+                return false;
+            }
+            return false;
+        }
+        public bool IsEmpty(string value)
+        {
+            if (IsNumber(value))
+            {
+                if (Convert.ToInt32(value) == 0)
+                    return true;
+                return false;
+            }
+            return false;
+        }
+        public bool IsLessthanzero(string value)
+        {
+            if (IsNumber(value))
+            {
+                if (Convert.ToInt32(value) <= 0)
+                    return true;
+                return false;
+            }
+            return false;
+        }
+        public bool IsSmall(string value)
+        {
+            if (IsNumber(value))
+            {
+                if (Convert.ToInt32(value) <= 10)
+                    return true;
+                return false;
+            }
+            return false;
+        }
+        public bool IsSmall1(string value)
+        {
+            if (IsNumber(value))
+            {
+                if (Convert.ToInt32(value)>0)
+                    return true;
+                return false;
+            }
+            return false;
+        }
+
+
+      public void MoveToTrash(string shopID)
+        {
+            string path = string.Empty;
+            switch (shopID)
+            {
+                case "014": path = @"C:\Qbei_Log\014_Download\"; break;
+                case "015": path = @"C:\Qbei_Log\015_Download\"; break;
+                case "035": path = @"C:\Qbei_Log\035_Download\";  break;
+                case "916": path = @"C:\Qbei_Log\916_Download"; break;
+                case "037": path = @"C:\Qbei_Log\037_Download"; break;
+            }
+
+            string[] filelist = Directory.GetFiles(path);
+            foreach (string file in filelist)
+            {
+                string ext = Path.GetExtension(file);
+                File.Move(file, @"C:\Qbei_Log\Trash\" + @"\" + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetFileName(file));
+                //break;
+            }
+        }
+
+        public string ReplaceOrderCode(string orderCode, string[] str)
+        {
+            foreach (string str1 in str)
+            {
+                orderCode = orderCode.Replace(str1, string.Empty);
+            }
+            return orderCode;
+        }
+
+        public HtmlElement GetElement(string tagName, string value, string attrName,WebBrowser webBrowser1)
+        {
+            HtmlElementCollection col = webBrowser1.Document.GetElementsByTagName(tagName);
+            HtmlElement element;
+            foreach (HtmlElement item in col)
+            {
+                if (item.GetAttribute(attrName).Equals(value))
+                {
+                    element = item;
+                    return element;
+                }
+            }
+            return null;
+        }
+
+        public void WriteLog(string strLog, string siteID)
+        {
+            string logFilePath = "C:\\Qbei_Log\\Logfile\\" + "Log" + siteID + System.DateTime.Today.ToString("MM-dd-yyyy") + "." + "txt";
+            FileStream fileStream = null;
+            FileInfo logFileInfo = new FileInfo(logFilePath);
+            DirectoryInfo logDirInfo = new DirectoryInfo(logFileInfo.DirectoryName);
+            if (!logDirInfo.Exists) logDirInfo.Create();
+            if (!logFileInfo.Exists)
+            {
+                fileStream = logFileInfo.Create();
+            }
+            else
+            {
+                fileStream = new FileStream(logFilePath, FileMode.Append);
+            }
+            StreamWriter log = new StreamWriter(fileStream);
+            log.WriteLine(strLog + siteID + DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss"));
+            log.Close();
+        }
+
+        public void WriteLog(Exception ex, string siteID, string strLog1 = "", string strlog2 = "")
+        {
+            string logFormat = "{0} {1} {2} {3} {4}" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+            string logFilePath = "C:\\Qbei_Log\\Logfile\\" + "Log" + siteID + System.DateTime.Today.ToString("MM-dd-yyyy") + "." + "txt";
+            FileStream fileStream = null;
+            FileInfo logFileInfo = new FileInfo(logFilePath);
+            DirectoryInfo logDirInfo = new DirectoryInfo(logFileInfo.DirectoryName);
+            if (!logDirInfo.Exists) logDirInfo.Create();
+            if (!logFileInfo.Exists)
+            {
+                fileStream = logFileInfo.Create();
+            }
+            else
+            {
+                fileStream = new FileStream(logFilePath, FileMode.Append);
+            }
+            StreamWriter log = new StreamWriter(fileStream);
+            log.WriteLine(string.Format(logFormat, ex.Message, ex.StackTrace, strLog1, strlog2, siteID));
+            log.Close();
+        }
+
+        /// <summary>
+        /// Delete Qbei,Qbei_ErrorLog,Qbei_OrderData when data exist in Qbei_OrderData.
+        /// Insert Qbei_OrderData when data does not exist in Qbei_OrderData
+        /// </summary>
+        /// <param name="entity"></param>
+        public void RerunOrder(Qbei_Entity entity)
+        {
+            try
+            {
+                Connection conn = new Connection();
+                SqlConnection sqlcon = conn.GetConnection();
+                SqlCommand cmd = new SqlCommand("Qbei_Rerun_Insert", sqlcon);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@siteId", entity.siteID);
+                cmd.Parameters.AddWithValue("@siteNm", GetSiteName(entity.sitecode));
+                cmd.Parameters.AddWithValue("@JanCd", entity.janCode);
+                cmd.Parameters.AddWithValue("@OrderCd", entity.orderCode);
+                cmd.Parameters.AddWithValue("@quantity", entity.qtyStatus);
+                cmd.Parameters.AddWithValue("@stockDate", entity.stockDate);
+                cmd.Parameters.AddWithValue("@price", entity.price);
+                cmd.Parameters.AddWithValue("@purchaserURL", entity.purchaseURL);
+                cmd.Parameters.AddWithValue("@partNo", entity.partNo);
+                cmd.Parameters.AddWithValue("@makerDate", entity.makerDate);
+                cmd.Parameters.AddWithValue("@reflectDate", entity.reflectDate);
+                cmd.Parameters.AddWithValue("@siteCd", entity.sitecode);
+                cmd.CommandTimeout = 600;
+                cmd.Connection.Open();
+                cmd.ExecuteNonQuery();
+                cmd.Connection.Close();
+            }
+            catch (Exception ex)
+            {
+                WriteLog(ex.Message, entity.sitecode);
+            }
+        }
+        /// <summary>
+        /// Delete Qbei and Qbei_ErrorLog when rerun.
+        /// </summary>
+        /// <param name="intSite"></param>
+        /// <param name="entity">include jancode and ordercode</param>
+        public void DeleteRerunData(int intSite, Qbei_Entity entity)
+        {
+            try
+            {
+                Connection conn = new Connection();
+                SqlConnection sqlconn = conn.GetConnection();
+                SqlCommand cmd = new SqlCommand("Qbei_Rerun_ODelete", sqlconn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@site", intSite);
+                cmd.Parameters.AddWithValue("@jancode", entity.janCode);
+                cmd.Parameters.AddWithValue("@ordercode", entity.orderCode);
+                cmd.Connection.Open();
+                cmd.ExecuteNonQuery();
+                cmd.Connection.Close();
+            }
+            catch (Exception ex)
+            { }
+        }
+
+        public DataTable ReadCsv(string strShopID)
+        {
+            try
+            {
+                DataTable dtCsv = new DataTable();
+                DataTable dtTemp = new DataTable();
+                string strext = ".csv";
+                string[] columns = { "代理店ID", "JANコード", "在庫情報", "入荷予定", "自社品番", "メーカー情報日", "最終反映日", "ブランドコード", "ステータス変更日" };
+                string[] filelist = Directory.GetFiles(@"C:\Qbei_Log\Csv");
+                foreach (string file in filelist)
+                {
+                    string ext = Path.GetExtension(file);
+                    if (ext.Equals(strext))
+                    {
+                        using (var csv = new CachedCsvReader(new StreamReader(file, Encoding.GetEncoding(932)), true))
+                        {
+                            dtTemp = new DataTable();
+                            dtTemp.Load(csv);
+                            if (!checkCsvFormat(dtTemp, columns))
+                            {
+                                WritetoLog("Wrong File");
+                                dtCsv = new DataTable();
+                            }
+                            else
+                            {
+                                dtCsv.Merge(dtTemp);
+                            }
+                        }
+                    }
+                }
+                if (dtCsv == null)
+                    return null;
+                else
+                {
+                    if (string.IsNullOrEmpty(strShopID))
+                        return dtCsv;
+                    else
+                    {
+                        var a = dtCsv.Select("代理店ID='" + strShopID + "'");
+                        dtCsv = a.Any() ? a.CopyToDataTable() : null;
+                        return dtCsv;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// Read Data from CSV.
+        /// remove  once a week,order code contains null or - or japan text data from CSV 
+        /// </summary>
+        /// <returns>except remove data</returns>
+        public DataTable GetRerunData(string strShopId)
+        {
+            try
+            {
+                DataColumn dc = new DataColumn("SiteName");
+                string xml;
+                Connection con;
+                SqlConnection sqlcon;
+                SqlCommand cmd;
+                DataTable dtCsv = new DataTable();
+                DataTable dtNull = new DataTable();
+                DataTable dtNotInteger = new DataTable();
+                DataTable dtOrder = new DataTable();
+                DataTable dtBlankUrl = new DataTable();
+                string strDescription = string.Empty;
+                dtCsv = ReadCsv(strShopId);
+
+                if (dtCsv == null)
+                    return null;
+                else
+                {
+                    ddr = dtCsv.Rows.Count;
+                    if (strShopId.Equals("053"))
+                    {
+                        dtCsv = GetBrandCode(dtCsv);
+                    }
+                    if (dtCsv != null)
+                    {
+                        //Set Site Name
+                        dc.DefaultValue = GetSiteName(strShopId);
+                        //Sort メーカー情報日
+                        dtCsv = dtCsv.AsEnumerable().OrderBy(x => x.Field<string>("メーカー情報日")).CopyToDataTable();
+                        //Remove Blank Url from Site 36
+                        if (strShopId.Equals("036"))
+                        {
+                            var blankUrl = dtCsv.Select("purchaserURL =' ' OR purchaserURL = '' OR purchaserURL is NULL");
+                            if (blankUrl.Any())
+                            {
+                                dtBlankUrl = blankUrl.CopyToDataTable();
+                                var NonBlankUrl = dtCsv.AsEnumerable().Where(x => !dtBlankUrl.AsEnumerable().Any(y => x.Field<string>("JANコード") == y.Field<string>("JANコード") && x.Field<string>("発注コード") == y.Field<string>("発注コード")));
+                                dtCsv = NonBlankUrl.Any() ? NonBlankUrl.CopyToDataTable() : null;
+                                strDescription = "Item doesn't Run!";
+                                dtBlankUrl.Columns.Add(dc);
+                                xml = DataTableToXml(dtBlankUrl);
+                                con = new Connection();
+                                sqlcon = con.GetConnection();
+                                cmd = new SqlCommand("Qbei_Rerun_ErrorInsert", sqlcon);
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.Parameters.AddWithValue("@condition", xml);
+                                cmd.Parameters.AddWithValue("@siteCd", strShopId);
+                                cmd.Parameters.AddWithValue("@description", strDescription);
+                                cmd.Parameters.AddWithValue("@ErrorType", 6);
+                                cmd.CommandTimeout = 600;
+                                cmd.Connection.Open();
+                                cmd.ExecuteNonQuery();
+                                cmd.Connection.Close();
+                            }
+                            return dtCsv;
+                        }
+                        var temp = dtCsv.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' ");
+                        //Insert Null Order Code
+                        if (temp.Any())
+                        {
+                            dtNull = temp.CopyToDataTable();
+                            var data = dtCsv.AsEnumerable().Where(r => !dtNull.AsEnumerable().Any(y => (r.Field<string>("JANコード") == y.Field<string>("JANコード") && r.Field<string>("発注コード") == y.Field<string>("発注コード"))));
+                            if (data.Any())
+                            {
+                                dtCsv = data.CopyToDataTable();
+                            }
+                            else
+                                dtCsv = null;
+
+                            strDescription = "Order Code Not Found";
+                            dtNull.Columns.Add(dc);
+                            xml = DataTableToXml(dtNull);
+                            con = new Connection();
+                            sqlcon = con.GetConnection();
+                            cmd = new SqlCommand("Qbei_Rerun_ErrorInsert", sqlcon);
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@condition", xml);
+                            cmd.Parameters.AddWithValue("@siteCd", strShopId);
+                            cmd.Parameters.AddWithValue("@description", strDescription);
+                            cmd.Parameters.AddWithValue("@ErrorType", 3);
+                            cmd.CommandTimeout = 600;
+                            cmd.Connection.Open();
+                            cmd.ExecuteNonQuery();
+                            cmd.Connection.Close();
+                        }
+                        if (dtCsv != null)
+                        {
+                            //Order Code Trim
+                            dtCsv.AsEnumerable().ToList().ForEach(y => y["発注コード"] = y.Field<string>("発注コード").Trim());
+
+                            //Insert Japananese Text Order Code
+                            var notintegerdata = dtCsv.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("/") || r.Field<string>("発注コード").Contains("データ登録")));
+                            if (notintegerdata.Any())
+                            {
+                                dc = new DataColumn("SiteName");
+                                dc.DefaultValue = GetSiteName(strShopId);
+                                dtNotInteger = notintegerdata.CopyToDataTable();
+                                var integerdata = dtCsv.AsEnumerable().Where(r => !dtNotInteger.AsEnumerable().Any(z => (r.Field<string>("JANコード").Equals(z.Field<string>("JANコード")) && r.Field<string>("発注コード").Equals(z.Field<string>("発注コード")))));
+                                dtCsv = integerdata.Any() ? integerdata.CopyToDataTable() : null;
+                                strDescription = "Item doesn't Exists!";
+                                dtNotInteger.Columns.Add(dc);
+                                xml = DataTableToXml(dtNotInteger);
+                                con = new Connection();
+                                sqlcon = con.GetConnection();
+                                cmd = new SqlCommand("Qbei_Rerun_ErrorInsert", sqlcon);
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.Parameters.AddWithValue("@siteCd", strShopId);
+                                cmd.Parameters.AddWithValue("@condition", xml);
+                                cmd.Parameters.AddWithValue("@description", strDescription);
+                                cmd.Parameters.AddWithValue("@ErrorType", 2);
+                                cmd.CommandTimeout = 600;
+                                cmd.Connection.Open();
+                                cmd.ExecuteNonQuery();
+                                cmd.Connection.Close();
+                            }
+                        }
+                    }
+                    return dtCsv;
+                }
+            }
+            catch (Exception ex)
+            {
+                WritetoLog(ex.Message);
+                return null;
+            }
+        }
+
+    }
+}

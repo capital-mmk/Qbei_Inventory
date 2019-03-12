@@ -13,14 +13,10 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -75,6 +71,10 @@
     <ProjectReference Include="..\QbeiAgencies_Common\QbeiAgencies_Common.csproj">
       <Project>{5e0592cd-50b7-4eef-856e-162dc61b9372}</Project>
       <Name>QbeiAgencies_Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QbeiAgencies_DL\QbeiAgencies_DL.csproj">
+      <Project>{635420e9-3984-496c-a814-660b916afbb3}</Project>
+      <Name>QbeiAgencies_DL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

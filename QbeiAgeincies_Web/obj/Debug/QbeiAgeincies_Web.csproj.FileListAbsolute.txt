@@ -1,0 +1,91 @@
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgeincies_Web.dll
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgeincies_Web.pdb
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgeincies_Web\bin\AjaxControlToolkit.dll
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_BL.dll
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_Common.dll
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_DL.dll
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_BL.pdb
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_Common.pdb
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_DL.pdb
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.csprojResolveAssemblyReference.cache
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.dll
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.pdb
+C:\Project\Qbei_Latest\QbeiAgeincies_Web\bin\QbeiAgeincies_Web.dll
+C:\Project\Qbei_Latest\QbeiAgeincies_Web\bin\QbeiAgeincies_Web.pdb
+C:\Project\Qbei_Latest\QbeiAgeincies_Web\bin\AjaxControlToolkit.dll
+C:\Project\Qbei_Latest\QbeiAgeincies_Web\bin\QbeiAgencies_BL.dll
+C:\Project\Qbei_Latest\QbeiAgeincies_Web\bin\QbeiAgencies_Common.dll
+C:\Project\Qbei_Latest\QbeiAgeincies_Web\bin\QbeiAgencies_DL.dll
+C:\Project\Qbei_Latest\QbeiAgeincies_Web\bin\QbeiAgencies_BL.pdb
+C:\Project\Qbei_Latest\QbeiAgeincies_Web\bin\QbeiAgencies_Common.pdb
+C:\Project\Qbei_Latest\QbeiAgeincies_Web\bin\QbeiAgencies_DL.pdb
+C:\Project\Qbei_Latest\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.csprojResolveAssemblyReference.cache
+C:\Project\Qbei_Latest\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.dll
+C:\Project\Qbei_Latest\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.pdb
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgeincies_Web\bin\QbeiAgeincies_Web.dll
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgeincies_Web\bin\QbeiAgeincies_Web.pdb
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgeincies_Web\bin\AjaxControlToolkit.dll
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgeincies_Web\bin\QbeiAgencies_BL.dll
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgeincies_Web\bin\QbeiAgencies_Common.dll
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgeincies_Web\bin\QbeiAgencies_DL.dll
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgeincies_Web\bin\QbeiAgencies_BL.pdb
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgeincies_Web\bin\QbeiAgencies_Common.pdb
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgeincies_Web\bin\QbeiAgencies_DL.pdb
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.csprojResolveAssemblyReference.cache
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.dll
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgeincies_Web\bin\QbeiAgeincies_Web.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgeincies_Web\bin\QbeiAgeincies_Web.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgeincies_Web\bin\AjaxControlToolkit.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgeincies_Web\bin\DropDownListChosen.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgeincies_Web\bin\QbeiAgencies_BL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgeincies_Web\bin\QbeiAgencies_Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgeincies_Web\bin\QbeiAgencies_DL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgeincies_Web\bin\QbeiAgencies_BL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgeincies_Web\bin\QbeiAgencies_Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgeincies_Web\bin\QbeiAgencies_DL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.csprojResolveAssemblyReference.cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgeincies_Web.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgeincies_Web.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgeincies_Web\bin\AjaxControlToolkit.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgeincies_Web\bin\DropDownListChosen.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_BL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_DL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_BL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_DL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.csprojResolveAssemblyReference.cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgeincies_Web.dll.config
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgeincies_Web.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgeincies_Web.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgeincies_Web\bin\AjaxControlToolkit.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgeincies_Web\bin\DropDownListChosen.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_BL.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_Common.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_DL.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_BL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_Common.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_DL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.csprojAssemblyReference.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.csproj.CoreCompileInputs.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.csproj.CopyComplete
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.pdb
+D:\WORK\Source\152\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgeincies_Web.dll
+D:\WORK\Source\152\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgeincies_Web.pdb
+D:\WORK\Source\152\Inventory_Management\QbeiAgeincies_Web\bin\AjaxControlToolkit.dll
+D:\WORK\Source\152\Inventory_Management\QbeiAgeincies_Web\bin\DropDownListChosen.dll
+D:\WORK\Source\152\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_BL.dll
+D:\WORK\Source\152\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_Common.dll
+D:\WORK\Source\152\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_DL.dll
+D:\WORK\Source\152\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_BL.pdb
+D:\WORK\Source\152\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_Common.pdb
+D:\WORK\Source\152\Inventory_Management\QbeiAgeincies_Web\bin\QbeiAgencies_DL.pdb
+D:\WORK\Source\152\Inventory_Management\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.csprojResolveAssemblyReference.cache
+D:\WORK\Source\152\Inventory_Management\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.dll
+D:\WORK\Source\152\Inventory_Management\QbeiAgeincies_Web\obj\Debug\QbeiAgeincies_Web.pdb

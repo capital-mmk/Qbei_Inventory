@@ -1,0 +1,5 @@
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\35\obj\Release\35.csprojResolveAssemblyReference.cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\35\obj\Release\35.csproj.ResolveComReference.cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\35\obj\Release\_35.Form1.resources
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\35\obj\Release\_35.Properties.Resources.resources
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\35\obj\Release\35.csproj.GenerateResource.Cache

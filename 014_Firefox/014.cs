@@ -6,7 +6,6 @@ using System.Data;
 using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
-//using Selenium.WebDriver.GeckoDriver.Win64;
 using OpenQA.Selenium.Chrome;
 using Common;
 using System.IO;
@@ -18,9 +17,9 @@ using QbeiAgencies_Common;
 
 namespace _014_Firefox
 {
-    class Program : CommonFunction
+    class Program :CommonFunction
     {
-
+       
         public static string janCode = string.Empty;
         public static CommonFunction fun = new CommonFunction();
         public static string st = string.Empty;
@@ -30,12 +29,12 @@ namespace _014_Firefox
         public static FirefoxOptions FirefoxDriverDirectory { get; private set; }
 
         static void Main(string[] args)
-        {
+        {           
             testflag();
         }
         public static void testflag()
         {
-
+           
             Qbeisetting_Entity qe = new Qbeisetting_Entity();
             qe.starttime = DateTime.Now.ToString();
             st = qe.starttime;
@@ -45,7 +44,7 @@ namespace _014_Firefox
             int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
             if (flag == 0)
             {
-
+               
                 fun.ChangeFlag(qe);
                 StartRun();
             }
@@ -69,9 +68,9 @@ namespace _014_Firefox
                 fun.CreateFileAndFolder();
                 fun.Qbei_Delete(14);
                 fun.Qbei_ErrorDelete(14);
-
+              
                 ReadData();
-
+              
             }
             catch (Exception)
             { }
@@ -151,3 +150,4 @@ namespace _014_Firefox
 
     }
 }
+

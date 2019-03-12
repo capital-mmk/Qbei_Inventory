@@ -26,7 +26,6 @@ namespace _059
         DataTable dt059 = new DataTable();
         Qbei_Entity entity = new Qbei_Entity();
         int i = 0;
-        public static string st = string.Empty;
         public Form1()
         {
             InitializeComponent();
@@ -34,27 +33,35 @@ namespace _059
         }
         private void testflag()
         {
-            Qbeisetting_Entity qe = new Qbeisetting_Entity();
-            qe.starttime = DateTime.Now.ToString();
-            qe.site = 59;
-            st = qe.starttime;
-            qe.flag = 1;
-            DataTable dtflag = fun.SelectFlag(59);
-            int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
-            if (flag == 0)
+            try
             {
-
-                fun.ChangeFlag(qe);
-                StartRun();
+                Qbeisetting_Entity qe = new Qbeisetting_Entity();
+                qe.starttime = DateTime.Now.ToString();
+                qe.site = 59;                
+                qe.flag = 1;
+                DataTable dtflag = fun.SelectFlag(59);
+                int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
+                if (flag == 0)
+                {
+                    fun.ChangeFlag(qe);
+                    StartRun();
+                }
+                else if (flag == 1)
+                {
+                    fun.deleteData(59);
+                    fun.ChangeFlag(qe);
+                    StartRun();
+                }
+                else
+                {
+                    Application.Exit();
+                    Environment.Exit(0);
+                }
             }
-            else if (flag == 1)
+            catch (Exception ex)
             {
-                fun.deleteData(59);
-                fun.ChangeFlag(qe);
-                StartRun();
-            }
-            else
-            {
+                fun.WriteLog(ex, "059-");
+                Application.Exit();
                 Environment.Exit(0);
             }
         }
@@ -70,14 +77,17 @@ namespace _059
                 dt059 = fun.GetOrderData(dt059, "https://jpsg.bcart.jp/product.php?id=7", "059", "");
                 fun.GetTotalCount("059");
                 ReadData();
-
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                fun.WriteLog(ex, "059-");
+                Application.Exit();
+                Environment.Exit(0);
+            }
         }
 
         private void ReadData()
         {
-
             webBrowser1.ScriptErrorsSuppressed = true;
             qe.SiteID = 59;
             dt = qubl.Qbei_Setting_Select(qe);
@@ -111,14 +121,14 @@ namespace _059
         {
             try
             {
+                fun.ClearMemory();
+
                 string url = webBrowser1.Url.ToString();
-                string body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;
                 if (url.Equals("https://jpsg.bcart.jp/login.php"))
                 {
-
                     SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
                     instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
-                    url = webBrowser1.Url.ToString();
+                    //url = webBrowser1.Url.ToString();
                     fun.WriteLog("Navigation to Site Url success------", "059-");
                     webBrowser1.ScriptErrorsSuppressed = true;
                     qe.SiteID = 59;
@@ -134,7 +144,7 @@ namespace _059
                 }
                 else if (url.Equals("https://jpsg.bcart.jp/"))
                 {
-                    //  string ordercode = "1104-10500-03";
+                  //  string ordercode = "1104-10500-03";
                     string ordercode = dt059.Rows[i]["発注コード"].ToString();
                     webBrowser1.Navigate(fun.url + "/list.php?keyword=" + ordercode);
                     webBrowser1.DocumentCompleted -= webBrowser1_Start;
@@ -143,8 +153,12 @@ namespace _059
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), ex.Message, dt059.Rows[0]["JANコード"].ToString(), dt059.Rows[0]["発注コード"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");
-                fun.WriteLog(ex.Message + dt059.Rows[0]["発注コード"].ToString(), "059-");
+                string janCode = dt059.Rows[0]["JANコード"].ToString();
+                string orderCode = dt059.Rows[0]["発注コード"].ToString();
+                fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");                
+                fun.WriteLog(ex, "059-", janCode, orderCode);
+                fun.Qbei_Maker_Insert("059", dt059);
+
                 Application.Exit();
                 Environment.Exit(0);
             }
@@ -152,6 +166,7 @@ namespace _059
 
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
+            string orderCode = string.Empty;
             try
             {
                 webBrowser1.ScriptErrorsSuppressed = true;
@@ -159,21 +174,28 @@ namespace _059
                 string body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;
                 if (body.Contains("入力情報に誤りがあります。入力された内容を再度ご確認ください ") || body.Contains("入力内容が間違っているか、許可されていません。"))
                 {
-                    fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");
+                    fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");                    
+                    fun.WriteLog("Login Failed", "059-");
+                    fun.Qbei_Maker_Insert("059", dt059);
                     Application.Exit();
+                    Environment.Exit(0);
                 }
                 else
                 {
                     fun.WriteLog("Login success             ------", "059-");
-                    string ordercode = dt059.Rows[i]["発注コード"].ToString();
-                    webBrowser1.Navigate(fun.url + "/list.php?keyword=" + ordercode);
+                    orderCode = dt059.Rows[i]["発注コード"].ToString();
+                    webBrowser1.Navigate(fun.url + "/list.php?keyword=" + orderCode);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemClick);
                 }
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), ex.Message, dt059.Rows[0]["JANコード"].ToString(), dt059.Rows[0]["発注コード"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");
-                fun.WriteLog(ex.Message + dt059.Rows[i]["発注コード"].ToString(), "059-");
+                string janCode = dt059.Rows[i]["JANコード"].ToString();
+                orderCode = dt059.Rows[i]["発注コード"].ToString();
+                fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");                
+                fun.WriteLog(ex, "059-", janCode, orderCode);
+                fun.Qbei_Maker_Insert("059", dt059);
+
                 Application.Exit();
                 Environment.Exit(0);
             }
@@ -181,9 +203,11 @@ namespace _059
 
         private void webBrowser1_ItemClick(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
+            string orderCode = string.Empty;
             try
             {
                 webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemClick);
+                entity = new Qbei_Entity();
                 entity.siteID = 59;
                 entity.sitecode = "059";
                 entity.janCode = dt059.Rows[i]["JANコード"].ToString();
@@ -191,7 +215,6 @@ namespace _059
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt059.Rows[i]["最終反映日"].ToString();
                 entity.orderCode = dt059.Rows[i]["発注コード"].ToString();
-                //entity.orderCode = "1104-10500-03";
                 string html = webBrowser1.Document.Body.InnerHtml;
                 HtmlAgilityPack.HtmlDocument hdoc = new HtmlAgilityPack.HtmlDocument();
                 hdoc.LoadHtml(html);
@@ -215,12 +238,14 @@ namespace _059
                     if (i < dt059.Rows.Count - 1)
                     {
                         webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemClick);
-                        string ordercode = dt059.Rows[++i]["発注コード"].ToString();
-                        webBrowser1.Navigate(fun.url + "/list.php?keyword=" + ordercode);
+                        orderCode = dt059.Rows[++i]["発注コード"].ToString();
+                        webBrowser1.Navigate(fun.url + "/list.php?keyword=" + orderCode);
                         webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemClick);
                     }
                     else
                     {
+                        fun.Qbei_Maker_Insert("059", dt059, i);
+
                         qe.site = 59;
                         qe.flag = 2;
                         qe.endtime = DateTime.Now.ToString();
@@ -230,9 +255,7 @@ namespace _059
                     }
                 }
                 else
-                {
-                    string url = webBrowser1.Url.ToString();
-                    body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;
+                {   
                     webBrowser1.Document.GetElementsByTagName("p")[0].InvokeMember("click");
                     webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemClick);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
@@ -240,36 +263,37 @@ namespace _059
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), ex.Message, dt059.Rows[i]["JANコード"].ToString(), dt059.Rows[i]["発注コード"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");
-                fun.WriteLog(ex.Message + dt059.Rows[i]["発注コード"].ToString(), "065-");
-                Application.Exit();
+                string janCode = dt059.Rows[i]["JANコード"].ToString();
+                orderCode = dt059.Rows[i]["発注コード"].ToString();
+                fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");                
+                fun.WriteLog(ex, "059-", janCode, orderCode);
+
+                orderCode = dt059.Rows[++i]["発注コード"].ToString();
+                webBrowser1.Navigate(fun.url + "/list.php?keyword=" + orderCode);
+                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemClick);
             }
         }
 
         private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
+            fun.ClearMemory();
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
-            string url = webBrowser1.Url.ToString();
+            
             try
             {
                 if ((webBrowser1.Document.GetElementsByTagName("td")[3].InnerText == null) && (webBrowser1.Document.GetElementsByTagName("td")[4].InnerText == null) && (webBrowser1.Document.GetElementsByTagName("td")[5].InnerText == null))
                 {
                     fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");
-                    fun.WriteLog("Access Denied! " + entity.orderCode, "059-");
+                    fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "059-");
+                    fun.Qbei_Maker_Insert("059", dt059, i);
                     Application.Exit();
+                    Environment.Exit(0);
                 }
                 else
                 {
                     string html = webBrowser1.Document.Body.InnerHtml;
                     HtmlAgilityPack.HtmlDocument hdoc = new HtmlAgilityPack.HtmlDocument();
                     hdoc.LoadHtml(html);
-                    //entity.price = webBrowser1.Document.GetElementsByTagName("td")[4].InnerText;
-                    //string qtypath = webBrowser1.Document.GetElementsByTagName("td")[5].InnerText;
-                    //if (!entity.price.Contains("円"))
-                    //{
-                    //    entity.price = webBrowser1.Document.GetElementsByTagName("td")[3].InnerText;
-                    //    qtypath = webBrowser1.Document.GetElementsByTagName("td")[4].InnerText;
-                    //}
                     entity.price = hdoc.DocumentNode.SelectSingleNode("//table[@id='product-set-table']/tbody/tr[1]/td[2]").InnerText;
                     string qtypath = hdoc.DocumentNode.SelectSingleNode("//table[@id='product-set-table']/tbody/tr[1]/td[3]").InnerText;
 
@@ -295,15 +319,12 @@ namespace _059
                     else
                         fun.Qbei_Inserts(entity);
                 }
-
             }
             catch (Exception ex)
             {
                 fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");
-                fun.WriteLog(ex.Message, "059-");
-                Application.Exit();
+                fun.WriteLog(ex, "059-", entity.janCode, entity.orderCode);
             }
-
 
             if (i < dt059.Rows.Count - 1)
             {
@@ -313,6 +334,8 @@ namespace _059
             }
             else
             {
+                fun.Qbei_Maker_Insert("059", dt059, i);
+
                 qe.site = 59;
                 qe.flag = 2;
                 qe.endtime = DateTime.Now.ToString();
@@ -323,9 +346,14 @@ namespace _059
         }
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
-            fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), "Access Denied!", dt059.Rows[i]["JANコード"].ToString(), dt059.Rows[i]["発注コード"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");
-            fun.WriteLog(StatusCode.ToString() + " " + dt059.Rows[i]["発注コード"].ToString(), "059-");
+            string janCode = dt059.Rows[i]["JANコード"].ToString();
+            string orderCode = dt059.Rows[i]["発注コード"].ToString();
+            fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");
+            fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "059-");
+
+            fun.Qbei_Maker_Insert("059", dt059, i);
             Application.Exit();
+            Environment.Exit(0);
         }
     }
 }

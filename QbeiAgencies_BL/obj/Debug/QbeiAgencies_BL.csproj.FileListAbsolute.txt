@@ -1,0 +1,65 @@
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_BL.dll
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_BL.pdb
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_Common.dll
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_DL.dll
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_Common.pdb
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_DL.pdb
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.csprojResolveAssemblyReference.cache
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.dll
+D:\Projects\Inventory_management\Inventory_Management\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.pdb
+C:\Project\Qbei_Latest\QbeiAgencies_BL\bin\Debug\QbeiAgencies_BL.dll
+C:\Project\Qbei_Latest\QbeiAgencies_BL\bin\Debug\QbeiAgencies_BL.pdb
+C:\Project\Qbei_Latest\QbeiAgencies_BL\bin\Debug\QbeiAgencies_Common.dll
+C:\Project\Qbei_Latest\QbeiAgencies_BL\bin\Debug\QbeiAgencies_DL.dll
+C:\Project\Qbei_Latest\QbeiAgencies_BL\bin\Debug\QbeiAgencies_Common.pdb
+C:\Project\Qbei_Latest\QbeiAgencies_BL\bin\Debug\QbeiAgencies_DL.pdb
+C:\Project\Qbei_Latest\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.csprojResolveAssemblyReference.cache
+C:\Project\Qbei_Latest\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.dll
+C:\Project\Qbei_Latest\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.pdb
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgencies_BL\bin\Debug\QbeiAgencies_BL.dll
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgencies_BL\bin\Debug\QbeiAgencies_BL.pdb
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgencies_BL\bin\Debug\QbeiAgencies_Common.dll
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgencies_BL\bin\Debug\QbeiAgencies_DL.dll
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgencies_BL\bin\Debug\QbeiAgencies_Common.pdb
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgencies_BL\bin\Debug\QbeiAgencies_DL.pdb
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.csprojResolveAssemblyReference.cache
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.dll
+D:\Projects\Inventory\sourcesafe\Qbei_Inventory\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgencies_BL\bin\Debug\QbeiAgencies_BL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgencies_BL\bin\Debug\QbeiAgencies_BL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgencies_BL\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgencies_BL\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgencies_BL\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgencies_BL\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.csprojResolveAssemblyReference.cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_BL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_BL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.csprojResolveAssemblyReference.cache
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.dll
+C:\Projects\Inventory\sourcecode\Qbei_Inventory_ForUsers\Inventory_Management\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_BL.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_BL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_Common.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_DL.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_Common.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_DL.pdb
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.csprojAssemblyReference.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.csproj.CoreCompileInputs.cache
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.csproj.CopyComplete
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.dll
+C:\Projects\For Administrators\Qbei_Inventory(29.8.2018)\Inventory_Management\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.pdb
+D:\WORK\Source\152\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_BL.dll
+D:\WORK\Source\152\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_BL.pdb
+D:\WORK\Source\152\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_Common.dll
+D:\WORK\Source\152\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_DL.dll
+D:\WORK\Source\152\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_Common.pdb
+D:\WORK\Source\152\Inventory_Management\QbeiAgencies_BL\bin\Debug\QbeiAgencies_DL.pdb
+D:\WORK\Source\152\Inventory_Management\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.csprojResolveAssemblyReference.cache
+D:\WORK\Source\152\Inventory_Management\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.dll
+D:\WORK\Source\152\Inventory_Management\QbeiAgencies_BL\obj\Debug\QbeiAgencies_BL.pdb
