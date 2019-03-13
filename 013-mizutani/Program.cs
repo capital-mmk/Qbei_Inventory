@@ -131,8 +131,10 @@ namespace _013_mizutani
             try
             {
                 int count = dt013.Rows.Count - 1;
+
                 if (count > 0)
                 {
+
                     for (int j = i; j < count; j++)
                     {
                         try
@@ -141,7 +143,7 @@ namespace _013_mizutani
                             IJavaScriptExecutor js = (IJavaScriptExecutor)chrome;
                             js.ExecuteScript("document.getElementById('gvSyohin_ctl02_syohincode').value='" + orderCode + "';");
                             js.ExecuteScript("javascript:setTimeout(__doPostBack('gvSyohin$ctl02$syohincode',''), 0);");
-                            System.Threading.Thread.Sleep(1600);
+                            System.Threading.Thread.Sleep(1000);
 
                             entity = new Qbei_Entity();
                             string color = string.Empty;
@@ -172,7 +174,6 @@ namespace _013_mizutani
                             }
                             else
                             {
-                                
                                 if (chrome.FindElement(By.Id("gvSyohin_ctl02_zaikojokyo")) == null && (chrome.FindElement(By.XPath("div[3]/div[6]/div/table/tbody/tr[2]")) == null))
                                 {
                                     fun.Qbei_ErrorInsert(13, fun.GetSiteName("013"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013");
@@ -197,20 +198,26 @@ namespace _013_mizutani
                                             entity.stockDate = chrome.FindElement(By.Id("gvSyohin_ctl02_nyukayotei")).Text;
 
                                         color = chrome.FindElement(By.Id("gvSyohin_ctl02_zaikojokyo")).GetAttribute("style");
+
+                                        if (color.Contains("red"))
+                                        {
+                                            if (qty.Equals("▲") || qty.Equals("×"))
+                                                entity.stockDate = "2100-02-01";
+                                            else if (qty.Equals("★") || qty.Equals("？"))
+                                                entity.stockDate = "2100-01-01";
+                                        }
+                                        else
+                                        {
+                                            entity.stockDate = qty.Equals("○") || qty.Equals("▲") || qty.Equals("×") ? "2100-01-01" : entity.stockDate;
+                                        }
+
+                                        goto step1;
                                     }
 
                                     if (IsDate(entity.stockDate))
+                                    {
                                         entity.stockDate = entity.stockDate.Replace("/", "-");
-                                    else if (color.Contains("red"))
-                                    {
-                                        if (qty.Equals("▲") || qty.Equals("×"))
-                                            entity.stockDate = "2100-02-01";
-                                        else if (qty.Equals("★") || qty.Equals("？"))
-                                            entity.stockDate = "2100-01-01";
-                                    }
-                                    else
-                                    {
-                                        entity.stockDate = qty.Equals("○") || qty.Equals("▲") || qty.Equals("×") ? "2100-01-01" : entity.stockDate;
+                                        goto step1;
                                     }
 
                                     if (entity.stockDate.Contains("月中旬") || entity.stockDate.Contains("月上旬"))
@@ -227,8 +234,6 @@ namespace _013_mizutani
                                                 day = "28";
                                             day = "30";
                                         }
-
-
                                         else day = "25";
 
                                         string month = entity.stockDate.Split('月')[0];
@@ -241,14 +246,13 @@ namespace _013_mizutani
                                             dt = dt.AddYears(1);
 
                                         entity.stockDate = dt.ToString("yyyy-MM-dd");
-
+                                        goto step1;
                                     }
-
                                     else if (entity.stockDate.Contains("月末～"))
                                     {
                                         entity.stockDate = "未定(=2100-01-01)";
+                                        goto step1;
                                     }
-
                                     else if (entity.stockDate.Contains("月末"))
                                     {
                                         string day = "25";
@@ -262,18 +266,13 @@ namespace _013_mizutani
                                             dt = dt.AddYears(1);
 
                                         entity.stockDate = dt.ToString("yyyy-MM-dd");
+                                        goto step1;
                                     }
-
                                     else if (entity.stockDate.Contains("未定"))
                                     {
                                         entity.stockDate = "2100-01-01";
                                     }
-
-                                    else if ((qty.Equals("☆")) && string.IsNullOrWhiteSpace(entity.stockDate))
-                                    { 
-                                        entity.stockDate = "2100-01-10";
-                                    }                   
-                     
+                                    else if ((qty.Equals("☆")) && string.IsNullOrWhiteSpace(entity.stockDate)) { entity.stockDate = "2100-01-10"; }
                                     else if (entity.stockDate.Contains("在庫限り"))
                                         entity.stockDate = "2100-02-01";
                                     //2018-08-14 Start
@@ -284,6 +283,8 @@ namespace _013_mizutani
                                     }
                                     //2018-08-14 End
                                     entity.stockDate = entity.stockDate.Replace("/", "-");
+
+                                step1:
 
                                     if ((dt013.Rows[i]["在庫情報"].ToString().Contains("empty") || dt013.Rows[i]["在庫情報"].ToString().Contains("inquriry")) && dt013.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
                                     {
@@ -300,11 +301,9 @@ namespace _013_mizutani
                                         fun.Qbei_Inserts(entity);
                                 }
                             }
-
                             //クリアボタン
                             js.ExecuteScript("javascript:__doPostBack('gvSyohin','clearRow$0');");
-                            System.Threading.Thread.Sleep(500);
-
+                            System.Threading.Thread.Sleep(300);
                         }
                         catch (Exception ex)
                         {
@@ -326,6 +325,7 @@ namespace _013_mizutani
             {
                 fun.Qbei_ErrorInsert(13, fun.GetSiteName("013"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013");
                 fun.WriteLog(ex.Message + entity.orderCode, "013-");
+
                 Environment.Exit(0);
                 chrome.Dispose();
                 chrome.Quit();
