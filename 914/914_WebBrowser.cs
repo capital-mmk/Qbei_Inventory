@@ -68,7 +68,6 @@ namespace _914
                 Environment.Exit(0);
             }
         }
-
         private void startRun()
         {
             try
@@ -89,7 +88,6 @@ namespace _914
                 Environment.Exit(0);
             }
         }
-
         private void readData()
         {
             try
@@ -110,7 +108,6 @@ namespace _914
                 Environment.Exit(0);
             }
         }
-
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -171,6 +168,7 @@ namespace _914
                         objCom.WriteLog("Login success             ------", "914-");
                         entity.janCode = dt914.Rows[intCnt]["JANコード"].ToString();
                         entity.orderCode = dt914.Rows[intCnt]["発注コード"].ToString();
+                        //entity.orderCode = "1181803";
                         dtGroupData = dt914.Select("発注コード ='" + entity.orderCode + "'").CopyToDataTable();
                         webBrowser1.Navigate(objCom.url + "item/itemDetail?itemCd=" + entity.orderCode + "&dispMode=MATRIX");
                         webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Item);
@@ -198,10 +196,10 @@ namespace _914
                 webBrowser1_Search(null, null);
             }
         }
-
         private void webBrowser1_Item(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             int intHCnt = 0;
+            bool isFound = false;
             objCom.WriteLog("Item Start", "914-");
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_Item);
             foreach (DataRow dr in dtGroupData.Rows)
@@ -209,7 +207,6 @@ namespace _914
                 try
                 {
                     objCom.ClearMemory();
-
                     entity = new Qbei_Entity();
                     entity.siteID = 914;
                     entity.sitecode = "914";
@@ -218,6 +215,7 @@ namespace _914
                     entity.reflectDate = dr["最終反映日"].ToString();
                     entity.janCode = dr["JANコード"].ToString();
                     entity.orderCode = dr["発注コード"].ToString();
+                    //entity.orderCode = "1181803";
                     entity.price = dr["下代"].ToString();
                     entity.purchaseURL = webBrowser1.Url.ToString();
                     entity.qtyStatus = string.Empty;
@@ -255,22 +253,27 @@ namespace _914
                             var b = hdoc.DocumentNode.SelectNodes("/tbody/tr");
                             foreach (var tmp in b.ToList())
                             {
-                                if (tmp.SelectSingleNode("th").InnerText.Trim().Equals(strColor))
-                                {
+                                //if (tmp.SelectSingleNode("th").InnerText.Trim().Equals(strColor))                                
+                                //{
                                     intHCnt = tmp.SelectNodes("td").ToList().Count;
                                     for (int i = 1; i <= intHCnt; i++)
                                     {
-                                        string webSize = tmp.SelectSingleNode("td[" + i + "]/input[4]").GetAttributeValue("value", "");
-                                        webSize = Strings.StrConv(webSize, VbStrConv.Wide, 1041);
-                                        if (webSize.Equals(strSize))
+                                        HtmlNode colorNode = tmp.SelectSingleNode("td[" + i + "]/input[2]");
+                                        if (colorNode != null && colorNode.GetAttributeValue("value", "").Trim().Equals(strColor))
                                         {
-                                            entity.qtyStatus = tmp.SelectSingleNode("td[" + i + "]/div[3]/div[2]").InnerText;
-                                            entity.price = tmp.SelectSingleNode("td[" + i + "]/div[2]/div[2]/span").InnerText.Replace(",", "");
-                                            break;
+                                            string webSize = tmp.SelectSingleNode("td[" + i + "]/input[4]").GetAttributeValue("value", "");
+                                            webSize = Strings.StrConv(webSize, VbStrConv.Wide, 1041);
+                                            if (webSize.Equals(strSize))
+                                            {
+                                                entity.qtyStatus = tmp.SelectSingleNode("td[" + i + "]/div[3]/div[2]").InnerText;
+                                                entity.price = tmp.SelectSingleNode("td[" + i + "]/div[2]/div[2]/span").InnerText.Replace(",", "");
+                                                isFound = true;
+                                                break;
+                                            }
                                         }
                                     }
-                                    break;
-                                }
+
+                                    if (isFound) break;
                             }
                             entity.stockDate = entity.qtyStatus.Contains("○") || entity.qtyStatus.Contains("△") ? "2100-01-01" : entity.qtyStatus.Contains("×") ? "2100-02-01" : "unknown date";
                             entity.qtyStatus = entity.qtyStatus.Contains("○") ? "good" : entity.qtyStatus.Contains("△") ? "small" : entity.qtyStatus.Contains("×") ? "empty" : "empty";
@@ -293,6 +296,7 @@ namespace _914
                     objCom.Qbei_ErrorInsert(914, objCom.GetSiteName("914"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "914");
                     objCom.WriteLog(ex, "914-", entity.janCode, entity.orderCode);
                 }
+                isFound = false;
                 intCnt++;
             }
 
