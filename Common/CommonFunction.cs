@@ -498,12 +498,13 @@ namespace Common
                 }
                 if (dtData != null)
                 {
-                    dtData.AsEnumerable().OrderBy(x => x["メーカー情報日"]).ThenBy(x => x["JANコード"]).ToList()
-                                         .ForEach(r => r["発注コード"] = r.Field<string>("発注コード").Trim());
+                    dtData = dtData.AsEnumerable().OrderBy(x => x["メーカー情報日"]).ThenBy(x => x["JANコード"]).CopyToDataTable();
+                    dtData.AsEnumerable().ToList().ForEach(r => r["発注コード"] = r.Field<string>("発注コード").Trim());
                 }
             }
-            catch
+            catch(Exception ex)
             {
+              
                 dtData = null;
             }
             finally
