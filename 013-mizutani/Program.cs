@@ -26,6 +26,7 @@ namespace _013_mizutani
         static ChromeOptions option = new ChromeOptions();
         static ChromeDriverService service = ChromeDriverService.CreateDefaultService();
         static IWebDriver chrome;//= new ChromeDriver(service, option,TimeSpan.FromMinutes(3));
+        // Install-Package Selenium.WebDriver.ChromeDriver
         static string strParam = string.Empty;
         public static string st = string.Empty;
         private static readonly TimeSpan TIMEOUT = new TimeSpan(0, 3, 0);
@@ -354,5 +355,7 @@ namespace _013_mizutani
                 Environment.Exit(0);
             }
         }
+        
     }
 }
+
