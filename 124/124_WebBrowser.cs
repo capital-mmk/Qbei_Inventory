@@ -121,7 +121,6 @@ namespace _124
                 string orderCode = dt124.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(124, fun.GetSiteName("124"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "124");
                 fun.WriteLog(ex, "124-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("124", dt124);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -139,7 +138,6 @@ namespace _124
                 {
                     fun.Qbei_ErrorInsert(124, fun.GetSiteName("124"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "124");                    
                     fun.WriteLog("Login Failed", "124-");
-                    fun.Qbei_Maker_Insert("124", dt124);
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -156,7 +154,6 @@ namespace _124
                 string orderCode = dt124.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(124, fun.GetSiteName("124"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "124");
                 fun.WriteLog(ex, "124-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("124", dt124);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -188,8 +185,6 @@ namespace _124
                 }
                 else
                 {
-                    fun.Qbei_Maker_Insert("124", dt124, i);
-
                     qe.site = 124;
                     qe.flag = 2;
                     qe.starttime = string.Empty;

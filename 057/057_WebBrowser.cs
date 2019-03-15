@@ -125,7 +125,6 @@ namespace _57モトクロス
                 string orderCode = dt057.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(57, fun.GetSiteName("057"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "057");                
                 fun.WriteLog(ex, "057-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("057", dt057);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -142,7 +141,7 @@ namespace _57モトクロス
                 {
                     fun.Qbei_ErrorInsert(57, fun.GetSiteName("057"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "057");
                     fun.WriteLog("Login Failed", "057-");
-                    fun.Qbei_Maker_Insert("057", dt057);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -159,7 +158,6 @@ namespace _57モトクロス
                 string orderCode = dt057.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(57, fun.GetSiteName("057"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "057");
                 fun.WriteLog(ex, "057-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("057", dt057);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -193,8 +191,6 @@ namespace _57モトクロス
                 }
                 else
                 {
-                    fun.Qbei_Maker_Insert("057", dt057, i);
-
                     qe.site = 57;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
@@ -260,7 +256,7 @@ namespace _57モトクロス
                         {
                             fun.Qbei_ErrorInsert(57, fun.GetSiteName("057"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "057");
                             fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "057-");
-                            fun.Qbei_Maker_Insert("057", dt057, i);
+                            
                             Application.Exit();
                             Environment.Exit(0);
                         }
@@ -612,7 +608,6 @@ namespace _57モトクロス
             fun.Qbei_ErrorInsert(57, fun.GetSiteName("057"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "057");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "057-");
 
-            fun.Qbei_Maker_Insert("057", dt057, i);
             Application.Exit();
             Environment.Exit(0);
         }

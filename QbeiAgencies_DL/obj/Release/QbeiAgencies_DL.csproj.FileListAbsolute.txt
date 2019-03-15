@@ -1,7 +1,0 @@
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgencies_DL\bin\Release\QbeiAgencies_DL.dll
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgencies_DL\bin\Release\QbeiAgencies_DL.pdb
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgencies_DL\bin\Release\QbeiAgencies_Common.dll
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgencies_DL\bin\Release\QbeiAgencies_Common.pdb
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgencies_DL\obj\Release\QbeiAgencies_DL.csprojResolveAssemblyReference.cache
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgencies_DL\obj\Release\QbeiAgencies_DL.dll
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\QbeiAgencies_DL\obj\Release\QbeiAgencies_DL.pdb

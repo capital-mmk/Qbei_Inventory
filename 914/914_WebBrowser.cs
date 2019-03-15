@@ -135,7 +135,6 @@ namespace _914
             {  
                 objCom.Qbei_ErrorInsert(914, objCom.GetSiteName("914"), ex.Message, entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "914");
                 objCom.WriteLog(ex, "914-", entity.janCode, entity.orderCode);
-                objCom.Qbei_Maker_Insert("914", dt914);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -159,7 +158,6 @@ namespace _914
                     {   
                         objCom.Qbei_ErrorInsert(914, objCom.GetSiteName("914"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "914");
                         objCom.WriteLog("Login Failed", "914-");
-                        objCom.Qbei_Maker_Insert("914", dt914);
                         Application.Exit();
                         Environment.Exit(0);
                     }
@@ -176,8 +174,6 @@ namespace _914
                 }
                 else
                 {
-                    objCom.Qbei_Maker_Insert("914", dt914, intCnt);
-
                     entitySetting.site = 914;
                     entitySetting.flag = 2;
                     entitySetting.starttime = string.Empty;
@@ -308,8 +304,6 @@ namespace _914
             string orderCode = dt914.Rows[intCnt]["発注コード"].ToString();
             objCom.Qbei_ErrorInsert(914, objCom.GetSiteName("914"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "914");
             objCom.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "914-");
-
-            objCom.Qbei_Maker_Insert("914", dt914, intCnt);
             Application.Exit();
             Environment.Exit(0);
         }

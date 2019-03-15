@@ -125,7 +125,6 @@ namespace _016ライトウェイ
                 string orderCode = dt016.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(16, fun.GetSiteName("016"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "016");
                 fun.WriteLog(ex, "016-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("016", dt016);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -145,7 +144,7 @@ namespace _016ライトウェイ
                 {
                     fun.Qbei_ErrorInsert(16, fun.GetSiteName("016"), "Login Failed", dt016.Rows[i]["JANコード"].ToString(), dt016.Rows[i]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "016");
                     fun.WriteLog("Login Failed", "016-");
-                    fun.Qbei_Maker_Insert("016", dt016);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -163,7 +162,6 @@ namespace _016ライトウェイ
                 string orderCode = dt016.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(16, fun.GetSiteName("016"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "016");
                 fun.WriteLog(ex, "016-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("016", dt016);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -187,7 +185,6 @@ namespace _016ライトウェイ
                 string orderCode = dt016.Rows[i]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(16, fun.GetSiteName("016"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "016");
                 fun.WriteLog(ex, "016-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("016", dt016, i);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -252,7 +249,6 @@ namespace _016ライトウェイ
                 }
                 else
                 {
-                    fun.Qbei_Maker_Insert("016", dt016, i);
                     qe.site = 16;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
@@ -268,7 +264,6 @@ namespace _016ライトウェイ
                 string orderCode = dt016.Rows[i]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(16, fun.GetSiteName("016"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "016");
                 fun.WriteLog(ex, "016-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("016", dt016, i);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -291,7 +286,6 @@ namespace _016ライトウェイ
                 string orderCode = dt016.Rows[i]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(16, fun.GetSiteName("016"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "016");
                 fun.WriteLog(ex, "016-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("016", dt016, i);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -314,7 +308,6 @@ namespace _016ライトウェイ
                 string orderCode = dt016.Rows[i]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(16, fun.GetSiteName("016"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "016");
                 fun.WriteLog(ex, "016-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("016", dt016, i);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -357,7 +350,7 @@ namespace _016ライトウェイ
                             {
                                 fun.Qbei_ErrorInsert(16, fun.GetSiteName("016"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "016");
                                 fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "016-");
-                                fun.Qbei_Maker_Insert("016", dt016, counts);
+                                
                                 Application.Exit();
                                 Environment.Exit(0);
                             }
@@ -464,8 +457,6 @@ namespace _016ライトウェイ
                 }
                 else
                 {
-                    fun.Qbei_Maker_Insert("016", dt016, counts);
-
                     qe.site = 16;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
@@ -494,7 +485,6 @@ namespace _016ライトウェイ
             fun.Qbei_ErrorInsert(16, fun.GetSiteName("016"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "016");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "016-");
 
-            fun.Qbei_Maker_Insert("016", dt016, i);
             Application.Exit();
             Environment.Exit(0);
         }

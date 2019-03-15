@@ -157,7 +157,6 @@ namespace _059
                 string orderCode = dt059.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");                
                 fun.WriteLog(ex, "059-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("059", dt059);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -176,7 +175,7 @@ namespace _059
                 {
                     fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");                    
                     fun.WriteLog("Login Failed", "059-");
-                    fun.Qbei_Maker_Insert("059", dt059);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -194,7 +193,6 @@ namespace _059
                 orderCode = dt059.Rows[i]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");                
                 fun.WriteLog(ex, "059-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("059", dt059);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -244,8 +242,6 @@ namespace _059
                     }
                     else
                     {
-                        fun.Qbei_Maker_Insert("059", dt059, i);
-
                         qe.site = 59;
                         qe.flag = 2;
                         qe.endtime = DateTime.Now.ToString();
@@ -285,7 +281,7 @@ namespace _059
                 {
                     fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");
                     fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "059-");
-                    fun.Qbei_Maker_Insert("059", dt059, i);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -334,8 +330,6 @@ namespace _059
             }
             else
             {
-                fun.Qbei_Maker_Insert("059", dt059, i);
-
                 qe.site = 59;
                 qe.flag = 2;
                 qe.endtime = DateTime.Now.ToString();
@@ -351,7 +345,6 @@ namespace _059
             fun.Qbei_ErrorInsert(59, fun.GetSiteName("059"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "059");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "059-");
 
-            fun.Qbei_Maker_Insert("059", dt059, i);
             Application.Exit();
             Environment.Exit(0);
         }

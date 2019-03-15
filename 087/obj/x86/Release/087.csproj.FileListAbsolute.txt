@@ -1,3 +1,0 @@
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\087\obj\x86\Release\_87ダートフリーク.frm087.resources
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\087\obj\x86\Release\_87ダートフリーク.Properties.Resources.resources
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\087\obj\x86\Release\087.csproj.GenerateResource.Cache

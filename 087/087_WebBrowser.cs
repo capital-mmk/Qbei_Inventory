@@ -119,7 +119,6 @@ namespace _87ダートフリーク
                 string orderCode = dt087.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(87, fun.GetSiteName("087"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "087");
                 fun.WriteLog(ex, "087-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("087", dt087);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -137,7 +136,7 @@ namespace _87ダートフリーク
                 {
                     fun.Qbei_ErrorInsert(87, fun.GetSiteName("087"), "Login Failed", dt087.Rows[0]["JANコード"].ToString(), dt087.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "087");
                     fun.WriteLog("Login Failed", "087-");
-                    fun.Qbei_Maker_Insert("087", dt087);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -154,8 +153,7 @@ namespace _87ダートフリーク
                 string janCode = dt087.Rows[0]["JANコード"].ToString();
                 orderCode = dt087.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(87, fun.GetSiteName("087"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "087");
-                fun.WriteLog(ex, "087-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("087", dt087);
+                fun.WriteLog(ex, "087-", janCode, orderCode);                
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -207,7 +205,7 @@ namespace _87ダートフリーク
                         {
                             fun.Qbei_ErrorInsert(87, fun.GetSiteName("087"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "087");
                             fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "087-");
-                            fun.Qbei_Maker_Insert("087", dt087, i);
+                            
                             Application.Exit();
                             Environment.Exit(0);
                         }
@@ -259,8 +257,6 @@ namespace _87ダートフリーク
             }
             else
             {
-                fun.Qbei_Maker_Insert("087", dt087, i);
-
                 qe.site = 87;
                 qe.flag = 2;
                 qe.starttime = string.Empty;
@@ -276,8 +272,6 @@ namespace _87ダートフリーク
             string orderCode = dt087.Rows[i]["発注コード"].ToString();
             fun.Qbei_ErrorInsert(87, fun.GetSiteName("087"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "087");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "087-");
-
-            fun.Qbei_Maker_Insert("087", dt087, i);
             Application.Exit();
             Environment.Exit(0);
         }

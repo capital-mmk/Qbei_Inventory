@@ -1,6 +1,0 @@
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\FileUpload\bin\Release\FileUpload.exe.config
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\FileUpload\bin\Release\FileUpload.exe
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\FileUpload\bin\Release\FileUpload.pdb
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\FileUpload\obj\Release\FileUpload.csprojResolveAssemblyReference.cache
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\FileUpload\obj\Release\FileUpload.exe
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\FileUpload\obj\Release\FileUpload.pdb

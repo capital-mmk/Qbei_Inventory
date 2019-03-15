@@ -1,4 +1,0 @@
-ChromeDriver v2.23
-geckodriver v0.9.0
-64 bit Windows IE v2.53.1 (x86)
-Microsoft WebDriver v3.14393

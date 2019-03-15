@@ -1,3 +1,0 @@
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\018\obj\x86\Release\_018日直_ニチナオ_.frm018.resources
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\018\obj\x86\Release\_018日直_ニチナオ_.Properties.Resources.resources
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\018\obj\x86\Release\018.csproj.GenerateResource.Cache

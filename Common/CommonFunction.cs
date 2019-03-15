@@ -30,9 +30,7 @@ namespace Common
         public string trashPath = string.Empty;
         public string logFilepath = string.Empty;
         public string excelPath016 = string.Empty;
-        public const int MAKER_TYPE = 1; // maker_status night file flag
         int ddr;
-        int makerCount;        
         DataTable dtOrder = new DataTable();
       
         public String DataTableToXml(DataTable dt)
@@ -127,7 +125,6 @@ namespace Common
             Configuration config;
             SqlCommand cmd;
             string constr;
-            makerCount = 0;
             dc.DefaultValue = GetSiteName(shopID);
             string[] columns = { "代理店ID", "JANコード", "在庫情報", "入荷予定", "自社品番", "メーカー情報日", "最終反映日" };
             //string[] filelist = Directory.GetFiles(csvPath);
@@ -332,7 +329,7 @@ namespace Common
             qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             ChangeFlag(qe);
             Application.Exit();
-            Environment.Exit(0);            
+            Environment.Exit(0);
         }
         public void GetTotalCount(string shopID)
         {
@@ -341,7 +338,6 @@ namespace Common
             SqlCommand cmd = new SqlCommand("TotalCount_Update", sqlcon);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@TotalCount", ddr);
-            cmd.Parameters.AddWithValue("@MakerCount", makerCount);
             cmd.Parameters.AddWithValue("@SiteID", shopID);
             cmd.Connection.Open();
             cmd.ExecuteNonQuery();
@@ -378,94 +374,6 @@ namespace Common
                 return dtOrder;
             }
             else return null;
-        }
-        public DataTable Qbei_Maker_Select(int siteID)
-        {
-            Connection con = new Connection();
-            SqlConnection sqlcon = con.GetConnection();
-            SqlCommand cmd = new SqlCommand("Qbei_Maker_Select", sqlcon);
-            cmd.CommandTimeout = 0;
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@siteID", siteID);
-            cmd.Parameters.AddWithValue("@makerType", MAKER_TYPE);
-
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            DataTable dtQbei_Maker = new DataTable();
-            try
-            {                
-                cmd.Connection.Open();
-                da.Fill(dtQbei_Maker);
-                return dtQbei_Maker;
-            }
-            catch
-            { return new DataTable(); }
-            finally
-            {
-                cmd.Connection.Close();
-            }
-        }
-        public bool Qbei_Maker_Insert(string siteID, DataTable dt, int startRow = -1)
-        {   
-            ++startRow;
-            dt.Columns.Add("ID");
-            dt.Columns.Add("makerType");
-            
-            var makerRows = dt.AsEnumerable().Skip(startRow);
-            string date = DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd");
-            foreach (DataRow dr in makerRows)
-            {
-                dr["メーカー情報日"] = date;
-                dr["makerType"] = MAKER_TYPE;
-            }
-
-            DataTable dtMaker = new DataTable();
-            if (makerRows != null && makerRows.Any())
-            {
-                dtMaker = makerRows.CopyToDataTable();
-                foreach (DataRow dr in dtMaker.Rows) dr.SetAdded();                
-            }
-
-            SqlTransaction tran;
-            SqlDataAdapter da;
-            Connection con = new Connection();            
-            SqlConnection sqlcon = con.GetConnection();
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandTimeout = 0;            
-            cmd.CommandType = CommandType.Text;
-            
-            sqlcon.Open();
-            tran = sqlcon.BeginTransaction();
-            try
-            {                
-                cmd.Connection = sqlcon;
-                cmd.Transaction = tran;
-
-                cmd.CommandText = "DELETE FROM Qbei_Maker WHERE 代理店ID = '" + siteID + "' AND makerType = " + MAKER_TYPE;
-                cmd.ExecuteNonQuery();
-
-                cmd.CommandText = "SELECT * FROM Qbei_Maker";
-                da = new SqlDataAdapter(cmd);
-                SqlCommandBuilder scb = new SqlCommandBuilder(da);
-                da.Update(dtMaker);
-                tran.Commit();
-
-                return true;
-            }
-            catch(Exception ex)
-            {
-                try
-                {
-                    tran.Rollback();
-                }
-                catch
-                {
-                }
-                return false;
-            }
-            finally
-            {
-                sqlcon.Close();
-            }
         }
         
         public DataTable Qbei_OrderSelect(string strSiteCode)
@@ -509,14 +417,12 @@ namespace Common
         public DataTable GetOrderData(DataTable dtCsv, string strPurchaseUrl, string strSiteCd, string strPost)
         {
             Qbei_Entity objEntity;
-            DataTable dtData = new DataTable();
-            DataTable dtQbei_Maker = new DataTable();
+            DataTable dtData = null;
             DataTable dtUncheck;
             DataTable dtOnceaWeek;
             DataTable dtID = new DataTable();
             DataView dvID;
             string strCondition = string.Empty;
-            int siteID = int.Parse(strSiteCd);
             try
             {
                 //Retrieve Order Data
@@ -592,30 +498,24 @@ namespace Common
                 }
                 if (dtData != null)
                 {
-                    //Trim 
-                    dtData.AsEnumerable().ToList().ForEach(r => r["発注コード"] = r.Field<string>("発注コード").Trim());
+                    dtData.AsEnumerable().OrderBy(x => x["メーカー情報日"]).ThenBy(x => x["JANコード"]).ToList()
+                                         .ForEach(r => r["発注コード"] = r.Field<string>("発注コード").Trim());
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                dtQbei_Maker = null;
+                dtData = null;
             }
             finally
             {
-                makerCount = 0;
-                if (dtQbei_Maker == null)
+                if (dtData == null)
                 {
                     GetTotalCount(strSiteCd);
-                    StopApplication(siteID);
-                }
-                else
-                {
-                    dtQbei_Maker = Qbei_Maker_Select(siteID);
-                    makerCount = dtQbei_Maker.Rows.Count;
-                    dtQbei_Maker.Merge(dtData);
+                    StopApplication(int.Parse(strSiteCd));
                 }
             }
-            return dtQbei_Maker;
+
+            return dtData;
         }
         
         public void Qbei_OrderDataInsert(Qbei_Entity entity)

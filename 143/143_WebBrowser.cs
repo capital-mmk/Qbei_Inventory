@@ -125,7 +125,6 @@ namespace _143
                 string orderCode = dt143.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(143, fun.GetSiteName("143"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "143");                
                 fun.WriteLog(ex, "143-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("143", dt143);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -142,7 +141,6 @@ namespace _143
                 {
                     fun.Qbei_ErrorInsert(143, fun.GetSiteName("143"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "143");
                     fun.WriteLog("Login Failed", "143-");
-                    fun.Qbei_Maker_Insert("143", dt143);
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -159,7 +157,6 @@ namespace _143
                 string orderCode = dt143.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(143, fun.GetSiteName("143"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "143");                
                 fun.WriteLog(ex, "143-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("143", dt143);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -200,8 +197,6 @@ namespace _143
                 }
                 else
                 {
-                    fun.Qbei_Maker_Insert("143", dt143, i);
-
                     qe.site = 143;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
@@ -274,8 +269,6 @@ namespace _143
                         {
                             fun.Qbei_ErrorInsert(143, fun.GetSiteName("143"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "143");
                             fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "143-");
-                           
-                            fun.Qbei_Maker_Insert("143", dt143, i);
                             Application.Exit();
                             Environment.Exit(0);
                         }
@@ -294,8 +287,6 @@ namespace _143
                         {
                             fun.Qbei_ErrorInsert(143, fun.GetSiteName("143"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "143");
                             fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "143-");
-
-                            fun.Qbei_Maker_Insert("143", dt143, i);
                             Application.Exit();
                             Environment.Exit(0);
                         }
@@ -381,8 +372,6 @@ namespace _143
             }
             else
             {
-                fun.Qbei_Maker_Insert("143", dt143, i);
-
                 qe.site = 143;
                 qe.flag = 2;
                 qe.starttime = string.Empty;
@@ -398,8 +387,6 @@ namespace _143
             string orderCode = dt143.Rows[i]["発注コード"].ToString();
             fun.Qbei_ErrorInsert(143, fun.GetSiteName("143"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "143");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "143-");
-
-            fun.Qbei_Maker_Insert("143", dt143, i);
             Application.Exit();
             Environment.Exit(0);
         }

@@ -124,7 +124,6 @@ namespace _053
                 string orderCode = dt053.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(53, fun.GetSiteName("053"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "053");                
                 fun.WriteLog(ex, "053-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("053", dt053);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -142,7 +141,7 @@ namespace _053
                 {
                     fun.Qbei_ErrorInsert(53, fun.GetSiteName("053"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "053");
                     fun.WriteLog("Login Failed", "053-");
-                    fun.Qbei_Maker_Insert("053", dt053);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -169,7 +168,6 @@ namespace _053
                 string janCode = dt053.Rows[i]["JANコード"].ToString();
                 fun.Qbei_ErrorInsert(53, fun.GetSiteName("053"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "053");                
                 fun.WriteLog(ex, "053-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("053", dt053);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -262,7 +260,7 @@ namespace _053
                         {
                             fun.Qbei_ErrorInsert(53, fun.GetSiteName("053"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "053");
                             fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "053-");
-                            fun.Qbei_Maker_Insert("053", dt053, i);
+                            
                             Application.Exit();
                             Environment.Exit(0);
                         }
@@ -319,8 +317,6 @@ namespace _053
             }
             else
             {
-                fun.Qbei_Maker_Insert("053", dt053, i);
-
                 qe.site = 53;
                 qe.flag = 2;
                 qe.starttime = string.Empty;
@@ -456,7 +452,6 @@ namespace _053
             fun.Qbei_ErrorInsert(53, fun.GetSiteName("053"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "053");            
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "053-");
 
-            fun.Qbei_Maker_Insert("053", dt053, i);
             Application.Exit();
             Environment.Exit(0);
         }

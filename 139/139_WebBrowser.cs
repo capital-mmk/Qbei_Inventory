@@ -36,7 +36,7 @@ namespace _139
 
         private void testFlag()
         {
-            try
+        	try
             {
                 int intFlag;
                 entitySetting.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -134,7 +134,6 @@ namespace _139
                 string orderCode = dt139.Rows[0]["発注コード"].ToString();
                 objCom.Qbei_ErrorInsert(139, objCom.GetSiteName("139"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "139");                
                 objCom.WriteLog(ex, "139-", janCode, orderCode);
-                objCom.Qbei_Maker_Insert("139", dt139);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -155,7 +154,7 @@ namespace _139
                     {
                         objCom.Qbei_ErrorInsert(139, objCom.GetSiteName("139"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "139");
                         objCom.WriteLog("Login Failed", "139-");
-                        objCom.Qbei_Maker_Insert("139", dt139);
+                        
                         Application.Exit();
                         Environment.Exit(0);
                     }
@@ -170,8 +169,6 @@ namespace _139
                 }
                 else
                 {
-                    objCom.Qbei_Maker_Insert("139", dt139, intCnt);
-
                     entitySetting.site = 139;
                     entitySetting.flag = 2;
                     entitySetting.starttime = string.Empty;
@@ -233,7 +230,7 @@ namespace _139
                         {
                             objCom.Qbei_ErrorInsert(139, objCom.GetSiteName("139"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "139");
                             objCom.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "139-");
-                            objCom.Qbei_Maker_Insert("139", dt139, intCnt);
+                            
                             Application.Exit();
                             Environment.Exit(0);
                         }
@@ -335,8 +332,6 @@ namespace _139
             string orderCode = dt139.Rows[intCnt]["発注コード"].ToString();
             objCom.Qbei_ErrorInsert(139, objCom.GetSiteName("139"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "139");
             objCom.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "139-");
-
-            objCom.Qbei_Maker_Insert("139", dt139, intCnt);
             Application.Exit();
             Environment.Exit(0);
         }

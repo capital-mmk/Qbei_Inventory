@@ -120,7 +120,6 @@ namespace _17インターマックス
                 string orderCode = dt017.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(17, fun.GetSiteName("017"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "017");                
                 fun.WriteLog(ex, "017-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("017", dt017);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -139,7 +138,7 @@ namespace _17インターマックス
                 {
                     fun.Qbei_ErrorInsert(17, fun.GetSiteName("017"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "017");                    
                     fun.WriteLog("Login Failed", "017-");
-                    fun.Qbei_Maker_Insert("017", dt017);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -157,7 +156,6 @@ namespace _17インターマックス
                 orderCode = dt017.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(17, fun.GetSiteName("017"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "017");                
                 fun.WriteLog(ex, "017-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("017", dt017);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -218,7 +216,7 @@ namespace _17インターマックス
                         {
                             fun.Qbei_ErrorInsert(17, fun.GetSiteName("017"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "017");
                             fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "017-");
-                            fun.Qbei_Maker_Insert("017", dt017, i);
+                            
                             Application.Exit();
                             Environment.Exit(0);
                         }
@@ -279,7 +277,7 @@ namespace _17インターマックス
                                     }
                                     else
                                     {
-                                        entity.stockDate = qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("あり") || qty.Contains("僅か") || qty.Contains("欠品中") || qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") ? "2100-01-01" : qty.Contains("完売") || qty.Contains("終了") ? "2100-02-01" : "Unknown date";
+                                        entity.stockDate = qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("あり") || qty.Contains("僅か") || qty.Contains("欠品中") || qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") ? "2100-01-01" : qty.Contains("完売") || qty.Contains("終了") ? "2100-02-01" : "unknown date";
                                     }
                                 }
                                 else
@@ -331,8 +329,6 @@ namespace _17インターマックス
                 }
                 else
                 {
-                    fun.Qbei_Maker_Insert("017", dt017, i);
-
                     qe.site = 17;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
@@ -350,7 +346,6 @@ namespace _17インターマックス
             fun.Qbei_ErrorInsert(17, fun.GetSiteName("017"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "017");            
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "017-");
 
-            fun.Qbei_Maker_Insert("017", dt017, i);
             Application.Exit();
             Environment.Exit(0);
         }

@@ -131,7 +131,6 @@ namespace _104
                 string orderCode = dt104.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(104, fun.GetSiteName("104"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "104");
                 fun.WriteLog(ex, "104-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("104", dt104);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -150,7 +149,6 @@ namespace _104
                 {
                     fun.Qbei_ErrorInsert(104, fun.GetSiteName("104"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "104");                    
                     fun.WriteLog("Login Failed", "104-");
-                    fun.Qbei_Maker_Insert("104", dt104);
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -168,7 +166,6 @@ namespace _104
                 orderCode = dt104.Rows[i]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(104, fun.GetSiteName("104"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "104");
                 fun.WriteLog(ex, "104-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("104", dt104);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -266,8 +263,6 @@ namespace _104
             }
             else
             {
-                fun.Qbei_Maker_Insert("104", dt104, i);
-
                 qe.site = 104;
                 qe.flag =2;
                 qe.starttime = string.Empty;

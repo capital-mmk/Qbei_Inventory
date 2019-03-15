@@ -121,7 +121,6 @@ namespace _46トライスポーツ
                 string orderCode = dt046.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
                 fun.WriteLog(ex, "046-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("046", dt046);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -143,7 +142,7 @@ namespace _46トライスポーツ
                     entity.orderCode = dt046.Rows[i]["発注コード"].ToString();
                     fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
                     fun.WriteLog("Login Failed", "046-");
-                    fun.Qbei_Maker_Insert("046", dt046);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -158,7 +157,6 @@ namespace _46トライスポーツ
             {   
                 fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), ex.Message, entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
                 fun.WriteLog(ex, "046-", entity.janCode, entity.orderCode);
-                fun.Qbei_Maker_Insert("046", dt046);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -228,8 +226,6 @@ namespace _46トライスポーツ
                         }
                         else
                         {
-                            fun.Qbei_Maker_Insert("046", dt046, i);
-
                             qe.SiteID = 42;
                             qe.flag = 2;
                             qe.starttime = string.Empty;
@@ -251,8 +247,6 @@ namespace _46トライスポーツ
                     }
                     else
                     {
-                        fun.Qbei_Maker_Insert("046", dt046, i);
-
                         qe.SiteID = 46;
                         qe.starttime = string.Empty;
                         qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -330,8 +324,6 @@ namespace _46トライスポーツ
             }
             else
             {
-                fun.Qbei_Maker_Insert("046", dt046, i);
-
                 qe.site =46;
                 qe.flag = 2;
                 qe.starttime = string.Empty;
@@ -347,7 +339,6 @@ namespace _46トライスポーツ
             string orderCode = dt046.Rows[i]["発注コード"].ToString();
             fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");            
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "046-");
-            fun.Qbei_Maker_Insert("046", dt046, i);
 
             Application.Exit();
             Environment.Exit(0);

@@ -133,7 +133,6 @@ namespace _65野口
                 string orderCode = dt065.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");               
                 fun.WriteLog(ex, "065-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("065", dt065);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -151,7 +150,7 @@ namespace _65野口
                 {
                     fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), "Login Failed", dt065.Rows[0]["JANコード"].ToString(), dt065.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
                     fun.WriteLog("Login Failed", "065-");                   
-                    fun.Qbei_Maker_Insert("065", dt065);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -168,7 +167,6 @@ namespace _65野口
                 string orderCode = dt065.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
                 fun.WriteLog(ex, "065-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("065", dt065);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -206,8 +204,6 @@ namespace _65野口
                 }
                 else
                 {
-                    fun.Qbei_Maker_Insert("065", dt065, i);
-
                     qe.site = 65;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
@@ -298,7 +294,7 @@ namespace _65野口
                 {
                     fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
                     fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "065-");
-                    fun.Qbei_Maker_Insert("065", dt065, i);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -347,7 +343,6 @@ namespace _65野口
             string orderCode = dt065.Rows[i]["発注コード"].ToString();
             fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "065-");
-            fun.Qbei_Maker_Insert("065", dt065, i);
 
             Application.Exit();
             Environment.Exit(0);

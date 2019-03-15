@@ -141,7 +141,6 @@ namespace _031アキボウ
                 string orderCode = dt031.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");                
                 fun.WriteLog(ex, "031-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("031", dt031);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -160,7 +159,7 @@ namespace _031アキボウ
                 {
                     fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
                     fun.WriteLog("Login Faliled", "031-");
-                    fun.Qbei_Maker_Insert("031", dt031);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -188,7 +187,6 @@ namespace _031アキボウ
                 string janCode = dt031.Rows[i]["JANコード"].ToString();
                 fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
                 fun.WriteLog(ex, "031-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("031", dt031);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -207,8 +205,6 @@ namespace _031アキボウ
                 fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
                 if (i >= dt031.Rows.Count)
                 {
-                    fun.Qbei_Maker_Insert("031", dt031, i);
-
                     qe.site = 31;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
@@ -268,7 +264,7 @@ namespace _031アキボウ
                     {
                         fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
                         fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "031-");
-                        fun.Qbei_Maker_Insert("031", dt031, i);
+                        
                         Application.Exit();
                         Environment.Exit(0);
                     }
@@ -328,8 +324,6 @@ namespace _031アキボウ
             }
             else
             {
-                fun.Qbei_Maker_Insert("031", dt031, i);
-
                 qe.site = 31;
                 qe.flag = 2;
                 qe.starttime = string.Empty;
@@ -346,7 +340,6 @@ namespace _031アキボウ
             fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "031-");
 
-            fun.Qbei_Maker_Insert("031", dt031, i);
             Application.Exit();
             Environment.Exit(0);
         }

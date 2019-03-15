@@ -126,7 +126,6 @@ namespace _36PRインターナショナル
                 string orderCode = dt036.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");                
                 fun.WriteLog(ex, "036-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("036", dt036);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -143,7 +142,7 @@ namespace _36PRインターナショナル
                 {
                     fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Login Failed", entity.janCode, entity.purchaseURL, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");                    
                     fun.WriteLog("Login Failed", "036-");
-                    fun.Qbei_Maker_Insert("036", dt036);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -161,7 +160,6 @@ namespace _36PRインターナショナル
                 string orderCode = dt036.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");                
                 fun.WriteLog(ex, "036-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("036", dt036);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -218,7 +216,7 @@ namespace _36PRインターナショナル
                             {
                                 fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Access Denied!", entity.janCode, entity.purchaseURL, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");                                
                                 fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "036-");
-                                fun.Qbei_Maker_Insert("036", dt036, i);
+                                
                                 Application.Exit();
                                 Environment.Exit(0);
                             }
@@ -354,8 +352,6 @@ namespace _36PRインターナショナル
                 }
                 else
                 {
-                    fun.Qbei_Maker_Insert("036", dt036, i);
-
                     qe.site = 36;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
@@ -369,7 +365,7 @@ namespace _36PRインターナショナル
             {
                 fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, entity.janCode, entity.purchaseURL, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
                 fun.WriteLog(ex, "036-", entity.janCode, entity.orderCode);
-                fun.Qbei_Maker_Insert("036", dt036, i);
+                
                 Application.Exit();
                 Environment.Exit(0);
             }
@@ -410,8 +406,6 @@ namespace _36PRインターナショナル
                 }
                 else
                 {
-                    fun.Qbei_Maker_Insert("036", dt036, i);
-
                     qe.site = 36;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
@@ -427,7 +421,7 @@ namespace _36PRインターナショナル
                 string orderCode = dt036.Rows[i]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
                 fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "036-");
-                fun.Qbei_Maker_Insert("036", dt036, i);
+                
                 Application.Exit();
                 Environment.Exit(0);                
             }

@@ -134,7 +134,6 @@ namespace _20ダイアテック_高難易度_
                 string orderCode = dt020.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(20, fun.GetSiteName("020"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "020");
                 fun.WriteLog(ex, "020-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("020", dt020);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -156,7 +155,7 @@ namespace _20ダイアテック_高難易度_
                 {
                     fun.Qbei_ErrorInsert(20, fun.GetSiteName("020"), "Login Failed", janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "020");
                     fun.WriteLog("Login Failed", "020-");
-                    fun.Qbei_Maker_Insert("020", dt020);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -172,7 +171,6 @@ namespace _20ダイアテック_高難易度_
             {
                 fun.Qbei_ErrorInsert(20, fun.GetSiteName("020"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "020");
                 fun.WriteLog(ex, "020-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("020", dt020);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -247,8 +245,7 @@ namespace _20ダイアテック_高難易度_
                         if (webBrowser1.Document.All.GetElementsByName("frm").Count == 0)
                         {
                             fun.Qbei_ErrorInsert(20, fun.GetSiteName("020"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "020");
-                            fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "020-");                            
-                            fun.Qbei_Maker_Insert("020", dt020, i);
+                            fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "020-");   
 
                             Application.Exit();
                             Environment.Exit(0);
@@ -326,8 +323,6 @@ namespace _20ダイアテック_高難易度_
                     }
                     else
                     {
-                        fun.Qbei_Maker_Insert("020", dt020, i);
-
                         qe.site = 20;
                         qe.flag = 2;
                         qe.starttime = string.Empty;
@@ -346,8 +341,7 @@ namespace _20ダイアテック_高難易度_
             string orderCode = dt020.Rows[i]["発注コード"].ToString();
             fun.Qbei_ErrorInsert(20, fun.GetSiteName("020"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "020");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "020-");
-
-            fun.Qbei_Maker_Insert("020", dt020, i);
+            
             Application.Exit();
             Environment.Exit(0);
         }

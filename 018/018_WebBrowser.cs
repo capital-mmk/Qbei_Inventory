@@ -127,7 +127,6 @@ namespace _018日直_ニチナオ_
                 string orderCode = dt018.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(18, fun.GetSiteName("018"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "018");
                 fun.WriteLog(ex, "018-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("018", dt018);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -145,7 +144,7 @@ namespace _018日直_ニチナオ_
                 {
                     fun.Qbei_ErrorInsert(18, fun.GetSiteName("018"), "Login Failed", dt018.Rows[0]["JANコード"].ToString(), dt018.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "018");
                     fun.WriteLog("Login Failed", "018-");
-                    fun.Qbei_Maker_Insert("018", dt018);
+
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -163,7 +162,6 @@ namespace _018日直_ニチナオ_
                 string orderCode = dt018.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(18, fun.GetSiteName("018"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "018");
                 fun.WriteLog(ex, "018-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("018", dt018);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -219,8 +217,7 @@ namespace _018日直_ニチナオ_
                     {
                         fun.Qbei_ErrorInsert(18, fun.GetSiteName("018"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "018");
                         fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "018-");
-
-                        fun.Qbei_Maker_Insert("018", dt018, i);
+                        
                         Application.Exit();
                         Environment.Exit(0);
                     }
@@ -316,8 +313,6 @@ namespace _018日直_ニチナオ_
             }
             else
             {
-                fun.Qbei_Maker_Insert("018", dt018, i);
-
                 qe.site = 18;
                 qe.flag = 2;
                 qe.starttime = string.Empty;
@@ -334,7 +329,6 @@ namespace _018日直_ニチナオ_
             fun.Qbei_ErrorInsert(18, fun.GetSiteName("018"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "018");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "018-");
 
-            fun.Qbei_Maker_Insert("018", dt018, i);
             Application.Exit();
             Environment.Exit(0);
         }

@@ -127,7 +127,6 @@ namespace _12カワシマ
                 string orderCode = dt012.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(12, fun.GetSiteName("012"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "012");                
                 fun.WriteLog(ex, "012-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("012", dt012);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -147,7 +146,7 @@ namespace _12カワシマ
                 {
                     fun.Qbei_ErrorInsert(12, fun.GetSiteName("012"), "Login Failed", dt012.Rows[0]["JANコード"].ToString(), dt012.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "012");                    
                     fun.WriteLog("Login Failed", "012-");
-                    fun.Qbei_Maker_Insert("012", dt012);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -165,7 +164,6 @@ namespace _12カワシマ
                 orderCode = dt012.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(12, fun.GetSiteName("012"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "012");
                 fun.WriteLog(ex, "012-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("012", dt012);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -223,7 +221,7 @@ namespace _12カワシマ
                         {
                             fun.Qbei_ErrorInsert(12, fun.GetSiteName("012"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "012");
                             fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "012-");
-                            fun.Qbei_Maker_Insert("012", dt012, i);
+                            
                             Application.Exit();
                             Environment.Exit(0);
                         }
@@ -280,8 +278,6 @@ namespace _12カワシマ
                 }
                 else
                 {
-                    fun.Qbei_Maker_Insert("012", dt012, i);
-
                     qe.site = 12;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
@@ -299,8 +295,7 @@ namespace _12カワシマ
             string orderCode = dt012.Rows[i]["発注コード"].ToString();
             fun.Qbei_ErrorInsert(12, fun.GetSiteName("012"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "012");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "012-");
-            
-            fun.Qbei_Maker_Insert("012", dt012, i);
+
             Application.Exit();
             Environment.Exit(0);
         }

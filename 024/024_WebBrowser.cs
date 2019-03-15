@@ -129,7 +129,6 @@ namespace _24東_アズマ_
             {
                 fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");                
                 fun.WriteLog(ex, "024-", entity.janCode, entity.orderCode);
-                fun.Qbei_Maker_Insert("024", dt024);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -153,7 +152,7 @@ namespace _24東_アズマ_
                 {
                     fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
                     fun.WriteLog("Login Failed", "024");
-                    fun.Qbei_Maker_Insert("024", dt024);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -168,7 +167,7 @@ namespace _24東_アズマ_
             {
                 fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
                 fun.WriteLog(ex, "024-", entity.janCode, entity.orderCode);
-                fun.Qbei_Maker_Insert("024", dt024);
+                
                 Application.Exit();
                 Environment.Exit(0);
             }
@@ -196,7 +195,7 @@ namespace _24東_アズマ_
             {
                 fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");                
                 fun.WriteLog(ex, "024-", entity.janCode, entity.orderCode);
-                fun.Qbei_Maker_Insert("024", dt024, i);
+                
                 Application.Exit();
                 Environment.Exit(0);
             }
@@ -233,7 +232,7 @@ namespace _24東_アズマ_
                     {
                         fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
                         fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "024-");
-                        fun.Qbei_Maker_Insert("024", dt024, i);
+                        
                         Application.Exit();
                         Environment.Exit(0);
                     }
@@ -335,9 +334,7 @@ namespace _24東_アズマ_
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
                 else
-                {
-                    fun.Qbei_Maker_Insert("024", dt024, i);
- 
+                { 
                     qe.site = 24;
                     qe.flag = 2;
                     qe.starttime = st;
@@ -355,7 +352,6 @@ namespace _24東_アズマ_
             fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "024-");
 
-            fun.Qbei_Maker_Insert("024", dt024, i);
             Application.Exit();
             Environment.Exit(0);
         }

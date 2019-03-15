@@ -130,7 +130,6 @@ namespace _34シマノ
                 string orderCode = dt034.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(34, fun.GetSiteName("034"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "034");
                 fun.WriteLog(ex, "034-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("034", dt034);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -148,7 +147,7 @@ namespace _34シマノ
                 {
                     fun.Qbei_ErrorInsert(34, fun.GetSiteName("034"), "Login Failed", dt034.Rows[0]["JANコード"].ToString(), dt034.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "034");
                     fun.WriteLog("Login Failed", "034-");
-                    fun.Qbei_Maker_Insert("034", dt034);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -166,7 +165,6 @@ namespace _34シマノ
                 orderCode = dt034.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(34, fun.GetSiteName("034"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "034");
                 fun.WriteLog(ex, "034-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("034", dt034);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -233,7 +231,7 @@ namespace _34シマノ
                         {
                             fun.Qbei_ErrorInsert(34, fun.GetSiteName("034"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "034");
                             fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "034-");                           
-                            fun.Qbei_Maker_Insert("034", dt034, i);
+                            
                             Application.Exit();
                             Environment.Exit(0);
                         }
@@ -299,8 +297,6 @@ namespace _34シマノ
             }
             else
             {
-                fun.Qbei_Maker_Insert("034", dt034, i);
-
                 qe.site = 34;
                 qe.flag = 2;
                 qe.starttime = string.Empty;
@@ -315,8 +311,7 @@ namespace _34シマノ
             string janCode = dt034.Rows[i]["JANコード"].ToString();
             string orderCode = dt034.Rows[i]["発注コード"].ToString();
             fun.Qbei_ErrorInsert(34, fun.GetSiteName("034"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "034");            
-            fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "034-");
-            fun.Qbei_Maker_Insert("034", dt034, i);
+            fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "034-");            
 
             Application.Exit();
             Environment.Exit(0);

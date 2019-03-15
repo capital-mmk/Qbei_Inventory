@@ -452,15 +452,15 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\014_Firefox\\014_Firefox.csproj",
+      "projectUniqueName": "D:\\KNZ\\project\\Inventory\\Source\\152\\Qbei_Inventory\\014_Firefox\\014_Firefox.csproj",
       "projectName": "014_Firefox",
-      "projectPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\014_Firefox\\014_Firefox.csproj",
+      "projectPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Qbei_Inventory\\014_Firefox\\014_Firefox.csproj",
       "packagesPath": "C:\\Users\\Khin Nandar Zaw\\.nuget\\packages\\",
-      "outputPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\014_Firefox\\obj\\",
+      "outputPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Qbei_Inventory\\014_Firefox\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "configFilePaths": [
-        "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\.nuget\\NuGet.Config",
+        "D:\\KNZ\\project\\Inventory\\Source\\152\\Qbei_Inventory\\.nuget\\NuGet.Config",
         "C:\\Users\\Khin Nandar Zaw\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -474,17 +474,17 @@
       "frameworks": {
         "net40-client": {
           "projectReferences": {
-            "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\Common\\Common.csproj": {
-              "projectPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\Common\\Common.csproj"
+            "D:\\KNZ\\project\\Inventory\\Source\\152\\Qbei_Inventory\\Common\\Common.csproj": {
+              "projectPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Qbei_Inventory\\Common\\Common.csproj"
             },
-            "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\QbeiAgencies_BL\\QbeiAgencies_BL.csproj": {
-              "projectPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\QbeiAgencies_BL\\QbeiAgencies_BL.csproj"
+            "D:\\KNZ\\project\\Inventory\\Source\\152\\Qbei_Inventory\\QbeiAgencies_BL\\QbeiAgencies_BL.csproj": {
+              "projectPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Qbei_Inventory\\QbeiAgencies_BL\\QbeiAgencies_BL.csproj"
             },
-            "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\QbeiAgencies_Common\\QbeiAgencies_Common.csproj": {
-              "projectPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\QbeiAgencies_Common\\QbeiAgencies_Common.csproj"
+            "D:\\KNZ\\project\\Inventory\\Source\\152\\Qbei_Inventory\\QbeiAgencies_Common\\QbeiAgencies_Common.csproj": {
+              "projectPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Qbei_Inventory\\QbeiAgencies_Common\\QbeiAgencies_Common.csproj"
             },
-            "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\QbeiAgencies_DL\\QbeiAgencies_DL.csproj": {
-              "projectPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Inventory_Management\\QbeiAgencies_DL\\QbeiAgencies_DL.csproj"
+            "D:\\KNZ\\project\\Inventory\\Source\\152\\Qbei_Inventory\\QbeiAgencies_DL\\QbeiAgencies_DL.csproj": {
+              "projectPath": "D:\\KNZ\\project\\Inventory\\Source\\152\\Qbei_Inventory\\QbeiAgencies_DL\\QbeiAgencies_DL.csproj"
             }
           }
         }

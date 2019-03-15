@@ -1,3 +1,0 @@
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\143\obj\Release\_143.frm143.resources
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\143\obj\Release\_143.Properties.Resources.resources
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\143\obj\Release\143.csproj.GenerateResource.Cache

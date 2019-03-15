@@ -124,7 +124,6 @@ namespace _019深谷_フカヤ_
                 string orderCode = dt019.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(19, fun.GetSiteName("019"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "019");
                 fun.WriteLog(ex, "019-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("019", dt019);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -143,7 +142,7 @@ namespace _019深谷_フカヤ_
                 {
                     fun.Qbei_ErrorInsert(19, fun.GetSiteName("019"), "Login Failed", dt019.Rows[0]["JANコード"].ToString(), dt019.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "019");
                     fun.WriteLog("Login Failed", "019-");
-                    fun.Qbei_Maker_Insert("019", dt019);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -162,7 +161,6 @@ namespace _019深谷_フカヤ_
                 orderCode = dt019.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(19, fun.GetSiteName("019"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "019");
                 fun.WriteLog(ex, "019-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("019", dt019);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -229,7 +227,7 @@ namespace _019深谷_フカヤ_
                     {
                         fun.Qbei_ErrorInsert(19, fun.GetSiteName("019"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "019");
                         fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "019-");
-                        fun.Qbei_Maker_Insert("019", dt019, i);
+                        
                         Application.Exit();
                         Environment.Exit(0);
                     }
@@ -298,8 +296,6 @@ namespace _019深谷_フカヤ_
             }
             else
             {
-                fun.Qbei_Maker_Insert("019", dt019, i);
-
                 qe.site = 19;
                 qe.flag = 2;
                 qe.starttime = string.Empty;
@@ -316,7 +312,6 @@ namespace _019深谷_フカヤ_
             fun.Qbei_ErrorInsert(19, fun.GetSiteName("019"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "019");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "019-");
 
-            fun.Qbei_Maker_Insert("019", dt019, i);
             Application.Exit();
             Environment.Exit(0);
         }

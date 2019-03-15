@@ -123,7 +123,6 @@ namespace _38フタバ
                 string orderCode = dt038.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(38, fun.GetSiteName("038"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "038");                
                 fun.WriteLog(ex, "038-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("038", dt038);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -140,7 +139,7 @@ namespace _38フタバ
                 {
                     fun.Qbei_ErrorInsert(38, fun.GetSiteName("038"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "038");                    
                     fun.WriteLog("Login Failed", "038-");
-                    fun.Qbei_Maker_Insert("038", dt038);
+                    
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -156,7 +155,6 @@ namespace _38フタバ
                 string orderCode = dt038.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(38, fun.GetSiteName("038"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "038");                
                 fun.WriteLog(ex, "038-", janCode, orderCode);
-                fun.Qbei_Maker_Insert("038", dt038);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -188,8 +186,6 @@ namespace _38フタバ
                 }
                 else
                 {
-                    fun.Qbei_Maker_Insert("038", dt038, i);
-
                     qe.site = 38;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
@@ -255,7 +251,7 @@ namespace _38フタバ
                     {
                         fun.Qbei_ErrorInsert(38, fun.GetSiteName("038"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "038");
                         fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "038-");
-                        fun.Qbei_Maker_Insert("038", dt038, i);
+                        
                         Application.Exit();
                         Environment.Exit(0);
                     }
@@ -403,8 +399,7 @@ namespace _38フタバ
             string orderCode = dt038.Rows[i]["発注コード"].ToString();
             fun.Qbei_ErrorInsert(38, fun.GetSiteName("038"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "038");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "038-");
-
-            fun.Qbei_Maker_Insert("038", dt038, i);
+            
             Application.Exit();
             Environment.Exit(0);
         }

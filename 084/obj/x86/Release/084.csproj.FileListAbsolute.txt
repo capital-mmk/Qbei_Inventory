@@ -1,5 +1,0 @@
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\084\obj\x86\Release\Interop.GrooveRecord.dll
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\084\obj\x86\Release\084.csproj.ResolveComReference.cache
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\084\obj\x86\Release\_84NBS_今期取り扱い商品無し保留_.frm084.resources
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\084\obj\x86\Release\_84NBS_今期取り扱い商品無し保留_.Properties.Resources.resources
-C:\Projects\Inventory\sourcecode\Qbei_Inventory\084\obj\x86\Release\084.csproj.GenerateResource.Cache
