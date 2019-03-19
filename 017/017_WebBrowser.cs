@@ -178,7 +178,7 @@ namespace _17インターマックス
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt017.Rows[i]["最終反映日"].ToString();
                 entity.stockDate = dt017.Rows[i]["入荷予定"].ToString();
-                entity.orderCode = dt017.Rows[i]["発注コード"].ToString().Trim();// "8022530007719";
+                entity.orderCode = dt017.Rows[i]["発注コード"].ToString().Trim();// "8022530007719"; 
                 entity.purchaseURL = fun.url + "/shop/g/g" + entity.orderCode + "/";
 
                 if (!string.IsNullOrWhiteSpace(entity.orderCode))
