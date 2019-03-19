@@ -89,6 +89,7 @@ namespace _34シマノ
             dt = qubl.Qbei_Setting_Select(qe);
             fun.url = dt.Rows[0]["Url"].ToString();
             Thread.Sleep(2000);
+            webBrowser1.ScriptErrorsSuppressed = true;
             webBrowser1.AllowNavigation = true;
             webBrowser1.Navigate(fun.url);
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
@@ -122,6 +123,7 @@ namespace _34シマノ
                 }
                 fun.GetElement("input", "order", "name", webBrowser1).InvokeMember("click");
                 webBrowser1.DocumentCompleted -= webBrowser1_Start;
+                webBrowser1.ScriptErrorsSuppressed = true;
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Login);
             }
             catch (Exception ex)
@@ -155,6 +157,7 @@ namespace _34シマノ
                 {
                     fun.WriteLog("Login success             ------", "034-");
                     orderCode = dt034.Rows[i]["発注コード"].ToString();
+                    webBrowser1.ScriptErrorsSuppressed = true;
                     webBrowser1.Navigate(fun.url + "/front/g/g" + orderCode);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
                 }
