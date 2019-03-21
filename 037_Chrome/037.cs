@@ -16,7 +16,6 @@ namespace _037
 {
     class Program
     {
-
         DataRow dr;
         Qbeisetting_BL blQbei = new Qbeisetting_BL();
         Qbei_Entity entity = new Qbei_Entity();
@@ -29,28 +28,36 @@ namespace _037
         }
         public static void testFlag()
         {
-            Qbeisetting_Entity qe = new Qbeisetting_Entity();
-            DataTable dtSetting = new DataTable();
-
-            int intFlag;
-            qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            qe.site = 037;
-            qe.flag = 1;
-            dtSetting = fun.SelectFlag(037);
-            intFlag = int.Parse(dtSetting.Rows[0]["FlagIsFinished"].ToString());
-            if (intFlag == 0)
+        	try
+        	{
+	            Qbeisetting_Entity qe = new Qbeisetting_Entity();
+	            DataTable dtSetting = new DataTable();
+	
+	            int intFlag;
+	            qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+	            qe.site = 037;
+	            qe.flag = 1;
+	            dtSetting = fun.SelectFlag(037);
+	            intFlag = int.Parse(dtSetting.Rows[0]["FlagIsFinished"].ToString());
+	            if (intFlag == 0)
+	            {
+	                fun.ChangeFlag(qe);
+	                startRun();
+	            }
+	            else if (intFlag == 1)
+	            {
+	                fun.deleteData(037);
+	                fun.ChangeFlag(qe);
+	                startRun();
+	            }
+	            else
+	            {
+	                Environment.Exit(0);
+	            }
+	        }
+            catch (Exception ex)
             {
-                fun.ChangeFlag(qe);
-                startRun();
-            }
-            else if (intFlag == 1)
-            {
-                fun.deleteData(037);
-                fun.ChangeFlag(qe);
-                startRun();
-            }
-            else
-            {
+                fun.WriteLog(ex, "037-");
                 Environment.Exit(0);
             }
         }
@@ -68,10 +75,10 @@ namespace _037
             }
             catch (Exception ex)
             {
-                fun.WriteLog(ex.Message, "037-");
+                fun.WriteLog(ex, "037-");
+                Environment.Exit(0);
             }
         }
-
 
         public static void ReadData()
         {
@@ -103,14 +110,15 @@ namespace _037
                 // chrome.Navigate().GoToUrl("https://ec.tsss.co.jp/aec/user/csv_export_download_info?schedule_id=csv_export_49c35718d482aecec14e92168a955b66");
                 url = chrome.Url.ToString();
                 Thread.Sleep(8000);
-                var progress_value = chrome.FindElement(By.Id("export-progress")).GetAttribute("value");
-                //string txt = chrome.FindElement(By.XPath("/html/body/div[1]/div[1]/div/div/article/section/section/table/tbody/tr[2]/td/div[2]/a")).Text;
-                if (int.Parse(progress_value) < 100)
+                int progress_value = int.Parse(chrome.FindElement(By.Id("export-progress")).GetAttribute("value"));
+                while (progress_value < 100)
                 {
-                    Thread.Sleep(15000);
+                    Thread.Sleep(2000);
+                    progress_value = int.Parse(chrome.FindElement(By.Id("export-progress")).GetAttribute("value"));
                 }
 
-                chrome.FindElement(By.XPath("/html/body/div[1]/div[1]/div/div/article/section/section/table/tbody/tr[2]/td/div[2]/a")).Click();
+				if(chrome.FindElement(By.Id("file-download-block")).Displayed)
+                	chrome.FindElement(By.XPath("/html/body/div[1]/div[1]/div/div/article/section/section/table/tbody/tr[2]/td/div[2]/a")).Click();
 
                 DataTable dt037 = fun.GetDatatable("037");
                 dt037 = fun.GetOrderData(dt037, "https://ec.tsss.co.jp/aec/user/csv_export_download_info?schedule_id=csv_export_49c35718d482aecec14e92168a955b66", "037", "");
@@ -131,12 +139,7 @@ namespace _037
                 fun.ChangeFlag(qe);
                 chrome.Quit();
                 Environment.Exit(0);
-
             }
-
         }
-
     }
-
-
 }
