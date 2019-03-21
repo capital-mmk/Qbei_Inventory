@@ -71,7 +71,7 @@ namespace _17インターマックス
                 fun.Qbei_Delete(17);
                 fun.Qbei_ErrorDelete(17);
                 dt017 = fun.GetDatatable("017");
-                //dt017 = fun.GetOrderData(dt017, "https://www.b2bshop.intermax.co.jp/shop/g/g", "017", "/");
+                dt017 = fun.GetOrderData(dt017, "https://www.b2bshop.intermax.co.jp/shop/g/g", "017", "/");
                 fun.GetTotalCount("017");                
                 ReadData();
             }
