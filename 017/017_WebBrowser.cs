@@ -71,7 +71,7 @@ namespace _17インターマックス
                 fun.Qbei_Delete(17);
                 fun.Qbei_ErrorDelete(17);
                 dt017 = fun.GetDatatable("017");
-                dt017 = fun.GetOrderData(dt017, "https://www.b2bshop.intermax.co.jp/shop/g/g", "017", "/");
+                //dt017 = fun.GetOrderData(dt017, "https://www.b2bshop.intermax.co.jp/shop/g/g", "017", "/");
                 fun.GetTotalCount("017");                
                 ReadData();
             }
@@ -178,6 +178,7 @@ namespace _17インターマックス
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt017.Rows[i]["最終反映日"].ToString();
                 entity.stockDate = dt017.Rows[i]["入荷予定"].ToString();
+                //entity.orderCode = "4547057006525";
                 entity.orderCode = dt017.Rows[i]["発注コード"].ToString().Trim();// "8022530007719"; 
                 entity.purchaseURL = fun.url + "/shop/g/g" + entity.orderCode + "/";
 
@@ -260,39 +261,50 @@ namespace _17インターマックス
                                     entity.price = str[0].Trim();
                                 else entity.price = prc;
                                 string qty = qtyPath;
-                                entity.qtyStatus = qty.Contains("有り") || qty.Contains("あり") ? "good" : qty.Contains("わずか") || qty.Contains("僅か") ? "small" : qty.Contains("欠品中") || qty.Contains("完売") || qty.Contains("終了") ? "empty" : qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") || qty.Contains("入荷待ち") ? "inquiry" : "invalid status code";
-                                if (stockDatePath == "")
+
+                                if (qty.Contains("予定"))
                                 {
-                                    if (qty.Contains("月") && qty.Any(c => char.IsDigit(c)))
+                                    entity.qtyStatus = "inquiry";
+                                    entity.stockDate = "2100-01-01";
+                                }
+                                else
+                                {
+
+                                    entity.qtyStatus = qty.Contains("有り") || qty.Contains("あり") ? "good" : qty.Contains("わずか") || qty.Contains("僅か") ? "small" : qty.Contains("欠品中") || qty.Contains("完売") || qty.Contains("終了") ? "empty" : qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") || qty.Contains("入荷待ち") ? "inquiry" : "invalid status code";
+                                    if (stockDatePath == "")
                                     {
-                                        string[] ao = qty.Split('月');
-                                        string month = ao[0].ToString();
-                                        string day = "10";
-                                        DateTime dt = Convert.ToDateTime(year + "-" + month + "-" + day);
-                                        string currentdate = fun.getCurrentDate();
-                                        if (dt <= Convert.ToDateTime(currentdate))
+                                        if (qty.Contains("月") && qty.Any(c => char.IsDigit(c)))
                                         {
-                                            dt = dt.AddYears(1);
+                                            string[] ao = qty.Split('月');
+                                            string month = ao[0].ToString();
+                                            string day = "10";
+                                            DateTime dt = Convert.ToDateTime(year + "-" + month + "-" + day);
+                                            string currentdate = fun.getCurrentDate();
+                                            if (dt <= Convert.ToDateTime(currentdate))
+                                            {
+                                                dt = dt.AddYears(1);
+                                            }
+                                            entity.stockDate = dt.ToString("yyyy-MM-dd");
+                                        }
+                                        else
+                                        {
+                                            entity.stockDate = qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("あり") || qty.Contains("僅か") || qty.Contains("欠品中") || qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") || qty.Contains("入荷待ち") ? "2100-01-01" : qty.Contains("完売") || qty.Contains("終了") ? "2100-02-01" : "unknown date";
                                         }
                                     }
                                     else
                                     {
-                                        entity.stockDate = qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("あり") || qty.Contains("僅か") || qty.Contains("欠品中") || qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") || qty.Contains("入荷待ち") ? "2100-01-01" : qty.Contains("完売") || qty.Contains("終了") ? "2100-02-01" : "unknown date";
+                                        entity.stockDate = qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("あり") || qty.Contains("僅か") || qty.Contains("欠品中") || qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") || qty.Contains("入荷待ち") ? DateTime.Now.ToString("yyyy/MM/dd") : qty.Contains("完売") || qty.Contains("終了") ? "2100-02-01" : "unknown date";
+                                        entity.stockDate = entity.stockDate.Replace("/", "-");
                                     }
-                                }
-                                else
-                                {
-                                    entity.stockDate = qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("あり") || qty.Contains("僅か") || qty.Contains("欠品中") || qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") || qty.Contains("入荷待ち") ? DateTime.Now.ToString("yyyy/MM/dd") : qty.Contains("完売") || qty.Contains("終了") ? "2100-02-01" : "unknown date";
-                                    entity.stockDate = entity.stockDate.Replace("/", "-");
+
+                                    if (entity.stockDate.Contains("2月"))
+                                    {
+                                        entity.stockDate = year + "-02-" + DateTime.DaysInMonth(year, 2);
+                                    }//ssa
+
                                 }
 
-                                if (entity.stockDate.Contains("2月"))
-                                {
-                                    entity.stockDate = year + "-02-" + DateTime.DaysInMonth(year, 2);
-                                }//ssa
                             }
-
-                            string todaydate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
                             if ((dt017.Rows[i]["在庫情報"].ToString().Contains("empty") || dt017.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt017.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
                             {
                                 if (((entity.qtyStatus.Equals("empty")) && (entity.stockDate.Equals("2100-01-01"))) || ((entity.qtyStatus.Equals("empty")) && (entity.stockDate.Equals("2100-02-01"))) || ((entity.qtyStatus.Equals("empty")) && (entity.stockDate.Equals(" "))) || ((entity.stockDate.Equals(" ")) && (entity.qtyStatus.Equals("inquiry"))) || ((entity.stockDate.Equals(year + "-02-" + DateTime.DaysInMonth(year, 2))) && (entity.qtyStatus.Equals("inquiry"))))
