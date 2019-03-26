@@ -204,6 +204,13 @@ namespace _13ミズタニ
         }
         private void webBrowser1_ItemProcessing(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
+            //while (string.IsNullOrEmpty(tmpOrderCode))
+            //{
+            //    js.ExecuteScript("document.getElementById('gvSyohin_ctl02_syohincode').value='" + orderCode + "';");
+            //    js.ExecuteScript("javascript:setTimeout(__doPostBack('gvSyohin$ctl02$syohincode',''), 0);");
+            //    System.Threading.Thread.Sleep(1000);
+            //    tmpOrderCode = chrome.FindElement(By.Id("gvSyohin_ctl02_syohincode")).GetAttribute("value");
+            //}
             entity = new Qbei_Entity();
             string color = string.Empty;
             HtmlNode colorpath;
