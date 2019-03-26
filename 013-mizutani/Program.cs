@@ -164,12 +164,17 @@ namespace _013_mizutani
                     try
                     {
                         fun.ClearMemory();
-
                         orderCode = dt013.Rows[i]["発注コード"].ToString().Trim();
                         IJavaScriptExecutor js = (IJavaScriptExecutor)chrome;
-                        js.ExecuteScript("document.getElementById('gvSyohin_ctl02_syohincode').value='" + orderCode + "';");
-                        js.ExecuteScript("javascript:setTimeout(__doPostBack('gvSyohin$ctl02$syohincode',''), 0);");
-                        System.Threading.Thread.Sleep(1000);
+
+                        string tmpOrderCode = string.Empty;
+                        while (string.IsNullOrEmpty(tmpOrderCode))
+                        {
+                            js.ExecuteScript("document.getElementById('gvSyohin_ctl02_syohincode').value='" + orderCode + "';");
+                            js.ExecuteScript("javascript:setTimeout(__doPostBack('gvSyohin$ctl02$syohincode',''), 0);");
+                            System.Threading.Thread.Sleep(1000);
+                            tmpOrderCode = chrome.FindElement(By.Id("gvSyohin_ctl02_syohincode")).GetAttribute("value");
+                        }
 
                         entity = new Qbei_Entity();
                         string color = string.Empty;
@@ -210,11 +215,18 @@ namespace _013_mizutani
                             {
                                 if (chrome.FindElement(By.Id("gvSyohin_ctl02_syohincode")).GetAttribute("value").Equals(entity.orderCode))
                                 {
+                                    entity.price = chrome.FindElement(By.Id("gvSyohin_ctl02_hanbaikakakuzeibetu")).Text;
+                                    while (string.IsNullOrEmpty(entity.price))
+                                    {
+                                        System.Threading.Thread.Sleep(200);
+                                        entity.price = chrome.FindElement(By.Id("gvSyohin_ctl02_hanbaikakakuzeibetu")).Text;
+                                    }
+
                                     qty = chrome.FindElement(By.Id("gvSyohin_ctl02_zaikojokyo")).Text;
 
                                     entity.qtyStatus = qty.Equals("○") ? "good" : qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("☆") ? "empty" : qty.Equals("★") || qty.Equals("？") ? "inquiry" : "unknown status";
 
-                                    entity.price = chrome.FindElement(By.Id("gvSyohin_ctl02_hanbaikakakuzeibetu")).Text;
+                                    //entity.price = chrome.FindElement(By.Id("gvSyohin_ctl02_hanbaikakakuzeibetu")).Text;
                                     entity.price = entity.price.Replace("￥", string.Empty).Replace(",", string.Empty).Replace("円", string.Empty);
 
                                     node = chrome.FindElement(By.Id("gvSyohin_ctl02_nyukayotei")).Text;
@@ -332,22 +344,21 @@ namespace _013_mizutani
                     catch (Exception ex)
                     {
                         fun.Qbei_ErrorInsert(13, fun.GetSiteName("013"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013");
-                        fun.WriteLog(ex, "013-", entity.janCode, entity.orderCode);                        
+                        fun.WriteLog(ex, "013-", entity.janCode, entity.orderCode);
                     }
                 }
-                
                 qe.site = 13;
                 qe.flag = 2;
                 qe.starttime = string.Empty;
                 qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 fun.ChangeFlag(qe);
-                chrome.Dispose();
+                //chrome.Dispose();
                 chrome.Quit();
                 Environment.Exit(0);
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(13, fun.GetSiteName("013"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013");                
+                fun.Qbei_ErrorInsert(13, fun.GetSiteName("013"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013");
                 fun.WriteLog(ex, "013-", entity.janCode, entity.orderCode);
 
                 chrome.Dispose();
@@ -355,7 +366,5 @@ namespace _013_mizutani
                 Environment.Exit(0);
             }
         }
-        
     }
 }
-
