@@ -14,6 +14,7 @@ using OpenQA.Selenium;
 using System.Windows.Forms;
 using QbeiAgencies_DL;
 using QbeiAgencies_Common;
+using System.Text.RegularExpressions;
 
 namespace Common
 {
@@ -42,6 +43,10 @@ namespace Common
             return result;
         }
 
+        public static string RemoveInvalidXmlChars(string content)
+        {
+           return  content = Regex.Replace(content, @"&#(x?)([A-Fa-f0-9]+);", "");            
+        }
 
         public void setURL(string shopID)
         {
@@ -111,7 +116,7 @@ namespace Common
         {
             File.AppendAllText(logFilepath, Environment.NewLine + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + " " + message);
         }
-        
+
         public DataTable GetDatatable(string shopID)
         {
             DataTable dtResult = new DataTable();
@@ -122,9 +127,7 @@ namespace Common
             string xml;
             Connection con;
             SqlConnection sqlcon;
-            Configuration config;
             SqlCommand cmd;
-            string constr;
             dc.DefaultValue = GetSiteName(shopID);
             string[] columns = { "代理店ID", "JANコード", "在庫情報", "入荷予定", "自社品番", "メーカー情報日", "最終反映日" };
             //string[] filelist = Directory.GetFiles(csvPath);
@@ -183,11 +186,9 @@ namespace Common
                         {
                             //Save Data into Qbei_ErrorLog
                             xml = DataTableToXml(dtpblank);
+
                             con = new Connection();
                             sqlcon = con.GetConnection();
-                            config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");
-                            constr = config.ConnectionStrings.ConnectionStrings["Qbei_DB"].ConnectionString;
-                            //  SqlConnection con = new SqlConnection(constr);
                             cmd = new SqlCommand("Qbei_ErrorLog_3_InsertXml", sqlcon);
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@xml", xml);
@@ -215,13 +216,9 @@ namespace Common
                             xml = DataTableToXml(dtBlankOrder);
                             con = new Connection();
                             sqlcon = con.GetConnection();
-                            config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");
-                            constr = config.ConnectionStrings.ConnectionStrings["Qbei_DB"].ConnectionString;
-                            //  SqlConnection con = new SqlConnection(constr);
                             cmd = new SqlCommand("Qbei_ErrorLog_InsertXml", sqlcon);
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@xml", xml);
-                            //cmd.Parameters.AddWithValue("@sitename", GetSiteName(shopID));
                             cmd.Parameters.AddWithValue("@SiteCode", shopID);
                             cmd.CommandTimeout = 600;
                             cmd.Connection.Open();
@@ -252,16 +249,11 @@ namespace Common
                                 dc.DefaultValue = GetSiteName(shopID);
                                 dtNotInteger.Columns.Add(dc);
                                 xml = DataTableToXml(dtNotInteger);
-
                                 con = new Connection();
                                 sqlcon = con.GetConnection();
-                                config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");
-                                constr = config.ConnectionStrings.ConnectionStrings["Qbei_DB"].ConnectionString;
-                                //  SqlConnection con = new SqlConnection(constr);
                                 cmd = new SqlCommand("Qbei_ErrorLog_2_InsertXml", sqlcon);
                                 cmd.CommandType = CommandType.StoredProcedure;
                                 cmd.Parameters.AddWithValue("@xml", xml);
-                                //cmd.Parameters.AddWithValue("@sitename", GetSiteName(shopID));
                                 cmd.Parameters.AddWithValue("@SiteCode", shopID);
                                 cmd.CommandTimeout = 600;
                                 cmd.Connection.Open();
@@ -293,11 +285,9 @@ namespace Common
                         {
                             //Save Data into Qbei_ErrorLog
                             xml = DataTableToXml(dtNotRun);
+                            xml = RemoveInvalidXmlChars(xml);
                             con = new Connection();
                             sqlcon = con.GetConnection();
-                            config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");
-                            constr = config.ConnectionStrings.ConnectionStrings["Qbei_DB"].ConnectionString;
-                            //  SqlConnection con = new SqlConnection(constr);
                             cmd = new SqlCommand("Qbei_ErrorLog_3_InsertXml", sqlcon);
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@xml", xml);
