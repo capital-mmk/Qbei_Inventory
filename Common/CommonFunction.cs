@@ -40,6 +40,7 @@ namespace Common
             System.IO.StringWriter writer = new System.IO.StringWriter();
             dt.WriteXml(writer, XmlWriteMode.WriteSchema, false);
             string result = writer.ToString();
+            result = Regex.Replace(result, @"&#(x?)([A-Fa-f0-9]+);", "");
             return result;
         }
 
@@ -285,7 +286,7 @@ namespace Common
                         {
                             //Save Data into Qbei_ErrorLog
                             xml = DataTableToXml(dtNotRun);
-                            xml = RemoveInvalidXmlChars(xml);
+                            //xml = RemoveInvalidXmlChars(xml);
                             con = new Connection();
                             sqlcon = con.GetConnection();
                             cmd = new SqlCommand("Qbei_ErrorLog_3_InsertXml", sqlcon);
