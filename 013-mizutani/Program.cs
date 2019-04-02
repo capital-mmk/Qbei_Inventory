@@ -158,16 +158,21 @@ namespace _013_mizutani
             string orderCode = string.Empty;
             try
             {
+                IJavaScriptExecutor js = (IJavaScriptExecutor)chrome;
                 int count = dt013.Rows.Count;
+                string tmpOrderCode = string.Empty;
+                string currentDate = fun.getCurrentDate();
+                string color = string.Empty;
+                string node = string.Empty;
+                string qty = string.Empty;
+                string body = string.Empty;
                 for (int i = 0; i < count; i++)
                 {
                     try
                     {
                         fun.ClearMemory();
                         orderCode = dt013.Rows[i]["発注コード"].ToString().Trim();
-                        IJavaScriptExecutor js = (IJavaScriptExecutor)chrome;
-
-                        string tmpOrderCode = string.Empty;
+                        tmpOrderCode = string.Empty;
                         while (string.IsNullOrEmpty(tmpOrderCode))
                         {
                             js.ExecuteScript("document.getElementById('gvSyohin_ctl02_syohincode').value='" + orderCode + "';");
@@ -177,18 +182,18 @@ namespace _013_mizutani
                         }
 
                         entity = new Qbei_Entity();
-                        string color = string.Empty;
-                        string node = string.Empty;
-                        string qty = string.Empty;
+                        color = string.Empty;
+                        node = string.Empty;
+                        qty = string.Empty;
                         entity.janCode = dt013.Rows[i]["JANコード"].ToString();
                         entity.partNo = dt013.Rows[i]["自社品番"].ToString();
-                        entity.makerDate = fun.getCurrentDate();
+                        entity.makerDate = currentDate;
                         entity.reflectDate = dt013.Rows[i]["最終反映日"].ToString();
                         entity.orderCode = dt013.Rows[i]["発注コード"].ToString().Trim();
                         entity.purchaseURL = chrome.Url;
                         entity.stockDate = string.Empty;
 
-                        string body = chrome.FindElement(By.TagName("body")).Text;
+                        body = chrome.FindElement(By.TagName("body")).Text;
                         entity.siteID = 13;
                         entity.sitecode = "013";
                         if (body.Contains(("検索条件に該当する商品は、見つかりませんでした")) || body.Contains(("WEB販売対象外の商品です")) || body.Contains(("該当商品は存在しません")))
