@@ -420,18 +420,22 @@ namespace Common
                 DataTable dtOrder = Qbei_OrderSelect(strSiteCd);
                 dtData = dtCsv.Copy();
                 //Retrieve Once a Week Data from CSV
-                var data = dtData.AsEnumerable().Where(r => (r.Field<string>("在庫情報").Equals("empty") && (r.Field<string>("入荷予定") == null || r.Field<string>("入荷予定").Equals("2100-01-01") || r.Field<string>("入荷予定").Equals("2100-02-01"))) || (r.Field<string>("在庫情報").Equals("inquiry") && (r.Field<string>("入荷予定") == null || !r.Field<string>("入荷予定").Equals("2100-01-10"))));
+                var data = dtData.AsEnumerable().Where(r => (r.Field<string>("在庫情報").Equals("empty") && 
+                                                                (r.Field<string>("入荷予定") == null || 
+                                                                 r.Field<string>("入荷予定").Equals("2100-01-01") || 
+                                                                 r.Field<string>("入荷予定").Equals("2100-02-01"))
+                                                            ) || 
+                                                            (r.Field<string>("在庫情報").Equals("inquiry") && 
+                                                                (r.Field<string>("入荷予定") == null ||
+                                                                 !(r.Field<string>("入荷予定").Equals("2100-01-01") && string.IsNullOrEmpty(r.Field<string>("purchaserURL"))) ||
+                                                                 !r.Field<string>("入荷予定").Equals("2100-01-10"))
+                                                            )
+                                                      );
                 dtOnceaWeek = data.Any() ? data.CopyToDataTable() : null;
-                //var notexistdata = dtData.AsEnumerable().Where(r => !dtOnceaWeek.AsEnumerable().Any(y => y.Field<string>("JANコード") == r.Field<string>("JANコード")));
-                //dtData = notexistdata.Any() ? notexistdata.CopyToDataTable() : null;
-                if (dtOnceaWeek == null)
-                {
-                    dtData = null;
-                }
-                else
+                if (dtOnceaWeek != null)
                 {
                     var notexistdata = dtData.AsEnumerable().Where(r => !dtOnceaWeek.AsEnumerable().Any(y => y.Field<string>("JANコード") == r.Field<string>("JANコード")));
-                    dtData = notexistdata.Any() ? notexistdata.CopyToDataTable() : null;
+                    if (notexistdata.Any()) dtData = notexistdata.CopyToDataTable();
                 }
                 if (dtOrder.Rows.Count > 0)
                 {
