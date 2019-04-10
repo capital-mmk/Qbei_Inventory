@@ -149,7 +149,7 @@ namespace _36PRインターナショナル
                 else
                 {
                     fun.WriteLog("Login success             ------", "036-");
-                    string purchaserURL = dt036.Rows[0]["purchaserURL"].ToString();
+                    string purchaserURL = dt036.Rows[0]["purchaserURL"].ToString().Trim();
                     webBrowser1.Navigate(purchaserURL);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
@@ -185,7 +185,7 @@ namespace _36PRインターナショナル
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt036.Rows[i]["最終反映日"].ToString();
                 entity.orderCode = dt036.Rows[i]["発注コード"].ToString();
-                entity.purchaseURL = dt036.Rows[i]["purchaserURL"].ToString();
+                entity.purchaseURL = dt036.Rows[i]["purchaserURL"].ToString().Trim();
                 if (!string.IsNullOrWhiteSpace(entity.purchaseURL))
                 {
                     string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
@@ -345,7 +345,7 @@ namespace _36PRインターナショナル
                 }
                 if (i < dt036.Rows.Count - 1)
                 {
-                    string purchaseURL = dt036.Rows[++i]["purchaserURL"].ToString();
+                    string purchaseURL = dt036.Rows[++i]["purchaserURL"].ToString().Trim();
                     webBrowser1.Navigate(purchaseURL);
                     webBrowser1.ScriptErrorsSuppressed = true;
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
@@ -383,7 +383,7 @@ namespace _36PRインターナショナル
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt036.Rows[i]["最終反映日"].ToString();
                 entity.orderCode = dt036.Rows[i]["発注コード"].ToString();
-                entity.purchaseURL = dt036.Rows[i]["purchaserURL"].ToString();
+                entity.purchaseURL = dt036.Rows[i]["purchaserURL"].ToString().Trim();
                 if (dt036.Rows[i]["入荷予定"].ToString().Contains("2100-01-10") && dt036.Rows[i]["在庫情報"].ToString().Contains("empty"))
                 {
                     entity.qtyStatus = "empty";
@@ -399,7 +399,7 @@ namespace _36PRインターナショナル
                 fun.Qbei_Inserts(entity);
                 if (i < dt036.Rows.Count - 1)
                 {
-                    string purchaseURL = dt036.Rows[++i]["purchaserURL"].ToString();
+                    string purchaseURL = dt036.Rows[++i]["purchaserURL"].ToString().Trim();
                     webBrowser1.Navigate(purchaseURL);
                     webBrowser1.ScriptErrorsSuppressed = true;
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
