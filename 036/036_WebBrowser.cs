@@ -75,7 +75,6 @@ namespace _36PRインターナショナル
                 fun.Qbei_Delete(36);
                 fun.Qbei_ErrorDelete(36);
                 dt036 = fun.GetDatatable("036");
-                int count = dt036.Rows.Count;
                 dt036 = fun.GetOrderData(dt036, "http://www.g-style.ne.jp/shop", "036", "");
                 fun.GetTotalCount("036");
                 ReadData();

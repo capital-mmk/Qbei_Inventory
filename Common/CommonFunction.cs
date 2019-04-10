@@ -1177,19 +1177,21 @@ namespace Common
         /// <returns>except remove data</returns>
         public DataTable GetRerunData(string strShopId)
         {
+            DataColumn dc = new DataColumn("SiteName");
+            string xml;
+            Connection con;
+            SqlConnection sqlcon;
+            SqlCommand cmd;
+            DataTable dtCsv = new DataTable();
+            DataTable dtNull = new DataTable();
+            DataTable dtNotInteger = new DataTable();
+            DataTable dtOrder = new DataTable();
+            DataTable dtBlankUrl = new DataTable();
+            string strDescription = string.Empty;
+            int siteID = int.Parse(strShopId);
+
             try
             {
-                DataColumn dc = new DataColumn("SiteName");
-                string xml;
-                Connection con;
-                SqlConnection sqlcon;
-                SqlCommand cmd;
-                DataTable dtCsv = new DataTable();
-                DataTable dtNull = new DataTable();
-                DataTable dtNotInteger = new DataTable();
-                DataTable dtOrder = new DataTable();
-                DataTable dtBlankUrl = new DataTable();
-                string strDescription = string.Empty;
                 dtCsv = ReadCsv(strShopId);
 
                 if (dtCsv == null)
@@ -1197,6 +1199,7 @@ namespace Common
                 else
                 {
                     ddr = dtCsv.Rows.Count;
+
                     if (strShopId.Equals("053"))
                     {
                         dtCsv = GetBrandCode(dtCsv);
@@ -1205,8 +1208,10 @@ namespace Common
                     {
                         //Set Site Name
                         dc.DefaultValue = GetSiteName(strShopId);
-                        //Sort メーカー情報日
-                        dtCsv = dtCsv.AsEnumerable().OrderBy(x => x.Field<string>("メーカー情報日")).CopyToDataTable();
+
+                        //sort
+                        dtCsv = dtCsv.AsEnumerable().OrderBy(x => x.Field<string>("メーカー情報日")).ThenBy(x => x.Field<string>("JANコード")).CopyToDataTable();
+
                         //Remove Blank Url from Site 36
                         if (strShopId.Equals("036"))
                         {
@@ -1232,9 +1237,9 @@ namespace Common
                                 cmd.ExecuteNonQuery();
                                 cmd.Connection.Close();
                             }
-                            return dtCsv;
+                            //return dtCsv;
                         }
-                        var temp = dtCsv.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' ");
+                        var temp = dtCsv.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' OR 発注コード= '--'");
                         //Insert Null Order Code
                         if (temp.Any())
                         {
@@ -1248,14 +1253,16 @@ namespace Common
                                 dtCsv = null;
 
                             strDescription = "Order Code Not Found";
+                            dc = new DataColumn("SiteName");
+                            dc.DefaultValue = GetSiteName(strShopId);
                             dtNull.Columns.Add(dc);
                             xml = DataTableToXml(dtNull);
                             con = new Connection();
                             sqlcon = con.GetConnection();
                             cmd = new SqlCommand("Qbei_Rerun_ErrorInsert", sqlcon);
                             cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@condition", xml);
                             cmd.Parameters.AddWithValue("@siteCd", strShopId);
+                            cmd.Parameters.AddWithValue("@condition", xml);
                             cmd.Parameters.AddWithValue("@description", strDescription);
                             cmd.Parameters.AddWithValue("@ErrorType", 3);
                             cmd.CommandTimeout = 600;
@@ -1267,7 +1274,6 @@ namespace Common
                         {
                             //Order Code Trim
                             dtCsv.AsEnumerable().ToList().ForEach(y => y["発注コード"] = y.Field<string>("発注コード").Trim());
-
                             //Insert Japananese Text Order Code
                             var notintegerdata = dtCsv.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("/") || r.Field<string>("発注コード").Contains("データ登録")));
                             if (notintegerdata.Any())
@@ -1295,15 +1301,24 @@ namespace Common
                             }
                         }
                     }
-                    return dtCsv;
+                    //return dtCsv;
                 }
             }
             catch (Exception ex)
             {
                 WritetoLog(ex.Message);
-                return null;
+                dtCsv = null;
             }
-        }
+            finally
+            {
+                if (dtCsv == null)
+                {
+                    GetTotalCount(strShopId);
+                    StopApplication(siteID);
+                }
+            }
 
+            return dtCsv;
+        }
     }
 }
