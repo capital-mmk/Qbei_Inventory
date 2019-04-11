@@ -253,13 +253,13 @@ namespace _013_mizutani
                                         entity.stockDate = qty.Equals("○") || qty.Equals("▲") || qty.Equals("×") ? "2100-01-01" : entity.stockDate;
                                     }
 
-                                    goto step1;
+                                   // goto step1;
                                 }
 
                                 if (IsDate(entity.stockDate))
                                 {
                                     entity.stockDate = entity.stockDate.Replace("/", "-");
-                                    goto step1;
+                                    //goto step1;
                                 }
 
                                 if (entity.stockDate.Contains("月中旬") || entity.stockDate.Contains("月上旬"))
@@ -288,12 +288,12 @@ namespace _013_mizutani
                                         dt = dt.AddYears(1);
 
                                     entity.stockDate = dt.ToString("yyyy-MM-dd");
-                                    goto step1;
+                                    //goto step1;
                                 }
                                 else if (entity.stockDate.Contains("月末～"))
                                 {
                                     entity.stockDate = "未定(=2100-01-01)";
-                                    goto step1;
+                                    //goto step1;
                                 }
                                 else if (entity.stockDate.Contains("月末"))
                                 {
@@ -308,7 +308,7 @@ namespace _013_mizutani
                                         dt = dt.AddYears(1);
 
                                     entity.stockDate = dt.ToString("yyyy-MM-dd");
-                                    goto step1;
+                                    //goto step1;
                                 }
                                 else if (entity.stockDate.Contains("未定"))
                                 {
@@ -326,7 +326,7 @@ namespace _013_mizutani
                                 //2018-08-14 End
                                 entity.stockDate = entity.stockDate.Replace("/", "-");
 
-                            step1:
+                           // step1:
                                 if ((dt013.Rows[i]["在庫情報"].ToString().Contains("empty") || dt013.Rows[i]["在庫情報"].ToString().Contains("inquriry")) && dt013.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
                                 {
                                     if ((entity.qtyStatus.Contains("empty") && (entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry"))
