@@ -8,6 +8,8 @@ using QbeiAgencies_BL;
 using QbeiAgencies_Common;
 using System.Configuration;
 using System.IO;
+using System.Diagnostics;
+using System.Management;
 
 namespace siteData
 {
@@ -44,6 +46,43 @@ namespace siteData
     {
         static void Main(string[] args)
         {
+            List<string> lstProcess = new List<string>();
+            lstProcess.Add("Rerun");
+            lstProcess.Add("11マルイ");
+            lstProcess.Add("12カワシマ");
+            lstProcess.Add("013-mizutani");
+            lstProcess.Add("014_Firefox");
+            lstProcess.Add("016ライトウェイ");
+            lstProcess.Add("17インターマックス");
+            lstProcess.Add("018日直(ニチナオ)");
+            lstProcess.Add("019深谷(フカヤ)");
+            lstProcess.Add("20ダイアテック(高難易度)");
+            lstProcess.Add("24東(アズマ)");
+            lstProcess.Add("030");
+            lstProcess.Add("031アキボウ");
+            lstProcess.Add("34シマノ");
+            lstProcess.Add("035");
+            lstProcess.Add("0035");
+            lstProcess.Add("36PRインターナショナル");
+            lstProcess.Add("037_Chrome");
+            lstProcess.Add("38フタバ");
+            lstProcess.Add("46トライスポーツ");
+            lstProcess.Add("053");
+            lstProcess.Add("57モトクロス");
+            lstProcess.Add("059");
+            lstProcess.Add("65野口");
+            lstProcess.Add("87ダートフリーク");
+            lstProcess.Add("139");
+            lstProcess.Add("143");
+            lstProcess.Add("914");
+            lstProcess.Add("916_Chrome");
+
+            foreach (string processName in lstProcess)
+            {
+                Process.GetProcessesByName(processName).ToList().ForEach(p => KillProcessAndChildren(p.Id));
+            }
+
+
             GenerateCSV(11, "マルイ");
             GenerateCSV(12, "カワシマ");
             GenerateCSV(13, "ミズタニ");
@@ -79,6 +118,34 @@ namespace siteData
             GenerateCSV(143, "（株）ポディウム");
             GenerateCSV(914, "（株）イノセントデザインワークス");
             GenerateCSV(916, "(株)あさひ");
+        }
+
+        private static void KillProcessAndChildren(int pid)
+        {
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
+            ManagementObjectCollection moc = searcher.Get();
+            foreach (ManagementObject mo in moc)
+            {
+                try
+                {
+                    KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
+                }
+                catch
+                {
+                    break;
+                }
+            }
+
+            try
+            {
+                Process proc = Process.GetProcessById(pid);
+
+                proc.Kill();
+            }
+            catch
+            {
+
+            }
         }
 
         private static void GenerateCSV(int siteID, string sitename)
