@@ -656,27 +656,21 @@ namespace Common
         
         public void Qbei_Insert_XML(DataTable dtCsv, DataTable dtItem, string name, string strRerun = "")
         {
-
             string xmlCsv = DataTableToXml(dtCsv);
 
             string xmlItem = DataTableToXml(dtItem);
 
-            Configuration config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");
-            string constr = config.ConnectionStrings.ConnectionStrings["Qbei_DB"].ConnectionString;
-            SqlConnection con = new SqlConnection(constr);
-            //  SqlDatabase db = new SqlDatabase(connectionManager.SqlConnection.ConnectionString);
-            // System.Data.Common.DbCommand cmd = db.GetStoredProcCommand(storedProc, parameterValues);
-
-            //  return db.ExecuteScalar(cmd);
-            SqlCommand cmd = new SqlCommand(name, con);
+            Connection con = new Connection();
+            SqlConnection sqlcon = con.GetConnection();
+            SqlCommand cmd = new SqlCommand(name, sqlcon);
             cmd.CommandTimeout = 600;
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@xmlCsv", xmlCsv);
             cmd.Parameters.AddWithValue("@xmlItem", xmlItem);
             cmd.Parameters.AddWithValue("@param", strRerun);
-            con.Open();
+            cmd.Connection.Open();
             cmd.ExecuteNonQuery();
-            con.Close();
+            cmd.Connection.Close();
         }
 
         public void Qbei_ErrorInsert(int site, string sitename, string description, string janCode, string orderCode, int errortype, string Date, string sitecode)
