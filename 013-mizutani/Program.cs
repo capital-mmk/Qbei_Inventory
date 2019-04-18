@@ -262,7 +262,7 @@ namespace _013_mizutani
                                     //goto step1;
                                 }
 
-                                if (entity.stockDate.Contains("月中旬") || entity.stockDate.Contains("月上旬"))
+                                if (entity.stockDate.Contains("月中旬") || entity.stockDate.Contains("月上旬") || entity.stockDate.Contains("月発売予定"))
                                 {
                                     entity.stockDate = entity.stockDate.Replace("次回", "").Replace("入荷", "");
                                     string day = string.Empty;
@@ -270,7 +270,7 @@ namespace _013_mizutani
                                         day = "20";
                                     else if (entity.stockDate.Contains("上旬") || entity.stockDate.Contains("月予定"))
                                         day = "10";
-                                    else if (entity.stockDate.Contains("下旬"))
+                                    else if (entity.stockDate.Contains("下旬") || entity.stockDate.Contains("発売予定") )
                                     {
                                         if (entity.stockDate.Contains("2月"))
                                             day = "28";
