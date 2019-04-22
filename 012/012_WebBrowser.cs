@@ -135,8 +135,6 @@ namespace _12カワシマ
 
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            string orderCode = string.Empty;
-
             try
             {
                 webBrowser1.ScriptErrorsSuppressed = true;
@@ -146,22 +144,22 @@ namespace _12カワシマ
                 {
                     fun.Qbei_ErrorInsert(12, fun.GetSiteName("012"), "Login Failed", dt012.Rows[0]["JANコード"].ToString(), dt012.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "012");                    
                     fun.WriteLog("Login Failed", "012-");
-                    
+
                     Application.Exit();
                     Environment.Exit(0);
                 }
                 else
                 {
                     fun.WriteLog("Login success             ------", "012-");
-                    orderCode = fun.ReplaceOrderCode(dt012.Rows[0]["発注コード"].ToString(), new string[] { "--" });                   
-                    webBrowser1.Navigate(fun.url + "/shop/g/g" + orderCode);
+                    entity.orderCode = fun.ReplaceOrderCode(dt012.Rows[0]["発注コード"].ToString(), new string[] { "--" });
+                    webBrowser1.Navigate(fun.url + "/shop/g/g" + entity.orderCode);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
             }
             catch (Exception ex)
             {
                 string janCode = dt012.Rows[0]["JANコード"].ToString();
-                orderCode = dt012.Rows[0]["発注コード"].ToString();
+                string orderCode = dt012.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(12, fun.GetSiteName("012"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "012");
                 fun.WriteLog(ex, "012-", janCode, orderCode);
 
@@ -174,6 +172,9 @@ namespace _12カワシマ
         {
             string strStockDate = string.Empty;
             webBrowser1.ScriptErrorsSuppressed = true;
+
+            if (webBrowser1.Url.ToString().Trim() != fun.url + "/shop/g/g" + entity.orderCode) return;
+
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
 
             try
@@ -271,8 +272,8 @@ namespace _12カワシマ
                 if (i < dt012.Rows.Count - 1)
                 {
                     webBrowser1.ScriptErrorsSuppressed = true;
-                    string ordercode = dt012.Rows[++i]["発注コード"].ToString();
-                    webBrowser1.Navigate(fun.url + "/shop/g/g" + ordercode);
+                    entity.orderCode = dt012.Rows[++i]["発注コード"].ToString();
+                    webBrowser1.Navigate(fun.url + "/shop/g/g" + entity.orderCode);
                     webBrowser1.ScriptErrorsSuppressed = true;
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
@@ -301,4 +302,3 @@ namespace _12カワシマ
         }
     }
 }
-
