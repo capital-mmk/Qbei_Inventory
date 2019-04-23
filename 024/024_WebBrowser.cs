@@ -232,7 +232,7 @@ namespace _24東_アズマ_
                     {
                         fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
                         fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "024-");
-                        
+
                         Application.Exit();
                         Environment.Exit(0);
                     }
@@ -265,20 +265,17 @@ namespace _24東_アズマ_
                         string dateexists = string.Empty;
                         qtyStatus = strarr[4];
                         qtyStatus = qtyStatus.Replace("[", string.Empty).Replace("]", string.Empty).Replace("=", string.Empty);
+
                         if (qtyStatus.Contains("○") || qtyStatus.Contains("◎"))
                         {
                             entity.qtyStatus = "good";
                             dateexists = qtyStatus.Replace("○", string.Empty).Replace("◎", string.Empty);
                         }
-                        else if (qtyStatus.Contains("△") || qtyStatus.Contains("台|個|ロット"))
-                        {
-                            entity.qtyStatus = "small";
-                            dateexists = qtyStatus.Replace("△", string.Empty).Replace("台|個|ロット", string.Empty);
-                        }
-                        else if (qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中"))
+                        else if (qtyStatus.Contains("△") || qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中"))
                         {
                             entity.qtyStatus = "empty";
-                            dateexists = qtyStatus.Replace("×", string.Empty).Replace("入荷予定", string.Empty).Replace("予約受付中", string.Empty);
+                            //dateexists = qtyStatus.Replace("△", string.Empty).Replace("台|個|ロット", string.Empty);
+                            //dateexists = qtyStatus.Replace("×", string.Empty).Replace("入荷予定", string.Empty).Replace("予約受付中", string.Empty);
                         }
                         else
                         {
@@ -291,8 +288,9 @@ namespace _24東_アズマ_
                         }
                         else
                         {
-                            entity.stockDate = qtyStatus.Equals("○") || qtyStatus.Equals("◎") || qtyStatus.Equals("△") || qtyStatus.Equals("台|個|ロット") ? "2100-01-01" : qtyStatus.Equals("×") || qtyStatus.Equals("入荷予定") || qtyStatus.Equals("予約受付中") ? "2100-02-01" : "unknown date";
+                            entity.stockDate = qtyStatus.Equals("○") || qtyStatus.Equals("◎") ? "2100-01-01" : qtyStatus.Contains("△") || qtyStatus.Contains("×") || qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") ? "2100-02-01" : "unknown date";
                         }
+
 
                         if ((dt024.Rows[i]["在庫情報"].ToString().Contains("empty") || dt024.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt024.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
                         {
@@ -312,11 +310,11 @@ namespace _24東_アズマ_
                 else
                 {
                     fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
-                }                
+                }
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");                
+                fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
                 fun.WriteLog(ex, "024-", entity.janCode, entity.orderCode);
             }
             finally
@@ -334,7 +332,7 @@ namespace _24東_アズマ_
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
                 else
-                { 
+                {
                     qe.site = 24;
                     qe.flag = 2;
                     qe.starttime = st;
