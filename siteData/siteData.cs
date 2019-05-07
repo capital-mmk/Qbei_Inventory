@@ -139,8 +139,10 @@ namespace siteData
             try
             {
                 Process proc = Process.GetProcessById(pid);
-
+                string SiteName = proc.ProcessName;
+                WriteLogSitData("Process have been Killed  at SiteID- ", SiteName);
                 proc.Kill();
+
             }
             catch
             {
@@ -198,6 +200,26 @@ namespace siteData
             else {
                 
             }
+        }
+
+        public static void WriteLogSitData(string strLog, string siteID)
+        {
+            string logFilePath = "C:\\Qbei_Log\\ProcessKill_file\\" + "Log" + siteID + System.DateTime.Today.ToString("MM-dd-yyyy") + "." + "txt";
+            FileStream fileStream = null;
+            FileInfo logFileInfo = new FileInfo(logFilePath);
+            DirectoryInfo logDirInfo = new DirectoryInfo(logFileInfo.DirectoryName);
+            if (!logDirInfo.Exists) logDirInfo.Create();
+            if (!logFileInfo.Exists)
+            {
+                fileStream = logFileInfo.Create();
+            }
+            else
+            {
+                fileStream = new FileStream(logFilePath, FileMode.Append);
+            }
+            StreamWriter log = new StreamWriter(fileStream);
+            log.WriteLine(strLog + siteID + DateTime.Now.ToString("MM-dd-yyyy HH:mm:ss"));
+            log.Close();
         }
     }
 }
