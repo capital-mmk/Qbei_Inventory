@@ -176,11 +176,13 @@ namespace _34シマノ
 
         private void webBrowser1_WaitForSearchPage(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            webBrowser1.ScriptErrorsSuppressed = true;
+          
             string orderCode = dt034.Rows[i]["発注コード"].ToString();
+            webBrowser1.ScriptErrorsSuppressed = true;
             webBrowser1.Navigate(fun.url + "/front/g/g" + orderCode);
             if (webBrowser1.Url.ToString().Contains("/front/g/g"))
             {
+                webBrowser1.ScriptErrorsSuppressed = true;
                 webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);                
             }
