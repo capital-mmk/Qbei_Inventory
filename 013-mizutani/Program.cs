@@ -100,8 +100,8 @@ namespace _013_mizutani
                 var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);
                 using (IWebDriver chrome = new ChromeDriver(service, option, TimeSpan.FromMinutes(3)))
                 {
-                    chrome.Navigate().GoToUrl("https://www.ordermz.jp/weborder");
 
+                    chrome.Navigate().GoToUrl("https://www.ordermz.jp/weborder");
                     wait = new Wait.WebDriverWait(chrome, TIMEOUT);
                     wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("btnLogin")));
                     fun.WriteLog("Navigation to Site Url success------", "013-");
