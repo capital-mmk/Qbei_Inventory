@@ -97,37 +97,41 @@ namespace _013_mizutani
                 dt = qubl.Qbei_Setting_Select(qe);
                 fun.url = dt.Rows[0]["Url"].ToString();
                 chrome = new ChromeDriver();
-                chrome.Navigate().GoToUrl("https://www.ordermz.jp/weborder");
-
-                wait = new Wait.WebDriverWait(chrome, TIMEOUT);
-                wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("btnLogin")));
-                fun.WriteLog("Navigation to Site Url success------", "013-");
-                qe.SiteID = 13;
-                dt = qubl.Qbei_Setting_Select(qe);
-                string username = dt.Rows[0]["UserName"].ToString();
-                chrome.FindElement(By.Id("tokuisakicode")).SendKeys(username);
-                string password = dt.Rows[0]["Password"].ToString();
-                chrome.FindElement(By.Id("loginpasswd")).SendKeys(password);
-                wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("btnLogin")));
-                chrome.FindElement(By.Id("btnLogin")).Click();
-                //WAIT
-                wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("btnSyohincodeOrder")));
-                chrome.FindElement(By.Id("btnSyohincodeOrder")).Click();
-
-                string body = chrome.FindElement(By.TagName("body")).Text;
-                if (body.Contains(" 得意先コード、パスワードが正しくありません"))
+                var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);
+                using (IWebDriver chrome = new ChromeDriver(service, option, TimeSpan.FromMinutes(3)))
                 {
-                    fun.Qbei_ErrorInsert(13, fun.GetSiteName("013"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013");
-                    fun.WriteLog("Login Failed", "013-");
-                    Environment.Exit(0);
-                }
-                else
-                {
-                    fun.WriteLog("Login success             ------", "013-");
-                    chrome.Navigate().GoToUrl(fun.url + "/SyohincodeOrder.aspx");
-                    if (chrome.Url.Contains("SyohincodeOrder.aspx"))
+                    chrome.Navigate().GoToUrl("https://www.ordermz.jp/weborder");
+
+                    wait = new Wait.WebDriverWait(chrome, TIMEOUT);
+                    wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("btnLogin")));
+                    fun.WriteLog("Navigation to Site Url success------", "013-");
+                    qe.SiteID = 13;
+                    dt = qubl.Qbei_Setting_Select(qe);
+                    string username = dt.Rows[0]["UserName"].ToString();
+                    chrome.FindElement(By.Id("tokuisakicode")).SendKeys(username);
+                    string password = dt.Rows[0]["Password"].ToString();
+                    chrome.FindElement(By.Id("loginpasswd")).SendKeys(password);
+                    wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("btnLogin")));
+                    chrome.FindElement(By.Id("btnLogin")).Click();
+                    //WAIT
+                    wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("btnSyohincodeOrder")));
+                    chrome.FindElement(By.Id("btnSyohincodeOrder")).Click();
+
+                    string body = chrome.FindElement(By.TagName("body")).Text;
+                    if (body.Contains(" 得意先コード、パスワードが正しくありません"))
                     {
-                        ItemSearch();
+                        fun.Qbei_ErrorInsert(13, fun.GetSiteName("013"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013");
+                        fun.WriteLog("Login Failed", "013-");
+                        Environment.Exit(0);
+                    }
+                    else
+                    {
+                        fun.WriteLog("Login success             ------", "013-");
+                        chrome.Navigate().GoToUrl(fun.url + "/SyohincodeOrder.aspx");
+                        if (chrome.Url.Contains("SyohincodeOrder.aspx"))
+                        {
+                            ItemSearch();
+                        }
                     }
                 }
             }
