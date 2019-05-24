@@ -267,7 +267,8 @@ namespace _38フタバ
                         {
                             try
                             {
-                                entity.stockDate = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_kubun_0").InnerText;
+                                entity.stockDate = string.IsNullOrEmpty(entity.stockDate) ? "" : entity.stockDate;
+                               // entity.stockDate = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_kubun_0").InnerText;
                                 if (entity.stockDate.Contains("在庫限り"))
                                 {
                                     entity.stockDate = "2100-02-01";
@@ -303,6 +304,11 @@ namespace _38フタバ
                         else if (entity.stockDate.Contains("/中旬頃予定"))
                         {
                             entity.stockDate = new DateTime(DateTime.Now.Year, int.Parse(Regex.Replace(entity.stockDate, "[^0-9]+", string.Empty)), 20).ToString("yyyy-MM-dd");
+                        }
+                        else if (entity.stockDate.Contains("NEW!!") || entity.stockDate.Contains("未定") || entity.stockDate.Contains("今夏頃発売予定") || entity.stockDate.Contains(":"))
+                        //2018-05-15 End
+                        {
+                            entity.stockDate = "2100-01-01";
                         }
                         else if ((entity.stockDate.Contains("/")) || entity.stockDate.Contains("/予定"))
                         {
@@ -364,12 +370,12 @@ namespace _38フタバ
                         //else if (entity.stockDate.Contains("NEW!!") || entity.stockDate.Contains("納期未定"))
                         //2018-05-15 Start
                         //else if (entity.stockDate.Contains("NEW!!") || entity.stockDate.Contains("未定"))
-                        else if (entity.stockDate.Contains("NEW!!") || entity.stockDate.Contains("未定") || entity.stockDate.Contains("今夏頃発売予定"))
-                        //2018-05-15 End
-                        {
-                            entity.stockDate = "2100-01-01";
-                        }
-
+                        //else if (entity.stockDate.Contains("NEW!!") || entity.stockDate.Contains("未定") || entity.stockDate.Contains("今夏頃発売予定"))
+                        ////2018-05-15 End
+                        //{
+                        //    entity.stockDate = "2100-01-01";
+                        //}
+                                          
                         if ((dt038.Rows[i]["在庫情報"].ToString().Contains("empty") || dt038.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt038.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
                         {
                             if (((entity.qtyStatus.Contains("empty") && (entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry")) || ((entity.qtyStatus.Equals("empty")) && (entity.stockDate.Equals(" "))) || ((entity.stockDate.Equals(" ")) && (entity.qtyStatus.Equals("inquiry"))) || ((entity.stockDate.Equals("2018-02-28")) && (entity.qtyStatus.Equals("inquiry"))))
