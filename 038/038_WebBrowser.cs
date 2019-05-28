@@ -297,8 +297,17 @@ namespace _38フタバ
                         {
                             //6-7月予定
                             if (entity.stockDate.Contains("-"))
+                            {
                                 entity.stockDate = entity.stockDate.Remove(0, entity.stockDate.IndexOf("-"));
-                            entity.stockDate = new DateTime(DateTime.Now.Year, int.Parse(Regex.Replace(entity.stockDate, "[^0-9]+", string.Empty)), 30).ToString("yyyy-MM-dd");
+                                entity.stockDate = new DateTime(DateTime.Now.Year, int.Parse(Regex.Replace(entity.stockDate, "[^0-9]+", string.Empty)), 30).ToString("yyyy-MM-dd");
+                            }
+                            else
+                            {
+                                if (entity.stockDate.Contains("～"))
+                                {
+                                    entity.stockDate = "2100-01-01";
+                                }
+                            }
                         }
                         //2018-05-15 End
                         else if (entity.stockDate.Contains("/中旬頃予定"))
@@ -402,7 +411,7 @@ namespace _38フタバ
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
             string janCode = dt038.Rows[i]["JANコード"].ToString();
-            string orderCode = dt038.Rows[i]["発注コード"].ToString();
+           string orderCode = dt038.Rows[i]["発注コード"].ToString();           
             fun.Qbei_ErrorInsert(38, fun.GetSiteName("038"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "038");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "038-");
             
