@@ -229,7 +229,6 @@ namespace _143
             entity.makerDate = fun.getCurrentDate();
             entity.reflectDate = dt143.Rows[i]["最終反映日"].ToString();
             entity.orderCode = dt143.Rows[i]["発注コード"].ToString();
-
             entity.purchaseURL = fun.url + "/goods/goods_list.html";
             entity.siteID = 143;
             entity.sitecode = "143";
@@ -292,15 +291,16 @@ namespace _143
                         }
 
                         string alt = hdoc.DocumentNode.SelectSingleNode("/tbody/tr[3]/td[6]/table/tbody/tr[2]/td").InnerText;
-                        string price = hdoc.DocumentNode.SelectSingleNode("/tbody/tr[3]/td[5]/table/tbody/tr/td[1]").InnerText;
-                        string[] ae = price.Split('!');
-                        strUrl = hdoc.DocumentNode.SelectSingleNode("/tbody/tr[4]/td").InnerHtml;
-                        strUrl = strUrl.Split('>')[0];
-                        var syntax = new string[] { "amp;", "<a", "href=", "\"", "'", "onclick=", "winOpenResizable(", "../", ",580,400);", "return false;", ">", " " };
-                        syntax.ToList().ForEach(o => strUrl = strUrl.Replace(o, string.Empty));
-                        entity.purchaseURL = fun.url + strUrl;
-                        entity.price = ae[0];
-                        entity.price = entity.price.Replace(",", string.Empty).Replace("<", string.Empty);
+                        entity.price = dt143.Rows[i]["下代"].ToString();//5月31日 
+                        //string price = hdoc.DocumentNode.SelectSingleNode("/tbody/tr[3]/td[5]/table/tbody/tr/td[1]").InnerText;
+                        //string[] ae = price.Split('!');
+                        //strUrl = hdoc.DocumentNode.SelectSingleNode("/tbody/tr[4]/td").InnerHtml;
+                        //strUrl = strUrl.Split('>')[0];
+                        //var syntax = new string[] { "amp;", "<a", "href=", "\"", "'", "onclick=", "winOpenResizable(", "../", ",580,400);", "return false;", ">", " " };
+                        //syntax.ToList().ForEach(o => strUrl = strUrl.Replace(o, string.Empty));
+                        //entity.purchaseURL = fun.url + strUrl;
+                        //entity.price = ae[0];
+                        //entity.price = entity.price.Replace(",", string.Empty).Replace("<", string.Empty);
                         try
                         {
                             //string stockpath = "table/tbody/tr[2]/td/div[2]/div[2]/table/tbody/tr[3]/td[4]/img";
