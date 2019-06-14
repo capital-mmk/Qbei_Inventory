@@ -280,7 +280,7 @@ namespace _36PRインターナショナル
                                             }
                                             else
                                             {
-                                                entity.stockDate = year + "-" + entity.stockDate.Replace("月", "-").Replace("頃入荷予定", "30").Replace("頃入金予定", "30");
+                                                entity.stockDate = year + "-" + entity.stockDate.Replace("月", "-").Replace("頃入荷予定", "30").Replace("頃入金予定", "30").Replace("末", "");
                                                 if (entity.stockDate.Contains('～') || entity.stockDate.Contains('~'))
                                                 {
                                                     if (entity.stockDate.Contains('～'))
