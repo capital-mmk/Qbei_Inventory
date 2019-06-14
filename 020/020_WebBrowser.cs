@@ -192,6 +192,7 @@ namespace _20ダイアテック_高難易度_
             fun.ClearMemory();
 
             string url = webBrowser1.Url.ToString();
+            entity = new Qbei_Entity();
             entity.orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();
             string urlCode = url.Replace("https://www.b2bdiatec.jp/shop/g/g", String.Empty);
             if (!urlCode.Equals(entity.orderCode))
@@ -319,7 +320,8 @@ namespace _20ダイアテック_高難易度_
                         webBrowser1.AllowNavigation = true;                        
                         webBrowser1.Navigate("https://www.b2bdiatec.jp/shop/g/g" + orderCode);
                         Thread.Sleep(5000);
-                        webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
+                        webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
+                        webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch2);
                     }
                     else
                     {
