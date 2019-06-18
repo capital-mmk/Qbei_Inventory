@@ -278,6 +278,10 @@ namespace _36PRインターナショナル
                                             {
                                                 entity.stockDate = year + "-" + entity.stockDate.Replace("月", "-").Replace("初旬頃入荷予定", "10").Replace("初旬頃予定", "10");
                                             }
+                                            else if (entity.stockDate.Contains("中旬"))
+                                            {
+                                                entity.stockDate = year + "-" + entity.stockDate.Replace("月", "-").Replace("中旬頃入荷予定", "20").Replace("中旬頃予定", "20");
+                                            }
                                             else
                                             {
                                                 entity.stockDate = year + "-" + entity.stockDate.Replace("月", "-").Replace("頃入荷予定", "30").Replace("頃入金予定", "30").Replace("末", "");
@@ -417,7 +421,7 @@ namespace _36PRインターナショナル
             else
             {
                 string janCode = dt036.Rows[i]["JANコード"].ToString();
-                string orderCode = dt036.Rows[i]["発注コード"].ToString();
+               string orderCode = dt036.Rows[i]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
                 fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "036-");
                 
