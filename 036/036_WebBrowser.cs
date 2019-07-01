@@ -274,9 +274,9 @@ namespace _36PRインターナショナル
                                         }
                                         else
                                         {
-                                            if (entity.stockDate.Contains("初旬"))
+                                            if (entity.stockDate.Contains("初旬") || entity.stockDate.Contains("上旬"))
                                             {
-                                                entity.stockDate = year + "-" + entity.stockDate.Replace("月", "-").Replace("初旬頃入荷予定", "10").Replace("初旬頃予定", "10");
+                                                entity.stockDate = year + "-" + entity.stockDate.Replace("月", "-").Replace("初旬頃入荷予定", "10").Replace("初旬頃予定", "10").Replace("上旬頃入荷予定", "10").Replace("上旬頃予定", "10");
                                             }
                                             else if (entity.stockDate.Contains("中旬"))
                                             {
