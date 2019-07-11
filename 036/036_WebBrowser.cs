@@ -12,6 +12,7 @@ using QbeiAgencies_Common;
 using QbeiAgencies_BL;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Microsoft.VisualBasic;
 
 namespace _36PRインターナショナル
 {
@@ -315,6 +316,7 @@ namespace _36PRインターナショナル
                                         entity.stockDate = new DateTime(DateTime.Now.Year, 2, DateTime.DaysInMonth(DateTime.Now.Year, 2)).ToString("yyyy-MM-dd");
                                     }
                                     else
+                                        entity.stockDate = Strings.StrConv(entity.stockDate, VbStrConv.Narrow, 1041);
                                         entity.stockDate = DateTime.Parse(entity.stockDate).ToString("yyyy-MM-dd");
                                     //2018-04-20 End
                                 }
