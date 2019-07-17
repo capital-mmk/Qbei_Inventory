@@ -191,17 +191,28 @@ namespace _20ダイアテック_高難易度_
         {
             fun.ClearMemory();
 
+            //string url = webBrowser1.Url.ToString();
+            //entity = new Qbei_Entity();
+            //entity.orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();
+            //string urlCode = url.Replace("https://www.b2bdiatec.jp/shop/g/g", String.Empty);
+            //if (!urlCode.Equals(entity.orderCode))
+            //{
+            //    orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();
+            //    webBrowser1.Navigate("https://www.b2bdiatec.jp/shop/g/g" + entity.orderCode);
+            //    webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
+            //    webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch2);
+            //}
+            //2018/07/12 変更コード(Start)
             string url = webBrowser1.Url.ToString();
             entity = new Qbei_Entity();
-            entity.orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();
-            string urlCode = url.Replace("https://www.b2bdiatec.jp/shop/g/g", String.Empty);
-            if (!urlCode.Equals(entity.orderCode))
-            {              
-                orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();                
+            entity.orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();           
+            if (!url.Contains(entity.orderCode))
+            {
+                orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();
                 webBrowser1.Navigate("https://www.b2bdiatec.jp/shop/g/g" + entity.orderCode);
                 webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch2);
-            }
+            }//2018/07/12 変更コード(End)
             else
             {
                 try
