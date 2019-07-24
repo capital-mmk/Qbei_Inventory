@@ -582,6 +582,8 @@ namespace Common
                 case "059": return "(株)ジェイピースポーツグループ";
                 case "916": return "(株)あさひ";
                 case "914": return "（株）イノセントデザインワークス";
+                //2019/07/24 Add
+                case "124": return "ミズタニ";
                 default: return "unknwon site";
 
 
