@@ -76,6 +76,8 @@ namespace siteData
             lstProcess.Add("143");
             lstProcess.Add("914");
             lstProcess.Add("916_Chrome");
+            //(2019/07/24)Add
+            lstProcess.Add("124-Mizutani");
 
             foreach (string processName in lstProcess)
             {
@@ -118,6 +120,8 @@ namespace siteData
             GenerateCSV(143, "（株）ポディウム");
             GenerateCSV(914, "（株）イノセントデザインワークス");
             GenerateCSV(916, "(株)あさひ");
+            //(2019/07/24)Add
+            GenerateCSV(124, "ミズタニ自転車");
         }
 
         private static void KillProcessAndChildren(int pid)
