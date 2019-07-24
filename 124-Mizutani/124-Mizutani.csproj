@@ -33,10 +33,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HtmlAgilityPack">
-      <HintPath>C:\Users\Aung Lwin Htay\Desktop\8\Qbei_Inventory\DLL\HtmlAgilityPack.dll</HintPath>
+      <HintPath>..\DLL\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="Interop.SHDocVw">
-      <HintPath>C:\Users\Aung Lwin Htay\Desktop\Interop.SHDocVw.dll</HintPath>
+      <HintPath>..\DLL\Interop.SHDocVw.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
