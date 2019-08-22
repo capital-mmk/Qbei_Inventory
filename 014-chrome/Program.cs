@@ -84,6 +84,7 @@ namespace _014_chrome
 
                 using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))
                 {
+                    chrome.Manage().Window.Maximize();
                     DataTable dt = new DataTable();
                     Qbeisetting_BL qubl = new Qbeisetting_BL();
                     Qbeisetting_Entity qe = new Qbeisetting_Entity();
@@ -93,47 +94,80 @@ namespace _014_chrome
                     chrome.Url = url;
                     string title = chrome.Title;
 
+                    //2019-08-09 Start
                     string username = dt.Rows[0]["UserName"].ToString();
-                    chrome.FindElement(By.Name("c_LOGONID")).SendKeys(username);
+                    //chrome.FindElement(By.Name("c_LOGONID")).SendKeys(username);
+                    chrome.FindElement(By.Name("username")).SendKeys(username);
                     string password = dt.Rows[0]["Password"].ToString();
-                    chrome.FindElement(By.Name("c_PASSWD")).SendKeys(password);
+                    //chrome.FindElement(By.Name("c_PASSWD")).SendKeys(password);
+                    chrome.FindElement(By.Name("password")).SendKeys(password);
                     fun.WriteLog("Navigation to Site Url success------", "014-");
-                    chrome.FindElement(By.Name("c_PASSWD")).Submit();
+                    //chrome.FindElement(By.Name("c_PASSWD")).Submit();
+                    chrome.FindElement(By.Id("btnLogin")).Click();
+                    //2019-08-09 End
 
-                    Thread.Sleep(2000);
-                    url = chrome.Url.ToString();
+                   // Thread.Sleep(2000);
+                    //url = chrome.Url.ToString();
                     fun.WriteLog("Login success             ------", "014-");
-                    chrome.Navigate().GoToUrl("https://edi.iwaishokai.co.jp/weborder/i2_0003/i2_0003.php?b_DOWNLOAD=1&w_KEYWORD=0");
+                    // chrome.Navigate().GoToUrl("https://edi.iwaishokai.co.jp/weborder/i2_0003/i2_0003.php?b_DOWNLOAD=1&w_KEYWORD=0");
+                    //chrome.Navigate().GoToUrl("https://iwaishokai.net/search");
+                    //chrome.FindElement(By.XPath("//*[@id='app']/div[1]/nav/div/div/div[1]/a/img")).Click();
+                    //chrome.FindElement(By.XPath("//*[@id='navbar-collapse2']/ul/li[1]/a")).Click();
+                    //2019-08-09 Start
+                    Thread.Sleep(2000);
+                    chrome.FindElement(By.XPath("//*[@id='listForm']/div[5]/div/label/input")).Click();
+                    chrome.FindElement(By.XPath("//*[@id='listForm']/div[7]/div[2]/button[1]")).Click();
+                    //2019-08-09 End
                     fun.WriteLog("Navigation to Download Url success------", "014-");
                     Thread.Sleep(5000);
 
                     DataTable dt014 = fun.GetDatatable("014");
-                    dt014 = fun.GetOrderData(dt014, "https://edi.iwaishokai.co.jp", "014", "");
+                    // dt014 = fun.GetOrderData(dt014, "https://edi.iwaishokai.co.jp", "014", "");
+                    //2019-08-09 Start
+                    dt014 = fun.GetOrderData(dt014, "https://edi.iwaishokai.net", "014", "");
+                    //2019-08-09 End
                     fun.GetTotalCount("014");
 
-                    if (!File.Exists(@"C:\Qbei_Log\014_Download\items.csv"))
-                    {
-                        fun.Qbei_ErrorInsert(14, fun.GetSiteName("014"), "Access Denied!", "0", "0", 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "014");
-                        fun.WriteLog("Access Denied! ", "014--");
-                        Environment.Exit(0);
-                    }
+                    //if (!File.Exists(@"C:\Qbei_Log\014_Download\items.csv"))
+                    //{
+                    //    fun.Qbei_ErrorInsert(14, fun.GetSiteName("014"), "Access Denied!", "0", "0", 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "014");
+                    //    fun.WriteLog("Access Denied! ", "014--");
+                    //    Environment.Exit(0);
+                    //}
+                    //2019-08-09 Start
+
+                    string path = "C:\\Qbei_Log\\014_Download\\";
+
+                    string[] filelist = Directory.GetFiles(path);              
+
+                        if (!filelist[0].Contains(".csv"))
+                        //if (!fname.Contains(".csv"))
+                        {
+                            fun.Qbei_ErrorInsert(14, fun.GetSiteName("014"), "Access Denied!", "0", "0", 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "014");
+                            fun.WriteLog("Access Denied! ", "014--");
+                            Environment.Exit(0);
+                        }
+                    //2019-08-09 End
                     else
                     {
-                        //2018-05-04 Start
-                        string[] str = { "商品コード", "現在庫数", "卸価格" };
-                        DataTable dtItem = fun.GetDatatableFromDownloadPath(@"C:\Qbei_Log\014_Download\", str);
-                        fun.WriteLog("Download success match with datatable------", "014-");
-                        //2018-05-04 End
-                        fun.Qbei_Insert_XML(dt014, dtItem, "Qbei_Insert_Xml", strParam);
-                        fun.WriteLog("Insert data to db success------", "014-");
-                        qe.endtime = DateTime.Now.ToString();
-                        qe.flag = 2;
-                        qe.starttime = st;
-                        qe.site = 14;
-                        fun.ChangeFlag(qe);
-                        chrome.Quit();
-                        Environment.Exit(0);
-                    }
+                            //2018-05-04 Start
+                            //string[] str = { "商品コード", "現在庫数", "卸価格" };                           
+                            //2019-08-09 Start
+                            string[] str = { "商品コード", "在庫状況", "卸価格" };
+                            //2019-08-09 End
+                            DataTable dtItem = fun.GetDatatableFromDownloadPath(@"C:\Qbei_Log\014_Download\", str);
+                            fun.WriteLog("Download success match with datatable------", "014-");
+                            //2018-05-04 End
+                            fun.Qbei_Insert_XML(dt014, dtItem, "Qbei_Insert_Xml", strParam);
+                            fun.WriteLog("Insert data to db success------", "014-");
+                            qe.endtime = DateTime.Now.ToString();
+                            qe.flag = 2;
+                            qe.starttime = st;
+                            qe.site = 14;
+                            fun.ChangeFlag(qe);
+                            chrome.Quit();
+                            Environment.Exit(0);
+                        }
                 }
 
             }
