@@ -125,6 +125,7 @@ namespace Common
             DataTable dtNotInteger = new DataTable();
             DataTable dtNotRun = new DataTable();
             DataColumn dc = new DataColumn("SiteName");
+            DataColumn da = new DataColumn("SiteName");
             string xml;
             Connection con;
             SqlConnection sqlcon;
@@ -225,8 +226,10 @@ namespace Common
                             cmd.Connection.Open();
                             cmd.ExecuteNonQuery();
                             cmd.Connection.Close();
+
                         }
                     }
+
 
                     dr = dtTemp.Select("発注コード<>' ' AND 発注コード <> '' AND 発注コード is not NULL AND 発注コード<> '-' AND 発注コード<> '--' ");
                     if (dr.Count() > 0)
@@ -238,13 +241,21 @@ namespace Common
                             dtNotNull.AsEnumerable().ToList().ForEach(r => r["発注コード"] = r.Field<string>("発注コード").Trim());
                             //2018-05-07 Start
                             //var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("/") || r.Field<string>("発注コード").Contains("データ登録")));
-                            var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録")));
+                           // var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録")));
+
+                            var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Equals("在庫処分/empty/")||r.Field<string>("発注コード").Equals("在庫更新中止/-") ||r.Field<string>("発注コード").Equals("在庫更新中止") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録")));
+
+
+
                             //2018-05-07 End
+                            //2018-08-29 Start
+                            //var notInteger2 = notInteger.AsEnumerable().Where(r => (!r.Field<string>("発注コード").Contains("在庫更新中止")));
+                            //2018-08-29 End
                             if (notInteger.Any())
                             {
                                 //2018-05-07 Start
                                 //dtNotInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("/") || r.Field<string>("発注コード").Contains("データ登録"))).CopyToDataTable();
-                                dtNotInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録"))).CopyToDataTable();
+                                dtNotInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Equals("在庫処分/empty/") || r.Field<string>("発注コード").Equals("在庫更新中止/-") || r.Field<string>("発注コード").Equals("在庫更新中止") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録"))).CopyToDataTable();
                                 //2018-05-07 End
                                 dc = new DataColumn("SiteName");
                                 dc.DefaultValue = GetSiteName(shopID);
@@ -281,7 +292,12 @@ namespace Common
                         //var notRun = dtOrder.AsEnumerable().Where(x => x.Field<string>("在庫情報").Contains("empty") && x.Field<string>("ステータス変更日") != null && DateTime.Parse(x.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-6).Date);
                         var notRun = dtOrder.AsEnumerable().Where(x => x.Field<string>("在庫情報").Contains("empty") && x.Field<string>("ステータス変更日") != null && DateTime.Parse(x.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-9).Date);
                         //2018-07-04 End
-                        dtNotRun = notRun.Any() ? notRun.CopyToDataTable() : null;
+                        //2018-08-29 Start
+                        var empty = notRun.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫更新中止")));
+                        var select = empty.AsEnumerable().Select(x =>( x.Field<string>("発注コード").Contains("在庫更新中止")));
+                        dtNotRun = empty.Any() ? empty.CopyToDataTable() : null;
+                        //2018-08-29 End
+                        // dtNotRun = notRun.Any() ? notRun.CopyToDataTable() : null;
                         if (dtNotRun != null)
                         {
                             //Save Data into Qbei_ErrorLog
@@ -432,6 +448,10 @@ namespace Common
                                                             )
                                                       );
                 dtOnceaWeek = data.Any() ? data.CopyToDataTable() : null;
+                //2018-08-29 Start
+                //var notintegerdata2 = data.AsEnumerable().Where(r => (!r.Field<string>("発注コード").Contains("在庫更新中止")));
+                //dtOnceaWeek = notintegerdata2.Any() ? notintegerdata2.CopyToDataTable() : null;
+                //2018-08-29 End
                 if (dtOnceaWeek != null)
                 {
                     var notexistdata = dtData.AsEnumerable().Where(r => !dtOnceaWeek.AsEnumerable().Any(y => y.Field<string>("JANコード") == r.Field<string>("JANコード")));
