@@ -244,10 +244,7 @@ namespace Common
                            // var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録")));
 
                             var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Equals("在庫処分/empty/")||r.Field<string>("発注コード").Equals("在庫更新中止/-") ||r.Field<string>("発注コード").Equals("在庫更新中止") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録")));
-
-
-
-                            //2018-05-07 End
+                        //2018-05-07 End
                             //2018-08-29 Start
                             //var notInteger2 = notInteger.AsEnumerable().Where(r => (!r.Field<string>("発注コード").Contains("在庫更新中止")));
                             //2018-08-29 End
