@@ -121,6 +121,9 @@ namespace _014_chrome
                     fun.WriteLog("Navigation to Download Url success------", "014-");
                     Thread.Sleep(5000);
 
+
+                    //DataTable dtCancelUpdate = new DataTable();
+
                     DataTable dt014 = fun.GetDatatable("014");
                     // dt014 = fun.GetOrderData(dt014, "https://edi.iwaishokai.co.jp", "014", "");
                     //2019-08-09 Start
