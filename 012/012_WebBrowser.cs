@@ -18,6 +18,7 @@ namespace _12カワシマ
 {
     public partial class frm012 : Form
     {
+        //データーを　呼び出し。
         DataTable dt = new DataTable();
         Qbeisetting_BL qubl = new Qbeisetting_BL();
         Qbeisetting_Entity qe = new Qbeisetting_Entity();
@@ -25,12 +26,15 @@ namespace _12カワシマ
         DataTable dt012 = new DataTable();
         Qbei_Entity entity = new Qbei_Entity();
         int i = 0;
-        
+
+        //システム(Start)。
         public frm012()
         {
             InitializeComponent();
             testflag();
         }
+
+        //Flagの　チャック。
         private void testflag()
         {
             try
@@ -64,6 +68,8 @@ namespace _12カワシマ
                 Environment.Exit(0);
             }
         }
+
+        //サイト　や　データーtableの　検査と処理。
         public void StartRun()
         {
             try
@@ -89,6 +95,7 @@ namespace _12カワシマ
             }
         }
 
+        //サイトのデーターを　読み出し。
         private void ReadData()
         {
             qe.SiteID = 12;
@@ -100,6 +107,7 @@ namespace _12カワシマ
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
         }
 
+        //Mallの　ログイン。
         private void webBrowser1_Start(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -133,6 +141,7 @@ namespace _12カワシマ
             }
         }
 
+        //ログインの　チャック。
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -168,6 +177,7 @@ namespace _12カワシマ
             }
         }
 
+        //Mallに　項目情報の検査。
         private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             string strStockDate = string.Empty;
@@ -290,6 +300,7 @@ namespace _12カワシマ
             }
         }
 
+        //NavigateErrorの　表示。
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
             string janCode = dt012.Rows[i]["JANコード"].ToString();
