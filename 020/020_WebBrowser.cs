@@ -18,6 +18,7 @@ namespace _20ダイアテック_高難易度_
 {
     public partial class frm020 : Form
     {
+        //データーを　呼び出し。
         DataTable dt = new DataTable();
         Qbeisetting_BL qubl = new Qbeisetting_BL();
         Qbeisetting_Entity qe = new Qbeisetting_Entity();
@@ -27,12 +28,14 @@ namespace _20ダイアテック_高難易度_
         int i = 0;
         string orderCode = string.Empty;
 
+        //システム(Start)。
         public frm020()
         {
             InitializeComponent();
             testflag();
         }
 
+        //Flagの　チャック。
         private void testflag()
         {
             try
@@ -69,6 +72,7 @@ namespace _20ダイアテック_高難易度_
             }
         }
 
+        //サイト　や　データーtableの　検査と処理。
         public void StartRun()
         {
             try
@@ -91,6 +95,7 @@ namespace _20ダイアテック_高難易度_
             }
         }
 
+        //サイトのデーターを　読み出し。
         private void ReadData()
         {
             qe.SiteID = 20;
@@ -102,6 +107,8 @@ namespace _20ダイアテック_高難易度_
             webBrowser1.ScriptErrorsSuppressed = true;
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
         }
+
+        //Mallの　ログイン。
         private void webBrowser1_Start(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -140,6 +147,7 @@ namespace _20ダイアテック_高難易度_
             }
         }
 
+        //ログインの　チャック。
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             string janCode = string.Empty;
@@ -177,6 +185,7 @@ namespace _20ダイアテック_高難易度_
             }
         }
 
+        //Mallに　項目を検査。
         private void webBrowser_ItemSearch2(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             webBrowser1.ScriptErrorsSuppressed = true;
@@ -186,7 +195,8 @@ namespace _20ダイアテック_高難易度_
             webBrowser1.Navigate("https://www.b2bdiatec.jp/shop/g/g" + orderCode);
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
         }
-        
+
+        //Mallに　項目情報の検査。
         private void webBrowser_ItemSearch1(object sender, EventArgs e)
         {
             fun.ClearMemory();
@@ -348,6 +358,7 @@ namespace _20ダイアテック_高難易度_
             }
         }
 
+        //NavigateErrorの　表示。
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
             string janCode = dt020.Rows[i]["JANコード"].ToString();
