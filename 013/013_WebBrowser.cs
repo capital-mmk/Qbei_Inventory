@@ -17,6 +17,7 @@ namespace _13ミズタニ
 {
     public partial class frm013 : Form
     {
+        //データーを　呼び出し。
         DataTable dt = new DataTable();
         Qbeisetting_BL qubl = new Qbeisetting_BL();
         Qbeisetting_Entity qe = new Qbeisetting_Entity();
@@ -26,11 +27,15 @@ namespace _13ミズタニ
         int i = -1;
         public static string st = string.Empty;
         string gridViewFormat = "GridView1_ctl{0}";
+
+        //システム(Start)。
         public frm013()
         {
             InitializeComponent();
             testflag();
         }
+
+        //Flagの　チャック。
         private void testflag()
         {
             qe.site = 13;
@@ -58,6 +63,7 @@ namespace _13ミズタニ
             }
         }
 
+        //サイト　や　データーtableの　検査と処理。
         public void StartRun()
         {
             try
@@ -76,6 +82,7 @@ namespace _13ミズタニ
             catch (Exception) { }
         }
 
+        //サイトのデーターを　読み出し。
         private void ReadData()
         {
             webBrowser1.ScriptErrorsSuppressed = true;
@@ -88,6 +95,7 @@ namespace _13ミズタニ
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
         }
 
+        //日付の　変更。
         private bool IsDate(string date)
         {
             try
@@ -99,6 +107,7 @@ namespace _13ミズタニ
             { return false; }
         }
 
+        //Mallの　ログイン。
         private void webBrowser1_Start(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -127,6 +136,7 @@ namespace _13ミズタニ
             }
         }
 
+        //ログインの　チャック。
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -154,6 +164,8 @@ namespace _13ミズタニ
                 Environment.Exit(0);
             }
         }
+
+        //検査ページの　お待ち。
         private void webBrowser1_WaitForSearchPage(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             webBrowser1.ScriptErrorsSuppressed = true;
@@ -164,6 +176,8 @@ namespace _13ミズタニ
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
             }
         }
+
+        //Mallに　項目を検査。
         private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             string orderCode = string.Empty;
@@ -202,6 +216,8 @@ namespace _13ミズタニ
                 Environment.Exit(0);
             }
         }
+
+        //Mallに　項目情報の検査。
         private void webBrowser1_ItemProcessing(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             //while (string.IsNullOrEmpty(tmpOrderCode))
@@ -446,6 +462,8 @@ namespace _13ミズタニ
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
             //}
         }
+
+        //NavigateErrorの　表示。
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
             fun.Qbei_ErrorInsert(13, fun.GetSiteName("013"), "Access Denied!", dt013.Rows[i]["JANコード"].ToString(), dt013.Rows[i]["発注コード"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013");
