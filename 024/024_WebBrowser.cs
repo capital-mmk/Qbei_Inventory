@@ -16,6 +16,7 @@ namespace _24東_アズマ_
 {
     public partial class frm024 : Form
     {
+        //データーを　呼び出し。
         DataTable dt = new DataTable();
         Qbeisetting_BL qubl = new Qbeisetting_BL();
         Qbeisetting_Entity qe = new Qbeisetting_Entity();
@@ -24,12 +25,15 @@ namespace _24東_アズマ_
         Qbei_Entity entity = new Qbei_Entity();
         int i = 0;
         public static string st = string.Empty;
+
+        //システム(Start)。
         public frm024()
         {
             InitializeComponent();
             testflag();
         }
 
+        //Flagの　チャック。
         private void testflag()
         {
             try
@@ -65,6 +69,7 @@ namespace _24東_アズマ_
             }
         }
 
+        //サイト　や　データーtableの　検査と処理。
         public void StartRun()
         {
             try
@@ -86,6 +91,7 @@ namespace _24東_アズマ_
             }
         }
 
+        //サイトのデーターを　読み出し。
         private void ReadData()
         {
             qe.SiteID = 24;
@@ -97,6 +103,7 @@ namespace _24東_アズマ_
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
         }
 
+        //Mallの　ログイン。
         private void webBrowser1_Start(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -134,6 +141,8 @@ namespace _24東_アズマ_
                 Environment.Exit(0);
             }
         }
+
+        //ログインの　チャック。
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {   
             try
@@ -172,6 +181,8 @@ namespace _24東_アズマ_
                 Environment.Exit(0);
             }
         }
+
+        //Mallに　項目を検査。
         private void webBrowser1_WaitForSearchPage(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -200,6 +211,8 @@ namespace _24東_アズマ_
                 Environment.Exit(0);
             }
         }
+
+        //Mallに　項目情報の検査。
         private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -343,6 +356,8 @@ namespace _24東_アズマ_
                 }
             }
         }
+
+        //NavigateErrorの　表示。
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
             string janCode = dt024.Rows[i]["JANコード"].ToString();
