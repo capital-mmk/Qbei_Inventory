@@ -16,6 +16,7 @@ namespace _17インターマックス
 {
     public partial class frm017 : Form
     {
+        //データーを　呼び出し。
         DataTable dt = new DataTable();
         Qbeisetting_BL qubl = new Qbeisetting_BL();
         Qbeisetting_Entity qe = new Qbeisetting_Entity();
@@ -23,11 +24,15 @@ namespace _17インターマックス
         DataTable dt017 = new DataTable();
         Qbei_Entity entity = new Qbei_Entity();
         int i = 0;
+
+        //システム(Start)。
         public frm017()
         {
             InitializeComponent();
             testflag();
         }
+
+        //Flagの　チャック。
         private void testflag()
         {
             try
@@ -62,6 +67,7 @@ namespace _17インターマックス
             }
         }
 
+        //サイト　や　データーtableの　検査と処理。
         public void StartRun()
         {
             try
@@ -83,6 +89,7 @@ namespace _17インターマックス
             }
         }
 
+        //サイトのデーターを　読み出し。
         private void ReadData()
         {
             qe.SiteID = 17;
@@ -94,6 +101,7 @@ namespace _17インターマックス
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
         }
 
+        //Mallの　ログイン。
         private void webBrowser1_Start(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -126,6 +134,7 @@ namespace _17インターマックス
             }
         }
 
+        //ログインの　チャック。
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             string orderCode = string.Empty;
@@ -162,6 +171,7 @@ namespace _17インターマックス
             }
         }
 
+        //Mallに　項目情報の検査。
         private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -351,6 +361,8 @@ namespace _17インターマックス
                 }
             }
         }
+
+        //NavigateErrorの　表示。
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
             string janCode = dt017.Rows[i]["JANコード"].ToString();
