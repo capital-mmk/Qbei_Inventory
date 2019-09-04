@@ -17,6 +17,7 @@ namespace _018日直_ニチナオ_
 {
     public partial class frm018 : Form
     {
+        //データーを　呼び出し。
         DataTable dt = new DataTable();
         CommonFunction fun = new CommonFunction();
         Qbeisetting_BL qubl = new Qbeisetting_BL();
@@ -26,12 +27,14 @@ namespace _018日直_ニチナオ_
         public static string st = string.Empty;
         int i = 0;
 
+        //システム(Start)。
         public frm018()
         {
             InitializeComponent();
             testflag();
         }
 
+        //Flagの　チャック。
         private void testflag()
         {
             try
@@ -67,6 +70,7 @@ namespace _018日直_ニチナオ_
             }
         }
 
+        //サイト　や　データーtableの　検査と処理。
         public void StartRun()
         {
             try
@@ -88,6 +92,7 @@ namespace _018日直_ニチナオ_
             }
         }
 
+        //サイトのデーターを　読み出し。
         private void ReadData()
         {
             qe.SiteID = 18;
@@ -99,6 +104,7 @@ namespace _018日直_ニチナオ_
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
         }
 
+        //Mallの　ログイン。
         private void webBrowser1_Start(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -133,6 +139,7 @@ namespace _018日直_ニチナオ_
             }
         }
 
+        //ログインの　チャック。
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -168,6 +175,7 @@ namespace _018日直_ニチナオ_
             }
         }
 
+        //Mallに　項目情報の検査。
         private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             fun.ClearMemory();
@@ -322,6 +330,8 @@ namespace _018日直_ニチナオ_
                 Environment.Exit(0);
             }
         }
+
+        //NavigateErrorの　表示。
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
             string janCode = dt018.Rows[i]["JANコード"].ToString();
