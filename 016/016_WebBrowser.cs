@@ -16,6 +16,7 @@ namespace _016ライトウェイ
 {
     public partial class frm016 : Form
     {
+        //データーを　呼び出し。
         DataTable dt = new DataTable();
         Qbeisetting_BL qubl = new Qbeisetting_BL();
         Qbeisetting_Entity qe = new Qbeisetting_Entity();
@@ -26,11 +27,15 @@ namespace _016ライトウェイ
         int counts = 0;
 
         public static string st = string.Empty;
+
+        //システム(Start)。
         public frm016()
         {
             InitializeComponent();
             testflag();
         }
+
+        //Flagの　チャック。
         private void testflag()
         {
             try
@@ -64,6 +69,8 @@ namespace _016ライトウェイ
                 Environment.Exit(0);
             }
         }
+
+        //サイト　や　データーtableの　検査と処理。
         public void StartRun()
         {
             try
@@ -87,6 +94,8 @@ namespace _016ライトウェイ
                 Environment.Exit(0);
             }
         }
+
+        //サイトのデーターを　読み出し。
         private void ReadData()
         {
             webBrowser1.ScriptErrorsSuppressed = true;
@@ -100,6 +109,7 @@ namespace _016ライトウェイ
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Login);
         }
 
+        //Mallの　ログイン。
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -131,6 +141,7 @@ namespace _016ライトウェイ
             }
         }
 
+        //ログインの　チャック。
         private void webBrowser1_Main(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -168,6 +179,7 @@ namespace _016ライトウェイ
             }
         }
 
+        //検査ページの　お待ち。
         private void webBrowser1_WaitForSearchPage(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -209,6 +221,7 @@ namespace _016ライトウェイ
         //    webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
         //}
 
+        //Mallに　項目を入力。
         private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -270,6 +283,7 @@ namespace _016ライトウェイ
             }
         }
 
+        //Mallに　項目を検査。
         private void webBrowser1_SearchClick(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -291,6 +305,8 @@ namespace _016ライトウェイ
                 Environment.Exit(0);
             }
         }
+
+        //検査ページの　お待ち。
         private void webBrowser1_WaitForSearchPage1(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -313,6 +329,8 @@ namespace _016ライトウェイ
                 Environment.Exit(0);
             }
         }
+
+        //Mallに　項目情報の検査。
         private void webBrowser1_SearchClick1(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             string strUrl;
@@ -472,12 +490,15 @@ namespace _016ライトウェイ
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
         }
 
+        //Mallの　項目を入力(Add Rows)。
         private void AddRow()
         {
             // webBrowser1.Document.GetElementsByTagName("span")[0].InvokeMember("click");
             fun.GetElement("img", "もう一件追加する", "value", webBrowser1).InvokeMember("click");
             webBrowser1.ScriptErrorsSuppressed = true;
         }
+
+        //NavigateErrorの　表示。
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
             string janCode = dt016.Rows[i]["JANコード"].ToString();
