@@ -15,7 +15,8 @@ using QbeiAgencies_Common;
 namespace _011マルイ
 {
     public partial class frm011 : Form
-    {      
+    {
+        //データーを　呼び出し。
         DataTable dt = new DataTable();
         Qbeisetting_BL qubl = new Qbeisetting_BL();
         Qbeisetting_Entity qe = new Qbeisetting_Entity();
@@ -23,13 +24,16 @@ namespace _011マルイ
         DataTable dt011 = new DataTable();
         Qbei_Entity entity = new Qbei_Entity();
         int i = 0;
-        
+
+        //システム(Start)。
         public frm011()
         {
             InitializeComponent();
 
             testflag();
         }
+
+        //Flagの　チャック。
         private void testflag()
         {
             try
@@ -64,7 +68,8 @@ namespace _011マルイ
                 Environment.Exit(0);
             }
         }
-
+        
+        //サイト　や　データーtableの　検査と処理。
         public void StartRun()
         {
             try
@@ -86,6 +91,7 @@ namespace _011マルイ
             }
         }
 
+        //サイトのデーターを　読み出し。
         private void ReadData()
         {
             webBrowser1.ScriptErrorsSuppressed = true;
@@ -97,6 +103,7 @@ namespace _011マルイ
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
         }
 
+        //Mallの　ログイン。
         private void webBrowser1_Start(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -130,6 +137,7 @@ namespace _011マルイ
             }
         }
 
+        //ログインの　チャック。
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             string janCode = string.Empty;
@@ -167,6 +175,7 @@ namespace _011マルイ
             }
         }
 
+        //Mallに　項目情報の検査。
         private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -297,6 +306,8 @@ namespace _011マルイ
                 Environment.Exit(0);
             }
         }
+
+        //NavigateErrorの　表示。
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
             string janCode = dt011.Rows[i]["JANコード"].ToString();
