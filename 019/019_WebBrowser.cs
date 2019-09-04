@@ -16,6 +16,7 @@ namespace _019深谷_フカヤ_
 {
     public partial class frm019 : Form
     {
+        //データーを　呼び出し。
         DataTable dt = new DataTable();
         Qbeisetting_BL qubl = new Qbeisetting_BL();
         Qbeisetting_Entity qe = new Qbeisetting_Entity();
@@ -23,12 +24,15 @@ namespace _019深谷_フカヤ_
         DataTable dt019 = new DataTable();
         Qbei_Entity entity = new Qbei_Entity();
         int i = 0;
+
+        //システム(Start)。
         public frm019()
         {
             InitializeComponent();
             testflag();
         }
 
+        //Flagの　チャック。
         private void testflag()
         {
             try
@@ -64,6 +68,7 @@ namespace _019深谷_フカヤ_
             }
         }
 
+        //サイト　や　データーtableの　検査と処理。
         public void StartRun()
         {
             try
@@ -85,6 +90,7 @@ namespace _019深谷_フカヤ_
             }
         }
 
+        //サイトのデーターを　読み出し。
         private void ReadData()
         {
             webBrowser1.ScriptErrorsSuppressed = true;
@@ -97,6 +103,7 @@ namespace _019深谷_フカヤ_
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
         }
 
+        //Mallの　ログイン。
         private void webBrowser1_Start(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -129,6 +136,8 @@ namespace _019深谷_フカヤ_
                 Environment.Exit(0);
             }
         }
+
+        //ログインの　チャック。
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             string orderCode = string.Empty;
@@ -167,6 +176,7 @@ namespace _019深谷_フカヤ_
             }
         }
 
+        //Mallに　項目を検査。
         private void webBrowser1_WaitForSearchPage(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             webBrowser1.ScriptErrorsSuppressed = true;
@@ -182,6 +192,7 @@ namespace _019深谷_フカヤ_
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
         }
 
+        //Mallに　項目情報の検査。
         private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             fun.ClearMemory();
@@ -305,6 +316,8 @@ namespace _019深谷_フカヤ_
                 Environment.Exit(0);
             }
         }
+
+        //NavigateErrorの　表示。
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
             string janCode = dt019.Rows[i]["JANコード"].ToString();
