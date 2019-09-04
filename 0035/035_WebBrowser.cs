@@ -19,6 +19,7 @@ namespace _0035
 {
     public partial class frm035 : Form
     {
+        //データーを　呼び出し。
         DataTable dt = new DataTable();
         Qbeisetting_BL qubl = new Qbeisetting_BL();
         Qbeisetting_Entity qe = new Qbeisetting_Entity();
@@ -29,12 +30,14 @@ namespace _0035
         public static string st = string.Empty;
         string strParam = string.Empty;
 
+        //システム(Start)。
         public frm035()
         {
             InitializeComponent();
             testflag();
         }
 
+        //パラメータの　処理。
         public frm035(string strObj)
         {
             InitializeComponent();
@@ -42,6 +45,7 @@ namespace _0035
             StartRun();
         }
 
+        //Flagの　チャック。
         private void testflag()
         {
             try
@@ -78,6 +82,7 @@ namespace _0035
             }
         }
 
+        //サイト　や　データーtableの　検査と処理。
         private void StartRun()
         {
             try
@@ -114,6 +119,7 @@ namespace _0035
             }
         }
 
+        //サイトのデーターを　読み出し。
         private void ReadData()
         {
             webBrowser1.ScriptErrorsSuppressed = true;
@@ -123,6 +129,8 @@ namespace _0035
             webBrowser1.Navigate(fun.url);
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
         }
+
+        //Mallの　ログイン。
         private void webBrowser1_Start(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -155,6 +163,7 @@ namespace _0035
             }
         }
 
+        //ログインの　チャック。
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             string orderCode = string.Empty;
@@ -191,6 +200,7 @@ namespace _0035
             }
         }
 
+        //Mallに　項目情報の検査。
         private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -357,6 +367,7 @@ namespace _0035
             }
         }
 
+        //NavigateErrorの　表示。
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
             string janCode = dt035.Rows[i]["JANコード"].ToString();
