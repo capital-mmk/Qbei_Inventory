@@ -27,11 +27,15 @@ namespace _011マルイ
         /// </remark>
         
         DataTable dt = new DataTable();
-        Qbeisetting_BL qubl = new Qbeisetting_BL();//Connection Database of Object.
-        Qbeisetting_Entity qe = new Qbeisetting_Entity();//Field of Object.
-        CommonFunction fun = new CommonFunction();//Common Function of Object.
+        //Connection Database of Object.
+        Qbeisetting_BL qubl = new Qbeisetting_BL();
+        //Field of Object.
+        Qbeisetting_Entity qe = new Qbeisetting_Entity();
+        //Common Function of Object.
+        CommonFunction fun = new CommonFunction();
         DataTable dt011 = new DataTable();
-        Qbei_Entity entity = new Qbei_Entity();//Field of Object.
+        //Field of Object.
+        Qbei_Entity entity = new Qbei_Entity();
         int i = 0;
 
         /// <summary>
@@ -44,7 +48,8 @@ namespace _011マルイ
         {
 
             InitializeComponent();
-            testflag();//testflag processing.
+            //testflag processing.
+            testflag();
         }
 
         /// <summary>
@@ -62,17 +67,18 @@ namespace _011マルイ
             ///"0,1,2"Flage Number of Check. 
             ///</remark>
             try
-            {          
-                Qbeisetting_Entity qe = new Qbeisetting_Entity();//Field of Object.
-
-                /// <summary>
-                /// Starttime,ID Number,Flag Number of Site.
-                /// </summary>          
-                qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");//Input Starttime.
-                qe.site = 11;//Input SiteID Number.
-                qe.flag = 1;//Input Flag Number.
-                DataTable dtflag = fun.SelectFlag(11);//Input DataTable of Common Function Flag Table.             
-                int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());//To Check "FlagIsFinished" of Flag Number at Flag Table.
+            {
+                //Field of Object.
+                Qbeisetting_Entity qe = new Qbeisetting_Entity();     
+                qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                //Input site Number.
+                qe.site = 11;
+                //Input Flag Number.
+                qe.flag = 1;
+                //Input DataTable of Common Function Flag Table.   
+                DataTable dtflag = fun.SelectFlag(11);
+                //To Check "FlagIsFinished" of Flag Number at Flag Table.
+                int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
 
                 /// <summary>
                 /// Flag Number of Check.
@@ -81,15 +87,27 @@ namespace _011マルイ
                 ///  "0" or "1" of Check.
                 /// </remark>
                 if (flag == 0)
-                {      
-                    fun.ChangeFlag(qe);//Common Function of ChangFlage Process.
-                    StartRun();//StartRun Process.
+                {
+                    ///<remark>
+                    ///when flag is 0,Change to flag is 1 .To Continue Next Process.
+                    ///</remark>
+
+                    //Common Function of ChangFlage Process.
+                    fun.ChangeFlag(qe);
+                    //StartRun Process.
+                    StartRun();
                 }
                 else if (flag == 1)
-                {      
-                    fun.deleteData(11);//Common Function of deleteData Process.
-                    fun.ChangeFlag(qe);//Common Function of ChangFlage Process.
-                    StartRun();//StartRun Process.
+                {
+                    ///<remark>
+                    ///when flag is 1,To Continue Next Process.
+                    ///</remark>
+                    //Common Function of deleteData Process.
+                    fun.deleteData(11);
+                    //Common Function of ChangFlage Process.
+                    fun.ChangeFlag(qe);
+                    //StartRun Process.
+                    StartRun();
                 }
                 else
                 {
@@ -128,9 +146,12 @@ namespace _011マルイ
                 /// Common Function.
                 /// </param>
                 fun.setURL("011");
-                fun.CreateFileAndFolder();//Common Function of CreateFileAndFolder Process.
-                fun.Qbei_Delete(11);//Common Function of Qbei_Delete Process.
-                fun.Qbei_ErrorDelete(11);//Common Function of Qbei_ErrorDelete Process.
+                //Common Function of CreateFileAndFolder Process.
+                fun.CreateFileAndFolder();
+                //Common Function of Qbei_Delete Process.
+                fun.Qbei_Delete(11);
+                //Common Function of Qbei_ErrorDelete Process.
+                fun.Qbei_ErrorDelete(11);
 
                 /// <remark>
                 /// To Input dt011(Data Table) at Common Function of GetDatatable Process.
@@ -151,11 +172,12 @@ namespace _011マルイ
                 /// <remark>
                 /// Common Function of GetTotalCount Process.
                 /// </remark>
-                /// <param　setURL("011")>
+                /// <param　GetTotalCount("011")>
                 /// Common Function.
                 /// </param>             
                 fun.GetTotalCount("011");
-                ReadData();//ReadData Process.v
+                //ReadData Process.
+                ReadData();
             }
             catch (Exception ex)
             {
@@ -180,7 +202,8 @@ namespace _011マルイ
         private void ReadData()
         {
            webBrowser1.ScriptErrorsSuppressed = true;
-            qe.SiteID = 11;//Input SiteID Number.
+            //Input SiteID Number.
+            qe.SiteID = 11;
 
             /// <remark>
             /// To Input Data Table at Connection Database of Qbei_Setting_Select Process.
@@ -198,8 +221,10 @@ namespace _011マルイ
             /// </param>
             fun.url = dt.Rows[0]["Url"].ToString();
             //Thread.Sleep(1000);
-            webBrowser1.Navigate(fun.url);//Check WebBrwser Navigate at Common Function of url process.
-            webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);//Next Process.
+            //Check WebBrwser Navigate at Common Function of url process.
+            webBrowser1.Navigate(fun.url);
+            //Next Process.
+            webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
         }
 
         /// <summary>
@@ -223,7 +248,8 @@ namespace _011マルイ
                 /// </param>
                 fun.WriteLog("Navigation to Site Url success------", "011-");
                 webBrowser1.ScriptErrorsSuppressed = true;
-                qe.SiteID = 11;//Input SiteID Number.
+                //Input SiteID Number.
+                qe.SiteID = 11;
 
                 /// <remark>
                 /// To Input Data Table at Connection Database of Qbei_Setting_Select Process.
@@ -232,19 +258,27 @@ namespace _011マルイ
                 /// Data Table.
                 /// </param>
                 dt = qubl.Qbei_Setting_Select(qe);
-                string username = dt.Rows[0]["UserName"].ToString();//To Input string of username at Data Table of "UserName".
-                webBrowser1.Document.GetElementById("id").InnerText = username;//Webpage Inspect of  CodeID.
-                string password = dt.Rows[0]["Password"].ToString();//To Input string of username at Data Table of "Password".
-                webBrowser1.Document.GetElementById("psw").InnerText = password;//Webpage Inspect of  CodeID.
-                fun.GetElement("input", "　ロ グ イ ン　", "value", webBrowser1).InvokeMember("click");//Click at webpage of Login. 
+                //To Input string of username at Data Table of "UserName".
+                string username = dt.Rows[0]["UserName"].ToString();
+                //Webpage Inspect of  CodeID.
+                webBrowser1.Document.GetElementById("id").InnerText = username;
+                //To Input string of username at Data Table of "Password".
+                string password = dt.Rows[0]["Password"].ToString();
+                //Webpage Inspect of  CodeID.
+                webBrowser1.Document.GetElementById("psw").InnerText = password;
+                //Click at webpage of Login.
+                fun.GetElement("input", "　ロ グ イ ン　", "value", webBrowser1).InvokeMember("click"); 
 
                 webBrowser1.DocumentCompleted -= webBrowser1_Start;
-                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Login);//Next Process.
+                //Next Process.
+                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Login);
             }
             catch (Exception ex)
             {
-                string janCode = dt011.Rows[0]["JANコード"].ToString();//To Input string of janCode at Data Table of "JANコード".
-                string orderCode = dt011.Rows[0]["発注コード"].ToString();//To Input string of orderCode at Data Table of "orderCode".
+                //To Input string of janCode at Data Table of "JANコード".
+                string janCode = dt011.Rows[0]["JANコード"].ToString();
+                //To Input string of orderCode at Data Table of "orderCode".
+                string orderCode = dt011.Rows[0]["発注コード"].ToString();
                
                 /// <remark>
                 /// Common Function of Qbei_ErrorInsert Process.
@@ -280,7 +314,8 @@ namespace _011マルイ
             {
                 webBrowser1.ScriptErrorsSuppressed = true;
                 webBrowser1.DocumentCompleted -= webBrowser1_Login;
-                string body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;//To Input string of username at Data Table of ("body")[0].
+                //To Input string of body at WebBrowser Document of GetElementsByTagName("body")[0].
+                string body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;
 
                 /// <remark>
                 /// To Check of Condition at WebPage.
@@ -314,15 +349,20 @@ namespace _011マルイ
                     /// Common Function.
                     /// </param>
                     fun.WriteLog("Login success             ------", "011-");
-                    orderCode = fun.ReplaceOrderCode(dt011.Rows[0]["発注コード"].ToString(), new string[] { "-" });//To Input string of username at Data Table of ("発注コード").
-                    webBrowser1.Navigate(fun.url + "/index.php?action_goods=true&id=" + orderCode + "00000");//WebBrowser Navigate of url.
-                    webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);//Next Process.
+                    //To Input string of username at Data Table of ("発注コード").
+                    orderCode = fun.ReplaceOrderCode(dt011.Rows[0]["発注コード"].ToString(), new string[] { "-" });
+                    //WebBrowser Navigate of url.
+                    webBrowser1.Navigate(fun.url + "/index.php?action_goods=true&id=" + orderCode + "00000");
+                    //Next Process.
+                    webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
             }
             catch (Exception ex)
             {
-                janCode = dt011.Rows[i]["JANコード"].ToString();//To Input String of jancode at dt011 of "JANコード".
-                orderCode = dt011.Rows[i]["発注コード"].ToString();//To Input String of orderCode at dt011 of "発注コード".
+                //To Input String of jancode at dt011 of "JANコード".
+                janCode = dt011.Rows[i]["JANコード"].ToString();
+                //To Input String of orderCode at dt011 of "発注コード".
+                orderCode = dt011.Rows[i]["発注コード"].ToString();
 
                 /// <remark>
                 /// Common Function of Qbei_ErrorInsert Process.
@@ -357,23 +397,32 @@ namespace _011マルイ
                 webBrowser1.ScriptErrorsSuppressed = true;
                 webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 entity = new Qbei_Entity();
-                entity.siteID = 11;//Input SiteID Number.
-                entity.sitecode = "011";//Input sitecode.
-                entity.janCode = dt011.Rows[i]["JANコード"].ToString();//To Input janCode at dt011 of "JANコード".
-                entity.partNo = dt011.Rows[i]["自社品番"].ToString();//To Input partNo at dt011 of "自社品番".
-                entity.makerDate = fun.getCurrentDate();//To Input partNo at Common Function of getCurrentDate process.
-                entity.reflectDate = dt011.Rows[i]["最終反映日"].ToString();//To Input reflectDate at dt011 of "最終反映日".
-                // entity.orderCode = "ACZ10200";
-                entity.orderCode = dt011.Rows[i]["発注コード"].ToString();//To Input orderCode at dt011 of "発注コード".
-                entity.orderCode = fun.ReplaceOrderCode(entity.orderCode, new string[] { "-" });//To Input orderCode at Common Function of ReplaceOrderCode process.
-                entity.purchaseURL = fun.url + "/index.php?action_goods=true&id=" + entity.orderCode + "00000";//To Input purchaseURL.
+                //Input SiteID Number.
+                entity.siteID = 11;
+                //Input sitecode.
+                entity.sitecode = "011";
+                //To Input janCode at dt011 of "JANコード".
+                entity.janCode = dt011.Rows[i]["JANコード"].ToString();
+                //To Input partNo at dt011 of "自社品番".
+                entity.partNo = dt011.Rows[i]["自社品番"].ToString();
+                //To Input partNo at Common Function of getCurrentDate process.
+                entity.makerDate = fun.getCurrentDate();
+                //To Input reflectDate at dt011 of "最終反映日".
+                entity.reflectDate = dt011.Rows[i]["最終反映日"].ToString();       
+                //To Input orderCode at dt011 of "発注コード".
+                entity.orderCode = dt011.Rows[i]["発注コード"].ToString();
+                //To Input orderCode at Common Function of ReplaceOrderCode process.
+                entity.orderCode = fun.ReplaceOrderCode(entity.orderCode, new string[] { "-" });
+                //To Input purchaseURL.
+                entity.purchaseURL = fun.url + "/index.php?action_goods=true&id=" + entity.orderCode + "00000";
 
                 /// <remark>
                 /// To Check of Condition at Input Data.
                 /// </remark>
                 if (!string.IsNullOrWhiteSpace(entity.orderCode))
                 {
-                    string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;//To Input body at Webpage Inspect of html.
+                    //To Input body at Webpage Inspect of html.
+                    string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
 
                     /// <remark>
                     /// To Check of body Condition at Webpage Inspect and Input Data.
@@ -396,15 +445,18 @@ namespace _011マルイ
                             entity.stockDate = "2100-02-01";
                             entity.price = dt011.Rows[i]["下代"].ToString();
                         }
-                        fun.Qbei_Inserts(entity);//Common Function of Qbei_Inserts Process.
+                        //Common Function of Qbei_Inserts Process.
+                        fun.Qbei_Inserts(entity);
                     }
                     else
                     {
                         try
                         {
-                            string html = webBrowser1.Document.Body.InnerHtml;//To Input html at Webpage Inspect.
+                            //To Input html at Webpage Inspect.
+                            string html = webBrowser1.Document.Body.InnerHtml;
                             HtmlAgilityPack.HtmlDocument hdoc = new HtmlAgilityPack.HtmlDocument();
-                            hdoc.LoadHtml(html);//hdoc Documennt of html.
+                            //hdoc Documennt of html.
+                            hdoc.LoadHtml(html);
 
                             /// <remark>
                             /// To Check of condition at stockDate and quantity.
@@ -431,31 +483,39 @@ namespace _011マルイ
                             }
                             else
                             {
-                                HtmlNode node1 = hdoc.DocumentNode.SelectSingleNode("div[6]//div[2]//div//table//tbody//tr[4]//td//table//tbody//tr//td[2]//table//tbody//tr//td//table//tbody//tr[7]//td[2]//table//tbody//tr//td//img");//To Input node1 at hdoc Documennt of html.
-                                string alt = node1.GetAttributeValue("alt", string.Empty);//To Input alt at node1.
-
-                                entity.price = hdoc.DocumentNode.SelectSingleNode("div[6]/div[2]/div/table/tbody/tr[4]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr[6]/td[2]").InnerText;//To Input price at hdoc Documennt of html.
-                                entity.price = entity.price.Replace("￥", string.Empty).Replace(",", string.Empty);//Replace "￥" , ","  at entity.price.
-                                entity.price = ((int)(Convert.ToDouble(entity.price) * 0.98)).ToString();//Convert to integer at entity.price.
-
-                                string stockDate = hdoc.DocumentNode.SelectSingleNode("div[6]/div[2]/div/table/tbody/tr[4]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr[8]/td[2]").InnerText;//To Input stockDate at hdoc Documennt of html.
-                                entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") ? "small" : alt.Equals("×") || alt.Equals("完売") ? "empty" : "unknown status";//To Input quantity at Check of alt Condition ["○" , "△" , "×" , "完売" , "unknown status"] .
+                                //To Input node1 at hdoc Documennt of html.
+                                HtmlNode node1 = hdoc.DocumentNode.SelectSingleNode("div[6]//div[2]//div//table//tbody//tr[4]//td//table//tbody//tr//td[2]//table//tbody//tr//td//table//tbody//tr[7]//td[2]//table//tbody//tr//td//img");
+                                //To Input alt at node1.
+                                string alt = node1.GetAttributeValue("alt", string.Empty);
+                                //To Input price at hdoc Documennt of html.
+                                entity.price = hdoc.DocumentNode.SelectSingleNode("div[6]/div[2]/div/table/tbody/tr[4]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr[6]/td[2]").InnerText;
+                                //Replace "￥" , ","  at entity.price.
+                                entity.price = entity.price.Replace("￥", string.Empty).Replace(",", string.Empty);
+                                //Convert to integer at entity.price.
+                                entity.price = ((int)(Convert.ToDouble(entity.price) * 0.98)).ToString();
+                                //To Input stockDate at hdoc Documennt of html.
+                                string stockDate = hdoc.DocumentNode.SelectSingleNode("div[6]/div[2]/div/table/tbody/tr[4]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr[8]/td[2]").InnerText;
+                                //To Input quantity at Check of alt Condition ["○" , "△" , "×" , "完売" , "unknown status"] .
+                                entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") ? "small" : alt.Equals("×") || alt.Equals("完売") ? "empty" : "unknown status";
 
                                 /// <remark>
                                 /// To Check of condition at stockDate .
                                 /// </remark>
                                 if (stockDate.Equals("-") || stockDate.Equals("未定"))
                                 {
-                                    entity.stockDate = alt.Equals("○") || alt.Equals("△") || alt.Equals("×") ? "2100-01-01" : alt.Equals("完売") ? "2100-02-01" : "unknown status";//To Input stockDate at Check of alt Condition ["○" , "△" , "×" , "完売" , "unknown status"] .
+                                    //To Input stockDate at Check of alt Condition ["○" , "△" , "×" , "完売" , "unknown status"] .
+                                    entity.stockDate = alt.Equals("○") || alt.Equals("△") || alt.Equals("×") ? "2100-01-01" : alt.Equals("完売") ? "2100-02-01" : "unknown status";
                                 }
                                 else
                                 {
-                                    string date = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");//To Input date at Now.
-                                    entity.stockDate = alt.Equals("○") || alt.Equals("△") || alt.Equals("×") ? stockDate : alt.Equals("完売") ? "2100-02-01" : "unknown date";//To Input stockDate at Check of alt Condition ["○" , "△" , "×" , "完売" , "unknown date"] .
+                                    //To Input date at Now.
+                                    string date = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                                    //To Input stockDate at Check of alt Condition ["○" , "△" , "×" , "完売" , "unknown date"] .
+                                    entity.stockDate = alt.Equals("○") || alt.Equals("△") || alt.Equals("×") ? stockDate : alt.Equals("完売") ? "2100-02-01" : "unknown date";
                                 }
 
                                 /// <remark>
-                                /// To Check of condition at stockDate and quantity.
+                                /// To Check of condition at dt011 of stockDate and quantity.
                                 /// </remark>
                                 if ((dt011.Rows[i]["在庫情報"].ToString().Contains("empty") || dt011.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt011.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
                                 {
@@ -464,15 +524,20 @@ namespace _011マルイ
                                     /// </remark>
                                     if ((entity.qtyStatus.Contains("empty") && (entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry"))
                                     {
-                                        entity.qtyStatus = dt011.Rows[i]["在庫情報"].ToString();//To Input quantity at dt011 of "在庫情報".
-                                        entity.stockDate = dt011.Rows[i]["入荷予定"].ToString();//To Input stockDate at dt011 of "入荷予定".
-                                        entity.price = dt011.Rows[i]["下代"].ToString();//To Input price at dt011 of "下代".
+                                        //To Input quantity at dt011 of "在庫情報".
+                                        entity.qtyStatus = dt011.Rows[i]["在庫情報"].ToString();
+                                        //To Input stockDate at dt011 of "入荷予定".
+                                        entity.stockDate = dt011.Rows[i]["入荷予定"].ToString();
+                                        //To Input price at dt011 of "下代".
+                                        entity.price = dt011.Rows[i]["下代"].ToString();
                                     }
-                                    fun.Qbei_Inserts(entity);//Common Function of Qbei_Inserts Process.
+                                    //Common Function of Qbei_Inserts Process.
+                                    fun.Qbei_Inserts(entity);
                                 }
                                 else
                                     //2017/12/22 End
-                                    fun.Qbei_Inserts(entity);//Common Function of Qbei_Inserts Process.
+                                    //Common Function of Qbei_Inserts Process.
+                                    fun.Qbei_Inserts(entity);
                             }
                         }
                         catch (Exception ex)
@@ -512,19 +577,25 @@ namespace _011マルイ
                 /// </remark>
                 if (i < dt011.Rows.Count - 1)
                 {
-                    // string ordercode = "TIR16800";
-                    string ordercode = fun.ReplaceOrderCode(dt011.Rows[++i]["発注コード"].ToString(), new string[] { "在庫処分/inquiry/", "在庫処分/empry/", "-", "在庫処分/good/", "在庫処分/small/", "在庫処分/empty/", "バラ注文できない為発注禁止/" });//To Input ordercode at Common Function of ReplaceOrderCode process.
-                    webBrowser1.Navigate(fun.url + "/index.php?action_goods=true&id=" + ordercode + "00000");//WebBrowser Navigate of url.
+                    //To Input ordercode at Common Function of ReplaceOrderCode process.
+                    string ordercode = fun.ReplaceOrderCode(dt011.Rows[++i]["発注コード"].ToString(), new string[] { "在庫処分/inquiry/", "在庫処分/empry/", "-", "在庫処分/good/", "在庫処分/small/", "在庫処分/empty/", "バラ注文できない為発注禁止/" });
+                    //WebBrowser Navigate of url.
+                    webBrowser1.Navigate(fun.url + "/index.php?action_goods=true&id=" + ordercode + "00000");
                     webBrowser1.ScriptErrorsSuppressed = true;
-                    webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);//Next process.
+                    //Next process.
+                    webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
                 else
                 {
-                    qe.site = 11;//Input SiteID Number.
-                    qe.flag = 2;//Input flag Number.
-                    qe.starttime = string.Empty; //Input starttime.
-                    qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");//Input endtime.
-                    fun.ChangeFlag(qe);//Common Function of ChangeFlag Process.
+                    //Input SiteID Number.
+                    qe.site = 11;
+                    //Input flag Number.
+                    qe.flag = 2;
+                    //Input starttime.
+                    qe.starttime = string.Empty; 
+                    qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    //Common Function of ChangeFlag Process.
+                    fun.ChangeFlag(qe);
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -555,8 +626,10 @@ namespace _011マルイ
         //NavigateErrorの　表示。
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
-            string janCode = dt011.Rows[i]["JANコード"].ToString();//To Input janCode at dt011 of "JANコード".
-            string orderCode = dt011.Rows[i]["発注コード"].ToString();//To Input orderCode at dt011 of "発注コード".
+            //To Input janCode at dt011 of "JANコード".
+            string janCode = dt011.Rows[i]["JANコード"].ToString();
+            //To Input orderCode at dt011 of "発注コード".
+            string orderCode = dt011.Rows[i]["発注コード"].ToString();
 
             /// <remark>
             /// Common Function of Qbei_ErrorInsert Process.
