@@ -54,14 +54,15 @@ namespace _011マルイ
          try
             {                
                 Qbeisetting_Entity qe = new Qbeisetting_Entity();     
-                qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                //Input site Number.
-                qe.site = 11;
-                //Input Flag Number.
+                qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");                
+                qe.site = 11;                
                 qe.flag = 1;
-                //Input DataTable of Common Function Flag Table.   
-                DataTable dtflag = fun.SelectFlag(11);
-                //To Check "FlagIsFinished" of Flag Number at Flag Table.
+
+                //Input DataTable of Common Function Flag Table. 
+                /// <remark>
+                ///Select Flag from Site_setting Table. 
+                /// </remark>
+                DataTable dtflag = fun.SelectFlag(11);               
                 int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
          
                 /// <remark>
@@ -70,6 +71,9 @@ namespace _011マルイ
                 if (flag == 0)
                 {   
                     //Common Function of ChangFlage Process.
+                    ///<remark>
+                    ///Change to flag is 1 at site_setting Table.
+                    ///</remark>
                     fun.ChangeFlag(qe);                 
                     StartRun();
                 }
@@ -78,10 +82,17 @@ namespace _011マルイ
                 ///when flag is 1,To Continue Next Process.
                 ///</remark>
                 else if (flag == 1)
-                {   
+                {
                     //Common Function of deleteData Process.
+                    ///<remark>
+                    ///Delete to AllData at Qbei Table.
+                    ///</remark>
                     fun.deleteData(11);
+
                     //Common Function of ChangFlage Process.
+                    ///<remark>
+                    ///Change to flag is 1 at site_setting Table.
+                    ///</remark>
                     fun.ChangeFlag(qe);                  
                     StartRun();
                 }
@@ -94,6 +105,9 @@ namespace _011マルイ
             catch (Exception ex)
             {
                 // Common Function of WriteLog Process.
+                ///<remark>
+                ///Write to process at Logfile.
+                ///</remark>
                 fun.WriteLog(ex, "011-");
                 Application.Exit();
                 Environment.Exit(0);
@@ -111,24 +125,56 @@ namespace _011マルイ
             try
             {
                 //Common Function of setURL Process.
+                ///<remark>
+                ///Database connection string at Qbei_Log of App.Config. 
+                ///</remark>
                 fun.setURL("011");
+
                 //Common Function of CreateFileAndFolder Process.
+                ///<remark>
+                ///Create FilePath and Directory at Qbei_Log.
+                ///</remark>
                 fun.CreateFileAndFolder();
+
                 //Common Function of Qbei_Delete Process.
+                ///<remark>
+                ///Insert Qbei_Backup Table where select from Qbei Table.
+                ///After Delete to Qbei Table of AllData  and Qbei_Backup Table of Updated Date is Greater than 14days.
+                ///</remark>
                 fun.Qbei_Delete(11);
+
                 //Common Function of Qbei_ErrorDelete Process.
+                ///<remark>
+                ///Insert Qbei_ErrorLog Backup Table where select from Qbei_ErrorLog Table.
+                ///After Delete to Qbei_ErrorLog Table of AllData  and Qbei_ErrorLog_Backup Table of Date is less than 14days.
+                ///</remark>
                 fun.Qbei_ErrorDelete(11);
-                // To Input dt011(Data Table) at Common Function of GetDatatable Process.                    
+
+                // To Input dt011(Data Table) at Common Function of GetDatatable Process.       
+                ///<remark>
+                ///Get Data from Qbei_Log of CVS File .
+                ///</remark>
                 dt011 = fun.GetDatatable("011");
-                // To Input dt011(データテーブル) at Common Function of GetDatatable Process.                 
+
+                // To Input dt011(データテーブル) at Common Function of GetDatatable Process. 
+                ///<remark>
+                ///Get Data from Qbei_Log of CVS File .
+                ///</remark>
                 dt011 = fun.GetOrderData(dt011, "http://www.maruiltd.jp/index.php?action_goods=true&id=", "011","");
-               // Common Function of GetTotalCount Process.      
+
+                // Common Function of GetTotalCount Process.
+                ///<remark>
+                ///Update to Site_setting Table of TotalCount.
+                ///</remark>
                 fun.GetTotalCount("011");        
                 ReadData();
             }
             catch (Exception ex)
             {
                 //Common Function of WriteLog Process.
+                ///<remark>
+                ///Write to process at Logfile.
+                ///</remark>
                 fun.WriteLog(ex, "011-");
                 Application.Exit();
                 Environment.Exit(0);
@@ -145,8 +191,12 @@ namespace _011マルイ
         {
            webBrowser1.ScriptErrorsSuppressed = true;   
             qe.SiteID = 11;
-            // To Input Data Table at Connection Database of Qbei_Setting_Select Process.         
+            // To Input Data Table at Connection Database of Qbei_Setting_Select Process.    
+            /// <remark>
+            /// Select Data from Site_Setting Table for Input to Dt Table .
+            /// </remark>
             dt = qubl.Qbei_Setting_Select(qe);
+
             // To Input Common Funtion of url at Data Table of Url. 
             fun.url = dt.Rows[0]["Url"].ToString();
             //Thread.Sleep(1000);
@@ -168,18 +218,24 @@ namespace _011マルイ
                 fun.ClearMemory();
                 SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
                 instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
+
                 // Common Function of WriteLog Process.
+                ///<remark>
+                ///Write to process at Logfile.
+                ///</remark>
                 fun.WriteLog("Navigation to Site Url success------", "011-");
-                webBrowser1.ScriptErrorsSuppressed = true;
-                //Input site Number.
+                webBrowser1.ScriptErrorsSuppressed = true;                
                 qe.SiteID = 11;
-                // To Input Data Table at Connection Database of Qbei_Setting_Select Process.        
+
+                // To Input Data Table at Connection Database of Qbei_Setting_Select Process. 
+                /// <remark>
+                /// Select Data from Site_Setting Table for Input to Dt Table .
+                /// </remark>
                 dt = qubl.Qbei_Setting_Select(qe);
-                //To Input string of username at Data Table of "UserName".
+                
                 string username = dt.Rows[0]["UserName"].ToString();
                 //Webpage Inspect of  CodeID.
-                webBrowser1.Document.GetElementById("id").InnerText = username;
-                //To Input string of username at Data Table of "Password".
+                webBrowser1.Document.GetElementById("id").InnerText = username;                
                 string password = dt.Rows[0]["Password"].ToString();
                 //Webpage Inspect of  CodeID.
                 webBrowser1.Document.GetElementById("psw").InnerText = password;
@@ -190,14 +246,20 @@ namespace _011マルイ
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Login);
             }
             catch (Exception ex)
-            {
-                //To Input string of janCode at Data Table of "JANコード".
-                string janCode = dt011.Rows[0]["JANコード"].ToString();
-                //To Input string of orderCode at Data Table of "orderCode".
-                string orderCode = dt011.Rows[0]["発注コード"].ToString();            
-                // Common Function of Qbei_ErrorInsert Process.                
+            {            
+                string janCode = dt011.Rows[0]["JANコード"].ToString();    
+                string orderCode = dt011.Rows[0]["発注コード"].ToString();
+
+                // Common Function of Qbei_ErrorInsert Process.     
+                ///<remark>
+                ///Insert to Data of Qbei_ErrorLog Table.
+                ///</remark>
                 fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
+                
                 // Common Function of WriteLog Process.
+                ///<remark>
+                ///Write to process at Logfile.
+                ///</remark>
                 fun.WriteLog(ex, "011-", janCode, orderCode);
                 Application.Exit();
                 Environment.Exit(0);
@@ -226,9 +288,16 @@ namespace _011マルイ
                 /// </remark>
                 if (body.Contains(" IDを入力してください") || body.Contains("パスワードを入力してください") || body.Contains("IDを正しく入力してください"))
                 {
-                    // Common Function of Qbei_ErrorInsert Process.            
+                    // Common Function of Qbei_ErrorInsert Process. 
+                    ///<remark>
+                    ///Insert to Data of Qbei_ErrorLog Table.
+                    ///</remark>
                     fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
+
                     // Common Function of WriteLog Process.
+                    ///<remark>
+                    ///Write to process at Logfile.
+                    ///</remark>
                     fun.WriteLog("Login Failed", "011-");
                     Application.Exit();
                     Environment.Exit(0);
@@ -236,24 +305,33 @@ namespace _011マルイ
                 else
                 {
                     // Common Function of WriteLog Process.
+                    ///<remark>
+                    ///Write to process at Logfile.
+                    ///</remark>
                     fun.WriteLog("Login success             ------", "011-");
-                    //To Input string of username at Data Table of ("発注コード").
+   
                     orderCode = fun.ReplaceOrderCode(dt011.Rows[0]["発注コード"].ToString(), new string[] { "-" });
                     //WebBrowser Navigate of url.
                     webBrowser1.Navigate(fun.url + "/index.php?action_goods=true&id=" + orderCode + "00000");
-                    //Next Process.
+                    //Continue to webBrowser1_ItemSearch process.
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
             }
             catch (Exception ex)
             {
-                //To Input String of jancode at dt011 of "JANコード".
-                janCode = dt011.Rows[i]["JANコード"].ToString();
-                //To Input String of orderCode at dt011 of "発注コード".
+                janCode = dt011.Rows[i]["JANコード"].ToString();             
                 orderCode = dt011.Rows[i]["発注コード"].ToString();
-                // Common Function of Qbei_ErrorInsert Process.
+
+                // Common Function of Qbei_ErrorInsert Process.            
+                ///<remark>
+                ///Insert to Data of Qbei_ErrorLog Table.
+                ///</remark>
                 fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
-                // Common Function of WriteLog Process.    
+               
+                // Common Function of WriteLog Process.
+                ///<remark>
+                ///Write to process at Logfile.
+                ///</remark>
                 fun.WriteLog(ex, "011-", janCode, orderCode);
                 Application.Exit();
                 Environment.Exit(0);
@@ -272,20 +350,13 @@ namespace _011マルイ
 
                 webBrowser1.ScriptErrorsSuppressed = true;
                 webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
-                entity = new Qbei_Entity();
-                //Input SiteID Number.
+                entity = new Qbei_Entity();             
                 entity.siteID = 11;
-                //Input sitecode.
-                entity.sitecode = "011";
-                //To Input janCode at dt011 of "JANコード".
+                entity.sitecode = "011";               
                 entity.janCode = dt011.Rows[i]["JANコード"].ToString();
-                //To Input partNo at dt011 of "自社品番".
                 entity.partNo = dt011.Rows[i]["自社品番"].ToString();
-                //To Input partNo at Common Function of getCurrentDate process.
                 entity.makerDate = fun.getCurrentDate();
-                //To Input reflectDate at dt011 of "最終反映日".
                 entity.reflectDate = dt011.Rows[i]["最終反映日"].ToString();       
-                //To Input orderCode at dt011 of "発注コード".
                 entity.orderCode = dt011.Rows[i]["発注コード"].ToString();
                 //To Input orderCode at Common Function of ReplaceOrderCode process.
                 entity.orderCode = fun.ReplaceOrderCode(entity.orderCode, new string[] { "-" });
@@ -322,6 +393,10 @@ namespace _011マルイ
                             entity.price = dt011.Rows[i]["下代"].ToString();
                         }
                         //Common Function of Qbei_Inserts Process.
+                        ///<remark>
+                        ///Delete from Qbei_OrderData Table of Data.
+                        ///Insert to Qebei Table.
+                        ///</remark>                
                         fun.Qbei_Inserts(entity);
                     }
                     else
@@ -339,9 +414,16 @@ namespace _011マルイ
                             /// </remark>
                             if ((hdoc.DocumentNode.SelectSingleNode("div[6]/div[2]/div/table/tbody/tr[4]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr[7]/td[2]/table/tbody/tr[1]/td/img") == null) && (hdoc.DocumentNode.SelectSingleNode("div[6]/div[2]/div/table/tbody/tr[4]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr[8]/td[2]") == null))
                             {
-                                // Common Function of Qbei_ErrorInsert Process.                                             
-                                fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");  
-                                // Common Function of WriteLog Process.        
+                                // Common Function of Qbei_ErrorInsert Process.  
+                                ///<remark>
+                                ///Insert to Data of Qbei_ErrorLog Table.
+                                ///</remark>
+                                fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
+
+                                // Common Function of WriteLog Process.   
+                                ///<remark>
+                                ///Write to process at Logfile.
+                                ///</remark>
                                 fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "011-");
                                 Application.Exit();
                                 Environment.Exit(0);
@@ -388,35 +470,50 @@ namespace _011マルイ
                                     /// To Check of condition at stockDate and quantity.
                                     /// </remark>
                                     if ((entity.qtyStatus.Contains("empty") && (entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry"))
-                                    {
-                                        //To Input quantity at dt011 of "在庫情報".
+                                    {                                      
                                         entity.qtyStatus = dt011.Rows[i]["在庫情報"].ToString();
-                                        //To Input stockDate at dt011 of "入荷予定".
                                         entity.stockDate = dt011.Rows[i]["入荷予定"].ToString();
-                                        //To Input price at dt011 of "下代".
                                         entity.price = dt011.Rows[i]["下代"].ToString();
                                     }
                                     //Common Function of Qbei_Inserts Process.
+                                    ///<remark>
+                                    ///Delete from Qbei_OrderData Table of Data.
+                                    ///Insert to Qebei Table.
+                                    ///</remark>   
                                     fun.Qbei_Inserts(entity);
                                 }
                                 else
                                     //2017/12/22 End
                                     //Common Function of Qbei_Inserts Process.
+                                    ///<remark>
+                                    ///Delete from Qbei_OrderData Table of Data.
+                                    ///Insert to Qebei Table.
+                                    ///</remark>   
                                     fun.Qbei_Inserts(entity);
                             }
                         }
                         catch (Exception ex)
                         {
-                            // Common Function of Qbei_ErrorInsert Process.       
-                            fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");         
+                            // Common Function of Qbei_ErrorInsert Process.  
+                            ///<remark>
+                            ///Insert to Data of Qbei_ErrorLog Table.
+                            ///</remark>
+                            fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
+
                             // Common Function of WriteLog Process.
+                            ///<remark>
+                            ///Write to process at Logfile.
+                            ///</remark>
                             fun.WriteLog(ex, "011-", entity.janCode, entity.orderCode);
                         }
                     }
                 }
                 else
-                {
-                    // Common Function of Qbei_ErrorInsert Process.        
+                { 
+                    // Common Function of Qbei_ErrorInsert Process.  
+                    ///<remark>
+                    ///Insert to Data of Qbei_ErrorLog Table.
+                    ///</remark>
                     fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
                 }
 
@@ -434,14 +531,16 @@ namespace _011マルイ
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
                 else
-                {
-                    //Input site Number.
+                {         
                     qe.site = 11;
-                    //Input flag Number.
                     qe.flag = 2;
                     qe.starttime = string.Empty; 
                     qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
                     //Common Function of ChangeFlag Process.
+                    ///<remark>
+                    ///Change to flag is 2 at site_setting Table.
+                    ///</remark>
                     fun.ChangeFlag(qe);
                     Application.Exit();
                     Environment.Exit(0);
@@ -450,8 +549,15 @@ namespace _011マルイ
             catch (Exception ex)
             {
                 // Common Function of Qbei_ErrorInsert Process.   
-                fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");   
+                ///<remark>
+                ///Insert to Data of Qbei_ErrorLog Table.
+                ///</remark>
+                fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
+                
                 // Common Function of WriteLog Process.
+                ///<remark>
+                ///Write to process at Logfile.
+                ///</remark>
                 fun.WriteLog(ex, "011-", entity.janCode, entity.orderCode);
                 Application.Exit();
                 Environment.Exit(0);
@@ -468,13 +574,19 @@ namespace _011マルイ
         /// <param name="Cancel"></param>
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
-            //To Input janCode at dt011 of "JANコード".
-            string janCode = dt011.Rows[i]["JANコード"].ToString();
-            //To Input orderCode at dt011 of "発注コード".
+            string janCode = dt011.Rows[i]["JANコード"].ToString();           
             string orderCode = dt011.Rows[i]["発注コード"].ToString();
+
             // Common Function of Qbei_ErrorInsert Process. 
-            fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");            
+            ///<remark>
+            ///Insert to Data of Qbei_ErrorLog Table.
+            ///</remark>
+            fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
+
             // Common Function of WriteLog Process.
+            ///<remark>
+            ///Write to process at Logfile.
+            ///</remark>
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "011-");
             Application.Exit();
             Environment.Exit(0);
