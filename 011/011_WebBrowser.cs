@@ -104,10 +104,7 @@ namespace _011マルイ
             } 
             catch (Exception ex)
             {
-                // Common Function of WriteLog Process.
-                ///<remark>
-                ///Write to process at Logfile.
-                ///</remark>
+                // Common Function of WriteLog Process.        
                 fun.WriteLog(ex, "011-");
                 Application.Exit();
                 Environment.Exit(0);
@@ -130,10 +127,7 @@ namespace _011マルイ
                 ///</remark>
                 fun.setURL("011");
 
-                //Common Function of CreateFileAndFolder Process.
-                ///<remark>
-                ///Create FilePath and Directory at Qbei_Log.
-                ///</remark>
+                //Common Function of CreateFileAndFolder Process.            
                 fun.CreateFileAndFolder();
 
                 //Common Function of Qbei_Delete Process.
@@ -171,10 +165,7 @@ namespace _011マルイ
             }
             catch (Exception ex)
             {
-                //Common Function of WriteLog Process.
-                ///<remark>
-                ///Write to process at Logfile.
-                ///</remark>
+                //Common Function of WriteLog Process.          
                 fun.WriteLog(ex, "011-");
                 Application.Exit();
                 Environment.Exit(0);
@@ -219,10 +210,7 @@ namespace _011マルイ
                 SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
                 instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
 
-                // Common Function of WriteLog Process.
-                ///<remark>
-                ///Write to process at Logfile.
-                ///</remark>
+                // Common Function of WriteLog Process.            
                 fun.WriteLog("Navigation to Site Url success------", "011-");
                 webBrowser1.ScriptErrorsSuppressed = true;                
                 qe.SiteID = 11;
@@ -256,10 +244,7 @@ namespace _011マルイ
                 ///</remark>
                 fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
                 
-                // Common Function of WriteLog Process.
-                ///<remark>
-                ///Write to process at Logfile.
-                ///</remark>
+                // Common Function of WriteLog Process.     
                 fun.WriteLog(ex, "011-", janCode, orderCode);
                 Application.Exit();
                 Environment.Exit(0);
@@ -294,20 +279,14 @@ namespace _011マルイ
                     ///</remark>
                     fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
 
-                    // Common Function of WriteLog Process.
-                    ///<remark>
-                    ///Write to process at Logfile.
-                    ///</remark>
+                    // Common Function of WriteLog Process.                 
                     fun.WriteLog("Login Failed", "011-");
                     Application.Exit();
                     Environment.Exit(0);
                 }
                 else
                 {
-                    // Common Function of WriteLog Process.
-                    ///<remark>
-                    ///Write to process at Logfile.
-                    ///</remark>
+                    // Common Function of WriteLog Process.     
                     fun.WriteLog("Login success             ------", "011-");
    
                     orderCode = fun.ReplaceOrderCode(dt011.Rows[0]["発注コード"].ToString(), new string[] { "-" });
@@ -328,10 +307,7 @@ namespace _011マルイ
                 ///</remark>
                 fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
                
-                // Common Function of WriteLog Process.
-                ///<remark>
-                ///Write to process at Logfile.
-                ///</remark>
+                // Common Function of WriteLog Process.         
                 fun.WriteLog(ex, "011-", janCode, orderCode);
                 Application.Exit();
                 Environment.Exit(0);
@@ -420,10 +396,7 @@ namespace _011マルイ
                                 ///</remark>
                                 fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
 
-                                // Common Function of WriteLog Process.   
-                                ///<remark>
-                                ///Write to process at Logfile.
-                                ///</remark>
+                                // Common Function of WriteLog Process.                      
                                 fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "011-");
                                 Application.Exit();
                                 Environment.Exit(0);
@@ -500,10 +473,7 @@ namespace _011マルイ
                             ///</remark>
                             fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
 
-                            // Common Function of WriteLog Process.
-                            ///<remark>
-                            ///Write to process at Logfile.
-                            ///</remark>
+                            // Common Function of WriteLog Process.             
                             fun.WriteLog(ex, "011-", entity.janCode, entity.orderCode);
                         }
                     }
@@ -523,6 +493,9 @@ namespace _011マルイ
                 if (i < dt011.Rows.Count - 1)
                 {
                     //To Input ordercode at Common Function of ReplaceOrderCode process.
+                    ///<remark>
+                    ///Replace to odercode at string of empty.
+                    ///</remark>
                     string ordercode = fun.ReplaceOrderCode(dt011.Rows[++i]["発注コード"].ToString(), new string[] { "在庫処分/inquiry/", "在庫処分/empry/", "-", "在庫処分/good/", "在庫処分/small/", "在庫処分/empty/", "バラ注文できない為発注禁止/" });
                     //WebBrowser Navigate of url.
                     webBrowser1.Navigate(fun.url + "/index.php?action_goods=true&id=" + ordercode + "00000");
@@ -554,10 +527,7 @@ namespace _011マルイ
                 ///</remark>
                 fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
                 
-                // Common Function of WriteLog Process.
-                ///<remark>
-                ///Write to process at Logfile.
-                ///</remark>
+                // Common Function of WriteLog Process.    
                 fun.WriteLog(ex, "011-", entity.janCode, entity.orderCode);
                 Application.Exit();
                 Environment.Exit(0);
@@ -584,9 +554,6 @@ namespace _011マルイ
             fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
 
             // Common Function of WriteLog Process.
-            ///<remark>
-            ///Write to process at Logfile.
-            ///</remark>
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "011-");
             Application.Exit();
             Environment.Exit(0);
