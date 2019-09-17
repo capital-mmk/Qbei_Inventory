@@ -34,6 +34,11 @@ namespace Common
         int ddr;
         DataTable dtOrder = new DataTable();
       
+        /// <summary>
+        /// To Input DataTable from XmlTable.
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
         public String DataTableToXml(DataTable dt)
         {
             dt.TableName = "test";
@@ -44,20 +49,45 @@ namespace Common
             return result;
         }
 
+        /// <summary>
+        /// Invaild of Char. 
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        /// <remark>
+        /// Remove to Invaild of Char at Xml.
+        /// </remark>
         public static string RemoveInvalidXmlChars(string content)
         {
            return  content = Regex.Replace(content, @"&#(x?)([A-Fa-f0-9]+);", "");            
         }
 
+        /// <summary>
+        /// ShopID of serURL.
+        /// </summary>
+        /// <param name="shopID"></param>
+        /// <remark>
+        /// Continue to createConfig process.
+        /// </remark> 
         public void setURL(string shopID)
         {
             createConfig(shopID);
         }
 
+        /// <summary>
+        /// Check of createconfig shopID.
+        /// </summary>
+        /// <param name="shopID"></param>
+        ///<remark>
+        ///Database connection string at Qbei_Log of App.Config. 
+        ///</remark>
         private static void createConfig(string shopID)
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");
 
+            ///<remark>
+            ///check to ConnectionStrings["Qbei_DB"] is null .
+            ///</remark>
             if (config.ConnectionStrings.ConnectionStrings["Qbei_DB"] == null)
             {
                 ConnectionStringSettings setting = new ConnectionStringSettings("Qbei_DB", "Data Source= WIN-OIL4TFU9NBH\\LOCAL2014;Initial Catalog=Qbei_Inventory;Persist Security Info=True;User ID=sa;Password=admin123456!", "System.Data.SqlClient");
@@ -67,6 +97,14 @@ namespace Common
             config.Save(ConfigurationSaveMode.Modified);
         }
 
+        /// <summary>
+        /// Database connection string of updateSetting
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <remark>
+        /// Do not Use of Qbei_Inventory at now.
+        /// </remark>
         public static void UpdateSetting(string key, string value)
         {
             Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
@@ -76,14 +114,39 @@ namespace Common
             ConfigurationManager.RefreshSection("appSettings");
         }
 
+        /// <summary>
+        /// Add to Config.
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <remark>
+        /// Check at config appsetting of key.
+        /// Do not Use of Qbei_Inventory at now.
+        /// </remark>
         private static void AddtoConfig(Configuration config, string key, string value)
         {
+            /// <remark>
+            /// Check at config appsetting of key is null.
+            /// </remark>
             if (config.AppSettings.Settings[key] == null)
                 config.AppSettings.Settings.Add(key, value);
             else
                 config.AppSettings.Settings[key].Value = value;
         }
 
+        /// <summary>
+        /// Add to config(user).
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="shopID"></param>
+        /// <param name="url"></param>
+        /// <param name="user"></param>
+        /// <param name="password"></param>
+        /// <remark>
+        /// Check at config appsetting of User.
+        /// Do not Use of Qbei_Inventory at now.
+        /// </remark>
         private static void AddtoConfig(Configuration config, string shopID, string url, string user, string password)
         {
             if (config.AppSettings.Settings["url" + shopID] == null)
@@ -101,6 +164,9 @@ namespace Common
             config.AppSettings.Settings["password" + shopID].Value = password;
         }
 
+        /// <summary>
+        /// Create of Directory.
+        /// </summary>
         public void CreateFileAndFolder()
         {            
             CreateDirectory(@"C:\Qbei_Log");
@@ -113,11 +179,22 @@ namespace Common
             CreateDirectory(@"C:\Qbei_Log\016_Excel\");
         }
 
+        /// <summary>
+        /// Writetolog of message.
+        /// </summary>
+        /// <param name="message"></param>
         public void WritetoLog(string message)
         {
             File.AppendAllText(logFilepath, Environment.NewLine + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + " " + message);
         }
 
+        /// <summary>
+        /// GetDatatable of shopID.
+        /// </summary>
+        /// <param name="shopID"></param>
+        /// <remark>
+        ///Check to CSV File of Data and Input to Table of Data.
+        /// </remark>
         public DataTable GetDatatable(string shopID)
         {
             DataTable dtResult = new DataTable();
@@ -130,21 +207,42 @@ namespace Common
             Connection con;
             SqlConnection sqlcon;
             SqlCommand cmd;
+            ///<remark>
+            ///Check to ShopID and Shop Name at GetSiteName Process.
+            ///</remark>
             dc.DefaultValue = GetSiteName(shopID);
             string[] columns = { "代理店ID", "JANコード", "在庫情報", "入荷予定", "自社品番", "メーカー情報日", "最終反映日" };
             //string[] filelist = Directory.GetFiles(csvPath);
             string[] filelist = Directory.GetFiles(@"C:\Qbei_Log\Csv");
+
+            ///<remark>
+            ///Check of condition at filelist include file of string.
+            ///</remark>
             foreach (string file in filelist)
             {
                 string ext = Path.GetExtension(file);
+                ///<remark>
+                ///Check to CSV File is exkt.
+                ///</remark>
                 if (ext.Equals(".csv"))
                 {
+                    ///<remark>
+                    ///Read to Csv file of GetEncoding. 
+                    ///</remark>
                     using (var csv = new CachedCsvReader(new StreamReader(file, Encoding.GetEncoding(932)), true))
                     {
                         DataTable dtCsv = new DataTable();
                         dtCsv.Load(csv);
+
+                        ///<remark>
+                        ///dtResult of Columns Count is less than equal 0.
+                        ///</remark>
                         if (dtResult.Columns.Count <= 0)
                             dtResult = dtCsv.Clone();
+
+                        /// <remark>
+                        /// Check to dtCsv and Columns Name at checkCsvFormat process.
+                        /// </remark>
                         if (checkCsvFormat(dtCsv, columns))
                         {
                             dtResult.Merge(dtCsv);
@@ -163,7 +261,9 @@ namespace Common
                     File.Move(file, @"C:\Qbei_Log\Trash\" + @"\" + Path.GetFileName(file));
             }
 
-
+            /// <remark>
+            /// Check to dtResult is not null.
+            /// </remark>
             if (!dtResult.Equals(null))
             {
                 DataRow[] dr = dtResult.Select("代理店ID='" + shopID + "'");
@@ -186,7 +286,10 @@ namespace Common
                         int dtcount = dtpblank.Rows.Count;
                         if (dtpblank != null)
                         {
-                            //Save Data into Qbei_ErrorLog
+                            /// <remark>
+                            /// Save Data into Qbei_ErrorLog
+                            /// </remark>
+
                             xml = DataTableToXml(dtpblank);
 
                             con = new Connection();
@@ -212,6 +315,9 @@ namespace Common
                     {
                         if (!shopID.Equals("036"))
                         {
+                            /// <remark>
+                            /// Save Data into Qbei_ErrorLog
+                            /// </remark>
                             DataTable dtBlankOrder = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード='-' OR 発注コード= '--'").CopyToDataTable();
                             dtBlankOrder.Columns.Add(dc);
                             int col = dtBlankOrder.Rows.Count;
@@ -250,6 +356,10 @@ namespace Common
                             //2018-08-29 End
                             if (notInteger.Any())
                             {
+                                /// <remark>
+                                /// Save Data into Qbei_ErrorLog
+                                /// </remark>
+                                
                                 //2018-05-07 Start
                                 //dtNotInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("/") || r.Field<string>("発注コード").Contains("データ登録"))).CopyToDataTable();
                                 dtNotInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Equals("在庫処分/empty/") || r.Field<string>("発注コード").Equals("在庫更新中止/-") || r.Field<string>("発注コード").Equals("在庫更新中止") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録"))).CopyToDataTable();
@@ -297,7 +407,11 @@ namespace Common
                         // dtNotRun = notRun.Any() ? notRun.CopyToDataTable() : null;
                         if (dtNotRun != null)
                         {
-                            //Save Data into Qbei_ErrorLog
+
+                            /// <remark>
+                            /// Save Data into Qbei_ErrorLog
+                            /// </remark>
+                           
                             xml = DataTableToXml(dtNotRun);
                             //xml = RemoveInvalidXmlChars(xml);
                             con = new Connection();
@@ -323,9 +437,16 @@ namespace Common
             }
             else return null;
         }
-        
+
+        /// <summary>
+        /// StopApplication of siteID.
+        /// </summary>
+        /// <param name="siteID"></param>
         public void StopApplication(int siteID)
-        {            
+        {
+            /// <remark>
+            /// Change to flag of siteid.
+            /// </remark>
             Qbeisetting_Entity qe = new Qbeisetting_Entity();
             qe.site = siteID;
             qe.flag = 2;
@@ -335,8 +456,16 @@ namespace Common
             Application.Exit();
             Environment.Exit(0);
         }
+        
+        /// <summary>
+        /// GetTotalCount of shopID.
+        /// </summary>
+        /// <param name="shopID"></param>
         public void GetTotalCount(string shopID)
         {
+            /// <remark>
+            /// Update to TotalCount at site_setting Table.
+            /// </remark>
             Connection con = new Connection();
             SqlConnection sqlcon = con.GetConnection();
             SqlCommand cmd = new SqlCommand("TotalCount_Update", sqlcon);
@@ -348,11 +477,21 @@ namespace Common
             cmd.Connection.Close();
 
         }
+
+        /// <summary>
+        /// Old Code.
+        /// </summary>
+        /// <param name="dtResult"></param>
+        /// <param name="shopID"></param>
+        /// <returns></returns>
         public DataTable DeleteOldCode(DataTable dtResult, int shopID)
         {
             DataTable dtOrder;
             if (!dtResult.Equals(null))
             {
+                /// <remark>
+                /// Insert Data into Qbei_ErrorLog
+                /// </remark>
                 DataColumn dc = new DataColumn("SiteName");
                 DataTable dtoldcode = dtResult.AsEnumerable().Where(x => (x.Field<string>("発注コード").Contains("|"))).CopyToDataTable();
                 int col = dtoldcode.Rows.Count;
@@ -380,9 +519,16 @@ namespace Common
             else return null;
         }
         
+        /// <summary>
+        ///  Order Data.
+        /// </summary>
+        /// <param name="strSiteCode"></param>
+        /// <returns></returns>
         public DataTable Qbei_OrderSelect(string strSiteCode)
         {
-
+            /// <remark>
+            ///Select to Order Data from Site Code.
+            /// </remark>
             Connection con = new Connection();
             SqlConnection sqlcon = con.GetConnection();
             SqlCommand cmd = new SqlCommand("Qbei_OrderSelect", sqlcon);
@@ -405,8 +551,16 @@ namespace Common
             }
         }
         
+        /// <summary>
+        /// Check to GetBrandCode.
+        /// </summary>
+        /// <param name="dtCsv"></param>
+        /// <returns></returns>
         public DataTable GetBrandCode(DataTable dtCsv)
         {
+            /// <remark>
+            /// To Insert dtcode datatable of data from dtCsv Datatable of ("ブランドコード") is contain ("00349") .
+            /// </remark>
             try
             {
                 DataTable dtcode = dtCsv.AsEnumerable().Where(x => (x.Field<string>("ブランドコード").Contains("00349"))).CopyToDataTable();
@@ -418,6 +572,14 @@ namespace Common
             }
         }
        
+        /// <summary>
+        /// GetOrderData of Once a Week.
+        /// </summary>
+        /// <param name="dtCsv"></param>
+        /// <param name="strPurchaseUrl"></param>
+        /// <param name="strSiteCd"></param>
+        /// <param name="strPost"></param>
+        /// <returns></returns>
         public DataTable GetOrderData(DataTable dtCsv, string strPurchaseUrl, string strSiteCd, string strPost)
         {
             Qbei_Entity objEntity;
@@ -475,6 +637,9 @@ namespace Common
                             dtData = dtCsv.Copy();
                         }
                         //Retrieve Old data 
+                        /// <remark>
+                        /// Delete to Order Data at Qbei_OrderData Table.
+                        /// </remark>
                         Qbei_OrderDataDelete(int.Parse(strSiteCd), dtID);
                     }
                 }
@@ -485,6 +650,9 @@ namespace Common
                     {
                         foreach (DataRow dr in exist.CopyToDataTable().Rows)
                         {
+                            /// <remark>
+                            /// Insert Data into Qbei_ErrorLog.
+                            /// </remark>
                             objEntity = new Qbei_Entity();
                             objEntity.siteID = int.Parse(strSiteCd);
                             objEntity.sitecode = strSiteCd;
@@ -498,6 +666,9 @@ namespace Common
                     {
                         foreach (DataRow dr in notexist.CopyToDataTable().Rows)
                         {
+                            /// <remark>
+                            /// Insert Data into Qbei_ErrorLog.
+                            /// </remark>
                             objEntity = new Qbei_Entity();
                             objEntity.siteID = int.Parse(strSiteCd);
                             objEntity.sitecode = strSiteCd;
@@ -545,8 +716,17 @@ namespace Common
             cmd.ExecuteNonQuery();
             cmd.Connection.Close();
         }
+
+        /// <summary>
+        /// Order Data.
+        /// </summary>
+        /// <param name="intSiteparam"></param>
+        /// <param name="dtCond"></param>
         public void Qbei_OrderDataDelete(int intSiteparam, DataTable dtCond)
         {
+            /// <remark>
+            /// Delete to Order Data at Qbei_OrderData Table.
+            /// </remark>
             string xml = string.Empty;
 
             Connection con = new Connection();
@@ -692,8 +872,22 @@ namespace Common
             cmd.Connection.Close();
         }
 
+        /// <summary>
+        /// ErrorInsert.
+        /// </summary>
+        /// <param name="site"></param>
+        /// <param name="sitename"></param>
+        /// <param name="description"></param>
+        /// <param name="janCode"></param>
+        /// <param name="orderCode"></param>
+        /// <param name="errortype"></param>
+        /// <param name="Date"></param>
+        /// <param name="sitecode"></param>
         public void Qbei_ErrorInsert(int site, string sitename, string description, string janCode, string orderCode, int errortype, string Date, string sitecode)
         {
+            /// <remark>
+            /// Insert Data into Qbei_ErrorLog.
+            /// </remark>
             Connection con = new Connection();
             SqlConnection sqlcon = con.GetConnection();
             SqlCommand cmd = new SqlCommand("Qbei_ErrorInsert", sqlcon);
@@ -765,11 +959,26 @@ namespace Common
             return driver.FindElement(value);
         }
 
+        /// <summary>
+        /// CheckCsvFormat 
+        /// </summary>
+        /// <param name="dtCsv"></param>
+        /// <param name="columns"></param>
+        /// <returns></returns>
+        /// <remark>
+        /// Check to dtCsv of Columns Name. 
+        /// </remark>
         private static bool checkCsvFormat(DataTable dtCsv, string[] columns)
         {
+            /// <remark>
+            /// Check to dtCsv of Columns Name. 
+            /// </remark>
             foreach (string colName in columns)
             {
                 DataColumnCollection cols = dtCsv.Columns;
+                /// <remark>
+                /// Check to Columns name is contains.
+                /// </remark>
                 if (!cols.Contains(colName))
                     return false;
             }
