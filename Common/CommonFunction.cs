@@ -74,6 +74,7 @@ namespace Common
             createConfig(shopID);
         }
 
+
         /// <summary>
         /// Check of createconfig shopID.
         /// </summary>
