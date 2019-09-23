@@ -703,8 +703,15 @@ namespace Common
             return dtData;
         }
         
+        /// <summary>
+        /// Order Date.
+        /// </summary>
+        /// <param name="entity"></param>
         public void Qbei_OrderDataInsert(Qbei_Entity entity)
         {
+            ///<remark>
+            ///Insert to Order Data at Qbei_OrderData Table.
+            ///</remark>
             Connection con = new Connection();
             SqlConnection sqlcon = con.GetConnection();
             SqlCommand cmd = new SqlCommand("Qbei_OrderDataInsert", sqlcon);
@@ -745,8 +752,17 @@ namespace Common
             cmd.ExecuteNonQuery();
             cmd.Connection.Close();
         }
+
+        /// <summary>
+        /// All GetSiteName.
+        /// </summary>
+        /// <param name="shopID"></param>
+        /// <returns></returns>
         public string GetSiteName(string shopID)
         {
+            ///<remark>
+            ///Take Siteid and SiteName.
+            ///</remark>
             switch (shopID)
             {
                 case "011": return "マルイ";
@@ -789,8 +805,17 @@ namespace Common
             }
 
         }
+        /// <summary>
+        /// Download CSV of Site.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="columns"></param>
+        /// <returns></returns>
         public DataTable GetDatatableFromDownloadPath(string path, string[] columns)
         {
+            ///<remark>
+            ///Check to Data of Downbload CSV from Site.
+            ///</remark>
             CachedCsvReader csv;
             DataTable dtResult = new DataTable(); ;
             string[] filelist = Directory.GetFiles(path);
@@ -835,8 +860,21 @@ namespace Common
             else return null;
         }
 
+        /// <summary>
+        /// Qbei Table.
+        /// </summary>
+        /// <param name="stockDate"></param>
+        /// <param name="qtyStatus"></param>
+        /// <param name="site"></param>
+        /// <param name="janCode"></param>
+        /// <param name="partNo"></param>
+        /// <param name="makerDate"></param>
+        /// <param name="reflectDate"></param>
         public void Qbei_Insert(string stockDate, string qtyStatus, string site, string janCode, string partNo, string makerDate, string reflectDate)
         {
+            ///<remark>
+            ///Insert to Mall(Night) of Data at Qbei Table. 
+            ///</remark>
             Connection con = new Connection();
             SqlConnection sqlcon = con.GetConnection();
             SqlCommand cmd = new SqlCommand("Qbei_Insert", sqlcon);
@@ -854,8 +892,18 @@ namespace Common
             cmd.Connection.Close();
         }
         
+        /// <summary>
+        /// Qbei Table.
+        /// </summary>
+        /// <param name="dtCsv"></param>
+        /// <param name="dtItem"></param>
+        /// <param name="name"></param>
+        /// <param name="strRerun"></param>
         public void Qbei_Insert_XML(DataTable dtCsv, DataTable dtItem, string name, string strRerun = "")
         {
+            ///<remark>
+            ///Insert to Mall of XML Data at Qbei Table. 
+            ///</remark>
             string xmlCsv = DataTableToXml(dtCsv);
 
             string xmlItem = DataTableToXml(dtItem);
@@ -874,7 +922,7 @@ namespace Common
         }
 
         /// <summary>
-        /// ErrorInsert.
+        ///Qbei Error Table.
         /// </summary>
         /// <param name="site"></param>
         /// <param name="sitename"></param>
@@ -887,7 +935,7 @@ namespace Common
         public void Qbei_ErrorInsert(int site, string sitename, string description, string janCode, string orderCode, int errortype, string Date, string sitecode)
         {
             /// <remark>
-            /// Insert Data into Qbei_ErrorLog.
+            /// Insert to  Error of Data into Qbei_ErrorLog Table.
             /// </remark>
             Connection con = new Connection();
             SqlConnection sqlcon = con.GetConnection();
@@ -909,8 +957,15 @@ namespace Common
             cmd.Connection.Close();
         }
 
+        /// <summary>
+        /// Qbei Error.
+        /// </summary>
+        /// <param name="site"></param>
         public void Qbei_ErrorDelete(int site)
         {
+            /// <remark>
+            /// Delete to  Error of Data into Qbei_ErrorLog Table.
+            /// </remark>
             Connection con = new Connection();
             SqlConnection sqlcon = con.GetConnection();
             SqlCommand cmd = new SqlCommand("Qbei_DeleteErrorLog", sqlcon);
@@ -922,8 +977,16 @@ namespace Common
             cmd.Connection.Close();
         }
 
+        /// <summary>
+        /// Qbei Backup.
+        /// </summary>
+        /// <param name="site"></param>
         public void Qbei_Delete(int site)
         {
+            /// <remark>
+            /// Insert to Data into Qbei Backup Table. 
+            /// Delete to Data into Qbei Backup Table.
+            /// </remark>
             Connection con = new Connection();
             SqlConnection sqlcon = con.GetConnection();
             SqlCommand cmd = new SqlCommand("Qbei_DeleteSiteData", sqlcon);
@@ -935,8 +998,20 @@ namespace Common
             cmd.Connection.Close();
 
         }
+
+        /// <summary>
+        /// Selenium Driver.
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <param name="value"></param>
+        /// <param name="sleeptime"></param>
+        /// <returns></returns>
         protected static IWebElement FindElement(IWebDriver driver, By value, int sleeptime)
         {
+            ///<remark>
+            ///Check to Selenium Driver for Site.
+            ///Wait Time of Site.
+            ///</remark>
             bool found = false;
             int count = 0;
             do
@@ -986,25 +1061,46 @@ namespace Common
             return true;
         }
 
+        /// <summary>
+        /// Create of File Path.
+        /// </summary>
+        /// <param name="path"></param>
         private static void CreateFilePath(string path)
         {
             if (!File.Exists(path))
                 File.Create(path);
         }
 
+        /// <summary>
+        /// Create of Directory Path.
+        /// </summary>
+        /// <param name="path"></param>
         private static void CreateDirectory(string path)
         {
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
         }
 
+
+        /// <summary>
+        /// DateTime at Now.
+        /// </summary>
+        /// <returns></returns>
         public string getCurrentDate()
         {
             return DateTime.Now.ToString("yyyy-MM-dd");
         }
 
+        /// <summary>
+        /// Chabge of Flag.
+        /// </summary>
+        /// <param name="qe"></param>
         public void ChangeFlag(Qbeisetting_Entity qe)
         {
+            ///<remark>
+            ///Change to Flage of Site.
+            ///Update to Start Time and End Time of Site.
+            ///</remark>
             Connection con = new Connection();
             SqlConnection sqlcon = con.GetConnection();
             SqlCommand cmd = new SqlCommand("Console_FlagChange", sqlcon);
@@ -1025,9 +1121,16 @@ namespace Common
             
         }
 
-
+        /// <summary>
+        /// Select Flag.
+        /// </summary>
+        /// <param name="site"></param>
+        /// <returns></returns>
         public DataTable SelectFlag(int site)
         {
+            ///<remark>
+            ///Select to Flag at Site Setting Table.
+            ///</remark>
             Connection con = new Connection();
             SqlConnection sqlcon = con.GetConnection();
             SqlCommand cmd = new SqlCommand("SelectFlag", sqlcon);
@@ -1050,8 +1153,16 @@ namespace Common
             }
         }
 
+        /// <summary>
+        /// Delete Data.
+        /// </summary>
+        /// <param name="site"></param>
+        /// <returns></returns>
         public DataTable deleteData(int site)
         {
+            ///<remark>
+            ///Delete to Data at Qbel Table.
+            ///</remark>
             Connection con = new Connection();
             SqlConnection sqlcon = con.GetConnection();
             SqlCommand cmd = new SqlCommand("DeleteData", sqlcon);
@@ -1074,21 +1185,38 @@ namespace Common
             }
         }
 
+        /// <summary>
+        /// Kill Process
+        /// </summary>
         public void KillProcess()
         {
+            ///<remark>
+            ///Exit of site at Time Schedule from Export CVS. 
+            ///</remark>
             foreach (var process in Process.GetProcessesByName("Qbei_Agencies"))
             {
                 process.Kill();
             }
         }
+
+        /// <summary>
+        /// ClearMemory.
+        /// </summary>
         public void ClearMemory()
         {
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
         
+        /// <summary>
+        /// Qbei Table.
+        /// </summary>
+        /// <param name="entity"></param>
         public void Qbei_Inserts(Qbei_Entity entity)
         {
+            ///<remark>
+            ///Insert to Mall(AM.PM) of Data at Qbei Table. 
+            ///</remark>
             ClearMemory();
             SqlCommand cmd;
             Connection con = new Connection();
@@ -1198,9 +1326,15 @@ namespace Common
             return false;
         }
 
-
+        /// <summary>
+        /// Move to Trash.
+        /// </summary>
+        /// <param name="shopID"></param>
       public void MoveToTrash(string shopID)
         {
+            ///<remark>
+            ///Move to Download CSV.
+            ///</remark>
             string path = string.Empty;
             switch (shopID)
             {
@@ -1344,6 +1478,11 @@ namespace Common
             { }
         }
 
+        /// <summary>
+        ///Read to CSV File. 
+        /// </summary>
+        /// <param name="strShopID"></param>
+        /// <returns></returns>
         public DataTable ReadCsv(string strShopID)
         {
             try
