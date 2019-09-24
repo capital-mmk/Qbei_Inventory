@@ -37,8 +37,8 @@ namespace Common
         /// <summary>
         /// To Input DataTable from XmlTable.
         /// </summary>
-        /// <param name="dt"></param>
-        /// <returns></returns>
+        /// <param name="dt">Data Table for Xml.</param>
+        /// <returns>A string contain Xmltable for DataTable dt.</returns>
         public String DataTableToXml(DataTable dt)
         {
             dt.TableName = "test";
@@ -52,8 +52,8 @@ namespace Common
         /// <summary>
         /// Invaild of Char. 
         /// </summary>
-        /// <param name="content"></param>
-        /// <returns></returns>
+        /// <param name="content">Remove to invalid chars of string.</param>
+        /// <returns>A string replace of Invaild char for xml.</returns>
         /// <remark>
         /// Remove to Invaild of Char at Xml.
         /// </remark>
@@ -65,7 +65,7 @@ namespace Common
         /// <summary>
         /// ShopID of serURL.
         /// </summary>
-        /// <param name="shopID"></param>
+        /// <param name="shopID">setURl for Shop of ID.</param>
         /// <remark>
         /// Continue to createConfig process.
         /// </remark> 
@@ -78,7 +78,7 @@ namespace Common
         /// <summary>
         /// Check of createconfig shopID.
         /// </summary>
-        /// <param name="shopID"></param>
+        /// <param name="shopID">Create of Config for ShopID.</param>
         ///<remark>
         ///Database connection string at Qbei_Log of App.Config. 
         ///</remark>
@@ -101,8 +101,8 @@ namespace Common
         /// <summary>
         /// Database connection string of updateSetting
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
+        /// <param name="key">AppSettings for Setting of key.</param>
+        /// <param name="value">AppSettings for Setting of value.</param>
         /// <remark>
         /// Do not Use of Qbei_Inventory at now.
         /// </remark>
@@ -118,9 +118,9 @@ namespace Common
         /// <summary>
         /// Add to Config.
         /// </summary>
-        /// <param name="config"></param>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
+        /// <param name="config">Appsetting for config.</param>
+        /// <param name="key">AppSettings for Setting of key.</param>
+        /// <param name="value">AppSettings for Setting of value.</param>
         /// <remark>
         /// Check at config appsetting of key.
         /// Do not Use of Qbei_Inventory at now.
@@ -139,9 +139,9 @@ namespace Common
         /// <summary>
         /// Add to config(user).
         /// </summary>
-        /// <param name="config"></param>
-        /// <param name="shopID"></param>
-        /// <param name="url"></param>
+        /// <param name="config">Appsetting for config.</param>
+        /// <param name="shopID"> to insert of shopID.</param>
+        /// <param name="url"> to insert of shop for url.</param>
         /// <param name="user"></param>
         /// <param name="password"></param>
         /// <remark>
@@ -183,7 +183,7 @@ namespace Common
         /// <summary>
         /// Writetolog of message.
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message"> Message for Write Log.</param>
         public void WritetoLog(string message)
         {
             File.AppendAllText(logFilepath, Environment.NewLine + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + " " + message);
@@ -192,7 +192,7 @@ namespace Common
         /// <summary>
         /// GetDatatable of shopID.
         /// </summary>
-        /// <param name="shopID"></param>
+        /// <param name="shopID">To insert of shopID. </param>
         /// <remark>
         ///Check to CSV File of Data and Input to Table of Data.
         /// </remark>
@@ -442,7 +442,7 @@ namespace Common
         /// <summary>
         /// StopApplication of siteID.
         /// </summary>
-        /// <param name="siteID"></param>
+        /// <param name="siteID">to insert of Siteid for flag.</param>
         public void StopApplication(int siteID)
         {
             /// <remark>
@@ -461,7 +461,7 @@ namespace Common
         /// <summary>
         /// GetTotalCount of shopID.
         /// </summary>
-        /// <param name="shopID"></param>
+        /// <param name="shopID">To insert of shopID for Totalcount.</param>
         public void GetTotalCount(string shopID)
         {
             /// <remark>
@@ -482,9 +482,9 @@ namespace Common
         /// <summary>
         /// Old Code.
         /// </summary>
-        /// <param name="dtResult"></param>
-        /// <param name="shopID"></param>
-        /// <returns></returns>
+        /// <param name="dtResult">Datatable for Delete of data.</param>
+        /// <param name="shopID">To insert of shopID for Sitecode.</param>
+        /// <returns>Datatable is delete to Error data.</returns>
         public DataTable DeleteOldCode(DataTable dtResult, int shopID)
         {
             DataTable dtOrder;
@@ -523,8 +523,8 @@ namespace Common
         /// <summary>
         ///  Order Data.
         /// </summary>
-        /// <param name="strSiteCode"></param>
-        /// <returns></returns>
+        /// <param name="strSiteCode">To insert for sitecode.</param>
+        /// <returns>Select to order Data from Sitecode.</returns>
         public DataTable Qbei_OrderSelect(string strSiteCode)
         {
             /// <remark>
@@ -551,12 +551,12 @@ namespace Common
                 cmd.Connection.Close();
             }
         }
-        
+
         /// <summary>
         /// Check to GetBrandCode.
         /// </summary>
-        /// <param name="dtCsv"></param>
-        /// <returns></returns>
+        /// <param name="dtCsv">Download of CSV.</param>
+        /// <returns>Check to Datatable of Brandcode("00349").</returns>
         public DataTable GetBrandCode(DataTable dtCsv)
         {
             /// <remark>
@@ -572,15 +572,15 @@ namespace Common
                 return null;
             }
         }
-       
+
         /// <summary>
         /// GetOrderData of Once a Week.
         /// </summary>
-        /// <param name="dtCsv"></param>
-        /// <param name="strPurchaseUrl"></param>
-        /// <param name="strSiteCd"></param>
-        /// <param name="strPost"></param>
-        /// <returns></returns>
+        /// <param name="dtCsv">Download of CSV</param>
+        /// <param name="strPurchaseUrl">Insert to PruchaseUrl of site.</param>
+        /// <param name="strSiteCd">Insert to SiteCd of site.</param>
+        /// <param name="strPost">Insert to Post of site.</param>
+        /// <returns>Check to Onceaweek csae at DataTable.</returns>
         public DataTable GetOrderData(DataTable dtCsv, string strPurchaseUrl, string strSiteCd, string strPost)
         {
             Qbei_Entity objEntity;
@@ -702,11 +702,11 @@ namespace Common
 
             return dtData;
         }
-        
+
         /// <summary>
         /// Order Date.
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entity">Insert to Common Variable.</param>
         public void Qbei_OrderDataInsert(Qbei_Entity entity)
         {
             ///<remark>
@@ -728,8 +728,8 @@ namespace Common
         /// <summary>
         /// Order Data.
         /// </summary>
-        /// <param name="intSiteparam"></param>
-        /// <param name="dtCond"></param>
+        /// <param name="intSiteparam">Insert to site for Order Delete of Data.</param>
+        /// <param name="dtCond">Insert to data for Data Table.</param>
         public void Qbei_OrderDataDelete(int intSiteparam, DataTable dtCond)
         {
             /// <remark>
@@ -756,8 +756,8 @@ namespace Common
         /// <summary>
         /// All GetSiteName.
         /// </summary>
-        /// <param name="shopID"></param>
-        /// <returns></returns>
+        /// <param name="shopID">Insert to ShopID.</param>
+        /// <returns>Check to Siteid and SiteName</returns>
         public string GetSiteName(string shopID)
         {
             ///<remark>
@@ -808,9 +808,9 @@ namespace Common
         /// <summary>
         /// Download CSV of Site.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="columns"></param>
-        /// <returns></returns>
+        /// <param name="path">Insert to File of path.</param>
+        /// <param name="columns">Insert to colum name.</param>
+        /// <returns>Check of Download CSV.</returns>
         public DataTable GetDatatableFromDownloadPath(string path, string[] columns)
         {
             ///<remark>
@@ -863,13 +863,13 @@ namespace Common
         /// <summary>
         /// Qbei Table.
         /// </summary>
-        /// <param name="stockDate"></param>
-        /// <param name="qtyStatus"></param>
-        /// <param name="site"></param>
-        /// <param name="janCode"></param>
-        /// <param name="partNo"></param>
-        /// <param name="makerDate"></param>
-        /// <param name="reflectDate"></param>
+        /// <param name="stockDate">Insert to stockdate of Qbei data.</param>
+        /// <param name="qtyStatus">Insert to quantity of Qbei data.</param>
+        /// <param name="site">Insert to site of  Qbei data.</param>
+        /// <param name="janCode">Insert to janCode of  Qbei data.</param>
+        /// <param name="partNo">Insert to partNo of  Qbei data.</param>
+        /// <param name="makerDate">Insert to makerDate at  Qbei data.</param>
+        /// <param name="reflectDate">Insert to reflectDate at  Qbei data.</param>
         public void Qbei_Insert(string stockDate, string qtyStatus, string site, string janCode, string partNo, string makerDate, string reflectDate)
         {
             ///<remark>
@@ -895,10 +895,10 @@ namespace Common
         /// <summary>
         /// Qbei Table.
         /// </summary>
-        /// <param name="dtCsv"></param>
-        /// <param name="dtItem"></param>
-        /// <param name="name"></param>
-        /// <param name="strRerun"></param>
+        /// <param name="dtCsv">Download of CSV.</param>
+        /// <param name="dtItem">Insert to CSV of Data for DataTable </param>
+        /// <param name="name">Store Prodducer Name</param>
+        /// <param name="strRerun">Insert to "".</param>
         public void Qbei_Insert_XML(DataTable dtCsv, DataTable dtItem, string name, string strRerun = "")
         {
             ///<remark>
@@ -924,14 +924,14 @@ namespace Common
         /// <summary>
         ///Qbei Error Table.
         /// </summary>
-        /// <param name="site"></param>
-        /// <param name="sitename"></param>
-        /// <param name="description"></param>
-        /// <param name="janCode"></param>
-        /// <param name="orderCode"></param>
-        /// <param name="errortype"></param>
-        /// <param name="Date"></param>
-        /// <param name="sitecode"></param>
+        /// <param name="site">Insert to site of Error Data.</param>
+        /// <param name="sitename">Insert to sitename of Error Data.</param>
+        /// <param name="description">Insert to description of Error Data.</param>
+        /// <param name="janCode">Insert to janCode of Error Data.</param>
+        /// <param name="orderCode">Insert to orderCode of Error Data.</param>
+        /// <param name="errortype">Insert to errortype of Error Data.</param>
+        /// <param name="Date">Insert to Date of Error Data.</param>
+        /// <param name="sitecode">Insert to sitecode of Error Data.</param>
         public void Qbei_ErrorInsert(int site, string sitename, string description, string janCode, string orderCode, int errortype, string Date, string sitecode)
         {
             /// <remark>
@@ -960,7 +960,7 @@ namespace Common
         /// <summary>
         /// Qbei Error.
         /// </summary>
-        /// <param name="site"></param>
+        /// <param name="site">Insert to site of Error Data.</param>
         public void Qbei_ErrorDelete(int site)
         {
             /// <remark>
@@ -980,7 +980,7 @@ namespace Common
         /// <summary>
         /// Qbei Backup.
         /// </summary>
-        /// <param name="site"></param>
+        /// <param name="site">Insert to site for Backup Data.</param>
         public void Qbei_Delete(int site)
         {
             /// <remark>
@@ -1002,9 +1002,9 @@ namespace Common
         /// <summary>
         /// Selenium Driver.
         /// </summary>
-        /// <param name="driver"></param>
-        /// <param name="value"></param>
-        /// <param name="sleeptime"></param>
+        /// <param name="driver">Insert to Use Driver.</param>
+        /// <param name="value">Insert to Selenium of optionName.</param>
+        /// <param name="sleeptime">Insert to wait of time.</param>
         /// <returns></returns>
         protected static IWebElement FindElement(IWebDriver driver, By value, int sleeptime)
         {
@@ -1038,17 +1038,15 @@ namespace Common
         /// <summary>
         /// CheckCsvFormat 
         /// </summary>
-        /// <param name="dtCsv"></param>
+        /// <param name="dtCsv">Download of CSV File.</param>
         /// <param name="columns"></param>
-        /// <returns></returns>
+        /// <returns>Check of CSV Format.</returns>
         /// <remark>
         /// Check to dtCsv of Columns Name. 
         /// </remark>
         private static bool checkCsvFormat(DataTable dtCsv, string[] columns)
         {
-            /// <remark>
-            /// Check to dtCsv of Columns Name. 
-            /// </remark>
+    
             foreach (string colName in columns)
             {
                 DataColumnCollection cols = dtCsv.Columns;
@@ -1064,7 +1062,7 @@ namespace Common
         /// <summary>
         /// Create of File Path.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Insert to CreatFIle of path.</param>
         private static void CreateFilePath(string path)
         {
             if (!File.Exists(path))
@@ -1074,7 +1072,7 @@ namespace Common
         /// <summary>
         /// Create of Directory Path.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Insert to CreatDirectory of path.</param>
         private static void CreateDirectory(string path)
         {
             if (!Directory.Exists(path))
@@ -1085,7 +1083,7 @@ namespace Common
         /// <summary>
         /// DateTime at Now.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Get to Currentdate.</returns>
         public string getCurrentDate()
         {
             return DateTime.Now.ToString("yyyy-MM-dd");
@@ -1094,7 +1092,7 @@ namespace Common
         /// <summary>
         /// Chabge of Flag.
         /// </summary>
-        /// <param name="qe"></param>
+        /// <param name="qe">Insert to Common Variable.</param>
         public void ChangeFlag(Qbeisetting_Entity qe)
         {
             ///<remark>
@@ -1124,7 +1122,7 @@ namespace Common
         /// <summary>
         /// Select Flag.
         /// </summary>
-        /// <param name="site"></param>
+        /// <param name="site">Insert to site of slectflag.</param>
         /// <returns></returns>
         public DataTable SelectFlag(int site)
         {
@@ -1156,8 +1154,8 @@ namespace Common
         /// <summary>
         /// Delete Data.
         /// </summary>
-        /// <param name="site"></param>
-        /// <returns></returns>
+        /// <param name="site">Insert to site of delete data.</param>
+        /// <returns>Delete data from site.</returns>
         public DataTable deleteData(int site)
         {
             ///<remark>
@@ -1207,11 +1205,11 @@ namespace Common
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
-        
+
         /// <summary>
         /// Qbei Table.
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entity">Insert to Common Variable.</param>
         public void Qbei_Inserts(Qbei_Entity entity)
         {
             ///<remark>
@@ -1329,7 +1327,7 @@ namespace Common
         /// <summary>
         /// Move to Trash.
         /// </summary>
-        /// <param name="shopID"></param>
+        /// <param name="shopID">Insert to shopID for Move CSV.</param>
       public void MoveToTrash(string shopID)
         {
             ///<remark>
@@ -1423,7 +1421,7 @@ namespace Common
         /// Delete Qbei,Qbei_ErrorLog,Qbei_OrderData when data exist in Qbei_OrderData.
         /// Insert Qbei_OrderData when data does not exist in Qbei_OrderData
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entity">Insert to Common Variable.</param>
         public void RerunOrder(Qbei_Entity entity)
         {
             try
@@ -1457,8 +1455,8 @@ namespace Common
         /// <summary>
         /// Delete Qbei and Qbei_ErrorLog when rerun.
         /// </summary>
-        /// <param name="intSite"></param>
-        /// <param name="entity">include jancode and ordercode</param>
+        /// <param name="intSite">Insert to site for Rerun Delete.</param>
+        /// <param name="entity">Insert to Common Variable.</param>
         public void DeleteRerunData(int intSite, Qbei_Entity entity)
         {
             try
@@ -1481,8 +1479,8 @@ namespace Common
         /// <summary>
         ///Read to CSV File. 
         /// </summary>
-        /// <param name="strShopID"></param>
-        /// <returns></returns>
+        /// <param name="strShopID">Insert to shopID from CSV.</param>
+        /// <returns>Read from CSV for data.</returns>
         public DataTable ReadCsv(string strShopID)
         {
             try
