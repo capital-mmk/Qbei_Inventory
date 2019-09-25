@@ -16,25 +16,18 @@ using System.Text.RegularExpressions;
 namespace _13ミズタニ
 {
     /// <summary>
-    /// frm013ミズタニ Start.
+    /// Constructor
     /// </summary>
+    /// <remark>
+    /// Data Table and Common Function and Field
+    /// </remark>
     public partial class frm013 : Form
-    {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <remark>
-        /// Data Table and Common Function and Field
-        /// </remark>
-        DataTable dt = new DataTable();
-        //Connection Database of Object.
-        Qbeisetting_BL qubl = new Qbeisetting_BL();
-        //Field of Object.
-        Qbeisetting_Entity qe = new Qbeisetting_Entity();
-        //Common Function of Object.
+    {        
+        DataTable dt = new DataTable();        
+        Qbeisetting_BL qubl = new Qbeisetting_BL();        
+        Qbeisetting_Entity qe = new Qbeisetting_Entity();        
         CommonFunction fun = new CommonFunction();
-        DataTable dt013 = new DataTable();
-        //Field of Object.
+        DataTable dt013 = new DataTable();        
         Qbei_Entity entity = new Qbei_Entity();
         int i = -1;
         public static string st = string.Empty;
@@ -49,8 +42,7 @@ namespace _13ミズタニ
         /// </remark>
         public frm013()
         {
-            InitializeComponent();
-            //testflag processing.
+            InitializeComponent();           
             testflag();
         }
 
@@ -58,23 +50,18 @@ namespace _13ミズタニ
         /// testflag processing.
         /// </summary>
         ///<remark>
-        ///Site of Processing Progress.
+        ///"0,1,2"Flage Number of Check. 
         ///</remark>
         private void testflag()
-        {
-            ///<summary>
-            ///Flag Number.
-            ///</summary>
-            ///<remark>
-            ///"0,1,2"Flage Number of Check. 
-            ///</remark>
-
-            //Input site Number.
+        {            
             qe.site = 13;
-            qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            //Input Flag Number.
+            qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");            
             qe.flag = 1;
-            //Input DataTable of Common Function Flag Table.
+
+            //Input DataTable of Common Function Flag Table. 
+            /// <remark>
+            ///Select Flag from Site_setting Table. 
+            /// </remark>
             DataTable dtflag = fun.SelectFlag(13);
             //To Check "FlagIsFinished" of Flag Number at Flag Table.
             int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
@@ -96,17 +83,23 @@ namespace _13ミズタニ
                 //StartRun Process.
                 StartRun();
             }
+
+            ///<remark>
+            ///when flag is 1,To Continue Next Process.
+            ///</remark>
             else if (flag == 1)
             {
-                ///<remark>
-                ///when flag is 1,To Continue Next Process.
-                ///</remark>
-                
                 //Common Function of deleteData Process.
+                ///<remark>
+                ///Delete to AllData at Qbei Table.
+                ///</remark>
                 fun.deleteData(13);
+
                 //Common Function of ChangFlage Process.
+                ///<remark>
+                ///Change to flag is 1 at site_setting Table.
+                ///</remark>
                 fun.ChangeFlag(qe);
-                //StartRun Process.
                 StartRun();
             }
             else
@@ -125,46 +118,49 @@ namespace _13ミズタニ
         {
             try
             {
-                /// <remark>
-                /// Common Function of setURL Process.
-                /// </remark>
-                /// <param　setURL("013")>
-                /// Common Function.
-                /// </param>
+
+                //Common Function of setURL Process.
+                ///<remark>
+                ///Database connection string at Qbei_Log of App.Config. 
+                ///</remark>
                 fun.setURL("013");
+
                 //Common Function of CreateFileAndFolder Process.
                 fun.CreateFileAndFolder();
+
                 //Common Function of Qbei_Delete Process.
+                ///<remark>
+                ///Insert Qbei_Backup Table where select from Qbei Table.
+                ///After Delete to Qbei Table of AllData  and Qbei_Backup Table of Updated Date is Greater than 14days.
+                ///</remark>
                 fun.Qbei_Delete(13);
+
                 //Common Function of Qbei_ErrorDelete Process.
+                ///<remark>
+                ///Insert Qbei_ErrorLog Backup Table where select from Qbei_ErrorLog Table.
+                ///After Delete to Qbei_ErrorLog Table of AllData  and Qbei_ErrorLog_Backup Table of Date is less than 14days.
+                ///</remark>
                 fun.Qbei_ErrorDelete(13);
 
-                /// <remark>
-                /// To Input dt013(Data Table) at Common Function of GetDatatable Process.
-                /// </remark>           
-                /// <param　dt013 = fun.GetDatatable("013")>
-                /// Datatable.
-                /// </param>
+                // To Input dt013(Data Table) at Common Function of GetDatatable Process.       
+                ///<remark>
+                ///Get Data from Qbei_Log of CVS File .
+                ///</remark>
                 dt013 = fun.GetDatatable("013");
                 //2017/12/14 Start
 
-                /// <remark>
-                /// To Input dt013(データテーブル) at Common Function of GetDatatable Process.
-                /// </remark>           
-                /// <param　dt013 = fun.GetOrderData(dt013, "https://www.ordermz.jp/weborder/SyohinSearch.aspx", "013", string.Empty)>
-                /// Datatable、PurchaseUrl、SiteCode、Post.
-                /// </param>
+                // To Input dt013(データテーブル) at Common Function of GetDatatable Process. 
+                ///<remark>
+                ///Get Data from Qbei_Log of CVS File .
+                ///</remark>
                 dt013 = fun.GetOrderData(dt013, "https://www.ordermz.jp/weborder/SyohinSearch.aspx", "013", string.Empty);
 
-                /// <remark>
-                /// Common Function of GetTotalCount Process.
-                /// </remark>
-                /// <param　GetTotalCount("013")>
-                /// Common Function.
-                /// </param>    
+                // Common Function of GetTotalCount Process.
+                ///<remark>
+                ///Update to Site_setting Table of TotalCount.
+                ///</remark> 
                 fun.GetTotalCount("013");
                 //2017/12/14 End
-                //ReadData Process.
                 ReadData();
             }
             catch (Exception) { }
@@ -178,30 +174,22 @@ namespace _13ミズタニ
         /// </remark>
         private void ReadData()
         {
-            webBrowser1.ScriptErrorsSuppressed = true;
-            //Input SiteID Number.
+            webBrowser1.ScriptErrorsSuppressed = true;        
             qe.SiteID = 13;
 
+            // To Input Data Table at Connection Database of Qbei_Setting_Select Process.    
             /// <remark>
-            /// To Input Data Table at Connection Database of Qbei_Setting_Select Process.
-            /// </remark>           
-            /// <param　dt = qubl.Qbei_Setting_Select(qe)>
-            /// Data Table.
-            /// </param>
+            /// Select Data from Site_Setting Table for Input to Dt Table .
+            /// </remark>
             dt = qubl.Qbei_Setting_Select(qe);
 
-            /// <remark>
-            /// To Input Common Funtion of url at Data Table of Url. 
-            /// </remark>
-            /// /// <param　fun.url = dt.Rows[0]["Url"].ToString()>
-            /// Common Funtion.
-            /// </param>
+            // To Input Common Funtion of url at Data Table of Url.
             fun.url = dt.Rows[0]["Url"].ToString();
 
             webBrowser1.AllowNavigation = true;
             //Check WebBrwser Navigate at Common Function of url process.
             webBrowser1.Navigate("https://www.ordermz.jp/weborder");
-            //Next Process.
+            //Continue to webBrowser1_Start process.
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
         }
 
@@ -231,26 +219,17 @@ namespace _13ミズタニ
         {
             try
             {
-                /// <remark>
-                /// Common Function of WriteLog Process.
-                /// </remark>
-                /// <param　WriteLog("Navigation to Site Url success------", "013-")>
-                /// Common Function.
-                /// </param>
+                // Common Function of WriteLog Process. 
                 fun.WriteLog("Navigation to Site Url success------", "013-");
                 webBrowser1.ScriptErrorsSuppressed = true;
                 SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
-                instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
-                //qe.sitecode = "013";
-                //Input SiteID Number.
+                instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);                
                 qe.SiteID = 13;
 
+                // To Input Data Table at Connection Database of Qbei_Setting_Select Process. 
                 /// <remark>
-                /// To Input Data Table at Connection Database of Qbei_Setting_Select Process.
-                /// </remark>           
-                /// <param　dt = qubl.Qbei_Setting_Select(qe)>
-                /// Data Table.
-                /// </param>
+                /// Select Data from Site_Setting Table for Input to Dt Table .
+                /// </remark>
                 dt = qubl.Qbei_Setting_Select(qe);
                 //To Input string of username at Data Table of "UserName".
                 string username = dt.Rows[0]["UserName"].ToString();
@@ -263,25 +242,18 @@ namespace _13ミズタニ
                 //Click at webpage of Login.
                 webBrowser1.Document.GetElementById("btnLogin").InvokeMember("Click");
                 webBrowser1.DocumentCompleted -= webBrowser1_Start;
-                //Next Process.
+                //Continue to webBrowser1_Login process.
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Login);
             }
             catch (Exception ex)
             {
-                /// <remark>
-                /// Common Function of Qbei_ErrorInsert Process.
-                /// </remark>
-                /// <param　Qbei_ErrorInsert(13, fun.GetSiteName("013"), ex.Message, dt013.Rows[0]["JANコード"].ToString(), dt013.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013")>
-                /// Common Function.
-                /// </param>
+                // Common Function of Qbei_ErrorInsert Process.     
+                ///<remark>
+                ///Insert to Data of Qbei_ErrorLog Table.
+                ///</remark>
                 fun.Qbei_ErrorInsert(13, fun.GetSiteName("013"), ex.Message, dt013.Rows[0]["JANコード"].ToString(), dt013.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013");
 
-                /// <remark>
-                /// Common Function of WriteLog Process.
-                /// </remark>
-                /// <param　WriteLog(ex.Message + dt013.Rows[0]["発注コード"].ToString(), "013-")>
-                /// Common Function.
-                /// </param>
+                // Common Function of WriteLog Process.  
                 fun.WriteLog(ex.Message + dt013.Rows[0]["発注コード"].ToString(), "013-");
                 Application.Exit();
                 Environment.Exit(0);
@@ -307,47 +279,32 @@ namespace _13ミズタニ
                 /// </remark>
                 if (body.Contains(" 得意先コード、パスワードが正しくありません"))
                 {
-                    /// <remark>
-                    /// Common Function of Qbei_ErrorInsert Process.
-                    /// </remark>
-                    /// <param　Qbei_ErrorInsert(13, fun.GetSiteName("013"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013")>
-                    /// Common Function.
-                    /// </param>
+                    // Common Function of Qbei_ErrorInsert Process. 
+                    ///<remark>
+                    ///Insert to Data of Qbei_ErrorLog Table.
+                    ///</remark>
                     fun.Qbei_ErrorInsert(13, fun.GetSiteName("013"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013");
                     Application.Exit();
                 }
                 else
                 {
-                    /// <remark>
-                    /// Common Function of WriteLog Process.
-                    /// </remark>
-                    /// <param　WriteLog("Login success             ------", "013-")>
-                    /// Common Function.
-                    /// </param>
+                    // Common Function of WriteLog Process.
                     fun.WriteLog("Login success             ------", "013-");
                     //WebBrowser Navigate of url.
                     webBrowser1.Navigate(fun.url + "/SyohinSearch.aspx");
-                    //Next Process.
+                    //Continue to webBrowser1_WaitForSearchPage process.
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
                 }
             }
             catch (Exception ex)
             {
-                /// <remark>
-                /// Common Function of Qbei_ErrorInsert Process.
-                /// </remark>
-                /// <param　Qbei_ErrorInsert(13, fun.GetSiteName("013"), ex.Message, dt013.Rows[0]["JANコード"].ToString(), dt013.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013")>
-                /// Common Function.
-                /// </param>
+                // Common Function of Qbei_ErrorInsert Process.            
+                ///<remark>
+                ///Insert to Data of Qbei_ErrorLog Table.
+                ///</remark>
                 fun.Qbei_ErrorInsert(13, fun.GetSiteName("013"), ex.Message, dt013.Rows[0]["JANコード"].ToString(), dt013.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013");
 
-
-                /// <remark>
-                /// Common Function of WriteLog Process.
-                /// </remark>
-                /// <param　WriteLog(ex.Message + dt013.Rows[0]["発注コード"].ToString(), "013-")>
-                /// Common Function.
-                /// </param>
+                // Common Function of WriteLog Process.
                 fun.WriteLog(ex.Message + dt013.Rows[0]["発注コード"].ToString(), "013-");
                 Application.Exit();
                 Environment.Exit(0);
@@ -371,7 +328,7 @@ namespace _13ミズタニ
             if (webBrowser1.Url.ToString().Contains("SyohinSearch.aspx"))
             {
                 webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
-                //Next Process.
+                //Continue to webBrowser1_ItemSearch process.
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
             }
         }
@@ -408,14 +365,12 @@ namespace _13ミズタニ
                     doc.GetElementById("keyword").SetAttribute("Value", orderCode);
                     //Click at webpage of "btnSearch".
                     webBrowser1.Document.GetElementById("btnSearch").InvokeMember("Click");
-                    //Next Process.
+                    //Continue to webBrowser1_ItemProcessing process.
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemProcessing);
                 }
                 else
-                {
-                    //Input SiteID Number.
-                    qe.site = 13;
-                    //Input flag Number.
+                {                   
+                    qe.site = 13;                   
                     qe.flag = 2;
                     qe.starttime = string.Empty;
                     qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -427,20 +382,13 @@ namespace _13ミズタニ
             }
             catch (Exception ex)
             {
-                /// <remark>
-                /// Common Function of Qbei_ErrorInsert Process.
-                /// </remark>
-                /// <param　Qbei_ErrorInsert(13, fun.GetSiteName("013"), ex.Message, dt013.Rows[i]["JANコード"].ToString(), orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013")>
-                /// Common Function.
-                /// </param>
+                // Common Function of Qbei_ErrorInsert Process. 
+                ///<remark>
+                ///Insert to Data of Qbei_ErrorLog Table.
+                ///</remark>
                 fun.Qbei_ErrorInsert(13, fun.GetSiteName("013"), ex.Message, dt013.Rows[i]["JANコード"].ToString(), orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013");
 
-                /// <remark>
-                /// Common Function of WriteLog Process.
-                /// </remark>
-                /// <param　WriteLog(ex.Message + orderCode, "013-")>
-                /// Common Function.
-                /// </param>
+                // Common Function of WriteLog Process.
                 fun.WriteLog(ex.Message + orderCode, "013-");
                 Application.Exit();
                 Environment.Exit(0);
@@ -470,16 +418,12 @@ namespace _13ミズタニ
             int intCnt = 0;
             string strHtml;
             webBrowser1.ScriptErrorsSuppressed = true;
-            webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemProcessing);
-            //To Input janCode at dt013 of "JANコード".
-            entity.janCode = dt013.Rows[i]["JANコード"].ToString();
-            //To Input orderCode at dt013 of "発注コード".
+            webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemProcessing);    
+            entity.janCode = dt013.Rows[i]["JANコード"].ToString();      
             entity.partNo = dt013.Rows[i]["自社品番"].ToString();
             //To Input partNo at Common Function of getCurrentDate process.
-            entity.makerDate = fun.getCurrentDate();
-            //To Input reflectDate at dt013 of "最終反映日".
+            entity.makerDate = fun.getCurrentDate();           
             entity.reflectDate = dt013.Rows[i]["最終反映日"].ToString();
-            //To Input orderCode at dt013 of "発注コード".
             entity.orderCode = dt013.Rows[i]["発注コード"].ToString().Trim();
             //entity.orderCode = fun.ReplaceOrderCode(entity.orderCode, new string[] {"在庫限り発注禁止", "在庫処分/inquiry/", "在庫処分/empry/-", "在庫処分good", "在庫処分empryinquiry", "在庫処分/empty/", "在庫処分small", 
             //                                                                         "在庫限り発注禁止inquiry", "在庫処分/empry/", "在庫処分empry", "東特価のため完売", "在庫処分small", 
@@ -490,10 +434,8 @@ namespace _13ミズタニ
             //To Input purchase at WebBrowser of Url.
             entity.purchaseURL = webBrowser1.Url.ToString();
             //To Input string body at WebBrowser Document of GetElementsByTagName("html").
-            string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
-            //Input SiteID Number.
+            string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;    
             entity.siteID = 13;
-            //Input sitecode.
             entity.sitecode = "013";
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
 
@@ -534,20 +476,13 @@ namespace _13ミズタニ
                     /// </remark>
                     if (webBrowser1.Document.GetElementById("GridView1_ctl02_Label1") == null && (hdoc.DocumentNode.SelectSingleNode("div[3]/div[4]/table/tbody/tr[2]/td[6]") == null))
                     {
-                        /// <remark>
-                        /// Common Function of Qbei_ErrorInsert Process.
-                        /// </remark>
-                        /// <param　Qbei_ErrorInsert(13, fun.GetSiteName("013"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013")>
-                        /// Common Function.
-                        /// </param>
+                        // Common Function of Qbei_ErrorInsert Process. 
+                        ///<remark>
+                        ///Insert to Data of Qbei_ErrorLog Table.
+                        ///</remark>
                         fun.Qbei_ErrorInsert(13, fun.GetSiteName("013"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013");
 
-                        /// <remark>
-                        /// Common Function of WriteLog Process.
-                        /// </remark>
-                        /// <param　WriteLog("Access Denied! " + entity.orderCode, "013-")>
-                        /// Common Function.
-                        /// </param>
+                        // Common Function of WriteLog Process.
                         fun.WriteLog("Access Denied! " + entity.orderCode, "013-");
                         Application.Exit();
                     }
@@ -822,11 +757,8 @@ namespace _13ミズタニ
                             /// </remark>
                             if ((entity.qtyStatus.Contains("empty") && (entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry"))
                             {
-                                //To Input quantity at dt013 of "在庫情報".
                                 entity.qtyStatus = dt013.Rows[i]["在庫情報"].ToString();
-                                //To Input price at dt013 of "下代".
-                                entity.price = dt013.Rows[i]["下代"].ToString();
-                                //To Input stockDate at dt013 of "入荷予定".
+                                entity.price = dt013.Rows[i]["下代"].ToString();       
                                 entity.stockDate = dt013.Rows[i]["入荷予定"].ToString();
                             }
                             //Common Function of Qbei_Inserts Process.
@@ -841,27 +773,20 @@ namespace _13ミズタニ
                 }
                 catch (Exception ex)
                 {
-                    /// <remark>
-                    /// Common Function of Qbei_ErrorInsert Process.
-                    /// </remark>
-                    /// <param　Qbei_ErrorInsert(13, fun.GetSiteName("013"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013")>
-                    /// Common Function.
-                    /// </param>
+                    // Common Function of Qbei_ErrorInsert Process. 
+                    ///<remark>
+                    ///Insert to Data of Qbei_ErrorLog Table.
+                    ///</remark>
                     fun.Qbei_ErrorInsert(13, fun.GetSiteName("013"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013");
 
-                    /// <remark>
-                    /// Common Function of WriteLog Process.
-                    /// </remark>
-                    /// <param　WriteLog(ex.Message + entity.orderCode, "013-")>
-                    /// Common Function.
-                    /// </param>
+                    // Common Function of WriteLog Process.
                     fun.WriteLog(ex.Message + entity.orderCode, "013-");
                 }
             }
             //Click at webpage of "btnClear".
             webBrowser1.Document.GetElementById("btnClear").InvokeMember("Click");
             webBrowser1.ScriptErrorsSuppressed = true;
-            //Next Process
+            //To Continue webBrowser1_ItemSearch process.
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
             //}
         }
@@ -869,20 +794,13 @@ namespace _13ミズタニ
         //NavigateErrorの　表示。
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
-            /// <remark>
-            /// Common Function of Qbei_ErrorInsert Process.
-            /// </remark>
-            /// <param　Qbei_ErrorInsert(13, fun.GetSiteName("013"), "Access Denied!", dt013.Rows[i]["JANコード"].ToString(), dt013.Rows[i]["発注コード"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013")>
-            /// Common Function.
-            /// </param>
+            // Common Function of Qbei_ErrorInsert Process.  
+            ///<remark>
+            ///Insert to Data of Qbei_ErrorLog Table.
+            ///</remark>
             fun.Qbei_ErrorInsert(13, fun.GetSiteName("013"), "Access Denied!", dt013.Rows[i]["JANコード"].ToString(), dt013.Rows[i]["発注コード"].ToString(), 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013");
 
-            /// <remark>
-            /// Common Function of WriteLog Process.
-            /// </remark>
-            /// <param　WriteLog(StatusCode.ToString() + " " + dt013.Rows[i]["発注コード"].ToString(), "013-")>
-            /// Common Function.
-            /// </param>
+            // Common Function of WriteLog Process.
             fun.WriteLog(StatusCode.ToString() + " " + dt013.Rows[i]["発注コード"].ToString(), "013-");
             Application.Exit();
         }
