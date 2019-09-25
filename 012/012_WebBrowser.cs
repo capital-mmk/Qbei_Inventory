@@ -528,9 +528,7 @@ namespace _12カワシマ
                 }
                 else
                 {
-                    //Input SiteID Number.
                     qe.site = 12;
-                    //Input flag Number.
                     qe.flag = 2;
                     qe.starttime = string.Empty;
                     qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
