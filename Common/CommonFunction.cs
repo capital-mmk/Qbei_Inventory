@@ -132,8 +132,8 @@ namespace Common
         /// <param name="config">Insert to Appsetting of config.</param>
         /// <param name="shopID">Insert to shopID.</param>
         /// <param name="url">Insert to shop for url.</param>
-        /// <param name="user"></param>
-        /// <param name="password"></param>
+        /// <param name="user">Insert to user.</param>
+        /// <param name="password">Insert to password.</param>
         /// <remark>
         /// Check at config appsetting of User.
         /// Do not Use of Qbei_Inventory at now.
@@ -1301,7 +1301,13 @@ namespace Common
                 //break;
             }
         }
-
+        
+        /// <summary>
+        /// Replace of Order Code.
+        /// </summary>
+        /// <param name="orderCode">Insert to ordercode of Data.</param>
+        /// <param name="str">Remove to string arrays.</param>
+        /// <returns>Remove to string at ordercode.</returns>
         public string ReplaceOrderCode(string orderCode, string[] str)
         {
             foreach (string str1 in str)
@@ -1311,6 +1317,14 @@ namespace Common
             return orderCode;
         }
 
+        /// <summary>
+        /// GetElement from Html of Element.
+        /// </summary>
+        /// <param name="tagName">Insert to Hlml Element of tagName.</param>
+        /// <param name="value">Insert to Hlml Element of value.</param>
+        /// <param name="attrName">Insert to Hlml Element of attrName.</param>
+        /// <param name="webBrowser1">Insert to Hlml Element of webBrowser.</param>
+        /// <returns>Use to Html Element for webBrowser at windows form.</returns>
         public HtmlElement GetElement(string tagName, string value, string attrName,WebBrowser webBrowser1)
         {
             HtmlElementCollection col = webBrowser1.Document.GetElementsByTagName(tagName);
