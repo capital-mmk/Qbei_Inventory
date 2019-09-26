@@ -35,10 +35,10 @@ namespace Common
         DataTable dtOrder = new DataTable();
       
         /// <summary>
-        /// To Input DataTable from XmlTable.
+        /// Convert DataTable from Xml format string
         /// </summary>
-        /// <param name="dt">Data Table for Xml.</param>
-        /// <returns>A string contain Xmltable for DataTable dt.</returns>
+        /// <param name="dt">DataTable for Xml.</param>
+        /// <returns>xml format string form DataTable dt.</returns>
         public String DataTableToXml(DataTable dt)
         {
             dt.TableName = "test";
@@ -50,12 +50,12 @@ namespace Common
         }
 
         /// <summary>
-        /// Invaild of Char. 
+        /// Remove Invalid Character. 
         /// </summary>
         /// <param name="content">Remove to invalid chars of string.</param>
-        /// <returns>A string replace of Invaild char for xml.</returns>
+        /// <returns> string already remove special characters</returns>
         /// <remark>
-        /// Remove to Invaild of Char at Xml.
+        /// Xml doesn't allow special characters.
         /// </remark>
         public static string RemoveInvalidXmlChars(string content)
         {
@@ -63,12 +63,9 @@ namespace Common
         }
 
         /// <summary>
-        /// ShopID of serURL.
+        /// ShopID setURL.
         /// </summary>
-        /// <param name="shopID">setURl for Shop of ID.</param>
-        /// <remark>
-        /// Continue to createConfig process.
-        /// </remark> 
+        /// <param name="shopID">Insert to setURl of Shop ID.</param>    
         public void setURL(string shopID)
         {
             createConfig(shopID);
@@ -76,19 +73,15 @@ namespace Common
 
 
         /// <summary>
-        /// Check of createconfig shopID.
+        /// Check  createconfig.
         /// </summary>
-        /// <param name="shopID">Create of Config for ShopID.</param>
+        /// <param name="shopID">Insert to Config of ShopID.</param>
         ///<remark>
-        ///Database connection string at Qbei_Log of App.Config. 
+        ///Check to Database connection string at App.config.
         ///</remark>
         private static void createConfig(string shopID)
         {
-            Configuration config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");
-
-            ///<remark>
-            ///check to ConnectionStrings["Qbei_DB"] is null .
-            ///</remark>
+            Configuration config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");      
             if (config.ConnectionStrings.ConnectionStrings["Qbei_DB"] == null)
             {
                 ConnectionStringSettings setting = new ConnectionStringSettings("Qbei_DB", "Data Source= WIN-OIL4TFU9NBH\\LOCAL2014;Initial Catalog=Qbei_Inventory;Persist Security Info=True;User ID=sa;Password=admin123456!", "System.Data.SqlClient");
@@ -99,10 +92,10 @@ namespace Common
         }
 
         /// <summary>
-        /// Database connection string of updateSetting
+        /// updateSetting.
         /// </summary>
-        /// <param name="key">AppSettings for Setting of key.</param>
-        /// <param name="value">AppSettings for Setting of value.</param>
+        /// <param name="key">Insert to AppSettings Setting of key.</param>
+        /// <param name="value">Insert to AppSettings Setting of value.</param>
         /// <remark>
         /// Do not Use of Qbei_Inventory at now.
         /// </remark>
@@ -116,20 +109,17 @@ namespace Common
         }
 
         /// <summary>
-        /// Add to Config.
+        /// Add Config.
         /// </summary>
-        /// <param name="config">Appsetting for config.</param>
-        /// <param name="key">AppSettings for Setting of key.</param>
-        /// <param name="value">AppSettings for Setting of value.</param>
+        /// <param name="config">Insert to Appsetting of config.</param>
+        /// <param name="key">Insert to AppSettings Setting of key.</param>
+        /// <param name="value">Insert to AppSettings Setting of value.</param>
         /// <remark>
         /// Check at config appsetting of key.
         /// Do not Use of Qbei_Inventory at now.
         /// </remark>
         private static void AddtoConfig(Configuration config, string key, string value)
-        {
-            /// <remark>
-            /// Check at config appsetting of key is null.
-            /// </remark>
+        {          
             if (config.AppSettings.Settings[key] == null)
                 config.AppSettings.Settings.Add(key, value);
             else
@@ -137,11 +127,11 @@ namespace Common
         }
 
         /// <summary>
-        /// Add to config(user).
+        /// Add config(user).
         /// </summary>
-        /// <param name="config">Appsetting for config.</param>
-        /// <param name="shopID"> to insert of shopID.</param>
-        /// <param name="url"> to insert of shop for url.</param>
+        /// <param name="config">Insert to Appsetting of config.</param>
+        /// <param name="shopID">Insert to shopID.</param>
+        /// <param name="url">Insert to shop for url.</param>
         /// <param name="user"></param>
         /// <param name="password"></param>
         /// <remark>
@@ -194,7 +184,7 @@ namespace Common
         /// </summary>
         /// <param name="shopID">To insert of shopID. </param>
         /// <remark>
-        ///Check to CSV File of Data and Input to Table of Data.
+        ///Check to CSV File of Data and Insert to Data at Table.
         /// </remark>
         public DataTable GetDatatable(string shopID)
         {
@@ -207,43 +197,23 @@ namespace Common
             string xml;
             Connection con;
             SqlConnection sqlcon;
-            SqlCommand cmd;
-            ///<remark>
-            ///Check to ShopID and Shop Name at GetSiteName Process.
-            ///</remark>
+            SqlCommand cmd;         
             dc.DefaultValue = GetSiteName(shopID);
-            string[] columns = { "代理店ID", "JANコード", "在庫情報", "入荷予定", "自社品番", "メーカー情報日", "最終反映日" };
-            //string[] filelist = Directory.GetFiles(csvPath);
+            string[] columns = { "代理店ID", "JANコード", "在庫情報", "入荷予定", "自社品番", "メーカー情報日", "最終反映日" };       
             string[] filelist = Directory.GetFiles(@"C:\Qbei_Log\Csv");
-
-            ///<remark>
-            ///Check of condition at filelist include file of string.
-            ///</remark>
+           
             foreach (string file in filelist)
             {
-                string ext = Path.GetExtension(file);
-                ///<remark>
-                ///Check to CSV File is exkt.
-                ///</remark>
+                string ext = Path.GetExtension(file);     
                 if (ext.Equals(".csv"))
-                {
-                    ///<remark>
-                    ///Read to Csv file of GetEncoding. 
-                    ///</remark>
+                {                  
                     using (var csv = new CachedCsvReader(new StreamReader(file, Encoding.GetEncoding(932)), true))
                     {
                         DataTable dtCsv = new DataTable();
                         dtCsv.Load(csv);
-
-                        ///<remark>
-                        ///dtResult of Columns Count is less than equal 0.
-                        ///</remark>
                         if (dtResult.Columns.Count <= 0)
                             dtResult = dtCsv.Clone();
-
-                        /// <remark>
-                        /// Check to dtCsv and Columns Name at checkCsvFormat process.
-                        /// </remark>
+                        
                         if (checkCsvFormat(dtCsv, columns))
                         {
                             dtResult.Merge(dtCsv);
@@ -257,14 +227,9 @@ namespace Common
                     }
 
                 }
-                else
-                    //File.Move(file, trashPath + @"\" + Path.GetFileName(file));
+                else           
                     File.Move(file, @"C:\Qbei_Log\Trash\" + @"\" + Path.GetFileName(file));
-            }
-
-            /// <remark>
-            /// Check to dtResult is not null.
-            /// </remark>
+            }    
             if (!dtResult.Equals(null))
             {
                 DataRow[] dr = dtResult.Select("代理店ID='" + shopID + "'");
@@ -440,9 +405,9 @@ namespace Common
         }
 
         /// <summary>
-        /// StopApplication of siteID.
+        /// StopApplication of site.
         /// </summary>
-        /// <param name="siteID">to insert of Siteid for flag.</param>
+        /// <param name="siteID">Insert to siteid for Site.</param>
         public void StopApplication(int siteID)
         {
             /// <remark>
@@ -461,7 +426,7 @@ namespace Common
         /// <summary>
         /// GetTotalCount of shopID.
         /// </summary>
-        /// <param name="shopID">To insert of shopID for Totalcount.</param>
+        /// <param name="shopID">Insert to shopID for Totalcount.</param>
         public void GetTotalCount(string shopID)
         {
             /// <remark>
@@ -482,9 +447,9 @@ namespace Common
         /// <summary>
         /// Old Code.
         /// </summary>
-        /// <param name="dtResult">Datatable for Delete of data.</param>
-        /// <param name="shopID">To insert of shopID for Sitecode.</param>
-        /// <returns>Datatable is delete to Error data.</returns>
+        /// <param name="dtResult">Check to Data at Data Table.</param>
+        /// <param name="shopID">Insert to shopID for Sitecode.</param>
+        /// <returns>Insert to Error data at Datable.</returns>
         public DataTable DeleteOldCode(DataTable dtResult, int shopID)
         {
             DataTable dtOrder;
@@ -523,13 +488,10 @@ namespace Common
         /// <summary>
         ///  Order Data.
         /// </summary>
-        /// <param name="strSiteCode">To insert for sitecode.</param>
+        /// <param name="strSiteCode">Insert to sitecode.</param>
         /// <returns>Select to order Data from Sitecode.</returns>
         public DataTable Qbei_OrderSelect(string strSiteCode)
         {
-            /// <remark>
-            ///Select to Order Data from Site Code.
-            /// </remark>
             Connection con = new Connection();
             SqlConnection sqlcon = con.GetConnection();
             SqlCommand cmd = new SqlCommand("Qbei_OrderSelect", sqlcon);
@@ -559,9 +521,6 @@ namespace Common
         /// <returns>Check to Datatable of Brandcode("00349").</returns>
         public DataTable GetBrandCode(DataTable dtCsv)
         {
-            /// <remark>
-            /// To Insert dtcode datatable of data from dtCsv Datatable of ("ブランドコード") is contain ("00349") .
-            /// </remark>
             try
             {
                 DataTable dtcode = dtCsv.AsEnumerable().Where(x => (x.Field<string>("ブランドコード").Contains("00349"))).CopyToDataTable();
@@ -638,9 +597,6 @@ namespace Common
                             dtData = dtCsv.Copy();
                         }
                         //Retrieve Old data 
-                        /// <remark>
-                        /// Delete to Order Data at Qbei_OrderData Table.
-                        /// </remark>
                         Qbei_OrderDataDelete(int.Parse(strSiteCd), dtID);
                     }
                 }
@@ -729,7 +685,7 @@ namespace Common
         /// Order Data.
         /// </summary>
         /// <param name="intSiteparam">Insert to site for Order Delete of Data.</param>
-        /// <param name="dtCond">Insert to data for Data Table.</param>
+        /// <param name="dtCond">Insert to data at Table.</param>
         public void Qbei_OrderDataDelete(int intSiteparam, DataTable dtCond)
         {
             /// <remark>
@@ -759,10 +715,7 @@ namespace Common
         /// <param name="shopID">Insert to ShopID.</param>
         /// <returns>Check to Siteid and SiteName</returns>
         public string GetSiteName(string shopID)
-        {
-            ///<remark>
-            ///Take Siteid and SiteName.
-            ///</remark>
+        {    
             switch (shopID)
             {
                 case "011": return "マルイ";
@@ -1050,9 +1003,6 @@ namespace Common
             foreach (string colName in columns)
             {
                 DataColumnCollection cols = dtCsv.Columns;
-                /// <remark>
-                /// Check to Columns name is contains.
-                /// </remark>
                 if (!cols.Contains(colName))
                     return false;
             }
@@ -1123,7 +1073,7 @@ namespace Common
         /// Select Flag.
         /// </summary>
         /// <param name="site">Insert to site of slectflag.</param>
-        /// <returns></returns>
+        /// <returns>Select to flage of string.</returns>
         public DataTable SelectFlag(int site)
         {
             ///<remark>
@@ -1530,6 +1480,7 @@ namespace Common
                 return null;
             }
         }
+
         /// <summary>
         /// Read Data from CSV.
         /// remove  once a week,order code contains null or - or japan text data from CSV 
