@@ -67,6 +67,7 @@ namespace _13ミズタニ
             /// </summary>
             /// <remark>
             /// Check to flag is "0" or "1" or "2".
+            /// when flag is 0,Change to flag is 1 and Continue to StartRun Process.
             /// </remark>
             if (flag == 0)
             {      
