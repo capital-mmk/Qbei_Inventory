@@ -486,7 +486,7 @@ namespace Common
         }
         
         /// <summary>
-        ///  Order Data.
+        /// Selete to Order Data.
         /// </summary>
         /// <param name="strSiteCode">Insert to sitecode.</param>
         /// <returns>Select to order Data from Sitecode.</returns>
@@ -517,8 +517,8 @@ namespace Common
         /// <summary>
         /// Check to GetBrandCode.
         /// </summary>
-        /// <param name="dtCsv">Download of CSV.</param>
-        /// <returns>Check to Datatable of Brandcode("00349").</returns>
+        /// <param name="dtCsv">Check to CSV DataTable.</param>
+        /// <returns>Check to Datatable of Brandcode("00349") for shopID("053").</returns>
         public DataTable GetBrandCode(DataTable dtCsv)
         {
             try
@@ -535,9 +535,9 @@ namespace Common
         /// <summary>
         /// GetOrderData of Once a Week.
         /// </summary>
-        /// <param name="dtCsv">Download of CSV</param>
+        /// <param name="dtCsv">Check to CSV DataTable.</param>
         /// <param name="strPurchaseUrl">Insert to PruchaseUrl of site.</param>
-        /// <param name="strSiteCd">Insert to SiteCd of site.</param>
+        /// <param name="strSiteCd">Insert to SiteCode of site.</param>
         /// <param name="strPost">Insert to Post of site.</param>
         /// <returns>Check to Onceaweek csae at DataTable.</returns>
         public DataTable GetOrderData(DataTable dtCsv, string strPurchaseUrl, string strSiteCd, string strPost)
@@ -660,7 +660,7 @@ namespace Common
         }
 
         /// <summary>
-        /// Order Date.
+        ///  Insert to Order Date.
         /// </summary>
         /// <param name="entity">Insert to Common Variable.</param>
         public void Qbei_OrderDataInsert(Qbei_Entity entity)
@@ -682,7 +682,7 @@ namespace Common
         }
 
         /// <summary>
-        /// Order Data.
+        /// Delete to Order Data.
         /// </summary>
         /// <param name="intSiteparam">Insert to site for Order Delete of Data.</param>
         /// <param name="dtCond">Insert to data at Table.</param>
@@ -712,8 +712,6 @@ namespace Common
         /// <summary>
         /// All GetSiteName.
         /// </summary>
-        /// <param name="shopID">Insert to ShopID.</param>
-        /// <returns>Check to Siteid and SiteName</returns>
         public string GetSiteName(string shopID)
         {    
             switch (shopID)
@@ -814,11 +812,11 @@ namespace Common
         }
 
         /// <summary>
-        /// Qbei Table.
+        /// Insert to Qbei Table.
         /// </summary>
         /// <param name="stockDate">Insert to stockdate of Qbei data.</param>
         /// <param name="qtyStatus">Insert to quantity of Qbei data.</param>
-        /// <param name="site">Insert to site of  Qbei data.</param>
+        /// <param name="site">Insert to siteID of  Qbei data.</param>
         /// <param name="janCode">Insert to janCode of  Qbei data.</param>
         /// <param name="partNo">Insert to partNo of  Qbei data.</param>
         /// <param name="makerDate">Insert to makerDate at  Qbei data.</param>
@@ -844,11 +842,11 @@ namespace Common
             cmd.ExecuteNonQuery();
             cmd.Connection.Close();
         }
-        
+
         /// <summary>
-        /// Qbei Table.
+        /// Insert to XML data at Qbei Table.
         /// </summary>
-        /// <param name="dtCsv">Download of CSV.</param>
+        /// <param name="dtCsv">Check to CSV DataTable.</param>
         /// <param name="dtItem">Insert to CSV of Data for DataTable </param>
         /// <param name="name">Store Prodducer Name</param>
         /// <param name="strRerun">Insert to "".</param>
@@ -875,7 +873,7 @@ namespace Common
         }
 
         /// <summary>
-        ///Qbei Error Table.
+        ///Insert to Qbei Error Table.
         /// </summary>
         /// <param name="site">Insert to site of Error Data.</param>
         /// <param name="sitename">Insert to sitename of Error Data.</param>
@@ -911,7 +909,7 @@ namespace Common
         }
 
         /// <summary>
-        /// Qbei Error.
+        /// Delete to Qbei Error.
         /// </summary>
         /// <param name="site">Insert to site of Error Data.</param>
         public void Qbei_ErrorDelete(int site)
@@ -958,7 +956,7 @@ namespace Common
         /// <param name="driver">Insert to Use Driver.</param>
         /// <param name="value">Insert to Selenium of optionName.</param>
         /// <param name="sleeptime">Insert to wait of time.</param>
-        /// <returns></returns>
+        /// <returns>Use to Chrome and Mozilla.</returns>
         protected static IWebElement FindElement(IWebDriver driver, By value, int sleeptime)
         {
             ///<remark>
@@ -991,7 +989,7 @@ namespace Common
         /// <summary>
         /// CheckCsvFormat 
         /// </summary>
-        /// <param name="dtCsv">Download of CSV File.</param>
+        /// <param name="dtCsv">Check to CSV DataTable.</param>
         /// <param name="columns"></param>
         /// <returns>Check of CSV Format.</returns>
         /// <remark>
