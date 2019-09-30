@@ -14,23 +14,41 @@ using QbeiAgencies_Common;
 
 namespace _014_chrome
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <remark>
+    /// Data Table and Common Function and Field
+    /// </remark>
     static class Program
-    {
-        //データーを　呼び出し。
+    {        
         public static string janCode = string.Empty;
         public static CommonFunction fun = new CommonFunction();
         public static ChromeOptions option = new ChromeOptions();
         public static string st = string.Empty;
         static string strParam = string.Empty;
 
-        //システム(Start)。
+        //// <summary>
+        /// System(Start).
+        /// </summary>
+        ///  /// <remark>
+        /// flag Change.
+        /// </remark>
         [STAThread]
         static void Main(string[] args)
         {
             testflag();
         }
 
-        //Flagの　チャック。
+        /// <summary>
+        /// testflag processing.
+        /// </summary>
+        ///<remark>
+        ///"0,1,2"Flage Number of Check. 
+        ///"0" is Start Process.
+        ///"1" is Processing.
+        ///"2" is End Process.
+        ///</remark>
         public static void testflag()
         {
 
@@ -41,12 +59,23 @@ namespace _014_chrome
             qe.flag = 1;
             DataTable dtflag = fun.SelectFlag(14);
             int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
+
+            /// <summary>
+            /// Flag Number of Check.
+            /// </summary>
+            /// <remark>
+            /// Check to flag is "0" or "1" or "2".
+            /// when flag is 0,Change to flag is 1 and Continue to StartRun Process.
+            /// </remark>
             if (flag == 0)
             {
 
                 fun.ChangeFlag(qe);
                 StartRun();
             }
+            ///<remark>
+            ///when flag is 1,To Continue to StartRun Process.
+            ///</remark>
             else if (flag == 1)
             {
                 fun.deleteData(14);
@@ -59,7 +88,12 @@ namespace _014_chrome
             }
         }
 
-        //サイト　や　データーtableの　検査と処理。
+        /// <summary>
+        /// Site and Data Table.
+        /// </summary>
+        /// <remark>
+        /// Inspection and processing to Data and Data Table.
+        /// </remark>
         public static void StartRun()
         {
             try
@@ -76,9 +110,12 @@ namespace _014_chrome
             catch (Exception)
             { }
         }
+
+        /// <summary>
+        /// Use to ChormeDriver and Read to Data at Download CSV.
+        /// </summary>
         public static void ReadData()
-        {
-            //ChromeDriverの　処理。
+        {           
             try
             {
                 var chromeOptions = new ChromeOptions();
@@ -100,8 +137,9 @@ namespace _014_chrome
                     chrome.Url = url;
                     string title = chrome.Title;
 
-                    //Mallの　ログイン。
-
+                    ///<remark>
+                    ///Login to mall.
+                    ///</remark>
                     //2019-08-09 Start
                     string username = dt.Rows[0]["UserName"].ToString();
                     //chrome.FindElement(By.Name("c_LOGONID")).SendKeys(username);
@@ -118,7 +156,9 @@ namespace _014_chrome
                     //url = chrome.Url.ToString();
                     fun.WriteLog("Login success             ------", "014-");
 
-                    //CSVダウンロード。
+                    ///<remark>
+                    ///Download to CSV file.
+                    ///</remark>
 
                     // chrome.Navigate().GoToUrl("https://edi.iwaishokai.co.jp/weborder/i2_0003/i2_0003.php?b_DOWNLOAD=1&w_KEYWORD=0");
                     //chrome.Navigate().GoToUrl("https://iwaishokai.net/search");
@@ -131,9 +171,7 @@ namespace _014_chrome
                     //2019-08-09 End
                     fun.WriteLog("Navigation to Download Url success------", "014-");
                     Thread.Sleep(5000);
-
-                    //サイト　や　データーtableの　検査と処理。
-
+              
                     //DataTable dtCancelUpdate = new DataTable();
                     DataTable dt014 = fun.GetDatatable("014");
                     // dt014 = fun.GetOrderData(dt014, "https://edi.iwaishokai.co.jp", "014", "");
@@ -164,12 +202,14 @@ namespace _014_chrome
                     //2019-08-09 End
                     else
                     {
-                        //MallのCSVから　項目情報の検査。
+                        ///<remark>
+                        ///Inspection of item information at Mall.
+                        ///</remark>
 
-                            //2018-05-04 Start
-                            //string[] str = { "商品コード", "現在庫数", "卸価格" };                           
-                            //2019-08-09 Start
-                            string[] str = { "商品コード", "在庫状況", "卸価格" };
+                        //2018-05-04 Start
+                        //string[] str = { "商品コード", "現在庫数", "卸価格" };                           
+                        //2019-08-09 Start
+                        string[] str = { "商品コード", "在庫状況", "卸価格" };
                             //2019-08-09 End
                             DataTable dtItem = fun.GetDatatableFromDownloadPath(@"C:\Qbei_Log\014_Download\", str);
                             fun.WriteLog("Download success match with datatable------", "014-");
