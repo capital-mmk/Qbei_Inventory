@@ -15,9 +15,14 @@ using System.Text.RegularExpressions;
 
 namespace _018日直_ニチナオ_
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <remark>
+    /// Data Table and Common Function and Field
+    /// </remark>
     public partial class frm018 : Form
-    {
-        //データーを　呼び出し。
+    { 
         DataTable dt = new DataTable();
         CommonFunction fun = new CommonFunction();
         Qbeisetting_BL qubl = new Qbeisetting_BL();
@@ -27,14 +32,26 @@ namespace _018日直_ニチナオ_
         public static string st = string.Empty;
         int i = 0;
 
-        //システム(Start)。
+        /// <summary>
+        /// System(Start).
+        /// </summary>
+        ///  /// <remark>
+        /// flag Change.
+        /// </remark>
         public frm018()
         {
             InitializeComponent();
             testflag();
         }
 
-        //Flagの　チャック。
+        /// <summary>
+        /// testflag processing.
+        /// </summary>
+        ///<remark>
+        ///"0,1,2"Flage Number of Check. 
+        ///"0" is Start Process.
+        ///"1" is Processing.
+        ///"2" is End Proces
         private void testflag()
         {
             try
@@ -45,11 +62,22 @@ namespace _018日直_ニチナオ_
                 qe.flag = 1;
                 DataTable dtflag = fun.SelectFlag(18);
                 int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
+
+                /// <summary>
+                /// Flag Number of Check.
+                /// </summary>
+                /// <remark>
+                /// Check to flag is "0" or "1" or "2".
+                /// when flag is 0,Change to flag is 1 and Continue to StartRun Process.
+                /// </remark>
                 if (flag == 0)
                 {
                     fun.ChangeFlag(qe);
                     StartRun();
                 }
+                ///<remark>
+                ///when flag is 1,To Continue to StartRun Process.
+                ///</remark>
                 else if (flag == 1)
                 {
                     fun.deleteData(18);
@@ -70,7 +98,12 @@ namespace _018日直_ニチナオ_
             }
         }
 
-        //サイト　や　データーtableの　検査と処理。
+        /// <summary>
+        /// Site and Data Table.
+        /// </summary>
+        /// <remark>
+        /// Inspection and processing to Data and Data Table.
+        /// </remark>
         public void StartRun()
         {
             try
@@ -92,7 +125,12 @@ namespace _018日直_ニチナオ_
             }
         }
 
-        //サイトのデーターを　読み出し。
+        /// <summary>
+        /// Site of Data.
+        /// </summary>
+        /// <remark>
+        /// Read to Data and Url.
+        /// </remark>
         private void ReadData()
         {
             qe.SiteID = 18;
@@ -104,7 +142,9 @@ namespace _018日直_ニチナオ_
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
         }
 
-        //Mallの　ログイン。
+        /// <summary>
+        /// Login of Mall.
+        /// </summary>
         private void webBrowser1_Start(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -139,7 +179,9 @@ namespace _018日直_ニチナオ_
             }
         }
 
-        //ログインの　チャック。
+        /// <summary>
+        /// Check Login
+        /// </summary>
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -175,7 +217,9 @@ namespace _018日直_ニチナオ_
             }
         }
 
-        //Mallに　項目情報の検査。
+        /// <summary>
+        /// Inspection of item information at Mall.
+        /// </summary>
         private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             fun.ClearMemory();
@@ -331,7 +375,10 @@ namespace _018日直_ニチナオ_
             }
         }
 
-        //NavigateErrorの　表示。
+        /// <summary>
+        /// Inspection of Instance_NavigateError 
+        /// </summary>
+        /// <param name="StatusCode">Insert to Status of Code from Error Data.</param>
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
             string janCode = dt018.Rows[i]["JANコード"].ToString();
