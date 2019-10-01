@@ -16,9 +16,14 @@ using System.Text.RegularExpressions;
 
 namespace _20ダイアテック_高難易度_
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <remark>
+    /// Data Table and Common Function and Field
+    /// </remark>
     public partial class frm020 : Form
     {
-        //データーを　呼び出し。
         DataTable dt = new DataTable();
         Qbeisetting_BL qubl = new Qbeisetting_BL();
         Qbeisetting_Entity qe = new Qbeisetting_Entity();
@@ -28,14 +33,27 @@ namespace _20ダイアテック_高難易度_
         int i = 0;
         string orderCode = string.Empty;
 
-        //システム(Start)。
+        /// <summary>
+        /// System(Start).
+        /// </summary>
+        /// <remark>
+        /// Continue to testflag process.
+        /// </remark>
         public frm020()
         {
             InitializeComponent();
             testflag();
         }
 
-        //Flagの　チャック。
+        /// <summary>
+        /// testflag processing.
+        /// </summary>
+        ///<remark>
+        ///"0,1,2"Flage Number of Check. 
+        ///"0" is Start Process.
+        ///"1" is Processing.
+        ///"2" is End Process.
+        ///</remark>
         private void testflag()
         {
             try
@@ -45,6 +63,14 @@ namespace _20ダイアテック_高難易度_
 
                 DataTable dtflag = fun.SelectFlag(20);
                 int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
+
+                /// <summary>
+                /// Flag Number of Check.
+                /// </summary>
+                /// <remark>
+                /// Check to flag is "0" or "1" or "2".
+                /// when flag is 0,Change to flag is 1 and Continue to StartRun Process.
+                /// </remark>
                 if (flag == 0)
                 {
                     qe.flag = 1;
@@ -52,6 +78,10 @@ namespace _20ダイアテック_高難易度_
                     fun.ChangeFlag(qe);
                     StartRun();
                 }
+
+                ///<remark>
+                ///when flag is 1,To Continue to StartRun Process.
+                ///</remark>
                 else if (flag == 1)
                 {
                     fun.deleteData(20);
@@ -72,7 +102,12 @@ namespace _20ダイアテック_高難易度_
             }
         }
 
-        //サイト　や　データーtableの　検査と処理。
+        /// <summary>
+        /// Site and Data Table.
+        /// </summary>
+        /// <remark>
+        /// Inspection and processing to Data and Data Table.
+        /// </remark>
         public void StartRun()
         {
             try
@@ -95,7 +130,12 @@ namespace _20ダイアテック_高難易度_
             }
         }
 
-        //サイトのデーターを　読み出し。
+        /// <summary>
+        /// Site of Data.
+        /// </summary>
+        /// <remark>
+        /// Read to Data and Url.
+        /// </remark>
         private void ReadData()
         {
             qe.SiteID = 20;
@@ -108,7 +148,9 @@ namespace _20ダイアテック_高難易度_
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
         }
 
-        //Mallの　ログイン。
+        /// <summary>
+        /// Login of Mall.
+        /// </summary>
         private void webBrowser1_Start(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -147,7 +189,9 @@ namespace _20ダイアテック_高難易度_
             }
         }
 
-        //ログインの　チャック。
+        /// <summary>
+        /// Check to Login.
+        /// </summary>
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             string janCode = string.Empty;
@@ -185,7 +229,9 @@ namespace _20ダイアテック_高難易度_
             }
         }
 
-        //Mallに　項目を検査。
+        /// <summary>
+        /// Inspection of item at Mall.
+        /// </summary>
         private void webBrowser_ItemSearch2(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             webBrowser1.ScriptErrorsSuppressed = true;
@@ -196,7 +242,9 @@ namespace _20ダイアテック_高難易度_
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
         }
 
-        //Mallに　項目情報の検査。
+        /// <summary>
+        /// Inspection of item information at Mall.
+        /// </summary>
         private void webBrowser_ItemSearch1(object sender, EventArgs e)
         {
             fun.ClearMemory();
@@ -358,7 +406,10 @@ namespace _20ダイアテック_高難易度_
             }
         }
 
-        //NavigateErrorの　表示。
+        /// <summary>
+        /// Inspection of Instance_NavigateError 
+        /// </summary>
+        /// <param name="StatusCode">Insert to Status of Code from Error Data.</param>
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
             string janCode = dt020.Rows[i]["JANコード"].ToString();
