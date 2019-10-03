@@ -14,6 +14,12 @@ using QbeiAgencies_Common;
 
 namespace _037
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <remark>
+    /// Data Table and Common Function and Field
+    /// </remark>
     class Program
     {
         DataRow dr;
@@ -22,10 +28,27 @@ namespace _037
         DataTable dt037 = new DataTable();
         public static CommonFunction fun = new CommonFunction();
         DataTable dtGroupData = new DataTable();
+
+        /// <summary>
+        /// System(Start).
+        /// </summary>
+        /// <remark>
+        /// Continue to testflag process.
+        /// </remark>
         static void Main(string[] args)
         {
             testFlag();
         }
+
+        /// <summary>
+        /// testflag processing.
+        /// </summary>
+        ///<remark>
+        ///"0,1,2"Flage Number of Check. 
+        ///"0" is Start Process.
+        ///"1" is Processing.
+        ///"2" is End Process.
+        ///</remark>
         public static void testFlag()
         {
         	try
@@ -39,12 +62,24 @@ namespace _037
 	            qe.flag = 1;
 	            dtSetting = fun.SelectFlag(037);
 	            intFlag = int.Parse(dtSetting.Rows[0]["FlagIsFinished"].ToString());
-	            if (intFlag == 0)
+
+                /// <summary>
+                /// Flag Number of Check.
+                /// </summary>
+                /// <remark>
+                /// Check to flag is "0" or "1" or "2".
+                /// when flag is 0,Change to flag is 1 and Continue to StartRun Process.
+                /// </remark>
+                if (intFlag == 0)
 	            {
 	                fun.ChangeFlag(qe);
 	                startRun();
 	            }
-	            else if (intFlag == 1)
+
+                ///<remark>
+                ///when flag is 1,To Continue to StartRun Process.
+                ///</remark>
+                else if (intFlag == 1)
 	            {
 	                fun.deleteData(037);
 	                fun.ChangeFlag(qe);
@@ -62,6 +97,12 @@ namespace _037
             }
         }
 
+        /// <summary>
+        /// Site and Data Table.
+        /// </summary>
+        /// <remark>
+        /// Inspection and processing to Data and Data Table.
+        /// </remark>
         private static void startRun()
         {
             try
@@ -80,6 +121,9 @@ namespace _037
             }
         }
 
+        /// <summary>
+        /// Use to ChormeDriver and Read to Data at Download CSV.
+        /// </summary>
         public static void ReadData()
         {
             var chromeOptions = new ChromeOptions();
@@ -110,6 +154,10 @@ namespace _037
                 // chrome.Navigate().GoToUrl("https://ec.tsss.co.jp/aec/user/csv_export_download_info?schedule_id=csv_export_49c35718d482aecec14e92168a955b66");
                 url = chrome.Url.ToString();
                 Thread.Sleep(8000);
+
+                ///<remark>
+                ///Download to CSV file.
+                ///</remark>
                 int progress_value = int.Parse(chrome.FindElement(By.Id("export-progress")).GetAttribute("value"));
                 while (progress_value < 100)
                 {
@@ -131,6 +179,9 @@ namespace _037
 
                 Thread.Sleep(2000);
 
+                ///<remark>
+                ///Inspection of item information at Mall.
+                ///</remark>
                 int count = dtItem.Rows.Count;
                 fun.WriteLog("Download success match with datatable------", "037-");
                 fun.Qbei_Insert_XML(dt037, dtItem, "Qbei_Insert_Xml_37");
