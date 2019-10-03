@@ -13,9 +13,15 @@ using QbeiAgencies_Common;
 
 namespace _34シマノ
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <remark>
+    /// Data Table and Common Function and Field
+    /// </remark>
     public partial class frm034 : Form
     {
-        //データーを　呼び出し。
+        
         DataTable dt = new DataTable();
         Qbeisetting_BL qubl = new Qbeisetting_BL();
         Qbeisetting_Entity qe = new Qbeisetting_Entity();
@@ -24,14 +30,27 @@ namespace _34シマノ
         Qbei_Entity entity = new Qbei_Entity();
         int i = 0;
 
-        //システム(Start)。
+        /// <summary>
+        /// System(Start).
+        /// </summary>
+        /// <remark>
+        /// Continue to testflag process.
+        /// </remark>
         public frm034()
         {
             InitializeComponent();
             testflag();
         }
 
-        //Flagの　チャック。
+        /// <summary>
+        /// testflag processing.
+        /// </summary>
+        ///<remark>
+        ///"0,1,2"Flage Number of Check. 
+        ///"0" is Start Process.
+        ///"1" is Processing.
+        ///"2" is End Process.
+        ///</remark>
         private void testflag()
         {
             try
@@ -41,11 +60,23 @@ namespace _34シマノ
                 qe.flag = 1;
                 DataTable dtflag = fun.SelectFlag(34);
                 int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
+
+                /// <summary>
+                /// Flag Number of Check.
+                /// </summary>
+                /// <remark>
+                /// Check to flag is "0" or "1" or "2".
+                /// when flag is 0,Change to flag is 1 and Continue to StartRun Process.
+                /// </remark>
                 if (flag == 0)
                 {
                     fun.ChangeFlag(qe);
                     StartRun();
                 }
+
+                ///<remark>
+                ///when flag is 1,To Continue to StartRun Process.
+                ///</remark>
                 else if (flag == 1)
                 {
                     fun.deleteData(34);
@@ -66,7 +97,12 @@ namespace _34シマノ
             }
         }
 
-        //サイト　や　データーtableの　検査と処理。
+        /// <summary>
+        /// Site and Data Table.
+        /// </summary>
+        /// <remark>
+        /// Inspection and processing to Data and Data Table.
+        /// </remark>
         public void StartRun()
         {
             try
@@ -88,7 +124,12 @@ namespace _34シマノ
             }
         }
 
-        //サイトのデーターを　読み出し。
+        /// <summary>
+        /// Site of Data.
+        /// </summary>
+        /// <remark>
+        /// Read to Data and Url.
+        /// </remark>
         private void ReadData()
         {
             qe.SiteID = 34;
@@ -102,7 +143,9 @@ namespace _34シマノ
 
         }
 
-        //Mallの　ログイン。
+        /// <summary>
+        /// Login of Mall.
+        /// </summary>
         private void webBrowser1_Start(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -146,7 +189,9 @@ namespace _34シマノ
             }
         }
 
-        //ログインの　チャック。
+        /// <summary>
+        /// Check to Login.
+        /// </summary>
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             string orderCode = string.Empty;
@@ -184,7 +229,9 @@ namespace _34シマノ
             }
         }
 
-        //Mallに　項目を検査。
+        /// <summary>
+        /// Wait For Search Page Process.
+        /// </summary>
         private void webBrowser1_WaitForSearchPage(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
           
@@ -199,7 +246,9 @@ namespace _34シマノ
             }
         }
 
-        //Mallに　項目情報の検査。
+        /// <summary>
+        /// Inspection of item information at Mall.
+        /// </summary>
         private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             fun.ClearMemory();
@@ -324,7 +373,10 @@ namespace _34シマノ
             }
         }
 
-        //NavigateErrorの　表示。
+        /// <summary>
+        /// Inspection of Instance_NavigateError 
+        /// </summary>
+        /// <param name="StatusCode">Insert to Status of Code from Error Data.</param>
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
             string janCode = dt034.Rows[i]["JANコード"].ToString();
