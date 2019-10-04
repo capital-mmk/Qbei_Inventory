@@ -17,6 +17,12 @@ using System.Threading;
 
 namespace _059
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <remark>
+    /// Data Table and Common Function and Field
+    /// </remark>
     public partial class Form1 : Form
     {
         DataTable dt = new DataTable();
@@ -26,11 +32,28 @@ namespace _059
         DataTable dt059 = new DataTable();
         Qbei_Entity entity = new Qbei_Entity();
         int i = 0;
+
+        /// <summary>
+        /// System(Start).
+        /// </summary>
+        /// <remark>
+        /// Continue to testflag process.
+        /// </remark>
         public Form1()
         {
             InitializeComponent();
             testflag();
         }
+
+        /// <summary>
+        /// testflag processing.
+        /// </summary>
+        ///<remark>
+        ///"0,1,2"Flage Number of Check. 
+        ///"0" is Start Process.
+        ///"1" is Processing.
+        ///"2" is End Process.
+        ///</remark>
         private void testflag()
         {
             try
@@ -41,11 +64,23 @@ namespace _059
                 qe.flag = 1;
                 DataTable dtflag = fun.SelectFlag(59);
                 int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
+
+                /// <summary>
+                /// Flag Number of Check.
+                /// </summary>
+                /// <remark>
+                /// Check to flag is "0" or "1" or "2".
+                /// when flag is 0,Change to flag is 1 and Continue to StartRun Process.
+                /// </remark>
                 if (flag == 0)
                 {
                     fun.ChangeFlag(qe);
                     StartRun();
                 }
+
+                ///<remark>
+                ///when flag is 1,To Continue to StartRun Process.
+                ///</remark>
                 else if (flag == 1)
                 {
                     fun.deleteData(59);
@@ -65,6 +100,13 @@ namespace _059
                 Environment.Exit(0);
             }
         }
+
+        /// <summary>
+        /// Site and Data Table.
+        /// </summary>
+        /// <remark>
+        /// Inspection and processing to Data and Data Table.
+        /// </remark>
         public void StartRun()
         {
             try
@@ -86,6 +128,12 @@ namespace _059
             }
         }
 
+        /// <summary>
+        /// Site of Data.
+        /// </summary>
+        /// <remark>
+        /// Read to Data and Url.
+        /// </remark>
         private void ReadData()
         {
             webBrowser1.ScriptErrorsSuppressed = true;
@@ -117,6 +165,9 @@ namespace _059
         //    }
         //}
 
+        /// <summary>
+        /// Login of Mall.
+        /// </summary>
         private void webBrowser1_Start(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -163,6 +214,9 @@ namespace _059
             }
         }
 
+        /// <summary>
+        /// Check to Login.
+        /// </summary>
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             string orderCode = string.Empty;
@@ -199,6 +253,10 @@ namespace _059
             }
         }
 
+
+        /// <summary>
+        /// Inspection of item at Mall.
+        /// </summary>
         private void webBrowser1_ItemClick(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             string orderCode = string.Empty;
@@ -270,6 +328,9 @@ namespace _059
             }
         }
 
+        /// <summary>
+        /// Inspection of item information at Mall.
+        /// </summary>
         private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             fun.ClearMemory();
@@ -338,6 +399,11 @@ namespace _059
                 Environment.Exit(0);
             }
         }
+
+        /// <summary>
+        /// Inspection of Instance_NavigateError 
+        /// </summary>
+        /// <param name="StatusCode">Insert to Status of Code from Error Data.</param>
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
             string janCode = dt059.Rows[i]["JANコード"].ToString();
