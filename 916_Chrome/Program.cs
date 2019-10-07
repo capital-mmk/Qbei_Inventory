@@ -15,6 +15,12 @@ using QbeiAgencies_Common;
 
 namespace _916_Chrome
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <remark>
+    /// Data Table and Common Function and Field
+    /// </remark>
     class Program
     {
         Qbeisetting_BL blQbei = new Qbeisetting_BL();
@@ -24,6 +30,14 @@ namespace _916_Chrome
         DataTable dtGroupData = new DataTable();
         static string strParam = string.Empty;
         public static string st = string.Empty;
+
+        /// <summary>
+        /// System(Start).
+        /// <remark>
+        /// Continue to testflag process.
+        /// </remark>
+        /// </summary>
+        /// <param name="args">constant string</param>
         static void Main(string[] args)
         {
             if (args.Count() > 0)
@@ -34,6 +48,16 @@ namespace _916_Chrome
             else
                 testflag();
         }
+
+        /// <summary>
+        /// testflag processing.
+        /// </summary>
+        ///<remark>
+        ///"0,1,2"Flage Number of Check. 
+        ///"0" is Start Process.
+        ///"1" is Processing.
+        ///"2" is End Process.
+        ///</remark>
         public static void testflag()
         {
             Qbeisetting_Entity entitySetting = new Qbeisetting_Entity();
@@ -44,11 +68,23 @@ namespace _916_Chrome
             entitySetting.flag = 1;
             dtSetting = fun.SelectFlag(916);
             intFlag = int.Parse(dtSetting.Rows[0]["FlagIsFinished"].ToString());
+
+            /// <summary>
+            /// Flag Number of Check.
+            /// </summary>
+            /// <remark>
+            /// Check to flag is "0" or "1" or "2".
+            /// when flag is 0,Change to flag is 1 and Continue to StartRun Process.
+            /// </remark>
             if (intFlag == 0)
             {
                 fun.ChangeFlag(entitySetting);
                 StartRun();
             }
+
+            ///<remark>
+            ///when flag is 1,To Continue to StartRun Process.
+            ///</remark>
             else if (intFlag == 1)
             {
                 fun.deleteData(916);
@@ -60,6 +96,14 @@ namespace _916_Chrome
                 Environment.Exit(0);
             }
         }
+
+
+        /// <summary>
+        /// Site and Data Table.
+        /// </summary>
+        /// <remark>
+        /// Inspection and processing to Data and Data Table.
+        /// </remark>
         public static void StartRun()
         {
             try
@@ -80,6 +124,10 @@ namespace _916_Chrome
                 fun.WriteLog(ex.Message, "916-");
             }
         }
+
+        /// <summary>
+        /// Use to ChormeDriver and Read to Data at Download CSV.
+        /// </summary>
         public static void ReadData()
         {
             try
@@ -166,6 +214,10 @@ namespace _916_Chrome
                         row["stockdate"] = new DateTime(currentYear, currentMonth, currentDay).ToString("yyyy-MM-dd");
                     }
 
+
+                    ///<remark>
+                    ///Inspection of item information at Mall.
+                    ///</remark>
                     fun.WriteLog("Download success match with datatable------", "916-");
                     fun.Qbei_Insert_XML(dt916, dtItem, "Qbei_Insert_Xml_916", strParam);
                     fun.WriteLog("Insert data to db success------", "916-");
