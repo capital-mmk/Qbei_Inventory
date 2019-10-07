@@ -15,6 +15,12 @@ using Microsoft.VisualBasic;
 
 namespace _914
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <remark>
+    /// Data Table and Common Function and Field
+    /// </remark>
     public partial class frm914 : Form
     {
         CommonFunction objCom = new CommonFunction();
@@ -29,11 +35,28 @@ namespace _914
         string strSize;
         string strColor;
         HtmlAgilityPack.HtmlDocument hdoc;
+
+        /// <summary>
+        /// System(Start).
+        /// </summary>
+        /// <remark>
+        /// Continue to testflag process.
+        /// </remark>
         public frm914()
         {
             InitializeComponent();
             testFlag();
         }
+
+        /// <summary>
+        /// testflag processing.
+        /// </summary>
+        ///<remark>
+        ///"0,1,2"Flage Number of Check. 
+        ///"0" is Start Process.
+        ///"1" is Processing.
+        ///"2" is End Process.
+        ///</remark>
         private void testFlag()
         {
             try
@@ -44,11 +67,23 @@ namespace _914
                 entitySetting.flag = 1;
                 dtSetting = objCom.SelectFlag(914);
                 intFlag = int.Parse(dtSetting.Rows[0]["FlagIsFinished"].ToString());
+
+                /// <summary>
+                /// Flag Number of Check.
+                /// </summary>
+                /// <remark>
+                /// Check to flag is "0" or "1" or "2".
+                /// when flag is 0,Change to flag is 1 and Continue to StartRun Process.
+                /// </remark>
                 if (intFlag == 0)
                 {
                     objCom.ChangeFlag(entitySetting);
                     startRun();
                 }
+
+                ///<remark>
+                ///when flag is 1,To Continue to StartRun Process.
+                ///</remark>
                 else if (intFlag == 1)
                 {
                     objCom.deleteData(914);
@@ -68,6 +103,13 @@ namespace _914
                 Environment.Exit(0);
             }
         }
+
+        /// <summary>
+        /// Site and Data Table.
+        /// </summary>
+        /// <remark>
+        /// Inspection and processing to Data and Data Table.
+        /// </remark>
         private void startRun()
         {
             try
@@ -88,6 +130,14 @@ namespace _914
                 Environment.Exit(0);
             }
         }
+
+
+        /// <summary>
+        /// Site of Data.
+        /// </summary>
+        /// <remark>
+        /// Read to Data and Url.
+        /// </remark>
         private void readData()
         {
             try
@@ -108,6 +158,10 @@ namespace _914
                 Environment.Exit(0);
             }
         }
+
+        /// <summary>
+        /// Login of Mall.
+        /// </summary>
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -140,12 +194,21 @@ namespace _914
                 Environment.Exit(0);
             }
         }
+
+
+        /// <summary>
+        /// Wait For Search Page Process.
+        /// </summary>
         private void WateForStartPageLogin(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(WateForStartPageLogin);
             webBrowser1.Document.GetElementsByTagName("a")[0].InvokeMember("onclick");
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Search);
         }
+
+        /// <summary>
+        /// Check to Login.
+        /// </summary>
         private void webBrowser1_Search(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -192,6 +255,10 @@ namespace _914
                 webBrowser1_Search(null, null);
             }
         }
+
+        /// <summary>
+        /// Inspection of item information at Mall.
+        /// </summary>
         private void webBrowser1_Item(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             int intHCnt = 0;
@@ -298,6 +365,11 @@ namespace _914
 
             webBrowser1_Search(null, null);
         }
+
+        /// <summary>
+        /// Inspection of Instance_NavigateError 
+        /// </summary>
+        /// <param name="StatusCode">Insert to Status of Code from Error Data.</param>
         private void instance_NavigateError(object pDisp, ref object URL, ref object Frame, ref object StatusCode, ref bool Cancel)
         {
             string janCode = dt914.Rows[intCnt]["JANコード"].ToString();
