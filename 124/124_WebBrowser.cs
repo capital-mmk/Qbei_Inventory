@@ -14,6 +14,12 @@ using QbeiAgencies_Common;
 
 namespace _124
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <remark>
+    /// Data Table and Common Function and Field
+    /// </remark>
     public partial class frm124 : Form
     {
         DataTable dt = new DataTable();
@@ -24,12 +30,28 @@ namespace _124
         DataTable dt124 = new DataTable();
         Qbei_Entity entity = new Qbei_Entity();
         int i =0;
+
+        /// <summary>
+        /// System(Start).
+        /// </summary>
+        /// <remark>
+        /// Continue to testflag process.
+        /// </remark>
         public frm124()
         {
             InitializeComponent();
             testflag();
         }
 
+        /// <summary>
+        /// testflag processing.
+        /// </summary>
+        ///<remark>
+        ///"0,1,2"Flage Number of Check. 
+        ///"0" is Start Process.
+        ///"1" is Processing.
+        ///"2" is End Process.
+        ///</remark>
         private void testflag()
         {
             try
@@ -39,11 +61,22 @@ namespace _124
                 qe.flag = 1;
                 DataTable dtflag = fun.SelectFlag(124);
                 int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
+
+                /// <summary>
+                /// Flag Number of Check.
+                /// </summary>
+                /// <remark>
+                /// Check to flag is "0" or "1" or "2".
+                /// when flag is 0,Change to flag is 1 and Continue to StartRun Process.
+                /// </remark>
                 if (flag == 0)
                 {
                     fun.ChangeFlag(qe);
                     StartRun();
                 }
+                ///<remark>
+                ///when flag is 1,To Continue to StartRun Process.
+                ///</remark>
                 else if (flag == 1)
                 {
                     fun.deleteData(124);
@@ -64,6 +97,12 @@ namespace _124
             }
         }
 
+        /// <summary>
+        /// Site and Data Table.
+        /// </summary>
+        /// <remark>
+        /// Inspection and processing to Data and Data Table.
+        /// </remark>
         public void StartRun()
         {
             try
@@ -85,6 +124,12 @@ namespace _124
             }
         }
 
+        /// <summary>
+        /// Site of Data.
+        /// </summary>
+        /// <remark>
+        /// Read to Data and Url.
+        /// </remark>
         private void ReadData()
         {
             qe.SiteID = 124;
@@ -96,6 +141,9 @@ namespace _124
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
         }
 
+        /// <summary>
+        /// Login of Mall.
+        /// </summary>
         private void webBrowser1_Start(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -127,6 +175,9 @@ namespace _124
             }
         }
 
+        /// <summary>
+        /// Check to Login.
+        /// </summary>
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -159,6 +210,10 @@ namespace _124
                 Environment.Exit(0);
             }
         }
+
+        /// <summary>
+        /// Wait For Search Page Process.
+        /// </summary>
         private void webBrowser1_WaitForSearchPage(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             webBrowser1.Navigate(fun.url + "/SyohinSearch.aspx");
@@ -168,6 +223,10 @@ namespace _124
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
             }
         }
+
+        /// <summary>
+        /// Inspection of item at Mall.
+        /// </summary>
         private void webBrowser1_ItemSearch(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             try
@@ -207,6 +266,10 @@ namespace _124
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
             }
         }
+
+        /// <summary>
+        /// Inspection of item information at Mall.
+        /// </summary>
         private void webBrowser1_ItemProcessing(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             fun.ClearMemory();
