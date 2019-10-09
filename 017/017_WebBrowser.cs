@@ -138,7 +138,8 @@ namespace _17インターマックス
             Thread.Sleep(1000);
             webBrowser1.AllowNavigation = true;
             webBrowser1.Navigate(fun.url);
-            webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);
+            webBrowser1.ScriptErrorsSuppressed = true;
+            webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Start);           
         }
 
         /// <summary>
@@ -198,7 +199,7 @@ namespace _17インターマックス
                 else
                 {
                     fun.WriteLog("Login success             ------", "017-");
-                    orderCode = dt017.Rows[i]["発注コード"].ToString().Trim();
+                    orderCode = dt017.Rows[i]["発注コード"].ToString().Trim();                 
                     webBrowser1.Navigate(fun.url + "/shop/g/g" + orderCode.Trim() + "/");
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
@@ -234,7 +235,6 @@ namespace _17インターマックス
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt017.Rows[i]["最終反映日"].ToString();
                 entity.stockDate = dt017.Rows[i]["入荷予定"].ToString();
-                //entity.orderCode = "4547057006525";
                 entity.orderCode = dt017.Rows[i]["発注コード"].ToString().Trim();// "8022530007719"; 
                 entity.purchaseURL = fun.url + "/shop/g/g" + entity.orderCode + "/";
 
@@ -317,16 +317,44 @@ namespace _17インターマックス
                                     entity.price = str[0].Trim();
                                 else entity.price = prc;
                                 string qty = qtyPath;
+                                
 
                                 if (qty.Contains("予定"))
                                 {
-                                    entity.qtyStatus = "inquiry";
-                                    entity.stockDate = "2100-01-01";
+                                    string day = string.Empty;
+                                    
+                                    string y = string.Empty;
+
+                                    if (qty.Contains("上旬入荷"))
+                                    { 
+                                         if (qty.Contains("月"))
+                                        {
+                                            day = "10";
+                                            string[] ao = qty.Split('～');
+                                            string a1 = ao[1].ToString();
+                                            string[] a2 = a1.Split('月');
+                                            string month = a2[0].ToString();
+                                            entity.qtyStatus = "inquiry";
+                                            DateTime dt = Convert.ToDateTime(year + "-" + month + "-" + day);
+                                            string currentdate = fun.getCurrentDate();
+                                            if (dt <= Convert.ToDateTime(currentdate))
+                                            {
+                                                dt = dt.AddYears(1);
+                                            }
+                                            entity.stockDate = dt.ToString("yyyy-MM-dd");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        entity.qtyStatus = "inquiry";
+                                        entity.stockDate = "2100-01-01";
+                                    }
                                 }
                                 else
                                 {
 
                                     entity.qtyStatus = qty.Contains("有り") || qty.Contains("あり") ? "good" : qty.Contains("わずか") || qty.Contains("僅か") ? "small" : qty.Contains("欠品中") || qty.Contains("完売") || qty.Contains("終了") ? "empty" : qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") || qty.Contains("入荷待ち") ? "inquiry" : "invalid status code";
+                                   
                                     if (stockDatePath == "")
                                     {
                                         if (qty.Contains("月") && qty.Any(c => char.IsDigit(c)))
