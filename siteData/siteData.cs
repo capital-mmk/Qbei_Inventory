@@ -13,9 +13,16 @@ using System.Management;
 
 namespace siteData
 {
-
+    /// <summary>
+    /// Export and Generate of CSV.
+    /// </summary>
     public static class Rfc4180Writer
     {     
+        /// <summary>
+        /// Write of Log.
+        /// </summary>
+        /// <param name="dt">To Input of Datatable . </param>
+        /// <param name="writer">Result of Text.</param>
     public static void WriteDataTable(DataTable dt, TextWriter writer, bool includeHeaders) 
     {
         if (includeHeaders) 
@@ -35,6 +42,11 @@ namespace siteData
              writer.Flush();
         }
 
+        /// <summary>
+        /// Replace of String.
+        /// </summary>
+        /// <param name="value">To Input of vlue.</param>
+        /// <returns>QuoteValue of String.</returns>
       private static string QuoteValue(string value)
       {
                 return String.Concat("\"",value.Replace("\"", "\"\""), "\"");
@@ -42,8 +54,17 @@ namespace siteData
 
      }
 
+    /// <summary>
+    /// SiteData.
+    /// </summary>
+    /// <remark>
+    /// Inspection Site Data and Site Name.
+    /// </remark>
     public static class siteData
     {
+        /// <remark>
+        /// Inspection and Kill processing to SiteData of ID and Name.
+        /// </remark>
         static void Main(string[] args)
         {
             List<string> lstProcess = new List<string>();
@@ -84,7 +105,9 @@ namespace siteData
                 Process.GetProcessesByName(processName).ToList().ForEach(p => KillProcessAndChildren(p.Id));
             }
 
-
+            /// <remark>
+            /// Generate of CSV from SiteData of ID and Name.
+            /// </remark>
             GenerateCSV(11, "マルイ");
             GenerateCSV(12, "カワシマ");
             GenerateCSV(13, "ミズタニ");
@@ -124,6 +147,10 @@ namespace siteData
             GenerateCSV(124, "ミズタニ自転車");
         }
 
+        /// <summary>
+        /// Kill Process of DataBase.
+        /// </summary>
+        /// <param name="pid">Input to ProcessID.</param>
         private static void KillProcessAndChildren(int pid)
         {
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
@@ -154,6 +181,14 @@ namespace siteData
             }
         }
 
+        /// <summary>
+        /// GenerateCSV of DataTable.
+        /// </summary>
+        /// <param name="siteID">Input to siteID.</param>
+        /// <param name="sitename">Input to sitename.</param>
+        /// <remark>
+        /// Create of DataTable.
+        /// </remark>
         private static void GenerateCSV(int siteID, string sitename)
         {
             QbeiUser_Entity que = new QbeiUser_Entity();
@@ -206,6 +241,11 @@ namespace siteData
             }
         }
 
+        /// <summary>
+        /// WriteLog for ProcessKill.
+        /// </summary>
+        /// <param name="strLog">Input to Log.</param>
+        /// <param name="siteID">Input to siteID.</param>
         public static void WriteLogSitData(string strLog, string siteID)
         {
             string logFilePath = "C:\\Qbei_Log\\ProcessKill_file\\" + "Log" + siteID + System.DateTime.Today.ToString("MM-dd-yyyy") + "." + "txt";
