@@ -12,6 +12,13 @@ using Common;
 
 namespace Import_Data_From_FTP
 {
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <remark>
+    /// Create to string of parameter.
+    /// </remark>
     class Program
     {
         static string LocalFilePath = ConfigurationManager.AppSettings["LocalFilePath"].ToString();
@@ -34,6 +41,12 @@ namespace Import_Data_From_FTP
             Download();
         }
 
+        /// <summary>
+        /// FTP
+        /// </summary>
+        /// <remark>
+        /// Download and Import Data From FTP.
+        /// </remark>
         static void Download()
         {
             try
