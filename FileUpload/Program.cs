@@ -9,9 +9,15 @@ using Common;
 
 namespace FileUpload
 {
+    /// <summary>
+    /// File Upload at FTP.
+    /// </summary>
     class Program
     {
         static CommonFunction fun = new CommonFunction();
+        /// <summary>
+        /// UploadFtpFile of path and Clear at path of folder.
+        /// </summary>
         static void Main(string[] args)
         {
             //CreateDirectoryOnFTP("ftp://27.134.252.242/Local_User/Qbei_Inventory/", /*user*/"Qbei_Agencies", /*pw*/"=3gYe0+Ycu", "NewDirectory");
@@ -45,6 +51,11 @@ namespace FileUpload
         //    //}
         //}
 
+            /// <summary>
+            /// Clear of Folder at ExportCSV.
+            /// </summary>
+            /// <param name="FolderName">Input Flodername of ExportCSV Name.</param>
+            /// <returns>Delete to Floder at Qbei_Log.</returns>
         static public bool  clearFolder(string FolderName)
         {
             DirectoryInfo dir = new DirectoryInfo("C:\\Qbei_Log\\ExportCSV\\");
@@ -61,6 +72,11 @@ namespace FileUpload
             }
             return true;
         }
+
+        /// <summary>
+        /// FIleUpload to FTP .
+        /// </summary>
+        /// <param name="strfilename">Input of FTP CSV file Name.</param>
        public static void UploadFtpFile(string strfilename)
        {
 
