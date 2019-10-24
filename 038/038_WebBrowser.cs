@@ -399,7 +399,7 @@ namespace _38フタバ
                                 month = entity.stockDate.Split('/')[0];
                                 year = DateTime.Now.ToString("yyyy");
                             }
-                            else if (entity.stockDate.Contains("初旬頃") || entity.stockDate.Contains("上旬頃") || entity.stockDate.Contains("上旬"))
+                            else if (entity.stockDate.Contains("初旬頃") || entity.stockDate.Contains("上旬頃") || entity.stockDate.Contains("上旬") || entity.stockDate.Contains("初旬"))
                             {
                                 day = "10";
                             }
