@@ -383,7 +383,10 @@ namespace _13ミズタニ
                                 if (webBrowser1.Document.GetElementById(gridView + "_syohincode").InnerText.Equals(entity.orderCode))
                                 {
                                     qty = webBrowser1.Document.GetElementById(gridView + "_Label1").InnerText;
-                                    entity.qtyStatus = qty.Equals("○") ? "good" : qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("☆") ? "empty" : qty.Equals("★") || qty.Equals("？") ? "inquiry" : "unknown status";
+                                    //entity.qtyStatus = qty.Equals("○") ? "good" : qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("☆") ? "empty" : qty.Equals("★") || qty.Equals("？") ? "inquiry" : "unknown status";
+                                    //<remark 28/11/2019(変更)>
+                                    entity.qtyStatus = qty.Equals("○") ? "good" : qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("☆") || qty.Equals("★") || qty.Equals("？") ?  "empty"  : "unknown status";
+                                    //</remark>
                                     entity.price = webBrowser1.Document.GetElementById(gridView + "_hanbaikakaku").InnerText;
                                     entity.price = entity.price.Replace("￥", string.Empty).Replace(",", string.Empty).Replace("円", string.Empty);
                                     node = hdoc.DocumentNode.SelectSingleNode("/tbody/tr[" + j + "]/td[6]");
@@ -424,12 +427,17 @@ namespace _13ミズタニ
 
                         else if (color.Contains("red"))
                         {
-     
-                            if (qty.Equals("▲") || qty.Equals("×"))
-                                entity.stockDate = "2100-02-01";
 
-                            else if (qty.Equals("★") || qty.Equals("？"))
-                                entity.stockDate = "2100-01-01";
+                            //if (qty.Equals("▲") || qty.Equals("×"))
+                            //    entity.stockDate = "2100-02-01";
+
+                            //else if (qty.Equals("★") || qty.Equals("？"))
+                            //    entity.stockDate = "2100-01-01";
+
+                            //<remark 28/11/2019(変更)>
+                            if (qty.Equals("▲") || qty.Equals("×") || qty.Equals("★") || qty.Equals("？"))
+                                entity.stockDate = "2100-02-01";
+                            //</remark>
                         }
                         else
                         {
