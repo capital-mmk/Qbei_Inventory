@@ -303,24 +303,52 @@ namespace _34シマノ
                         }
                         else
                         {
+                            //<remark 5/12/2019(更新)>
+                            // DIV 在庫状態
                             string alt = webBrowser1.Document.GetElementById("spec_stock_msg").InnerText;
-                            entity.qtyStatus = alt.Contains("○") ? "good" : alt.Contains("△") || alt.Contains("在庫限り") ? "small" : alt.Contains("×") ? "empty" : "NO STATUS CODE";
-
+                            // DIV 在庫限り
+                            string only = hdoc.DocumentNode.SelectSingleNode("div[2]/div/div[2]/div/div[1]/div[2]/div/div[2]/div[4]/div[1]/div[2]").InnerText;
+                            // 在庫状態は、在庫限りの表示がある時=small、それ以外は　〇を含む時＝good、△を含む時＝small、✖を含む時＝empty
+                            entity.qtyStatus = only.Contains("在庫限り") ? "small" : alt.Contains("○") ? "good" : alt.Contains("△") ? "small" : alt.Contains("×") ? "empty" : "NO STATUS CODE";
+                            // 価格は太文字の販売価格(税抜き)
                             entity.price = hdoc.DocumentNode.SelectSingleNode("div[2]/div/div[2]/div/div[1]/div[2]/div/div[2]/div[3]/p[2]/strong").InnerText;
                             entity.price = entity.price.Replace("¥", string.Empty).Replace(",", string.Empty);
-
+                            // DIV 入荷予定日
                             string date = hdoc.DocumentNode.SelectSingleNode("div[2]/div/div[2]/div/div[1]/div[2]/div/div[2]/div[4]/div[1]/div[3]").InnerText;
-                            
+
+                            // 入荷予定日がNULLの時
                             if (string.IsNullOrWhiteSpace(date))
-                                entity.stockDate = "2100-01-01";
-                            else if (date.Contains("在庫限り") || alt.Contains("×在庫なし"))
                             {
-                                entity.stockDate = "2100-02-01";
+                                // 在庫限りの表示がある時は「2100-02-01：完売」
+                                if (only.Contains("在庫限り"))
+                                {
+                                    entity.stockDate = "2100-02-01";
+                                }
+                                // 在庫限りの表示がない時は全て「2100-01-01：未定」
+                                else
+                                {
+                                    entity.stockDate = "2100-01-01";
+                                }
                             }
+                            // 入荷予定日がNULLでない時
                             else
-                                entity.stockDate = date.Replace("入荷予定日", "");
-                            entity.stockDate = entity.stockDate.Replace("\r\n", "");
-                            
+                            {
+                                // 在庫限りの表示がある時は「2100-02-01：完売」
+                                if (only.Contains("在庫限り"))
+                                {
+                                    entity.stockDate = "2100-02-01";
+                                }
+                                // それ以外の場合は、入荷予定日をそのまま採用（但し、空白・改行等の文字は除去し、yyyy-mm-dd形式にすること）
+                                else
+                                {
+                                    entity.stockDate = date.Replace("入荷予定日", "");
+                                    entity.stockDate = entity.stockDate.Replace("\r\n", "");
+                                    entity.stockDate = entity.stockDate.Trim();
+                                    entity.stockDate = entity.stockDate.Replace("/", "-");
+                                }
+                            }
+                            //</remark end>
+
                             if (entity.stockDate.Contains("2月"))
                             {   
                                 entity.stockDate = new DateTime(DateTime.Now.Year, 2, DateTime.DaysInMonth(DateTime.Now.Year, 2)).ToString("yyyy-MM-dd");
