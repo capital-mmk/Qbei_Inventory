@@ -288,8 +288,11 @@ namespace _030
 
                         entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") ? "small" : alt.Equals("×") || alt.Equals("完売") ? "empty" : "unknown status";
 
-                        string date = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-                        entity.stockDate = alt.Equals("○") || alt.Equals("△") ? "2100-01-01" : alt.Equals("×") || alt.Equals("完売") ? "2100-02-01" : "unknown date";
+                        string date = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");                       
+                        //entity.stockDate = alt.Equals("○") || alt.Equals("△") ? "2100-01-01" : alt.Equals("×") || alt.Equals("完売") ? "2100-02-01" : "unknown date";
+                        //<remark 06/12/2019変更>
+                        entity.stockDate = alt.Equals("○") ? "2100-01-01" : alt.Equals("△") || alt.Equals("×") || alt.Equals("完売") ? "2100-02-01" : "unknown date";
+                        //</remark>
                         //2018/01/17 Start
                         if ((dt030.Rows[i]["在庫情報"].ToString().Contains("empty") || dt030.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt030.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
                         {
