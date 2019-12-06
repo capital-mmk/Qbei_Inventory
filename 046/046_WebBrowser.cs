@@ -233,8 +233,8 @@ namespace _46トライスポーツ
                 entity.janCode = dt046.Rows[i]["JANコード"].ToString();
                 entity.partNo = dt046.Rows[i]["自社品番"].ToString();
                 entity.makerDate = fun.getCurrentDate();
-                entity.reflectDate = dt046.Rows[i]["最終反映日"].ToString();
-                entity.orderCode = dt046.Rows[i]["発注コード"].ToString();                
+                entity.reflectDate = dt046.Rows[i]["最終反映日"].ToString();           
+                entity.orderCode = dt046.Rows[i]["発注コード"].ToString();
                 entity.purchaseURL = fun.url + "/products/list.php?mode=search&category_id=&name=" + entity.orderCode;
                 
                 if ((!string.IsNullOrWhiteSpace(entity.purchaseURL)) && (entity.orderCode != ""))
@@ -348,7 +348,10 @@ namespace _46トライスポーツ
                 }
                 string alt = hdoc.DocumentNode.SelectSingleNode(qty).GetAttributeValue("alt", "");
                 entity.qtyStatus = alt.Contains("○") ? "good" : alt.Contains("△") || alt.Contains("▲") ? "small" : alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("受付終了") || alt.Contains("×") ? "empty" : "unknown status";
-                entity.stockDate = alt.Contains("○") || alt.Contains("△") || alt.Contains("▲") || alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("×") ? "2100-01-01" : alt.Contains("受付終了") ? "2100-02-01" : "unknown date";
+                //entity.stockDate = alt.Contains("○") || alt.Contains("△") || alt.Contains("▲") || alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("×") ? "2100-01-01" : alt.Contains("受付終了") ? "2100-02-01" : "unknown date";
+                //<remark 06/12/2019変更>
+                entity.stockDate = alt.Contains("○") || alt.Contains("△") || alt.Contains("▲") ? "2100-01-01" : alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("×") || alt.Contains("受付終了") ? "2100-02-01" : "unknown date";
+                //</remark>
                 entity.price = webBrowser1.Document.GetElementById("price02_default").InnerText; ;
                 entity.price = entity.price.Replace(",", string.Empty);
                 entity.purchaseURL = webBrowser1.Url.ToString(); 
