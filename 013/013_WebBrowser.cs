@@ -442,11 +442,14 @@ namespace _13ミズタニ
                         else
                         {
 
-                            entity.stockDate = qty.Equals("○") || qty.Equals("▲") || qty.Equals("×") ? "2100-01-01" : entity.stockDate;
+                            //entity.stockDate = qty.Equals("○") || qty.Equals("▲") || qty.Equals("×") ? "2100-01-01" : entity.stockDate;
+                            //<remark 06/12/2019(変更)>
+                            entity.stockDate = qty.Equals("○") || qty.Equals("▲") ? "2100-01-01" : qty.Equals("×") ? "2100-02-01" : entity.stockDate.Replace("/", "-");
+                            //</remark>
                         }
 
                         //entity.stockDate = color.Contains("red") ? "2100-02-01" : (stockDate == "-" || string.IsNullOrWhiteSpace(stockDate) || stockDate.Equals("&nbsp;")) ? "2100-01-01" : stockDate;
-                       
+
                         if (entity.stockDate.Contains("月中旬") || entity.stockDate.Contains("月上旬"))
                         {
                             entity.stockDate = entity.stockDate.Replace("次回", "").Replace("入荷", "");
@@ -517,7 +520,7 @@ namespace _13ミズタニ
                             entity.stockDate = new DateTime(DateTime.Now.Year, int.Parse(entity.stockDate), 30).ToString("yyyyMMdd");
                         }
                         //2018-08-14 End
-                        entity.stockDate = entity.stockDate.Replace("/", "-");
+                        entity.stockDate = entity.stockDate.Replace("/","-");
                         //2018/1/12
 
                         if ((dt013.Rows[i]["在庫情報"].ToString().Contains("empty") || dt013.Rows[i]["在庫情報"].ToString().Contains("inquriry")) && dt013.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
