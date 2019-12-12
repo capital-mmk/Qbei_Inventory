@@ -372,9 +372,12 @@ namespace _65野口
                     string qtypath = hdoc.DocumentNode.SelectSingleNode("div[1]/div[3]/table/tbody/tr[1]/td[1]/table/tbody/tr[7]/td").InnerText;
                     //entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") ? "small" : qtypath.Equals("×") ? "empty" : qtypath.Equals("取寄せ商品") ? "inquiry" : "invalid status code";
                     ///<remark>18/10/2019 - Change of qtyStatus(△=>empty)</remark>
-                    entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") ? "empty" : qtypath.Equals("×") ? "empty" : qtypath.Equals("取寄せ商品") ? "inquiry" : "invalid status code";
-                    entity.stockDate = qtypath.Equals("○") || qtypath.Equals("△") || qtypath.Equals("×") || qtypath.Equals("取寄せ商品") ? "2100-01-01" : "unknown date";
-
+                    //entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") ? "empty" : qtypath.Equals("×") ? "empty" : qtypath.Equals("取寄せ商品") ? "inquiry" : "invalid status code";
+                    //entity.stockDate = qtypath.Equals("○") || qtypath.Equals("△") || qtypath.Equals("×") || qtypath.Equals("取寄せ商品") ? "2100-01-01" : "unknown date";
+                    //<remak 2019/12/12 変更start>
+                    entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") ? "empty" : qtypath.Equals("×") ? "empty" : qtypath.Equals("取寄せ商品") ? "empty" : "invalid status code";
+                    entity.stockDate = qtypath.Equals("○") ? "2100-01-01" : qtypath.Equals("△") || qtypath.Equals("×") || qtypath.Equals("取寄せ商品") ? "2100-02-01" : "unknown date";
+                    //</remark end>
                     entity.price = hdoc.DocumentNode.SelectSingleNode("div[1]/div[3]/table/tbody/tr[1]/td[1]/table/tbody/tr[6]/td").InnerText;
                     entity.price = entity.price.Replace("オープン価格", string.Empty);
                     entity.price = entity.price.Replace("円", string.Empty);
