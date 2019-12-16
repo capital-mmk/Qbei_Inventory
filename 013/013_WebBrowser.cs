@@ -450,7 +450,10 @@ namespace _13ミズタニ
 
                         //entity.stockDate = color.Contains("red") ? "2100-02-01" : (stockDate == "-" || string.IsNullOrWhiteSpace(stockDate) || stockDate.Equals("&nbsp;")) ? "2100-01-01" : stockDate;
 
-                        if (entity.stockDate.Contains("月中旬") || entity.stockDate.Contains("月上旬"))
+                        //<remark 12/13/2019更新　start>
+                        //if (entity.stockDate.Contains("月中旬") || entity.stockDate.Contains("月上旬"))
+                        if (entity.stockDate.Contains("月上旬") || entity.stockDate.Contains("月中旬") || entity.stockDate.Contains("月下旬") || entity.stockDate.Contains("月予定"))
+                        //</remark 12/13/2019　end>
                         {
                             entity.stockDate = entity.stockDate.Replace("次回", "").Replace("入荷", "");
                             string day = string.Empty;
@@ -458,8 +461,11 @@ namespace _13ミズタニ
                             if (entity.stockDate.Contains("中旬"))
                                 day = "20";
 
-  
-                            else if (entity.stockDate.Contains("上旬") || entity.stockDate.Contains("月予定"))
+
+                            //<remark 12/13/2019更新　start>
+                            //else if (entity.stockDate.Contains("上旬") || entity.stockDate.Contains("月予定"))
+                            else if (entity.stockDate.Contains("上旬"))
+                                //</remark 12/13/2019　end>
                                 day = "10";
 
 
@@ -486,7 +492,10 @@ namespace _13ミズタニ
                         }
                         else if (entity.stockDate.Contains("月末～"))
                         {
-                            entity.stockDate = "未定(=2100-01-01)";
+                            //<remark 12/13/2019更新　start>
+                            //entity.stockDate = "未定(=2100-01-01)";                          
+                            entity.stockDate = "2100-01-01";
+                            //</remark 12/13/2019　end>
                         }
 
                         else if (entity.stockDate.Contains("月末"))
@@ -507,6 +516,21 @@ namespace _13ミズタニ
                         {
                             entity.stockDate = "2100-01-01";
                         }
+
+                        //<remark 12/13/2019追加　start>
+
+                        else if (entity.stockDate.Contains("年") || entity.stockDate.Contains("月"))
+                        {
+
+                            int YIndex = entity.stockDate.IndexOf('年');
+                            int MIndex = entity.stockDate.IndexOf('月');
+                            int year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 4, YIndex + 0));
+                            int month = Convert.ToInt32(entity.stockDate.Substring(YIndex + 1, MIndex - 5));
+                            //entity.stockDate = year + "-" + month + "-" + "15";
+                            DateTime dt = new DateTime(year, month, 15);
+                            entity.stockDate = String.Format("{0:yyyy-MM-dd}", dt);
+                        }
+                        //</remark 12/13/2019　end>
 
                         else if ((qty.Equals("☆")) && string.IsNullOrWhiteSpace(entity.stockDate)) { entity.stockDate = "2100-01-10"; }
 
