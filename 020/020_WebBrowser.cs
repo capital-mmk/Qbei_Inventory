@@ -60,7 +60,7 @@ namespace _20ダイアテック_高難易度_
             {
                 qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 qe.site = 20;
-
+                qe.flag = 1;
                 DataTable dtflag = fun.SelectFlag(20);
                 int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
 
@@ -73,8 +73,10 @@ namespace _20ダイアテック_高難易度_
                 /// </remark>
                 if (flag == 0)
                 {
-                    qe.flag = 1;
-                    fun.deleteData(20);
+                    //<remark 2019/12/24 変更　Start>
+                    //qe.flag = 1;
+                    //fun.deleteData(20);
+                    //<remark End>
                     fun.ChangeFlag(qe);
                     StartRun();
                 }
