@@ -309,7 +309,10 @@ namespace _34シマノ
                             // DIV 在庫限り
                             string only = hdoc.DocumentNode.SelectSingleNode("div[2]/div/div[2]/div/div[1]/div[2]/div/div[2]/div[4]/div[1]/div[2]").InnerText;
                             // 在庫状態は、在庫限りの表示がある時=small、それ以外は　〇を含む時＝good、△を含む時＝small、✖を含む時＝empty
-                            entity.qtyStatus = only.Contains("在庫限り") ? "small" : alt.Contains("○") ? "good" : alt.Contains("△") ? "small" : alt.Contains("×") ? "empty" : "NO STATUS CODE";
+                            //entity.qtyStatus = only.Contains("在庫限り") ? "small" : alt.Contains("○") ? "good" : alt.Contains("△") ? "small" : alt.Contains("×") ? "empty" : "NO STATUS CODE";
+                            //<remark qtyStatus(編集) 2020/1/7 Start>
+                            entity.qtyStatus = alt.Contains("×") ? "empty" :  only.Contains("在庫限り") ? "small" : alt.Contains("○") ? "good" : alt.Contains("△") ? "small" : "NO STATUS CODE";
+                            //<remark 2020/1/7 End>
                             // 価格は太文字の販売価格(税抜き)
                             entity.price = hdoc.DocumentNode.SelectSingleNode("div[2]/div/div[2]/div/div[1]/div[2]/div/div[2]/div[3]/p[2]/strong").InnerText;
                             entity.price = entity.price.Replace("¥", string.Empty).Replace(",", string.Empty);
