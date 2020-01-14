@@ -448,29 +448,78 @@ namespace _016ライトウェイ
                                     {
                                         string[] str = qty.Split('(');
                                         string date = str[1].Replace(")", string.Empty);
-                                        if (date.Contains("2月"))
-                                        { entity.stockDate = date.Replace("年", "-").Replace("月", "-").Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "28"); }
-                                        //entity.stockDate = hdoc.DocumentNode.SelectSingleNode("div/div[3]/div/div/div[2]/div/div/table/tbody/tr[" + (k + 2) + "]/td[4]/font").InnerText;
-                                        else
-                                            entity.stockDate = date.Replace("年", "-").Replace("月", "-").Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30");
-                                        if (entity.stockDate.Contains("入荷未定") || entity.stockDate.Contains("入荷予定有"))
+                                        //<remark 在庫の編集　13/1/2020 Start>
+                                        //    if (date.Contains("2月"))
+                                        //    { entity.stockDate = date.Replace("年", "-").Replace("月", "-").Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "28"); }
+                                        //    //entity.stockDate = hdoc.DocumentNode.SelectSingleNode("div/div[3]/div/div/div[2]/div/div/table/tbody/tr[" + (k + 2) + "]/td[4]/font").InnerText;
+                                        //    else
+                                        //        entity.stockDate = date.Replace("年", "-").Replace("月", "-").Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30");
+                                        //    if (entity.stockDate.Contains("入荷未定") || entity.stockDate.Contains("入荷予定有"))
+                                        //    {
+                                        //        entity.stockDate = "2100-01-01";
+                                        //    }
+                                        //    entity.stockDate = DateTime.Parse(entity.stockDate).ToString("yyyy-MM-dd");
+                                        //}
+                                        //else if (qty.Contains("入荷予定なし"))
+                                        //{
+                                        //    entity.stockDate = "2100-02-01";
+                                        //}
+                                        //else if (qty.Contains("入荷未定"))
+                                        //{
+                                        //    entity.stockDate = "2100-01-01";
+                                        //}
+                                        //else
+                                        //{
+                                        //    entity.stockDate = "2100-01-01";
+                                        //}
+                                     
+                                    if (date.Contains("年") && date.Contains("月"))
                                         {
-                                            entity.stockDate = "2100-01-01";
+                                            int YIndex = date.IndexOf('年');
+                                            int MIndex = date.IndexOf('月');
+                                            int Month = Convert.ToInt32(date.Substring(YIndex + 1, MIndex - 5));
+                                            if (Month == 2)
+                                            {
+                                                entity.stockDate = date.Replace("年", "-").Replace("月", "-").Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "28");
+                                                entity.stockDate = DateTime.Parse(entity.stockDate).ToString("yyyy-MM-dd");
+                                            }
+                                            //entity.stockDate = hdoc.DocumentNode.SelectSingleNode("div/div[3]/div/div/div[2]/div/div/table/tbody/tr[" + (k + 2) + "]/td[4]/font").InnerText;
+                                            else
+                                            {
+                                                entity.stockDate = date.Replace("年", "-").Replace("月", "-").Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30");
+                                                entity.stockDate = DateTime.Parse(entity.stockDate).ToString("yyyy-MM-dd");
+                                            }
                                         }
-                                        entity.stockDate = DateTime.Parse(entity.stockDate).ToString("yyyy-MM-dd");
-                                    }
-                                    else if (qty.Contains("入荷予定なし"))
-                                    {
-                                        entity.stockDate = "2100-02-01";
-                                    }
-                                    else if (qty.Contains("入荷未定"))
-                                    {
-                                        entity.stockDate = "2100-01-01";
+
+                                        else
+                                        {                                         
+                                            //if (entity.stockDate.Contains("入荷未定") || entity.stockDate.Contains("入荷予定有"))
+                                            if (qty.Contains("入荷未定") || qty.Contains("入荷予定有"))
+                                            {
+                                                entity.stockDate = "2100-01-01";
+                                            }
+                                            else if (qty.Contains("入荷予定なし") || qty.Contains("×"))
+                                            {
+                                                entity.stockDate = "2100-02-01";
+                                            }
+                                            //else if (qty.Contains("入荷未定"))
+                                            else if (qty.Contains("予約"))
+                                            {
+                                                entity.stockDate = "2100-01-01";
+                                            }
+                                            else
+                                            {
+                                                entity.stockDate = "2100-01-01";
+                                            }
+                                            entity.stockDate = DateTime.Parse(entity.stockDate).ToString("yyyy-MM-dd");
+                                        }
                                     }
                                     else
                                     {
                                         entity.stockDate = "2100-01-01";
+                                        entity.stockDate = DateTime.Parse(entity.stockDate).ToString("yyyy-MM-dd");
                                     }
+                                    //</remark 13/1/2020 End>
 
                                     string price = hdoc.DocumentNode.SelectSingleNode("div/div[3]/div/div/div[2]/div/div/table/tbody/tr[" + (k + 1) + "]/td[6]").InnerText;
                                     if (string.IsNullOrWhiteSpace(price))
@@ -520,7 +569,7 @@ namespace _016ライトウェイ
                                 }
                             }
                         }                        
-                    }
+                     }
                     catch (Exception ex)
                     {
                         fun.Qbei_ErrorInsert(16, fun.GetSiteName("016"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "016");
