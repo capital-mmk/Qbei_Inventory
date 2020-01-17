@@ -240,6 +240,7 @@ namespace _36PRインターナショナル
                 entity.reflectDate = dt036.Rows[i]["最終反映日"].ToString();
                 entity.orderCode = dt036.Rows[i]["発注コード"].ToString();
                 entity.purchaseURL = dt036.Rows[i]["purchaserURL"].ToString().Trim();
+
                 if (!string.IsNullOrWhiteSpace(entity.purchaseURL))
                 {
                     string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
@@ -303,11 +304,190 @@ namespace _36PRインターナショナル
                                 {
                                     entity.stockDate = hdoc.DocumentNode.SelectSingleNode(stockpath).InnerText;
                                     strStockDate = entity.stockDate;
-                                    if (entity.stockDate.Contains("未定") || entity.stockDate.Contains("時期未定") || entity.stockDate.Contains("18年春予定") || entity.stockDate.Contains("今季終了品") || entity.stockDate.Contains("2018年以降予定") || entity.stockDate.Contains("今季販売終了品"))
+
+                                    //<remark 2020/1/17 年月日のチャック　Start>
+                                    //if (entity.stockDate.Contains("未定") || entity.stockDate.Contains("時期未定") || entity.stockDate.Contains("18年春予定") || entity.stockDate.Contains("今季終了品") || entity.stockDate.Contains("2018年以降予定") || entity.stockDate.Contains("今季販売終了品"))
+                                    //{
+                                    //    entity.stockDate = "2100-01-01";
+                                    //}
+                                    //else if (entity.stockDate.Contains("取り寄せ商品") || entity.stockDate.Contains("取り寄せ品"))
+                                    //{
+                                    //    entity.stockDate = "2100-01-01";
+                                    //    entity.qtyStatus = "inquiry";
+                                    //}
+                                    //else if (entity.stockDate.Contains("販売終了品"))
+                                    //{
+                                    //    entity.stockDate = "2100-02-01";
+                                    //}
+                                    //else if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃"))
+                                    //{
+                                    //    string year = DateTime.Now.ToString("yyyy");
+                                    //    if (entity.stockDate.Contains("/"))
+                                    //    {
+                                    //        string[] m = entity.stockDate.Split('/');
+                                    //        string month = m[0].ToString();
+                                    //        string day = "30";
+                                    //        DateTime dt = Convert.ToDateTime(year + "-" + month + "-" + day);
+                                    //        entity.stockDate = dt.ToString("yyyy-MM-dd");
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        if (entity.stockDate.Contains("初旬") || entity.stockDate.Contains("上旬"))
+                                    //        {
+                                    //            entity.stockDate = year + "-" + entity.stockDate.Replace("月", "-").Replace("初旬頃入荷予定", "10").Replace("初旬頃予定", "10").Replace("上旬頃入荷予定", "10").Replace("上旬頃予定", "10");
+                                    //        }
+                                    //        else if (entity.stockDate.Contains("中旬"))
+                                    //        {
+                                    //            entity.stockDate = year + "-" + entity.stockDate.Replace("月", "-").Replace("中旬頃入荷予定", "20").Replace("中旬頃予定", "20");
+                                    //        }
+                                    //        else
+                                    //        {
+                                    //            entity.stockDate = year + "-" + entity.stockDate.Replace("月", "-").Replace("頃入荷予定", "30").Replace("頃入金予定", "30").Replace("末", "");
+                                    //            if (entity.stockDate.Contains('～') || entity.stockDate.Contains('~'))
+                                    //            {
+                                    //                if (entity.stockDate.Contains('～'))
+                                    //                {
+                                    //                    string[] arr = entity.stockDate.Split('～');
+                                    //                    entity.stockDate = year + "-" + arr[1].Replace("月", "-").Replace("頃入荷予定", "30");
+                                    //                }
+                                    //                else if (entity.stockDate.Contains('~'))
+                                    //                {
+                                    //                    string[] arr = entity.stockDate.Split('~');
+                                    //                    entity.stockDate = year + "-" + arr[1].Replace("月", "-").Replace("頃入金予定", "30");
+                                    //                }
+                                    //            }
+                                    //        }
+                                    //    }
+                                    //}
+                                    //else if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
+                                    //{
+                                    //    entity.stockDate = entity.stockDate.Replace("年", "-") + entity.stockDate.Replace("月", "-").Replace("頃入荷予定", "30");
+                                    //}
+                                    
+                                    
+                                    if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
+                                    {
+                                        int YIndex = entity.stockDate.IndexOf('年');
+                                        int MIndex = entity.stockDate.IndexOf('月');
+                                        int Year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 4, YIndex + 0));
+                                        int Month = Convert.ToInt32(entity.stockDate.Substring(YIndex + 1, MIndex - 5));
+                                        string Day= DateTime.DaysInMonth(DateTime.Now.Year, Month).ToString();
+                                        if (entity.stockDate.Contains("日"))
+                                        {
+                                            entity.stockDate = entity.stockDate.Replace("年", "-").Replace("月", "-").Replace("日", "-");
+                                        }
+                                        else if (entity.stockDate.Contains("月") && (entity.stockDate.Contains("ごろ") || entity.stockDate.Contains("予定")))
+                                        {
+                                            entity.stockDate = Year + "-" + Month + "-" + Day;
+                                        }
+                                        else
+                                        {
+                                            entity.stockDate = Year + "-" + Month + "-" + Day;
+                                        }                                      
+                                    }
+                                    else if (entity.stockDate.Contains("月") || entity.stockDate.Contains("頃"))
+                                    {
+                                        string year = DateTime.Now.ToString("yyyy");
+                                        int pcmonth = Convert.ToInt32(DateTime.Now.ToString("MM"));
+                                        int month;
+                                        string day;
+                                        if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃"))
+                                        {
+                                            if (entity.stockDate.Contains("/"))
+                                            {
+                                                string[] m = entity.stockDate.Split('/');
+                                                int Month =Convert.ToInt32 (m[0]);
+                                                if (Month < pcmonth)
+                                                { year = Convert.ToString(Convert.ToInt32(year) + 1); }                                               
+                                                 day = DateTime.DaysInMonth(DateTime.Now.Year, Month).ToString(); 
+                                                DateTime dt = Convert.ToDateTime(year + "-" + Month + "-" + day);
+                                                entity.stockDate = dt.ToString("yyyy-MM-dd");
+                                            }
+                                            else
+                                            {
+                                                int MIndex = entity.stockDate.IndexOf('月');
+                                                
+                                                if (MIndex == 1 || MIndex == 2)
+                                                {
+                                                    if (MIndex == 1)
+                                                    {
+                                                         month = Convert.ToInt32(entity.stockDate.Substring(MIndex - 1, MIndex + 0));
+                                                        if (month < pcmonth)
+                                                        { year = Convert.ToString(Convert.ToInt32(year) + 1); }
+                                                        day = DateTime.DaysInMonth(DateTime.Now.Year, month).ToString();
+                                                        entity.stockDate = year + "-" + month + "-" + day;
+                                                    }
+                                                    else
+                                                    {
+                                                        month = Convert.ToInt32(entity.stockDate.Substring(MIndex - 2, MIndex + 0));
+                                                        if (month < pcmonth)
+                                                        { year = Convert.ToString(Convert.ToInt32(year) + 1); }
+                                                        day = DateTime.DaysInMonth(DateTime.Now.Year, month).ToString();
+                                                        entity.stockDate = year + "-" + month + "-" + day;                                                     
+                                                    }
+  
+                                                    if (strStockDate.Contains("初旬") || strStockDate.Contains("上旬"))
+                                                    {   
+                                                        entity.stockDate = year + "-" + month + "-" + "10";
+                                                    }
+                                                    else if (strStockDate.Contains("中旬"))
+                                                    {
+                                                        entity.stockDate = year + "-" + month + "-" + "20";
+                                                    }
+                                                    else if(strStockDate.Contains("下旬"))
+                                                    {
+                                                        entity.stockDate = year + "-" + month + "-" + day;                                                
+                                                    }
+
+                                                }
+                                                else if (entity.stockDate.Contains('～') || entity.stockDate.Contains('~'))
+                                                {
+                                                    int mIndex = entity.stockDate.IndexOf('月');
+                                                    int month2;
+                                                    string day2;
+                                                    if (entity.stockDate.Contains("月") || entity.stockDate.Contains("予定"))
+                                                    {
+                                                        if (entity.stockDate.Contains('～'))
+                                                        {
+                                                            int bIndex = entity.stockDate.IndexOf('～');
+                                                            string charater = entity.stockDate.Substring(bIndex + 1, mIndex - 2);
+                                                            if (charater.Contains("月"))
+                                                            { month2 = Convert.ToInt32(entity.stockDate.Substring(bIndex + 1, mIndex - 3)); }
+                                                            else if (mIndex < 5)
+                                                            { month2 = Convert.ToInt32(entity.stockDate.Substring(bIndex + 1, mIndex - 2)); }
+                                                            else
+                                                            { month2 = Convert.ToInt32(entity.stockDate.Substring(bIndex + 1, mIndex - 3)); }
+                                                        }
+                                                        else
+                                                        {
+                                                            int sIndex = entity.stockDate.IndexOf('~');
+                                                            string charater = entity.stockDate.Substring(sIndex + 1, mIndex - 2);
+                                                            if (charater.Contains("月"))
+                                                            { month2 = Convert.ToInt32(entity.stockDate.Substring(sIndex + 1, mIndex - 3)); }
+                                                            else if (mIndex < 5)
+                                                             {
+                                                                
+                                                                 month2 = Convert.ToInt32(entity.stockDate.Substring(sIndex + 1, mIndex - 2)); 
+                                                            }
+                                                            else
+                                                            { month2 = Convert.ToInt32(entity.stockDate.Substring(sIndex + 1, mIndex - 3)); }
+                                                        }
+                                                        if (month2 < pcmonth)
+                                                        { year = Convert.ToString(Convert.ToInt32(year) + 1); }
+                                                        day2 = DateTime.DaysInMonth(DateTime.Now.Year, month2).ToString();
+                                                        entity.stockDate = year + "-" + month2 + "-" + day2;
+
+                                                    }
+                                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else if (entity.stockDate.Contains("未定") || entity.stockDate.Contains("予定") || entity.stockDate.Contains("今季") && entity.stockDate.Contains("終了品"))
                                     {
                                         entity.stockDate = "2100-01-01";
                                     }
-                                    else if (entity.stockDate.Contains("取り寄せ商品") || entity.stockDate.Contains("取り寄せ品"))
+                                    else if (entity.stockDate.Contains("取り寄せ"))
                                     {
                                         entity.stockDate = "2100-01-01";
                                         entity.qtyStatus = "inquiry";
@@ -315,57 +495,15 @@ namespace _36PRインターナショナル
                                     else if (entity.stockDate.Contains("販売終了品"))
                                     {
                                         entity.stockDate = "2100-02-01";
-                                    }                                   
-                                    else if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃"))
-                                    {
-                                        string year = DateTime.Now.ToString("yyyy");
-                                        if (entity.stockDate.Contains("/"))
-                                        {
-                                            string[] m = entity.stockDate.Split('/');
-                                            string month = m[0].ToString();
-                                            string day = "30";
-                                            DateTime dt = Convert.ToDateTime(year + "-" + month + "-" + day);
-                                            entity.stockDate = dt.ToString("yyyy-MM-dd");
-                                        }
-                                        else
-                                        {
-                                            if (entity.stockDate.Contains("初旬") || entity.stockDate.Contains("上旬"))
-                                            {
-                                                entity.stockDate = year + "-" + entity.stockDate.Replace("月", "-").Replace("初旬頃入荷予定", "10").Replace("初旬頃予定", "10").Replace("上旬頃入荷予定", "10").Replace("上旬頃予定", "10");
-                                            }
-                                            else if (entity.stockDate.Contains("中旬"))
-                                            {
-                                                entity.stockDate = year + "-" + entity.stockDate.Replace("月", "-").Replace("中旬頃入荷予定", "20").Replace("中旬頃予定", "20");
-                                            }
-                                            else
-                                            {
-                                                entity.stockDate = year + "-" + entity.stockDate.Replace("月", "-").Replace("頃入荷予定", "30").Replace("頃入金予定", "30").Replace("末", "");
-                                                if (entity.stockDate.Contains('～') || entity.stockDate.Contains('~'))
-                                                {
-                                                    if (entity.stockDate.Contains('～'))
-                                                    {
-                                                        string[] arr = entity.stockDate.Split('～');
-                                                        entity.stockDate = year + "-" + arr[1].Replace("月", "-").Replace("頃入荷予定", "30");
-                                                    }
-                                                    else if (entity.stockDate.Contains('~'))
-                                                    {
-                                                        string[] arr = entity.stockDate.Split('~');
-                                                        entity.stockDate = year + "-" + arr[1].Replace("月", "-").Replace("頃入金予定", "30");
-                                                    }
-                                                }
-                                            }
-                                        }
                                     }
-                                    else if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
-                                    {
-                                        entity.stockDate = entity.stockDate.Replace("年", "-") + entity.stockDate.Replace("月", "-").Replace("頃入荷予定", "30");
-                                    }
+                                    //</remark 2020/1/17 End>
+
                                     else if (entity.stockDate.Contains("入荷予定"))
                                     {
                                         entity.stockDate = "2100-01-01";
-                                    }
+                                    }               
                                     //2018-04-20 Start
-                                    if (strStockDate.Contains("2月"))
+                                    if (strStockDate.Equals("2月"))
                                     {
                                         entity.stockDate = new DateTime(DateTime.Now.Year, 2, DateTime.DaysInMonth(DateTime.Now.Year, 2)).ToString("yyyy-MM-dd");
                                     }
