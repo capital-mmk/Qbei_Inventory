@@ -285,14 +285,34 @@ namespace _36PRインターナショナル
                                     return;
                                 }
                                 //2018-04-23 End
-                                strStockDate = string.Empty;
-                                entity.price = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]").InnerText;
-                                entity.price = entity.price.Replace("円", string.Empty).Replace(",", string.Empty);
-                                string qtypath = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[1]").InnerText;
-                                entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") ? "small" : qtypath.Equals("×") || qtypath.Equals("完売") ? "empty" : "unknown status";
-                                //entity.price = string.Empty ;
 
-                                string stockpath = "div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[2]";
+                                //<remark 2020/1/21 　StockDateのRowチャック　Start>
+                                //strStockDate = string.Empty;
+                                //entity.price = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]").InnerText;
+                                //entity.price = entity.price.Replace("円", string.Empty).Replace(",", string.Empty);
+                                //string qtypath = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[1]").InnerText;
+                                //entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") ? "small" : qtypath.Equals("×") || qtypath.Equals("完売") ? "empty" : "unknown status";
+                                //entity.price = string.Empty ;
+                                //string stockpath = "div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[2]";
+
+                                strStockDate = string.Empty;
+                                string qtypath;
+                                string stockpath;
+                                entity.price = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]").InnerText;
+                                if (entity.price.Contains("円"))
+                                {
+                                    entity.price = entity.price.Replace("円", string.Empty).Replace(",", string.Empty);
+                                    qtypath = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[1]").InnerText;
+                                    stockpath = "div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[2]";
+                                }
+                                else
+                                {                                 
+                                    entity.price = dt036.Rows[i]["下代"].ToString();
+                                    qtypath = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]").InnerText;
+                                    stockpath = "div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr/td[2]";
+                                }
+                                entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") ? "small" : qtypath.Equals("×") || qtypath.Equals("完売") ? "empty" : "unknown status";
+                                //</remark 2020/1/21 　End>
 
                                 HtmlNodeCollection nc = hdoc.DocumentNode.SelectNodes(stockpath);
 
