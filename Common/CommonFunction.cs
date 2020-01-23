@@ -639,12 +639,18 @@ namespace Common
                 if (dtData != null)
                 {
                     //<remark 27/12/2019 追加　Start>
-                    var empty = dtData.AsEnumerable().Where(r => (r.Field<string>("メーカー情報日") != null));
-                    DataTable a = empty.CopyToDataTable();
-                    dtData = empty.Any() ? empty.CopyToDataTable() : null;
-                    //<remark End>
+                    //var empty = dtData.AsEnumerable().Where(r => (r.Field<string>("メーカー情報日") != null));
+                    //DataTable a = empty.CopyToDataTable();
+                    //dtData = empty.Any() ? empty.CopyToDataTable() : null;
+                    //</remark End>
+
+                    //<remark 1/23/2020 追加　Start>
+                    string Nowdate = DateTime.Now.ToString("yyyy-MM-dd");
+                    dtData.AsEnumerable().Where(r => (r.Field<string>("メーカー情報日") == null))
+                       .Select(r => r["メーカー情報日"] = Nowdate).ToList();
                     dtData = dtData.AsEnumerable().OrderBy(x => x["メーカー情報日"]).ThenBy(x => x["JANコード"]).CopyToDataTable();
                     dtData.AsEnumerable().ToList().ForEach(r => r["発注コード"] = r.Field<string>("発注コード").Trim());
+                    //</remark End>
                 }
             }
             catch(Exception ex)
