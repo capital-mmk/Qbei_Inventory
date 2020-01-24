@@ -308,7 +308,10 @@ namespace _24東_アズマ_
                         entity.price = dt024.Rows[i]["下代"].ToString();
                         if ((dt024.Rows[i]["在庫情報"].ToString().Contains("empty") || dt024.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && (dt024.Rows[i]["入荷予定"].ToString().Contains("2100-01-10")))
                         {
-                            entity.stockDate = "2100-01-10";
+                            // entity.stockDate = "2100-01-10";
+                            //<remark StockDateのロジックを更新 24/1/2020 Start>
+                            entity.stockDate = "2100-02-01";
+                            //</remark 24/1/2020 End>
                         }
                         else
                         { entity.stockDate = "2100-02-01"; }
