@@ -360,24 +360,29 @@ namespace Common
                         {
                             dtOrder = dtTemp.AsEnumerable().OrderBy(x => x.Field<string>("メーカー情報日")).CopyToDataTable();
                         }
-                        //Check (ステータス変更日+6) <= today
-                        //2018-07-04 Start
-                        //var notRun = dtOrder.AsEnumerable().Where(x => x.Field<string>("在庫情報").Contains("empty") && x.Field<string>("ステータス変更日") != null && DateTime.Parse(x.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-6).Date);
-                        var notRun = dtOrder.AsEnumerable().Where(x => x.Field<string>("在庫情報").Contains("empty") && x.Field<string>("ステータス変更日") != null && DateTime.Parse(x.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-9).Date);
-                        //2018-07-04 End
-                        //2018-08-29 Start
-                        var empty = notRun.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫更新中止")));
-                        var select = empty.AsEnumerable().Select(x =>( x.Field<string>("発注コード").Contains("在庫更新中止")));
-                        dtNotRun = empty.Any() ? empty.CopyToDataTable() : null;
-                        //2018-08-29 End
-                        // dtNotRun = notRun.Any() ? notRun.CopyToDataTable() : null;
+                        //Check (ステータス変更日+6) <= today   
+                        
+                        //<remark ９ヶ月前の　データーについて、更新ロジック　2020-01-30 Start>
+                        ////2018-07-04 Start
+                        ////var notRun = dtOrder.AsEnumerable().Where(x => x.Field<string>("在庫情報").Contains("empty") && x.Field<string>("ステータス変更日") != null && DateTime.Parse(x.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-6).Date);
+                        //var notRun = dtOrder.AsEnumerable().Where(x => x.Field<string>("在庫情報").Contains("empty") && x.Field<string>("ステータス変更日") != null && DateTime.Parse(x.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-9).Date);
+                        ////2018-07-04 End
+                        ////2018-08-29 Start
+                        //var empty = notRun.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫更新中止")));
+                        //var select = empty.AsEnumerable().Select(x =>( x.Field<string>("発注コード").Contains("在庫更新中止")));
+                        //dtNotRun = empty.Any() ? empty.CopyToDataTable() : null;
+                        ////2018-08-29 End
+                        //// dtNotRun = notRun.Any() ? notRun.CopyToDataTable() : null;
+                        var notRun = dtOrder.AsEnumerable().Where(x => x.Field<string>("在庫情報").Contains("empty") && x.Field<string>("ステータス変更日") != null && x.Field<string>("入荷予定") == "2100-02-01" && DateTime.Parse(x.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-9).Date);
+                        dtNotRun = notRun.Any() ? notRun.CopyToDataTable() : null;
+                        //</remark 2020-01-30 End>
                         if (dtNotRun != null)
                         {
 
                             /// <remark>
                             /// Save Data into Qbei_ErrorLog
                             /// </remark>
-                           
+
                             xml = DataTableToXml(dtNotRun);
                             //xml = RemoveInvalidXmlChars(xml);
                             con = new Connection();
@@ -386,7 +391,7 @@ namespace Common
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@xml", xml);
                             cmd.Parameters.AddWithValue("@sitename", GetSiteName(shopID));
-                            cmd.Parameters.AddWithValue("@Description", "Item doesn't Run!");
+                            cmd.Parameters.AddWithValue("@Description", "Item doesn't Run!(9M)");
                             cmd.Parameters.AddWithValue("@ErrorType", 6);
                             cmd.Parameters.AddWithValue("@SiteCode", shopID);
                             cmd.CommandTimeout = 600;
@@ -395,6 +400,12 @@ namespace Common
                             cmd.Connection.Close();
                             var runData = dtOrder.AsEnumerable().Where(x => !dtNotRun.AsEnumerable().Any(y => y.Field<string>("JANコード") == x.Field<string>("JANコード") && y.Field<string>("発注コード") == x.Field<string>("発注コード")));
                             dtOrder = runData.Any() ? runData.CopyToDataTable() : null;
+                            //<remark ９ヶ月前の　データーについて、更新ロジック　2020-01-30 Start>                         
+                            dtOrder.AsEnumerable().Where(r => (DateTime.Parse(r.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-9).Date))
+                           .Select(r => r["入荷予定"] = "2100-02-01").ToList();           
+                            dtOrder.AsEnumerable().Where(r => (DateTime.Parse(r.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-9).Date))
+                           .Select(r => r["在庫情報"] = "empty").ToList();
+                            //</remark 2020-01-30 End>
                         }
                     }
                     return dtOrder;
@@ -567,6 +578,7 @@ namespace Common
                                                             )
                                                       );
                 dtOnceaWeek = data.Any() ? data.CopyToDataTable() : null;
+
                 //2018-08-29 Start
                 //var notintegerdata2 = data.AsEnumerable().Where(r => (!r.Field<string>("発注コード").Contains("在庫更新中止")));
                 //dtOnceaWeek = notintegerdata2.Any() ? notintegerdata2.CopyToDataTable() : null;
@@ -649,7 +661,7 @@ namespace Common
                     dtData.AsEnumerable().Where(r => (r.Field<string>("メーカー情報日") == null))
                        .Select(r => r["メーカー情報日"] = Nowdate).ToList();
                     dtData = dtData.AsEnumerable().OrderBy(x => x["メーカー情報日"]).ThenBy(x => x["JANコード"]).CopyToDataTable();
-                    dtData.AsEnumerable().ToList().ForEach(r => r["発注コード"] = r.Field<string>("発注コード").Trim());
+                    dtData.AsEnumerable().ToList().ForEach(r => r["発注コード"] = r.Field<string>("発注コード").Trim());                    
                     //</remark End>
                 }
             }
