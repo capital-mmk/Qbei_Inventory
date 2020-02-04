@@ -509,8 +509,12 @@ namespace _36PRインターナショナル
                                     }
                                     else if (entity.stockDate.Contains("取り寄せ"))
                                     {
-                                        entity.stockDate = "2100-01-01";
-                                        entity.qtyStatus = "inquiry";
+                                        //<remark 変更　2020/02/04　Start>
+                                        //entity.stockDate = "2100-01-01";
+                                        //entity.qtyStatus = "inquiry";
+                                        entity.stockDate = "2100-02-01";
+                                        entity.qtyStatus = "empty";
+                                        //</remark 2020/02/04　End>
                                     }
                                     else if (entity.stockDate.Contains("販売終了品"))
                                     {
