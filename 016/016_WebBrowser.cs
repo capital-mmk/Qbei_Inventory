@@ -442,8 +442,10 @@ namespace _016ライトウェイ
                                     // string qty = hdoc.DocumentNode.SelectSingleNode("div/div[3]/div/div/div[2]/div/div/table/tbody/tr[" + (k + 1) + "]/td[4]").InnerText.Replace("\r\n", "");
 
                                     string qty = hdoc.DocumentNode.SelectSingleNode("div/div[3]/div/div/div[2]/div/div/table/tbody/tr[" + (k + 1) + "]/td[4]").InnerText.Replace("\r\n", "");
-                                    entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") ? "small" : qty.Contains("予約") || qty.Equals("×") || qty.Contains("入荷予定なし") ? "empty" : "empty";
-
+                                    //<remark quantity exchange 12/02/2020 Start>
+                                   // entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") ? "small" : qty.Contains("予約") || qty.Equals("×") || qty.Contains("入荷予定なし") ? "empty" : "empty";
+                                    entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") ? "small" : qty.Contains("予約") || qty.Contains("×") || qty.Contains("入荷予定なし") ? "empty" : "empty";
+                                    // </remark 12/02/2020 End>
                                     if (qty.Contains("("))
                                     {
                                         string[] str = qty.Split('(');
@@ -492,16 +494,21 @@ namespace _016ライトウェイ
                                         }
 
                                         else
-                                        {                                         
+                                        {
                                             //if (entity.stockDate.Contains("入荷未定") || entity.stockDate.Contains("入荷予定有"))
-                                            if (qty.Contains("入荷未定") || qty.Contains("入荷予定有"))
+
+                                            //<remark quantity exchange 12/02/2020 Start>
+                                            //if (qty.Contains("入荷未定") || qty.Contains("入荷予定有"))
+                                            if ( qty.Contains("入荷予定有"))
                                             {
                                                 entity.stockDate = "2100-01-01";
                                             }
-                                            else if (qty.Contains("入荷予定なし") || qty.Contains("×"))
+                                            // else if (qty.Contains("入荷予定なし") || qty.Contains("×"))
+                                            else if (qty.Contains("入荷予定なし") || qty.Contains("×")|| qty.Contains("入荷未定"))
                                             {
                                                 entity.stockDate = "2100-02-01";
                                             }
+                                            //</remark 12/02/2020 End>
                                             //else if (qty.Contains("入荷未定"))
                                             else if (qty.Contains("予約"))
                                             {
