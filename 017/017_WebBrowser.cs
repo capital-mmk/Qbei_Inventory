@@ -235,8 +235,8 @@ namespace _17インターマックス
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt017.Rows[i]["最終反映日"].ToString();
                 entity.stockDate = dt017.Rows[i]["入荷予定"].ToString();
-                entity.orderCode = dt017.Rows[i]["発注コード"].ToString().Trim();// "8022530007719"; 
-                entity.purchaseURL = fun.url + "/shop/g/g" + entity.orderCode + "/";
+                entity.orderCode = dt017.Rows[i]["発注コード"].ToString().Trim();// "8022530007719";                
+               entity.purchaseURL = fun.url + "/shop/g/g" + entity.orderCode + "/";
 
                 if (!string.IsNullOrWhiteSpace(entity.orderCode))
                 {
@@ -352,9 +352,9 @@ namespace _17インターマックス
                                 }
                                 else
                                 {
-
-                                    entity.qtyStatus = qty.Contains("有り") || qty.Contains("あり") ? "good" : qty.Contains("わずか") || qty.Contains("僅か") ? "small" : qty.Contains("欠品中") || qty.Contains("完売") || qty.Contains("終了") ? "empty" : qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") || qty.Contains("入荷待ち") ? "inquiry" : "invalid status code";
-                                   
+                                    //<remark Quantity Exchange 14/02/2020 Start>
+                                    //entity.qtyStatus = qty.Contains("有り") || qty.Contains("あり") ? "good" : qty.Contains("わずか") || qty.Contains("僅か") ? "small" : qty.Contains("欠品中") || qty.Contains("完売") || qty.Contains("終了") ? "empty" : qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") || qty.Contains("入荷待ち") ? "inquiry" : "invalid status code";
+                                    entity.qtyStatus = qty.Contains("有り") ? "good" : qty.Contains("わずか") || qty.Contains("僅か") || qty.Contains("在庫僅か") ? "small" : qty.Contains("欠品") || qty.Contains("完売") || qty.Contains("終了") ? "empty" : qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") || qty.Contains("入荷待ち") || qty.Contains("お問合せください") ? "inquiry" : "invalid status code";
                                     if (stockDatePath == "")
                                     {
                                         if (qty.Contains("月") && qty.Any(c => char.IsDigit(c)))
@@ -372,15 +372,17 @@ namespace _17インターマックス
                                         }
                                         else
                                         {
-                                            entity.stockDate = qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("あり") || qty.Contains("僅か") || qty.Contains("欠品中") || qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") || qty.Contains("入荷待ち") ? "2100-01-01" : qty.Contains("完売") || qty.Contains("終了") ? "2100-02-01" : "unknown date";
+                                           // entity.stockDate = qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("あり") || qty.Contains("僅か") || qty.Contains("欠品中") || qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") || qty.Contains("入荷待ち") ? "2100-01-01" : qty.Contains("完売") || qty.Contains("終了") ? "2100-02-01" : "unknown date";
+                                            entity.stockDate = qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("僅か") || qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") || qty.Contains("入荷待ち") || qty.Contains("お問合せください") ? "2100-01-01" : qty.Contains("完売") || qty.Contains("終了") || qty.Contains("欠品") ? "2100-02-01" : "unknown date";
                                         }
                                     }
                                     else
                                     {
-                                        entity.stockDate = qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("あり") || qty.Contains("僅か") || qty.Contains("欠品中") || qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") || qty.Contains("入荷待ち") ? DateTime.Now.ToString("yyyy/MM/dd") : qty.Contains("完売") || qty.Contains("終了") ? "2100-02-01" : "unknown date";
+                                        //entity.stockDate = qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("あり") || qty.Contains("僅か") || qty.Contains("欠品中") || qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") || qty.Contains("入荷待ち") ? DateTime.Now.ToString("yyyy/MM/dd") : qty.Contains("完売") || qty.Contains("終了") ? "2100-02-01" : "unknown date";
+                                        entity.stockDate = qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("僅か") || qty.Contains("予約受付中") || qty.Contains("予約") || qty.Contains("取寄") || qty.Contains("入荷待ち") ? DateTime.Now.ToString("yyyy/MM/dd") : qty.Contains("完売") || qty.Contains("終了") || qty.Contains("欠品") ? "2100-02-01" : "unknown date";
                                         entity.stockDate = entity.stockDate.Replace("/", "-");
                                     }
-
+                                    //</remark  14/02/2020 End>
                                     if (entity.stockDate.Contains("2月"))
                                     {
                                         entity.stockDate = year + "-02-" + DateTime.DaysInMonth(year, 2);
