@@ -411,7 +411,10 @@ namespace _36PRインターナショナル
                                         int pcmonth = Convert.ToInt32(DateTime.Now.ToString("MM"));
                                         int month;
                                         string day;
-                                        if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃"))
+                                        //<remark "ごろ"の追加　2020/02/25 Start>
+                                        //if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃"))
+                                        if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃") || entity.stockDate.Contains("ごろ"))
+                                        //</remark 2020/02/25 End>
                                         {
                                             if (entity.stockDate.Contains("/"))
                                             {
@@ -607,7 +610,7 @@ namespace _36PRインターナショナル
                 entity.partNo = dt036.Rows[i]["自社品番"].ToString();
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt036.Rows[i]["最終反映日"].ToString();
-                entity.orderCode = dt036.Rows[i]["発注コード"].ToString();
+                entity.orderCode = dt036.Rows[i]["発注コード"].ToString();          
                 entity.purchaseURL = dt036.Rows[i]["purchaserURL"].ToString().Trim();
                 if (dt036.Rows[i]["入荷予定"].ToString().Contains("2100-01-10") && dt036.Rows[i]["在庫情報"].ToString().Contains("empty"))
                 {
