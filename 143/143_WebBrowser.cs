@@ -247,8 +247,9 @@ namespace _143
                     HtmlAgilityPack.HtmlDocument hdoc = new HtmlAgilityPack.HtmlDocument();
                     hdoc.LoadHtml(html);
                     orderCode = dt143.Rows[i]["発注コード"].ToString();
-
                     fun.GetElement("input", "15", "maxlength", webBrowser1).InnerText = orderCode;
+
+                    //fun.GetElement("input", "search_C_sSyohinCd_item", "name", webBrowser1).InnerText = orderCode;
 
                     fun.GetElement("input", "検索", "alt", webBrowser1).InvokeMember("Click");
 
@@ -292,8 +293,9 @@ namespace _143
             entity.partNo = dt143.Rows[i]["自社品番"].ToString();
             entity.makerDate = fun.getCurrentDate();
             entity.reflectDate = dt143.Rows[i]["最終反映日"].ToString();
-            entity.orderCode = dt143.Rows[i]["発注コード"].ToString();
+            entity.orderCode = dt143.Rows[i]["発注コード"].ToString();    
             entity.purchaseURL = fun.url + "/goods/goods_list.html";
+
             entity.siteID = 143;
             entity.sitecode = "143";
 
@@ -369,6 +371,8 @@ namespace _143
                         {
                             //string stockpath = "table/tbody/tr[2]/td/div[2]/div[2]/table/tbody/tr[3]/td[4]/img";
                             string stockpath = "/tbody/tr[3]/td[4]/img";
+                            string stockpath2 = "/ tbody / tr[3] / td[4] / img[2]";//<remark Stockdate Logic 追加　2020/02/28>
+
                             HtmlNodeCollection nc = hdoc.DocumentNode.SelectNodes(stockpath);
                             if (nc == null)
                             {
@@ -383,11 +387,18 @@ namespace _143
                             else
                             {
                                 string sdimg = hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("src", "");
+                                string sdimg2 = hdoc.DocumentNode.SelectSingleNode(stockpath2).GetAttributeValue("src", "");//<remark Stockdate Logic 追加　2020/02/28>
                                 //if (sdimg.Contains("stock.gif"))
                                 if (hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("alt", "").Contains("在庫限り") || sdimg.Contains("stock.gif") || alt.Contains("完売") || (sdimg.Contains("stock.gif") && (alt.Equals("○") || alt.Contains("▲"))))
                                 {
                                     entity.stockDate = "2100-02-01";
+                                }                                
+                                //<remark Stockdate Logic 追加　2020/02/28 Start>
+                                else if (sdimg.Contains("new.gif") && sdimg2.Contains("limited_stock.gif") && alt.Contains("×"))
+                                {
+                                    entity.stockDate = "2100-02-01";
                                 }
+                                //</remark 2020/02/28 End>
                                 else if (sdimg.Contains("new.gif") && alt.Contains("×"))
                                 {
                                     entity.stockDate = "2100-01-10";
