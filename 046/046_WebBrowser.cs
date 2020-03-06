@@ -188,10 +188,14 @@ namespace _46トライスポーツ
                 webBrowser1.DocumentCompleted -= webBrowser1_Login;
                 webBrowser1.ScriptErrorsSuppressed = true;
                 string body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;
+                //<remark Jancode,ordercode 編集。2020/03/06 Start>
+                entity.janCode = dt046.Rows[i]["JANコード"].ToString();
+                entity.orderCode = dt046.Rows[i]["発注コード"].ToString();
                 if (body.Contains("お客様IDもしくはパスワードが正しくありません。"))
                 {
-                    entity.janCode = dt046.Rows[i]["JANコード"].ToString();
-                    entity.orderCode = dt046.Rows[i]["発注コード"].ToString();
+                    //entity.janCode = dt046.Rows[i]["JANコード"].ToString();
+                    //entity.orderCode = dt046.Rows[i]["発注コード"].ToString();
+                    //</remark Jancode,ordercode 編集。2020/03/06 End>
                     fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
                     fun.WriteLog("Login Failed", "046-");
                     
