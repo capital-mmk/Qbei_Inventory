@@ -290,7 +290,8 @@ namespace _011マルイ
 
                                 if (stockDate.Equals("-") || stockDate.Equals("未定"))
                                 {
-                                    entity.stockDate = alt.Equals("○") || alt.Equals("△") || alt.Equals("×") ? "2100-01-01" : alt.Equals("完売") ? "2100-02-01" : "unknown status";
+                                    //entity.stockDate = alt.Equals("○") || alt.Equals("△") || alt.Equals("×") ? "2100-01-01" : alt.Equals("完売") ? "2100-02-01" : "unknown status";
+                                    entity.stockDate = alt.Equals("○") || alt.Equals("△") ? "2100-01-01" : alt.Equals("完売") || alt.Equals("×") ? "2100-02-01" : "unknown status";//<remark ロジックの変更　2020/03/17>
                                 }
                                 else
                                 {
