@@ -413,8 +413,11 @@ namespace _36PRインターナショナル
                                         string day;
                                         //<remark "ごろ"の追加　2020/02/25 Start>
                                         //if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃"))
-                                        if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃") || entity.stockDate.Contains("ごろ"))
+                                        //<remark "末" と　"旬"の追加　2020/03/20 Start>
+                                        //if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃") || entity.stockDate.Contains("ごろ"))
                                         //</remark 2020/02/25 End>
+                                        if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃") || entity.stockDate.Contains("ごろ") || entity.stockDate.Contains("末") || entity.stockDate.Contains("旬"))
+                                        //</remark 2020/03/20  End>
                                         {
                                             if (entity.stockDate.Contains("/"))
                                             {
