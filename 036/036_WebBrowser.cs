@@ -200,7 +200,7 @@ namespace _36PRインターナショナル
                 else
                 {
                     fun.WriteLog("Login success             ------", "036-");
-                    string purchaserURL = dt036.Rows[0]["purchaserURL"].ToString().Trim();
+                    string purchaserURL = dt036.Rows[0]["purchaserURL"].ToString().Trim(); 
                     webBrowser1.Navigate(purchaserURL);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
@@ -238,8 +238,8 @@ namespace _36PRインターナショナル
                 entity.partNo = dt036.Rows[i]["自社品番"].ToString();
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt036.Rows[i]["最終反映日"].ToString();
-                entity.orderCode = dt036.Rows[i]["発注コード"].ToString();
-                entity.purchaseURL = dt036.Rows[i]["purchaserURL"].ToString().Trim();
+                entity.orderCode = dt036.Rows[i]["発注コード"].ToString();  
+                entity.purchaseURL = dt036.Rows[i]["purchaserURL"].ToString().Trim();     
 
                 if (!string.IsNullOrWhiteSpace(entity.purchaseURL))
                 {
@@ -522,7 +522,10 @@ namespace _36PRインターナショナル
                                         entity.qtyStatus = "empty";
                                         //</remark 2020/02/04　End>
                                     }
-                                    else if (entity.stockDate.Contains("販売終了品"))
+                                    //<remark stockDateのロジックを編集　2020/03/23　Start>
+                                    // else if (entity.stockDate.Contains("販売終了品"))
+                                    else if (entity.stockDate.Contains("販売終了"))
+                                    //</remark 2020/03/23　End>
                                     {
                                         entity.stockDate = "2100-02-01";
                                     }
