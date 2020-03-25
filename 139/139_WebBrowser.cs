@@ -294,8 +294,8 @@ namespace _139
                         else
                         {
                             entity.price = webBrowser1.Document.GetElementById("c_sale_price").InnerText;
-                            entity.price = String.IsNullOrEmpty(entity.price) ? "0" : entity.price.Replace(",", "");
-                            hdoc = new HtmlAgilityPack.HtmlDocument();
+                            entity.price = String.IsNullOrEmpty(entity.price) ? "0" : entity.price.Replace(",", "");              
+                            hdoc = new HtmlAgilityPack.HtmlDocument();                            
                             hdoc.LoadHtml(webBrowser1.Document.Body.InnerHtml);
 
                             if (webBrowser1.Document.Body.InnerHtml.Contains("売り切れました"))
@@ -319,15 +319,19 @@ namespace _139
                                     }
                                     else
                                     {
-                                        entity.qtyStatus = b.Where(r => r.SelectNodes("td") != null && r.SelectSingleNode("td[1]").InnerText.Equals(strSize)).Select(z => z.SelectSingleNode("td[2]").InnerText).SingleOrDefault();
+                                        entity.qtyStatus = b.Where(r => r.SelectNodes("td") != null && r.SelectSingleNode("td[1]").InnerText.Equals(strSize)).Select(z => z.SelectSingleNode("td[2]").InnerText).SingleOrDefault();                                      
                                         if (!string.IsNullOrEmpty(entity.qtyStatus))
                                         {
-                                            if (int.Parse(entity.qtyStatus) > 10)
-                                                entity.qtyStatus = "good";
-                                            else if (int.Parse(entity.qtyStatus) > 0 && int.Parse(entity.qtyStatus) <= 10)
+                                            //<remark Change of Quantity State 2020/03/25 Start>
+                                            //if (int.Parse(entity.qtyStatus) > 10)
+                                                if (int.Parse(entity.qtyStatus) >= 10)
+                                                    entity.qtyStatus = "good";
+                                            //else if (int.Parse(entity.qtyStatus) > 0 && int.Parse(entity.qtyStatus) <= 10)
+                                                else if (int.Parse(entity.qtyStatus) >= 5 && int.Parse(entity.qtyStatus) < 10)
                                                 entity.qtyStatus = "small";
                                             else
                                                 entity.qtyStatus = "empty";
+                                            //</remark  2020/03/25 End>
                                         }
                                         //entity.stockDate = b.Where(r => r.SelectNodes("td") != null && r.SelectSingleNode("td[1]").InnerText.Equals(strSize)).Select(z => z.SelectSingleNode("td[4]").InnerText).SingleOrDefault();
                                         entity.stockDate = b.Where(r => r.SelectNodes("td") != null && r.SelectSingleNode("td[1]").InnerText.Equals(strSize)).Select(z => z.SelectSingleNode("td[4]").InnerHtml).SingleOrDefault();
@@ -347,7 +351,7 @@ namespace _139
                                             }
                                         }
                                             //2018-06-21 Start 
-                                        else if (entity.qtyStatus.Equals("empty") && String.IsNullOrEmpty(entity.stockDate))
+                                        else if (entity.qtyStatus.Equals("empty") && String.IsNullOrEmpty(entity.stockDate))                                          
                                             entity.stockDate = "2100-02-01";
                                             //2018-06-21 End
                                         else entity.stockDate = "2100-01-01";
