@@ -386,8 +386,8 @@ namespace _143
                             }
                             else
                             {
-                                string sdimg = hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("src", "");                             
-                                string sdimg2 = hdoc.DocumentNode.SelectSingleNode(stockpath2).GetAttributeValue("src", "");//<remark Stockdate Logic 追加　2020/02/28>
+                                string sdimg = hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("src", "");
+                                string sdimg2 = hdoc.DocumentNode.SelectSingleNode(stockpath2).GetAttributeValue("src", "");//<remark Stockdate Logic 追加　2020/02/28>                               
                                 //if (sdimg.Contains("stock.gif"))
                                 if (hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("alt", "").Contains("在庫限り") || sdimg.Contains("stock.gif") || alt.Contains("完売") || (sdimg.Contains("stock.gif") && (alt.Equals("○") || alt.Contains("▲"))))
                                 {
@@ -396,7 +396,7 @@ namespace _143
                                 //<remark Stockdate Logic 追加　2020/02/28 Start>
                                 //<remark Stockdate Logic 追加　2020/03/26 Start>
                                 //else if (sdimg.Contains("new.gif") && sdimg2.Contains("limited_stock.gif") && alt.Contains("×"))
-                                else if ((sdimg.Contains("new.gif") && sdimg2.Contains("limited_stock.gif") && alt.Contains("×"))||(sdimg2.Contains("limited_stock.gif") && alt.Contains("×")))
+                                else if ((sdimg.Contains("new.gif") && sdimg2.Contains("limited_stock.gif") && alt.Contains("×"))||sdimg2.Contains("limited_stock.gif") && alt.Contains("×"))
                                 //</remark 2020/03/26 End>
                                 {
                                     entity.stockDate = "2100-02-01";
