@@ -59,7 +59,7 @@ namespace _143
             {
                 qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 qe.site = 143;
-                qe.flag = 0;
+                qe.flag = 1;
                 DataTable dtflag = fun.SelectFlag(143);
                 int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
 
@@ -173,7 +173,7 @@ namespace _143
             {
                 string janCode = dt143.Rows[0]["JANコード"].ToString();
                 string orderCode = dt143.Rows[0]["発注コード"].ToString();
-                fun.Qbei_ErrorInsert(143, fun.GetSiteName("143"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "143");                
+                fun.Qbei_ErrorInsert(143, fun.GetSiteName("143"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "143");
                 fun.WriteLog(ex, "143-", janCode, orderCode);
 
                 Application.Exit();
@@ -208,7 +208,7 @@ namespace _143
             {
                 string janCode = dt143.Rows[0]["JANコード"].ToString();
                 string orderCode = dt143.Rows[0]["発注コード"].ToString();
-                fun.Qbei_ErrorInsert(143, fun.GetSiteName("143"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "143");                
+                fun.Qbei_ErrorInsert(143, fun.GetSiteName("143"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "143");
                 fun.WriteLog(ex, "143-", janCode, orderCode);
 
                 Application.Exit();
@@ -221,7 +221,7 @@ namespace _143
         /// Wait For Search Page Process.
         /// </summary>
         private void webBrowser1_WaitForSearchPage(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {            
+        {
             webBrowser1.Navigate(fun.url + "/goods/goods_list.html");
             if (webBrowser1.Url.ToString().Contains("goods_list.html"))
             {
@@ -271,11 +271,11 @@ namespace _143
             {
                 string janCode = dt143.Rows[i]["JANコード"].ToString();
                 orderCode = dt143.Rows[i]["発注コード"].ToString();
-                fun.Qbei_ErrorInsert(143, fun.GetSiteName("143"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "143");                
+                fun.Qbei_ErrorInsert(143, fun.GetSiteName("143"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "143");
                 fun.WriteLog(ex, "143-", janCode, orderCode);
 
                 i++;
-                webBrowser1.Navigate(fun.url + "/goods/goods_list.html");                
+                webBrowser1.Navigate(fun.url + "/goods/goods_list.html");
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
             }
         }
@@ -293,7 +293,7 @@ namespace _143
             entity.partNo = dt143.Rows[i]["自社品番"].ToString();
             entity.makerDate = fun.getCurrentDate();
             entity.reflectDate = dt143.Rows[i]["最終反映日"].ToString();
-            entity.orderCode = dt143.Rows[i]["発注コード"].ToString();    
+            entity.orderCode = dt143.Rows[i]["発注コード"].ToString();
             entity.purchaseURL = fun.url + "/goods/goods_list.html";
 
             entity.siteID = 143;
@@ -386,30 +386,68 @@ namespace _143
                             }
                             else
                             {
-                                string sdimg = hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("src", "");
-                                string sdimg2 = hdoc.DocumentNode.SelectSingleNode(stockpath2).GetAttributeValue("src", "");//<remark Stockdate Logic 追加　2020/02/28>                               
-                                //if (sdimg.Contains("stock.gif"))
-                                if (hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("alt", "").Contains("在庫限り") || sdimg.Contains("stock.gif") || alt.Contains("完売") || (sdimg.Contains("stock.gif") && (alt.Equals("○") || alt.Contains("▲"))))
+                                //<remark Stockdateについて、ロジックの編集　2020/04/01 Start>
+                                if (hdoc.DocumentNode.SelectSingleNode(stockpath2) != null)
                                 {
-                                    entity.stockDate = "2100-02-01";
-                                }
-                                //<remark Stockdate Logic 追加　2020/02/28 Start>
-                                //<remark Stockdate Logic 追加　2020/03/26 Start>
-                                //else if (sdimg.Contains("new.gif") && sdimg2.Contains("limited_stock.gif") && alt.Contains("×"))
-                                else if ((sdimg.Contains("new.gif") && sdimg2.Contains("limited_stock.gif") && alt.Contains("×"))||sdimg2.Contains("limited_stock.gif") && alt.Contains("×"))
-                                //</remark 2020/03/26 End>
-                                {
-                                    entity.stockDate = "2100-02-01";
-                                }
-                                //</remark 2020/02/28 End>
-                                else if (sdimg.Contains("new.gif") && alt.Contains("×"))
-                                {
-                                    entity.stockDate = "2100-01-10";
+                                    string sdimg = hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("src", "");
+                                    string sdimg2 = hdoc.DocumentNode.SelectSingleNode(stockpath2).GetAttributeValue("src", "");//<remark Stockdate Logic 追加　2020/02/28>                              
+                                                                                                                                //if (sdimg.Contains("stock.gif"))
+                                                                                                                                //if (hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("alt", "").Contains("在庫限り") || sdimg.Contains("stock.gif") || alt.Contains("完売") || (sdimg.Contains("stock.gif") && (alt.Equals("○") || alt.Contains("▲"))))
+                                                                                                                                //{
+                                                                                                                                //    entity.stockDate = "2100-02-01";
+                                                                                                                                //}
+                                                                                                                                ////<remark Stockdate Logic 追加　2020/02/28 Start>
+                                                                                                                                ////<remark Stockdate Logic 追加　2020/03/26 Start>
+                                                                                                                                ////else if (sdimg.Contains("new.gif") && sdimg2.Contains("limited_stock.gif") && alt.Contains("×"))
+                                                                                                                                //else if ((sdimg.Contains("new.gif") && sdimg2.Contains("limited_stock.gif") && alt.Contains("×")) || sdimg2.Contains("limited_stock.gif") && alt.Contains("×"))
+                                                                                                                                ////</remark 2020/03/26 End>
+                                                                                                                                //{
+                                                                                                                                //    entity.stockDate = "2100-02-01";
+                                                                                                                                //}
+                                                                                                                                ////</remark 2020/02/28 End>
+                                                                                                                                //else if (sdimg.Contains("new.gif") && alt.Contains("×"))
+                                                                                                                                //{
+                                                                                                                                //    entity.stockDate = "2100-01-10";
+                                                                                                                                //}
+                                                                                                                                //else
+                                                                                                                                //{
+                                                                                                                                //    entity.stockDate = "2100-01-01";
+                                                                                                                                //}
+
+                                    if ((sdimg.Contains("new.gif") && sdimg2.Contains("limited_stock.gif") && alt.Contains("×")) || (sdimg.Contains("limited_stock.gif") && sdimg2.Contains("new.gif") && alt.Contains("×")))
+                                    //</remark 2020/03/26 End>
+                                    {
+                                        entity.stockDate = "2100-02-01";
+                                    }
+                                    else
+                                    {
+                                        entity.stockDate = "2100-01-01";
+                                    }
                                 }
                                 else
                                 {
-                                    entity.stockDate = "2100-01-01";
+                                    string sdimg = hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("src", "");
+
+                                    //if (sdimg.Contains("stock.gif"))
+                                    if (alt.Contains("完売") || (sdimg.Contains("limited_stock.gif") && (alt.Equals("○") || alt.Contains("▲") || alt.Contains("×"))))
+                                    {
+                                        entity.stockDate = "2100-02-01";
+                                    }
+                                    else if (hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("alt", "").Contains("在庫限り") || sdimg.Contains("limited_stock.gif"))
+                                    {
+                                        entity.stockDate = "2100-02-01";
+                                        alt = "×";
+                                    }
+                                    else if (sdimg.Contains("new.gif") && alt.Contains("×"))
+                                    {
+                                        entity.stockDate = "2100-01-10";
+                                    }
+                                    else
+                                    {
+                                        entity.stockDate = "2100-01-01";
+                                    }
                                 }
+                                //</remark 2020/04/01 End>
                             }
                         }
                         catch
@@ -432,7 +470,7 @@ namespace _143
                     }
                     catch (Exception ex)
                     {
-                        fun.Qbei_ErrorInsert(143, fun.GetSiteName("143"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "143");                       
+                        fun.Qbei_ErrorInsert(143, fun.GetSiteName("143"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "143");
                         fun.WriteLog(ex, "143-", entity.janCode, entity.orderCode);
                     }
                 }
