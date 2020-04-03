@@ -289,11 +289,11 @@ namespace _143
             string strUrl = string.Empty;
             entity = new Qbei_Entity();
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemProcessing);
-            entity.janCode = dt143.Rows[i]["JANコード"].ToString();
+            entity.janCode = dt143.Rows[i]["JANコード"].ToString();          
             entity.partNo = dt143.Rows[i]["自社品番"].ToString();
             entity.makerDate = fun.getCurrentDate();
             entity.reflectDate = dt143.Rows[i]["最終反映日"].ToString();
-            entity.orderCode = dt143.Rows[i]["発注コード"].ToString();
+            entity.orderCode = dt143.Rows[i]["発注コード"].ToString();                   
             entity.purchaseURL = fun.url + "/goods/goods_list.html";
 
             entity.siteID = 143;
@@ -372,6 +372,7 @@ namespace _143
                             //string stockpath = "table/tbody/tr[2]/td/div[2]/div[2]/table/tbody/tr[3]/td[4]/img";
                             string stockpath = "/tbody/tr[3]/td[4]/img";
                             string stockpath2 = "/ tbody / tr[3] / td[4] / img[2]";//<remark Stockdate Logic 追加　2020/02/28>
+                            string stockpath3 = "/ tbody / tr[3] / td[4] / img[3]";//<remark Stockdate Logic 追加　2020/04/03>
 
                             HtmlNodeCollection nc = hdoc.DocumentNode.SelectNodes(stockpath);
                             if (nc == null)
@@ -386,50 +387,48 @@ namespace _143
                             }
                             else
                             {
-                                //<remark Stockdateについて、ロジックの編集　2020/04/01 Start>
-                                if (hdoc.DocumentNode.SelectSingleNode(stockpath2) != null)
+                                //<remark Stockdateについて、ロジックの編集　2020/04/03 Start>
+                                //<remark Stockdate Logic 追加　2020/02/28>                              
+                                //if (sdimg.Contains("stock.gif"))
+                                //if (hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("alt", "").Contains("在庫限り") || sdimg.Contains("stock.gif") || alt.Contains("完売") || (sdimg.Contains("stock.gif") && (alt.Equals("○") || alt.Contains("▲"))))
+                                //{
+                                //    entity.stockDate = "2100-02-01";
+                                //}
+                                ////<remark Stockdate Logic 追加　2020/02/28 Start>
+                                ////<remark Stockdate Logic 追加　2020/03/26 Start>
+                                ////else if (sdimg.Contains("new.gif") && sdimg2.Contains("limited_stock.gif") && alt.Contains("×"))
+                                //else if ((sdimg.Contains("new.gif") && sdimg2.Contains("limited_stock.gif") && alt.Contains("×")) || sdimg2.Contains("limited_stock.gif") && alt.Contains("×"))
+                                ////</remark 2020/03/26 End>
+                                //{
+                                //    entity.stockDate = "2100-02-01";
+                                //}
+                                ////</remark 2020/02/28 End>
+                                //else if (sdimg.Contains("new.gif") && alt.Contains("×"))
+                                //{
+                                //    entity.stockDate = "2100-01-10";
+                                //}
+                                //else
+                                //{
+                                //    entity.stockDate = "2100-01-01";
+                                //}
+                                string sdimg;
+                                string sdimg2;
+                                string sdimg3;                            
+                                if (alt.Equals("○") || alt.Equals("▲"))
                                 {
-                                    string sdimg = hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("src", "");
-                                    string sdimg2 = hdoc.DocumentNode.SelectSingleNode(stockpath2).GetAttributeValue("src", "");//<remark Stockdate Logic 追加　2020/02/28>                              
-                                                                                                                                //if (sdimg.Contains("stock.gif"))
-                                                                                                                                //if (hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("alt", "").Contains("在庫限り") || sdimg.Contains("stock.gif") || alt.Contains("完売") || (sdimg.Contains("stock.gif") && (alt.Equals("○") || alt.Contains("▲"))))
-                                                                                                                                //{
-                                                                                                                                //    entity.stockDate = "2100-02-01";
-                                                                                                                                //}
-                                                                                                                                ////<remark Stockdate Logic 追加　2020/02/28 Start>
-                                                                                                                                ////<remark Stockdate Logic 追加　2020/03/26 Start>
-                                                                                                                                ////else if (sdimg.Contains("new.gif") && sdimg2.Contains("limited_stock.gif") && alt.Contains("×"))
-                                                                                                                                //else if ((sdimg.Contains("new.gif") && sdimg2.Contains("limited_stock.gif") && alt.Contains("×")) || sdimg2.Contains("limited_stock.gif") && alt.Contains("×"))
-                                                                                                                                ////</remark 2020/03/26 End>
-                                                                                                                                //{
-                                                                                                                                //    entity.stockDate = "2100-02-01";
-                                                                                                                                //}
-                                                                                                                                ////</remark 2020/02/28 End>
-                                                                                                                                //else if (sdimg.Contains("new.gif") && alt.Contains("×"))
-                                                                                                                                //{
-                                                                                                                                //    entity.stockDate = "2100-01-10";
-                                                                                                                                //}
-                                                                                                                                //else
-                                                                                                                                //{
-                                                                                                                                //    entity.stockDate = "2100-01-01";
-                                                                                                                                //}
-
-                                    if ((sdimg.Contains("new.gif") && sdimg2.Contains("limited_stock.gif") && alt.Contains("×")) || (sdimg.Contains("limited_stock.gif") && sdimg2.Contains("new.gif") && alt.Contains("×")))
-                                    //</remark 2020/03/26 End>
-                                    {
-                                        entity.stockDate = "2100-02-01";
-                                    }
-                                    else
-                                    {
-                                        entity.stockDate = "2100-01-01";
-                                    }
+                                    entity.stockDate = "2100-01-01";
                                 }
-                                else
+                                else if (alt.Contains("完売"))
                                 {
-                                    string sdimg = hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("src", "");
+                                    entity.stockDate = "2100-02-01";
+                                }
+                                else if (hdoc.DocumentNode.SelectSingleNode(stockpath2) == null)
+                                {
+                                    sdimg = hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("src", "");
 
                                     //if (sdimg.Contains("stock.gif"))
-                                    if (alt.Contains("完売") || (sdimg.Contains("limited_stock.gif") && (alt.Equals("○") || alt.Contains("▲") || alt.Contains("×"))))
+                                    //if (alt.Contains("完売") || (sdimg.Contains("limited_stock.gif") && (alt.Equals("○") || alt.Contains("▲") || alt.Contains("×"))))
+                                    if ( (sdimg.Contains("limited_stock.gif") &&  alt.Contains("×") )|| (sdimg.Contains("senkou") && alt.Contains("完売")) || (sdimg.Contains("finish") && alt.Contains("×")))
                                     {
                                         entity.stockDate = "2100-02-01";
                                     }
@@ -442,12 +441,34 @@ namespace _143
                                     {
                                         entity.stockDate = "2100-01-10";
                                     }
-                                    else
+                                }
+                                else if (hdoc.DocumentNode.SelectSingleNode(stockpath3) != null)
+                                {
+                                    sdimg = hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("src", "");
+                                    sdimg2 = hdoc.DocumentNode.SelectSingleNode(stockpath2).GetAttributeValue("src", "");
+                                    sdimg3 = hdoc.DocumentNode.SelectSingleNode(stockpath3).GetAttributeValue("src", "");//<remark Stockdate Logic 追加　2020/04/03>
+                                    if (sdimg.Contains("limited_stock.gif") || sdimg2.Contains("limited_stock.gif") || sdimg3.Contains("limited_stock.gif"))
                                     {
-                                        entity.stockDate = "2100-01-01";
+                                        entity.stockDate = "2100-02-01";
                                     }
                                 }
-                                //</remark 2020/04/01 End>
+                                else if (hdoc.DocumentNode.SelectSingleNode(stockpath2) != null)
+                                {
+                                     sdimg = hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("src", "");
+                                     sdimg2 = hdoc.DocumentNode.SelectSingleNode(stockpath2).GetAttributeValue("src", "");//<remark Stockdate Logic 追加　2020/02/28>                                    
+
+                                    //if ((sdimg.Contains("new.gif") && sdimg2.Contains("limited_stock.gif") && alt.Contains("×")) || (sdimg.Contains("limited_stock.gif") && sdimg2.Contains("new.gif") && alt.Contains("×")) || sdimg.Contains("limited_stock.gif"))
+                                    //</remark 2020/03/26 End
+                                    if (sdimg.Contains("limited_stock.gif") || sdimg2.Contains("limited_stock.gif"))
+                                    {
+                                        entity.stockDate = "2100-02-01";
+                                    }
+                                }
+                               
+                                else
+                                {
+                                    entity.stockDate = "2100-02-01";
+                                }                                
                             }
                         }
                         catch
@@ -455,18 +476,21 @@ namespace _143
                             entity.stockDate = "2100-01-10";
                         }
                         entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("▲") ? "small" : alt.Equals("×") || alt.Contains("完売") ? "empty" : "unknown status";
-                        if ((dt143.Rows[i]["在庫情報"].ToString().Contains("empty") || dt143.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt143.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
-                        {
-                            if (((entity.qtyStatus.Equals("empty")) && (entity.stockDate.Equals("2100-01-01"))) || ((entity.qtyStatus.Equals("empty")) && (entity.stockDate.Equals("2100-02-01"))) || ((entity.qtyStatus.Equals("empty")) && (entity.stockDate.Equals(" "))) || ((entity.stockDate.Equals(" ")) && (entity.qtyStatus.Equals("inquiry"))) || ((entity.stockDate.Equals("2100-01-10")) && (entity.qtyStatus.Equals("inquiry"))))
-                            {
-                                entity.qtyStatus = dt143.Rows[i]["在庫情報"].ToString();
-                                entity.price = dt143.Rows[i]["下代"].ToString();
-                                entity.stockDate = dt143.Rows[i]["入荷予定"].ToString();
-                            }
-                            fun.Qbei_Inserts(entity);
-                        }
-                        else
-                            fun.Qbei_Inserts(entity);
+
+                        //if ((dt143.Rows[i]["在庫情報"].ToString().Contains("empty") || dt143.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt143.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
+                        //{
+                        //    if (((entity.qtyStatus.Equals("empty")) && (entity.stockDate.Equals("2100-01-01"))) || ((entity.qtyStatus.Equals("empty")) && (entity.stockDate.Equals("2100-02-01"))) || ((entity.qtyStatus.Equals("empty")) && (entity.stockDate.Equals(" "))) || ((entity.stockDate.Equals(" ")) && (entity.qtyStatus.Equals("inquiry"))) || ((entity.stockDate.Equals("2100-01-10")) && (entity.qtyStatus.Equals("inquiry"))))
+                        //    {
+                        //        entity.qtyStatus = dt143.Rows[i]["在庫情報"].ToString();
+                        //        entity.price = dt143.Rows[i]["下代"].ToString();
+                        //        entity.stockDate = dt143.Rows[i]["入荷予定"].ToString();
+                        //    }
+                        //    fun.Qbei_Inserts(entity);
+                        //}
+                        //else
+                        //</remark 2020/04/03 End>
+
+                        fun.Qbei_Inserts(entity);
                     }
                     catch (Exception ex)
                     {
