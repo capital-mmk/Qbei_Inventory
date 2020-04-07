@@ -1245,6 +1245,39 @@ namespace Common
             }
             return false;
         }
+
+        //<remark Quantityの　追加ロジック　2020/04/07 Start>
+        public bool IsGood_38(string value)
+        {
+            if (IsNumber(value))
+            {
+                if (Convert.ToInt32(value) >= 10)
+                    return true;
+                return false;
+            }
+            return false;
+        }
+        public bool IsSmall_38(string value)
+        {
+            if (IsNumber(value))
+            {
+                if (Convert.ToInt32(value) >= 5 && Convert.ToInt32(value) < 10)
+                    return true;
+                return false;
+            }
+            return false;
+        }
+        public bool IsEmpty_38(string value)
+        {
+            if (IsNumber(value))
+            {
+                if (Convert.ToInt32(value) < 5)
+                    return true;
+                return false;
+            }
+            return false;
+        }
+        //</remark 2020/04/07 End>
         public bool IsGood1(string value)
         {
             if (IsNumber(value))
@@ -1265,6 +1298,7 @@ namespace Common
             }
             return false;
         }
+      
         public bool IsLessthanzero(string value)
         {
             if (IsNumber(value))
@@ -1284,7 +1318,7 @@ namespace Common
                 return false;
             }
             return false;
-        }
+        }      
         public bool IsSmall1(string value)
         {
             if (IsNumber(value))
