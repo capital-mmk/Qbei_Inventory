@@ -191,7 +191,8 @@ namespace _24東_アズマ_
         {   
             try
             {
-                entity.orderCode = dt024.Rows[i]["発注コード"].ToString().Trim();
+               // entity.orderCode = dt024.Rows[i]["発注コード"].ToString().Trim();
+                entity.orderCode = "533TBD12740";
                 entity.janCode = dt024.Rows[i]["JANコード"].ToString().Trim();
                 string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
                 if (body.Contains("This page can't be displayed"))
@@ -233,7 +234,8 @@ namespace _24東_アズマ_
         {
             try
             {
-                entity.orderCode = dt024.Rows[i]["発注コード"].ToString().Trim();
+                //entity.orderCode = dt024.Rows[i]["発注コード"].ToString().Trim();
+                entity.orderCode = "533TBD12740";
                 entity.janCode = dt024.Rows[i]["JANコード"].ToString().Trim();
                 string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
                 if (body.Contains("This page can't be displayed"))
@@ -267,7 +269,8 @@ namespace _24東_アズマ_
             {
                 fun.ClearMemory();
 
-                entity.orderCode = dt024.Rows[i]["発注コード"].ToString();
+                //entity.orderCode = dt024.Rows[i]["発注コード"].ToString();
+                entity.orderCode = "533TBD12740";
                 entity.janCode = dt024.Rows[i]["JANコード"].ToString();
                 string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
                 if (body.Contains("This page can't be displayed"))
@@ -283,7 +286,8 @@ namespace _24東_アズマ_
                 entity.partNo = dt024.Rows[i]["自社品番"].ToString();
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt024.Rows[i]["最終反映日"].ToString();
-                entity.orderCode = dt024.Rows[i]["発注コード"].ToString().Trim();
+               // entity.orderCode = dt024.Rows[i]["発注コード"].ToString().Trim();
+                entity.orderCode = "533TBD12740";
                 entity.purchaseURL = fun.url + "/azuma/product_detail/multi_request?id=" + entity.orderCode;
 
                 if (!string.IsNullOrWhiteSpace(entity.orderCode))
@@ -335,12 +339,19 @@ namespace _24東_アズマ_
                             entity.qtyStatus = "good";
                             dateexists = qtyStatus.Replace("○", string.Empty).Replace("◎", string.Empty);
                         }
-                        else if (qtyStatus.Contains("△") || qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中"))
+                        //<remark quantity & stockdateの　編集ロジック　2020/04/07 Start>
+                        //else if (qtyStatus.Contains("△") || qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中"))
+                        else if ( qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中"))
                         {
                             entity.qtyStatus = "empty";
                             //dateexists = qtyStatus.Replace("△", string.Empty).Replace("台|個|ロット", string.Empty);
                             //dateexists = qtyStatus.Replace("×", string.Empty).Replace("入荷予定", string.Empty).Replace("予約受付中", string.Empty);
                         }
+                        else if (qtyStatus.Contains("△"))
+                        {
+                            entity.qtyStatus = "good";
+                        }
+                        //</remark 2020/04/07 End>
                         else
                         {
                             entity.qtyStatus = "unknown status";
@@ -356,17 +367,17 @@ namespace _24東_アズマ_
                         }
 
 
-                        if ((dt024.Rows[i]["在庫情報"].ToString().Contains("empty") || dt024.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt024.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
-                        {
-                            if ((entity.qtyStatus.Contains("empty") && (entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry"))
-                            {
-                                entity.qtyStatus = dt024.Rows[i]["在庫情報"].ToString();
-                                entity.stockDate = dt024.Rows[i]["入荷予定"].ToString();
-                                entity.price = dt024.Rows[i]["下代"].ToString();
-                            }
-                            fun.Qbei_Inserts(entity);
-                        }
-                        else
+                        //if ((dt024.Rows[i]["在庫情報"].ToString().Contains("empty") || dt024.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt024.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
+                        //{
+                        //    if ((entity.qtyStatus.Contains("empty") && (entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry"))
+                        //    {
+                        //        entity.qtyStatus = dt024.Rows[i]["在庫情報"].ToString();
+                        //        entity.stockDate = dt024.Rows[i]["入荷予定"].ToString();
+                        //        entity.price = dt024.Rows[i]["下代"].ToString();
+                        //    }
+                        //    fun.Qbei_Inserts(entity);
+                        //}
+                        //else
 
                             fun.Qbei_Inserts(entity);
                     }
