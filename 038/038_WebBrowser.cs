@@ -281,7 +281,7 @@ namespace _38フタバ
         {
             fun.ClearMemory();
 
-            //<remark ロジックの変更　2020/04/07 Start>
+            //<remark ロジックの変更　2020/04/08 Start>
             string strStockDate = string.Empty;
             webBrowser1.ScriptErrorsSuppressed = true;
             entity = new Qbei_Entity();
@@ -341,6 +341,7 @@ namespace _38フタバ
                         entity.price = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_tankazeinuki_0").InnerText;
                         entity.price = entity.price.Replace(",", string.Empty);
                         entity.stockDate = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_nyukayotei_0").InnerText;
+                        strStockDate = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_nyukayotei_0").InnerText;
 
                         //if (string.IsNullOrWhiteSpace(entity.stockDate) || entity.stockDate.Contains("お取り寄せ品"))
                         //{
@@ -461,7 +462,7 @@ namespace _38フタバ
                         ////{
                         ////    entity.stockDate = "2100-01-01";
                         ////}                       
-                     
+
                         if (string.IsNullOrWhiteSpace(entity.stockDate) || entity.stockDate.Contains("お取り寄せ品"))
                         {
 
@@ -543,15 +544,15 @@ namespace _38フタバ
                                 { Year = Year + 1; }
                                 Day = DateTime.DaysInMonth(DateTime.Now.Year, Month).ToString();
                                 entity.stockDate = Year + "-" + Month + "-" + Day;
-                                if (m[1].Contains("初旬") || m[1].Contains("上旬"))
+                                if (m[1].Contains("初旬") || m[1].Contains("上旬") || m[1].Contains("上"))
                                 {
                                     entity.stockDate = Year + "-" + Month + "-" + "10";
                                 }
-                                else if (m[1].Contains("中旬"))
+                                else if (m[1].Contains("中旬")||m[1].Contains("中"))
                                 {
                                     entity.stockDate = Year + "-" + Month + "-" + "20";
                                 }
-                                else if (m[1].Contains("下旬") || entity.stockDate.Contains("末頃") || entity.stockDate.Contains("末"))
+                                else if (m[1].Contains("下旬") || entity.stockDate.Contains("末頃") || entity.stockDate.Contains("末")||m[1].Contains("下"))
                                 {
                                     entity.stockDate = Year + "-" + Month + "-" + Day;
                                 }                              
@@ -582,15 +583,15 @@ namespace _38フタバ
                                         entity.stockDate = Year + "-" + Month + "-" + Day;
                                     }
 
-                                    if (strStockDate.Contains("初旬") || strStockDate.Contains("上旬"))
+                                    if (strStockDate.Contains("初旬") || strStockDate.Contains("上旬") || strStockDate.Contains("上"))
                                     {
                                         entity.stockDate = Year + "-" + Month + "-" + "10";
                                     }
-                                    else if (strStockDate.Contains("中旬"))
+                                    else if (strStockDate.Contains("中旬") || strStockDate.Contains("中"))
                                     {
                                         entity.stockDate = Year + "-" + Month + "-" + "20";
                                     }
-                                    else if (strStockDate.Contains("下旬") || entity.stockDate.Contains("末頃") || entity.stockDate.Contains("末"))
+                                    else if (strStockDate.Contains("下旬") || entity.stockDate.Contains("末頃") || entity.stockDate.Contains("末")||strStockDate.Contains("下"))
                                     {
                                         entity.stockDate = Year + "-" + Month + "-" + Day;
                                     }
@@ -646,15 +647,15 @@ namespace _38フタバ
                             {
                                 entity.stockDate = entity.stockDate.Replace("年", "-").Replace("月", "-").Replace("日", "-");
                             }
-                            else if (entity.stockDate.Contains("初旬") || entity.stockDate.Contains("上旬"))
+                            else if (entity.stockDate.Contains("初旬") || entity.stockDate.Contains("上旬") || entity.stockDate.Contains("上"))
                             {
                                 entity.stockDate = Year + "-" + Month + "-" + "10";
                             }
-                            else if (entity.stockDate.Contains("中旬"))
+                            else if (entity.stockDate.Contains("中旬") || entity.stockDate.Contains("中"))
                             {
                                 entity.stockDate = Year + "-" + Month + "-" + "20";
                             }
-                            else if (entity.stockDate.Contains("下旬") || entity.stockDate.Contains("末頃") || entity.stockDate.Contains("末"))
+                            else if (entity.stockDate.Contains("下旬") || entity.stockDate.Contains("末頃") || entity.stockDate.Contains("末")||entity.stockDate.Contains("下"))
                             {
                                 entity.stockDate = Year + "-" + Month + "-" + Day;
                             }
@@ -733,20 +734,23 @@ namespace _38フタバ
                             {
                                 if (entity.stockDate.Contains("~"))
                                 {
-                                    int bIndex = entity.stockDate.IndexOf('~');
-                                    string charater = entity.stockDate.Substring(bIndex + 1, mIndex - 2);
-                                    if (charater.Contains("月"))
-                                    {
-                                        month2 = Convert.ToInt32(entity.stockDate.Substring(bIndex + 1, mIndex - 3));
-                                    }
-                                    else if (mIndex < 5)
-                                    {
-                                        month2 = Convert.ToInt32(entity.stockDate.Substring(bIndex + 1, mIndex - 2));
-                                    }
-                                    else
-                                    {
-                                        month2 = Convert.ToInt32(entity.stockDate.Substring(bIndex + 1, mIndex - 3));
-                                    }
+                                    //int bIndex = entity.stockDate.IndexOf('~');
+                                    //string charater = entity.stockDate.Substring(bIndex + 1, mIndex - 2);
+                                    //if (charater.Contains("月"))
+                                    //{
+                                    //    month2 = Convert.ToInt32(entity.stockDate.Substring(bIndex + 1, mIndex - 3));
+                                    //}
+                                    //else if (mIndex < 5)
+                                    //{
+                                    //    month2 = Convert.ToInt32(entity.stockDate.Substring(bIndex + 1, mIndex - 2));
+                                    //}
+                                    //else
+                                    //{
+                                    //    month2 = Convert.ToInt32(entity.stockDate.Substring(bIndex + 1, mIndex - 3));
+                                    //}
+                                    var D = entity.stockDate.Split('~').ToArray();    
+                                    D= D[1].ToString().Split('月').ToArray();
+                                    month2 = Convert.ToInt32(D[0]);
                                     if (month2 < pcmonth)
                                     {
                                         year = Convert.ToString(Convert.ToInt32(year) + 1);
@@ -780,6 +784,18 @@ namespace _38フタバ
                                         Year = Convert.ToString(Convert.ToInt32(Year) + 1);
                                     }
                                     Day = DateTime.DaysInMonth(DateTime.Now.Year, Month).ToString();
+                                    entity.stockDate = Year + "-" + Month + "-" + Day;
+                                }
+                                if (strStockDate.Contains("初旬") || strStockDate.Contains("上旬") || strStockDate.Contains("上"))
+                                {
+                                    entity.stockDate = Year + "-" + Month + "-" + "10";
+                                }
+                                else if (strStockDate.Contains("中旬") || strStockDate.Contains("中"))
+                                {
+                                    entity.stockDate = Year + "-" + Month + "-" + "20";
+                                }
+                                else if (strStockDate.Contains("下旬") || strStockDate.Contains("末頃") || strStockDate.Contains("末")||strStockDate.Contains("下"))
+                                {
                                     entity.stockDate = Year + "-" + Month + "-" + Day;
                                 }
                             }                          
@@ -826,7 +842,7 @@ namespace _38フタバ
                         entity.stockDate = dt.ToString("yyyy-MM-dd");
                         fun.Qbei_Inserts(entity);
                     }
-                    //</remark 2020/04/07 End>
+                    //</remark 2020/04/08 End>
                 }
                 catch (Exception ex)
                 {
