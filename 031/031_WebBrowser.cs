@@ -345,17 +345,19 @@ namespace _031アキボウ
                         //entity.price = hdoc.DocumentNode.SelectSingleNode("/html/body/div/div/table/tbody/tr/td[2]/table[2]/tbody/tr[1]/td[1]").InnerText;
                         entity.price = dt031.Rows[i]["下代"].ToString();
 
-                        if ((dt031.Rows[i]["在庫情報"].ToString().Contains("empty") || dt031.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt031.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
-                        {
-                            if (((entity.qtyStatus.Equals("empty") && (entity.stockDate.Equals("2100-01-01") || entity.stockDate.Equals("2100-02-01"))) || entity.qtyStatus.Equals("inquiry")) || ((entity.stockDate.Equals("2018-02-28")) && (entity.qtyStatus.Equals("inquiry"))))
-                            {
-                                entity.qtyStatus = dt031.Rows[i]["在庫情報"].ToString();
-                                entity.price = dt031.Rows[i]["下代"].ToString();
-                                entity.stockDate = dt031.Rows[i]["入荷予定"].ToString();
-                            }
-                            fun.Qbei_Inserts(entity);
-                        }
-                        else
+                        //<remark Close Logic 2020/04/23 Start>
+                        //if ((dt031.Rows[i]["在庫情報"].ToString().Contains("empty") || dt031.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt031.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
+                        //{
+                        //    if (((entity.qtyStatus.Equals("empty") && (entity.stockDate.Equals("2100-01-01") || entity.stockDate.Equals("2100-02-01"))) || entity.qtyStatus.Equals("inquiry")) || ((entity.stockDate.Equals("2018-02-28")) && (entity.qtyStatus.Equals("inquiry"))))
+                        //    {
+                        //        entity.qtyStatus = dt031.Rows[i]["在庫情報"].ToString();
+                        //        entity.price = dt031.Rows[i]["下代"].ToString();
+                        //        entity.stockDate = dt031.Rows[i]["入荷予定"].ToString();
+                        //    }
+                        //    fun.Qbei_Inserts(entity);
+                        //}
+                        //else
+                        //</remark 2020/04/23 End>
                             fun.Qbei_Inserts(entity);
                     }
                 }
