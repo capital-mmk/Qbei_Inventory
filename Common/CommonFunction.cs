@@ -756,6 +756,7 @@ namespace Common
                 case "034": return "シマノ";
                 case "035": return "インターテック";
                 case "036": return "PRインターナショナル";
+                case "037": return "東京サンエス(株)";
                 case "038": return "フタバ";
                 case "046": return "トライスポーツ";
                 case "053": return "中川商会";
