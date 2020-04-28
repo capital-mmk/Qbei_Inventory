@@ -172,7 +172,7 @@ namespace _037
                 }
 
                 DataTable dt037 = fun.GetDatatable("037");
-                dt037 = fun.GetOrderData(dt037, "https://ec.tsss.co.jp/aec/user/csv_export_download_info?schedule_id=csv_export_49c35718d482aecec14e92168a955b66", "037", "");
+               // dt037 = fun.GetOrderData(dt037, "https://ec.tsss.co.jp/aec/user/csv_export_download_info?schedule_id=csv_export_49c35718d482aecec14e92168a955b66", "037", "");//<remark Close Logic 2020/04/28 />
                 fun.GetTotalCount("037");
                 string[] str = { "在庫数量", "商品コード", "下代単価" };
                 DataTable dtItem = fun.GetDatatableFromDownloadPath(@"C:\Qbei_Log\037_Download\", str);
