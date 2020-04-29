@@ -59,7 +59,7 @@ namespace _38フタバ
             {
                 qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 qe.site = 38;
-                qe.flag = 0;
+                qe.flag = 1;
                 DataTable dtflag = fun.SelectFlag(38);
                 int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
 
@@ -201,6 +201,7 @@ namespace _38フタバ
                 }
                 else
                 {
+                    fun.WriteLog("Login success             ------", "038-");
                     webBrowser1.Navigate(fun.url + "/Account/SyohinSearch.aspx");
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
                 }
@@ -605,34 +606,60 @@ namespace _38フタバ
                         {
                             string year = DateTime.Now.ToString("yyyy");
                             string compare= DateTime.Now.ToString("yyyy");
-                            int pcMonth = Convert.ToInt32(DateTime.Now.ToString("MM"));                         
-                            int a = entity.stockDate.ToString().Count();
-                            var b = entity.stockDate.Split('/').ToArray();
-                            if (a > 7)
-                            {                                
-                                int array = b.Length;
-                                if (array == 3)
-                                {
-                                    year = b[0];
-                                }
-                                Month = Convert.ToInt32(b[1]);
-                                if (Month < pcMonth)
-                                { year = Convert.ToString(Convert.ToInt32(b[0]) + 1); }
-                                if (Convert.ToInt32(year) < Convert.ToInt32(compare))
-                                {
-                                    year = Convert.ToString(Convert.ToInt32(b[0]) + 1);
-                                }                              
-                                entity.stockDate = year + "-" + Month + "-" + b[2];
-                            }
-                            else
-                            {                               
-                                int array = b.Length;                                
-                                Month = Convert.ToInt32(b[0]);
+                            int pcMonth = Convert.ToInt32(DateTime.Now.ToString("MM"));
+                            //<remark 追加ロジック　2020/04/29 Start>
+                            if (entity.stockDate.Contains("/") && entity.stockDate.Contains("~"))
+                            {
+                                var m = entity.stockDate.Split('~').ToArray();
+                                m = m[1].Split('/').ToArray();
+                                Month = Convert.ToInt32(m[0]);
                                 if (Month < pcMonth)
                                 { year = Convert.ToString((Convert.ToInt32(year)) + 1); }
-                                Day = b[1];                                                                                           
-                                entity.stockDate = year + "-" + Month + "-" + Day;
-                            }                          
+                                Day = DateTime.DaysInMonth(Convert.ToInt32(year), Month).ToString();
+                                if (m[1].Contains("初旬") || m[1].Contains("上旬") || m[1].Contains("上"))
+                                {
+                                    entity.stockDate = year + "-" + Month + "-" + "10";
+                                }
+                                else if (m[1].Contains("中旬") || m[1].Contains("中"))
+                                {
+                                    entity.stockDate = year + "-" + Month + "-" + "20";
+                                }
+                                else if (m[1].Contains("下旬") || m[1].Contains("末頃") || m[1].Contains("末") || m[1].Contains("下"))
+                                {
+                                    entity.stockDate = year + "-" + Month + "-" + Day;
+                                }
+                            }
+                            else
+                            //</remark 2020/04/29 End>
+                            {
+                                int a = entity.stockDate.ToString().Count();
+                                var b = entity.stockDate.Split('/').ToArray();
+                                if (a > 7)
+                                {
+                                    int array = b.Length;
+                                    if (array == 3)
+                                    {
+                                        year = b[0];
+                                    }
+                                    Month = Convert.ToInt32(b[1]);
+                                    if (Month < pcMonth)
+                                    { year = Convert.ToString(Convert.ToInt32(b[0]) + 1); }
+                                    if (Convert.ToInt32(year) < Convert.ToInt32(compare))
+                                    {
+                                        year = Convert.ToString(Convert.ToInt32(b[0]) + 1);
+                                    }
+                                    entity.stockDate = year + "-" + Month + "-" + b[2];
+                                }
+                                else
+                                {
+                                    int array = b.Length;
+                                    Month = Convert.ToInt32(b[0]);
+                                    if (Month < pcMonth)
+                                    { year = Convert.ToString((Convert.ToInt32(year)) + 1); }
+                                    Day = b[1];
+                                    entity.stockDate = year + "-" + Month + "-" + Day;
+                                }
+                            }
                         }
 
                         else if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
