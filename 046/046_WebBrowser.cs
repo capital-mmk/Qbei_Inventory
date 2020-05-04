@@ -180,7 +180,7 @@ namespace _46トライスポーツ
         /// Check to Login.
         /// </summary>
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {   
+        {
             try
             {
                 SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
@@ -198,19 +198,19 @@ namespace _46トライスポーツ
                     //</remark Jancode,ordercode 編集。2020/03/06 End>
                     fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
                     fun.WriteLog("Login Failed", "046-");
-                    
+
                     Application.Exit();
                     Environment.Exit(0);
                 }
                 else
                 {
-                    fun.WriteLog("Login success             ------", "046-");                    
+                    fun.WriteLog("Login success             ------", "046-");
                     webBrowser1.Navigate(fun.url + "/products/list.php?mode=search&category_id=&name=" + entity.orderCode);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
                 }
             }
             catch (Exception ex)
-            {   
+            {
                 fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), ex.Message, entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
                 fun.WriteLog(ex, "046-", entity.janCode, entity.orderCode);
 
@@ -237,10 +237,10 @@ namespace _46トライスポーツ
                 entity.janCode = dt046.Rows[i]["JANコード"].ToString();
                 entity.partNo = dt046.Rows[i]["自社品番"].ToString();
                 entity.makerDate = fun.getCurrentDate();
-                entity.reflectDate = dt046.Rows[i]["最終反映日"].ToString();           
+                entity.reflectDate = dt046.Rows[i]["最終反映日"].ToString();
                 entity.orderCode = dt046.Rows[i]["発注コード"].ToString();
                 entity.purchaseURL = fun.url + "/products/list.php?mode=search&category_id=&name=" + entity.orderCode;
-                
+
                 if ((!string.IsNullOrWhiteSpace(entity.purchaseURL)) && (entity.orderCode != ""))
                 {
                     string url = webBrowser1.Url.ToString();
@@ -336,7 +336,7 @@ namespace _46トライスポーツ
 
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
             webBrowser1.ScriptErrorsSuppressed = true;
-            
+
             try
             {
                 string html = webBrowser1.Document.Body.InnerHtml;
@@ -344,21 +344,37 @@ namespace _46トライスポーツ
                 hdoc.LoadHtml(html);
 
                 string qty = "div/div[3]/div[2]/div[3]/div[2]/table/tbody/tr[2]/td[3]/img";
-                             
-                HtmlNodeCollection nc = hdoc.DocumentNode.SelectNodes(qty);
+                string alt;
+                HtmlNodeCollection nc;
+                nc = hdoc.DocumentNode.SelectNodes(qty);
                 if (nc == null)
                 {
                     qty = "div[1]/div[3]/div[2]/div[3]/div/div/table/tbody/tr[2]/td[3]/img";
                 }
-                string alt = hdoc.DocumentNode.SelectSingleNode(qty).GetAttributeValue("alt", "");
-                entity.qtyStatus = alt.Contains("○") ? "good" : alt.Contains("△") || alt.Contains("▲") ? "small" : alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("受付終了") || alt.Contains("×") ? "empty" : "unknown status";
+
+                //<remar Add Logic 2020/05/04 Start>
+                nc = hdoc.DocumentNode.SelectNodes(qty);
+                if (nc == null)
+                {
+                    alt = "null";
+                }
+                else
+                {
+                    alt = hdoc.DocumentNode.SelectSingleNode(qty).GetAttributeValue("alt", "");
+                }
+                //</remark 2020/05/04 End>
+
+                //string alt = hdoc.DocumentNode.SelectSingleNode(qty).GetAttributeValue("alt", "");
+                //entity.qtyStatus = alt.Contains("○") ? "good" : alt.Contains("△") || alt.Contains("▲") ? "small" : alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("受付終了") || alt.Contains("×") ? "empty" : "unknown status";
+                entity.qtyStatus = alt.Contains("○") ? "good" : alt.Contains("△") || alt.Contains("▲") ? "small" : alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("受付終了") || alt.Contains("null") || alt.Contains("×") ? "empty" : "unknown status";//<remar Edit Logic 2020/05/04 />
                 //entity.stockDate = alt.Contains("○") || alt.Contains("△") || alt.Contains("▲") || alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("×") ? "2100-01-01" : alt.Contains("受付終了") ? "2100-02-01" : "unknown date";
                 //<remark 06/12/2019変更>
-                entity.stockDate = alt.Contains("○") || alt.Contains("△") || alt.Contains("▲") ? "2100-01-01" : alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("×") || alt.Contains("受付終了") ? "2100-02-01" : "unknown date";
+                entity.stockDate = alt.Contains("○") || alt.Contains("△") || alt.Contains("▲") ? "2100-01-01" : alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("受付終了") || alt.Contains("null") || alt.Contains("×") ? "2100-02-01" : "unknown date";//<remar Edit Logic 2020/05/04 />
+                //entity.stockDate = alt.Contains("○") || alt.Contains("△") || alt.Contains("▲") ? "2100-01-01" : alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("×") || alt.Contains("受付終了") ? "2100-02-01" : "unknown date";
                 //</remark>
                 entity.price = webBrowser1.Document.GetElementById("price02_default").InnerText; ;
                 entity.price = entity.price.Replace(",", string.Empty);
-                entity.purchaseURL = webBrowser1.Url.ToString(); 
+                entity.purchaseURL = webBrowser1.Url.ToString();
                 //fun.Qbei_Inserts(entity);
 
                 if ((dt046.Rows[i]["在庫情報"].ToString().Contains("empty") || dt046.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt046.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
@@ -377,7 +393,7 @@ namespace _46トライスポーツ
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),"046");
+                fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
                 fun.WriteLog(ex, "046-", entity.janCode, entity.orderCode);
             }
 
@@ -390,7 +406,7 @@ namespace _46トライスポーツ
             }
             else
             {
-                qe.site =46;
+                qe.site = 46;
                 qe.flag = 2;
                 qe.starttime = string.Empty;
                 qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -408,7 +424,7 @@ namespace _46トライスポーツ
         {
             string janCode = dt046.Rows[i]["JANコード"].ToString();
             string orderCode = dt046.Rows[i]["発注コード"].ToString();
-            fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");            
+            fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "046-");
 
             Application.Exit();
