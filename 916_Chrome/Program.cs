@@ -156,8 +156,17 @@ namespace _916_Chrome
                     chrome.FindElement(By.Id("H_LOGIN")).Click();
 
                     Thread.Sleep(2000);
-                    fun.WriteLog("Login success             ------", "916-");
-
+                    string body = chrome.FindElement(By.Id("H_MSGCM")).GetAttribute("value").ToString();
+                    if (body.Contains("ID または パスワード が違います。"))
+                    {
+                        fun.WriteLog("Login Failed", "916-");
+                        chrome.Quit();
+                        Environment.Exit(0);
+                    }
+                    else
+                    {
+                        fun.WriteLog("Login success             ------", "916-");
+                    }                   
                     chrome.FindElement(By.Id("ORDER010_1")).Click();
                     Thread.Sleep(2000);
                     fun.WriteLog("Navigation to Download Url success------", "916-");
