@@ -176,8 +176,8 @@ namespace _916_Chrome
                     chrome.Quit();
                     if (String.IsNullOrEmpty(strParam))
                     {
-                        dt916 = fun.GetDatatable("916");
-                        dt916 = fun.GetOrderData(dt916, "http://222.151.239.218/akiweb/webLOGIN_Asahi.aspx", "916", "");
+                        dt916 = fun.GetDatatable("916");                      
+                        //dt916 = fun.GetOrderData(dt916, "http://222.151.239.218/akiweb/webLOGIN_Asahi.aspx", "916", "");                        
                     }
                     else
                         dt916 = fun.GetRerunData("916");
