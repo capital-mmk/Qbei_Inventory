@@ -311,8 +311,11 @@ namespace _34シマノ
                             // 在庫状態は、在庫限りの表示がある時=small、それ以外は　〇を含む時＝good、△を含む時＝small、✖を含む時＝empty
                             //entity.qtyStatus = only.Contains("在庫限り") ? "small" : alt.Contains("○") ? "good" : alt.Contains("△") ? "small" : alt.Contains("×") ? "empty" : "NO STATUS CODE";
                             //<remark qtyStatus(編集) 2020/1/7 Start>
-                            entity.qtyStatus = alt.Contains("×") ? "empty" :  only.Contains("在庫限り") ? "small" : alt.Contains("○") ? "good" : alt.Contains("△") ? "small" : "NO STATUS CODE";
-                            //<remark 2020/1/7 End>
+                            //entity.qtyStatus = alt.Contains("×") ? "empty" :  only.Contains("在庫限り") ? "small" : alt.Contains("○") ? "good" : alt.Contains("△") ? "small" : "NO STATUS CODE";
+                            //</remark 2020/1/7 End>
+                            //<remark qtyStatus(編集) 2020/5/19 Start>
+                            entity.qtyStatus = alt.Contains("×") ? "empty" : only.Contains("在庫限り") ? "small" : alt.Contains("○") ? "good" : alt.Contains("△") ? "empty" : "NO STATUS CODE";
+                            //</remark 2020/5/19 End>
                             // 価格は太文字の販売価格(税抜き)
                             entity.price = hdoc.DocumentNode.SelectSingleNode("div[2]/div/div[2]/div/div[1]/div[2]/div/div[2]/div[3]/p[2]/strong").InnerText;
                             entity.price = entity.price.Replace("¥", string.Empty).Replace(",", string.Empty);
@@ -323,15 +326,25 @@ namespace _34シマノ
                             if (string.IsNullOrWhiteSpace(date))
                             {
                                 // 在庫限りの表示がある時は「2100-02-01：完売」
-                                if (only.Contains("在庫限り"))
-                                {
-                                    entity.stockDate = "2100-02-01";
-                                }
+                                //if (only.Contains("在庫限り"))
+                                //{
+                                //    entity.stockDate = "2100-02-01";
+                                //}
                                 // 在庫限りの表示がない時は全て「2100-01-01：未定」
-                                else
+                                //else
+                                //{
+                                //    entity.stockDate = "2100-01-01";
+                                //}
+                                //<remark stockdate(編集) 2020/5/19 Start>
+                                if (alt.Contains("○"))
                                 {
                                     entity.stockDate = "2100-01-01";
                                 }
+                                else
+                                {
+                                    entity.stockDate = "2100-02-01";
+                                }
+                                //</remark 2020/5/19 End>
                             }
                             // 入荷予定日がNULLでない時
                             else
