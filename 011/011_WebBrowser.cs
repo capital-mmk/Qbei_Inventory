@@ -286,18 +286,21 @@ namespace _011マルイ
                                 entity.price = entity.price.Replace("￥", string.Empty).Replace(",", string.Empty);
                                 entity.price = ((int)(Convert.ToDouble(entity.price) * 0.98)).ToString();
                                 string stockDate = hdoc.DocumentNode.SelectSingleNode("div[6]/div[2]/div/table/tbody/tr[4]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr[8]/td[2]").InnerText;
-                                entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") ? "small" : alt.Equals("×") || alt.Equals("完売") ? "empty" : "unknown status";
+                                //entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") ? "small" : alt.Equals("×") || alt.Equals("完売") ? "empty" : "unknown status";
+                                entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") || alt.Equals("×") || alt.Equals("完売") ? "empty" : "unknown status";//<remark ロジックの変更　2020/05/20>
 
                                 if (stockDate.Equals("-") || stockDate.Equals("未定"))
                                 {
                                     //entity.stockDate = alt.Equals("○") || alt.Equals("△") || alt.Equals("×") ? "2100-01-01" : alt.Equals("完売") ? "2100-02-01" : "unknown status";
-                                    entity.stockDate = alt.Equals("○") || alt.Equals("△") ? "2100-01-01" : alt.Equals("完売") || alt.Equals("×") ? "2100-02-01" : "unknown status";//<remark ロジックの変更　2020/03/17>
+                                    //entity.stockDate = alt.Equals("○") || alt.Equals("△") ? "2100-01-01" : alt.Equals("完売") || alt.Equals("×") ? "2100-02-01" : "unknown status";//<remark ロジックの変更　2020/03/17>
+                                    entity.stockDate = alt.Equals("○")  ? "2100-01-01" : alt.Equals("完売") || alt.Equals("△") || alt.Equals("×") ? "2100-02-01" : "unknown status";//<remark ロジックの変更　2020/05/20>
                                 }
                                 else
                                 {
                                     string date = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
                                     //entity.stockDate = alt.Equals("○") || alt.Equals("△") || alt.Equals("×") ? stockDate : alt.Equals("完売") ? "2100-02-01" : "unknown date";
-                                    entity.stockDate = alt.Equals("○") || alt.Equals("△") ? stockDate : alt.Equals("×") ||alt.Equals("完売") ? "2100-02-01" : "unknown date";//<remark ロジックの変更　2020/04/22>
+                                    //entity.stockDate = alt.Equals("○") || alt.Equals("△") ? stockDate : alt.Equals("×") ||alt.Equals("完売") ? "2100-02-01" : "unknown date";//<remark ロジックの変更　2020/04/22>
+                                    entity.stockDate = alt.Equals("○")  ? stockDate : alt.Equals("×") || alt.Equals("△") || alt.Equals("完売") ? "2100-02-01" : "unknown date";//<remark ロジックの変更　2020/05/20>
                                 }
 
                                 if ((dt011.Rows[i]["在庫情報"].ToString().Contains("empty") || dt011.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt011.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
