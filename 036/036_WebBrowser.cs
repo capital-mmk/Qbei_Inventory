@@ -154,7 +154,7 @@ namespace _36PRインターナショナル
 
                 SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
                 instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
-                
+
                 fun.WriteLog("Navigation to Site Url success------", "036-");
                 webBrowser1.ScriptErrorsSuppressed = true;
                 qe.SiteID = 36;
@@ -172,7 +172,7 @@ namespace _36PRインターナショナル
             {
                 string janCode = dt036.Rows[0]["JANコード"].ToString();
                 string orderCode = dt036.Rows[0]["発注コード"].ToString();
-                fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");                
+                fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
                 fun.WriteLog(ex, "036-", janCode, orderCode);
 
                 Application.Exit();
@@ -191,16 +191,16 @@ namespace _36PRインターナショナル
                 string body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;
                 if (body.Contains("メールアドレスもしくはパスワードが正しくありません。"))
                 {
-                    fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Login Failed", entity.janCode, entity.purchaseURL, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");                    
+                    fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Login Failed", entity.janCode, entity.purchaseURL, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
                     fun.WriteLog("Login Failed", "036-");
-                    
+
                     Application.Exit();
                     Environment.Exit(0);
                 }
                 else
                 {
                     fun.WriteLog("Login success             ------", "036-");
-                    string purchaserURL = dt036.Rows[0]["purchaserURL"].ToString().Trim(); 
+                    string purchaserURL = dt036.Rows[0]["purchaserURL"].ToString().Trim();
                     webBrowser1.Navigate(purchaserURL);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
@@ -209,7 +209,7 @@ namespace _36PRインターナショナル
             {
                 string janCode = dt036.Rows[0]["JANコード"].ToString();
                 string orderCode = dt036.Rows[0]["発注コード"].ToString();
-                fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");                
+                fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
                 fun.WriteLog(ex, "036-", janCode, orderCode);
 
                 Application.Exit();
@@ -238,8 +238,8 @@ namespace _36PRインターナショナル
                 entity.partNo = dt036.Rows[i]["自社品番"].ToString();
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt036.Rows[i]["最終反映日"].ToString();
-                entity.orderCode = dt036.Rows[i]["発注コード"].ToString();  
-                entity.purchaseURL = dt036.Rows[i]["purchaserURL"].ToString().Trim();     
+                entity.orderCode = dt036.Rows[i]["発注コード"].ToString();
+                entity.purchaseURL = dt036.Rows[i]["purchaserURL"].ToString().Trim();
 
                 if (!string.IsNullOrWhiteSpace(entity.purchaseURL))
                 {
@@ -269,9 +269,9 @@ namespace _36PRインターナショナル
                             hdoc.LoadHtml(html);
                             if ((hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]") == null))
                             {
-                                fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Access Denied!", entity.janCode, entity.purchaseURL, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");                                
+                                fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Access Denied!", entity.janCode, entity.purchaseURL, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
                                 fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "036-");
-                                
+
                                 Application.Exit();
                                 Environment.Exit(0);
                             }
@@ -306,7 +306,7 @@ namespace _36PRインターナショナル
                                     stockpath = "div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[2]";
                                 }
                                 else
-                                {                                 
+                                {
                                     entity.price = dt036.Rows[i]["下代"].ToString();
                                     qtypath = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]").InnerText;
                                     stockpath = "div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr/td[2]";
@@ -319,7 +319,7 @@ namespace _36PRインターナショナル
                                 if (nc == null)
                                 {
                                     entity.stockDate = qtypath.Equals("○") || qtypath.Equals("△") || qtypath.Equals("×") ? "2100-01-01" : qtypath.Equals("限定") ? "2100/02/01" : "unknown date";
-                                }                                
+                                }
                                 else
                                 {
                                     entity.stockDate = hdoc.DocumentNode.SelectSingleNode(stockpath).InnerText;
@@ -383,15 +383,15 @@ namespace _36PRインターナショナル
                                     //{
                                     //    entity.stockDate = entity.stockDate.Replace("年", "-") + entity.stockDate.Replace("月", "-").Replace("頃入荷予定", "30");
                                     //}
-                                    
-                                    
+
+
                                     if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
                                     {
                                         int YIndex = entity.stockDate.IndexOf('年');
                                         int MIndex = entity.stockDate.IndexOf('月');
                                         int Year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 4, YIndex + 0));
                                         int Month = Convert.ToInt32(entity.stockDate.Substring(YIndex + 1, MIndex - 5));
-                                        string Day= DateTime.DaysInMonth(DateTime.Now.Year, Month).ToString();
+                                        string Day = DateTime.DaysInMonth(DateTime.Now.Year, Month).ToString();
                                         if (entity.stockDate.Contains("日"))
                                         {
                                             entity.stockDate = entity.stockDate.Replace("年", "-").Replace("月", "-").Replace("日", "-");
@@ -403,7 +403,7 @@ namespace _36PRインターナショナル
                                         else
                                         {
                                             entity.stockDate = Year + "-" + Month + "-" + Day;
-                                        }                                      
+                                        }
                                     }
                                     else if (entity.stockDate.Contains("月") || entity.stockDate.Contains("頃"))
                                     {
@@ -422,22 +422,22 @@ namespace _36PRインターナショナル
                                             if (entity.stockDate.Contains("/"))
                                             {
                                                 string[] m = entity.stockDate.Split('/');
-                                                int Month =Convert.ToInt32 (m[0]);
+                                                int Month = Convert.ToInt32(m[0]);
                                                 if (Month < pcmonth)
-                                                { year = Convert.ToString(Convert.ToInt32(year) + 1); }                                               
-                                                 day = DateTime.DaysInMonth(DateTime.Now.Year, Month).ToString(); 
+                                                { year = Convert.ToString(Convert.ToInt32(year) + 1); }
+                                                day = DateTime.DaysInMonth(DateTime.Now.Year, Month).ToString();
                                                 DateTime dt = Convert.ToDateTime(year + "-" + Month + "-" + day);
                                                 entity.stockDate = dt.ToString("yyyy-MM-dd");
                                             }
                                             else
                                             {
                                                 int MIndex = entity.stockDate.IndexOf('月');
-                                                
+
                                                 if (MIndex == 1 || MIndex == 2)
                                                 {
                                                     if (MIndex == 1)
                                                     {
-                                                         month = Convert.ToInt32(entity.stockDate.Substring(MIndex - 1, MIndex + 0));
+                                                        month = Convert.ToInt32(entity.stockDate.Substring(MIndex - 1, MIndex + 0));
                                                         if (month < pcmonth)
                                                         { year = Convert.ToString(Convert.ToInt32(year) + 1); }
                                                         day = DateTime.DaysInMonth(DateTime.Now.Year, month).ToString();
@@ -449,20 +449,20 @@ namespace _36PRインターナショナル
                                                         if (month < pcmonth)
                                                         { year = Convert.ToString(Convert.ToInt32(year) + 1); }
                                                         day = DateTime.DaysInMonth(DateTime.Now.Year, month).ToString();
-                                                        entity.stockDate = year + "-" + month + "-" + day;                                                     
+                                                        entity.stockDate = year + "-" + month + "-" + day;
                                                     }
-  
+
                                                     if (strStockDate.Contains("初旬") || strStockDate.Contains("上旬"))
-                                                    {   
+                                                    {
                                                         entity.stockDate = year + "-" + month + "-" + "10";
                                                     }
                                                     else if (strStockDate.Contains("中旬"))
                                                     {
                                                         entity.stockDate = year + "-" + month + "-" + "20";
                                                     }
-                                                    else if(strStockDate.Contains("下旬"))
+                                                    else if (strStockDate.Contains("下旬"))
                                                     {
-                                                        entity.stockDate = year + "-" + month + "-" + day;                                                
+                                                        entity.stockDate = year + "-" + month + "-" + day;
                                                     }
 
                                                 }
@@ -491,9 +491,9 @@ namespace _36PRインターナショナル
                                                             if (charater.Contains("月"))
                                                             { month2 = Convert.ToInt32(entity.stockDate.Substring(sIndex + 1, mIndex - 3)); }
                                                             else if (mIndex < 5)
-                                                             {
-                                                                
-                                                                 month2 = Convert.ToInt32(entity.stockDate.Substring(sIndex + 1, mIndex - 2)); 
+                                                            {
+
+                                                                month2 = Convert.ToInt32(entity.stockDate.Substring(sIndex + 1, mIndex - 2));
                                                             }
                                                             else
                                                             { month2 = Convert.ToInt32(entity.stockDate.Substring(sIndex + 1, mIndex - 3)); }
@@ -504,7 +504,7 @@ namespace _36PRインターナショナル
                                                         entity.stockDate = year + "-" + month2 + "-" + day2;
 
                                                     }
-                                                    
+
                                                 }
                                             }
                                         }
@@ -530,11 +530,16 @@ namespace _36PRインターナショナル
                                         entity.stockDate = "2100-02-01";
                                     }
                                     //</remark 2020/1/17 End>
-
                                     else if (entity.stockDate.Contains("入荷予定"))
                                     {
                                         entity.stockDate = "2100-01-01";
-                                    }               
+                                    }
+                                    //<remark stockDateのロジックを追加　2020/05/21　Start>
+                                    else if (entity.stockDate.Contains("在庫あり") && entity.qtyStatus.Contains("empty"))
+                                    {
+                                        entity.stockDate = "2100-02-01";
+                                    }
+                                    //</remark 2020/05/21 End>
                                     //2018-04-20 Start
                                     if (strStockDate.Equals("2月"))
                                     {
@@ -542,7 +547,7 @@ namespace _36PRインターナショナル
                                     }
                                     else
                                         entity.stockDate = Strings.StrConv(entity.stockDate, VbStrConv.Narrow, 1041);
-                                        entity.stockDate = DateTime.Parse(entity.stockDate).ToString("yyyy-MM-dd");
+                                    entity.stockDate = DateTime.Parse(entity.stockDate).ToString("yyyy-MM-dd");
                                     //2018-04-20 End
                                 }
                                 //2018-04-20 Start
@@ -564,7 +569,7 @@ namespace _36PRインターナショナル
                         }
                         catch (Exception ex)
                         {
-                            fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, entity.janCode, entity.purchaseURL, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");                            
+                            fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, entity.janCode, entity.purchaseURL, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
                             fun.WriteLog(ex, "036-", entity.janCode, entity.orderCode);
                         }
                     }
@@ -595,7 +600,7 @@ namespace _36PRインターナショナル
             {
                 fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, entity.janCode, entity.purchaseURL, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
                 fun.WriteLog(ex, "036-", entity.janCode, entity.orderCode);
-                
+
                 Application.Exit();
                 Environment.Exit(0);
             }
@@ -616,7 +621,7 @@ namespace _36PRインターナショナル
                 entity.partNo = dt036.Rows[i]["自社品番"].ToString();
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt036.Rows[i]["最終反映日"].ToString();
-                entity.orderCode = dt036.Rows[i]["発注コード"].ToString();          
+                entity.orderCode = dt036.Rows[i]["発注コード"].ToString();
                 entity.purchaseURL = dt036.Rows[i]["purchaserURL"].ToString().Trim();
                 if (dt036.Rows[i]["入荷予定"].ToString().Contains("2100-01-10") && dt036.Rows[i]["在庫情報"].ToString().Contains("empty"))
                 {
@@ -652,12 +657,12 @@ namespace _36PRインターナショナル
             else
             {
                 string janCode = dt036.Rows[i]["JANコード"].ToString();
-               string orderCode = dt036.Rows[i]["発注コード"].ToString();
+                string orderCode = dt036.Rows[i]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
                 fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "036-");
-                
+
                 Application.Exit();
-                Environment.Exit(0);                
+                Environment.Exit(0);
             }
         }
     }
