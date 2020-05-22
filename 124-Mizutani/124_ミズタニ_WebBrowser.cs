@@ -466,6 +466,7 @@ namespace _124_Mizutani
                     }
                     //2018-08-14 End
                     entity.stockDate = entity.stockDate.Replace("/", "-");
+
                         //2018/1/12
                         //<remark Close Logic 2020/25/22 Start>
                         //if ((dt124.Rows[i]["在庫情報"].ToString().Contains("empty") || dt124.Rows[i]["在庫情報"].ToString().Contains("inquriry")) && dt124.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
