@@ -331,19 +331,20 @@ namespace _053
                             entity.stockDate = hdoc.DocumentNode.SelectSingleNode("/table[1]/tbody/tr/td[11]").InnerText;
                             
                             entity.stockDate = string.IsNullOrEmpty(entity.stockDate) || entity.stockDate.Equals("&nbsp;") ? alt.Contains("完売") ? "2100-02-01" : "2100-01-01" : entity.stockDate.Replace ("/","-");
-                           
-                            if (dt053.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
-                            {
-                                if (((entity.qtyStatus.Equals("empty") && (entity.stockDate.Equals("2100-01-01") || entity.stockDate.Equals("2100-02-01"))) || entity.qtyStatus.Equals("inquiry")))
-                                {
-                                    entity.qtyStatus = dt053.Rows[i]["在庫情報"].ToString();
-                                    
-                                    entity.stockDate = dt053.Rows[i]["入荷予定"].ToString();
-                                }
-                                fun.Qbei_Inserts(entity);
-                            }
-                            else
-                                fun.Qbei_Inserts(entity);
+                            //<remark Close Logic 2020/25/22 Start>
+                            //if (dt053.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
+                            //{
+                            //    if (((entity.qtyStatus.Equals("empty") && (entity.stockDate.Equals("2100-01-01") || entity.stockDate.Equals("2100-02-01"))) || entity.qtyStatus.Equals("inquiry")))
+                            //    {
+                            //        entity.qtyStatus = dt053.Rows[i]["在庫情報"].ToString();
+
+                            //        entity.stockDate = dt053.Rows[i]["入荷予定"].ToString();
+                            //    }
+                            //    fun.Qbei_Inserts(entity);
+                            //}
+                            //else
+                            //</reamark 2020/25/22 End>
+                            fun.Qbei_Inserts(entity);
                             //i++;
                         }
                     }
