@@ -364,15 +364,17 @@ namespace _139
                         objCom.Qbei_ErrorInsert(139, objCom.GetSiteName("139"), "Item doesn't Exists!", entity.janCode, entity.orderCode, 2, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "139");
                     else
                     {
-                        if ((dr["在庫情報"].ToString().Contains("empty") || dr["在庫情報"].ToString().Contains("inquiry")) && dr["入荷予定"].ToString().Contains("2100-01-10"))
-                        {
-                            if ((entity.qtyStatus.Equals("empty") && (entity.stockDate.Equals("2100-01-01") || entity.stockDate.Equals("2100-02-01"))) || entity.qtyStatus.Equals("inquiry"))
-                            {
-                                entity.qtyStatus = dr["在庫情報"].ToString();
-                                entity.price = dr["下代"].ToString();
-                                entity.stockDate = dr["入荷予定"].ToString();
-                            }
-                        }
+                        //<remark Close Logic 2020/25/22 Start>
+                        //if ((dr["在庫情報"].ToString().Contains("empty") || dr["在庫情報"].ToString().Contains("inquiry")) && dr["入荷予定"].ToString().Contains("2100-01-10"))
+                        //{
+                        //    if ((entity.qtyStatus.Equals("empty") && (entity.stockDate.Equals("2100-01-01") || entity.stockDate.Equals("2100-02-01"))) || entity.qtyStatus.Equals("inquiry"))
+                        //    {
+                        //        entity.qtyStatus = dr["在庫情報"].ToString();
+                        //        entity.price = dr["下代"].ToString();
+                        //        entity.stockDate = dr["入荷予定"].ToString();
+                        //    }
+                        //}
+                        //</reamark 2020/25/22 End>
                         objCom.Qbei_Inserts(entity);
                     }
                 }
