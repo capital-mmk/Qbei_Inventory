@@ -443,7 +443,7 @@ namespace _016ライトウェイ
 
                                     string qty = hdoc.DocumentNode.SelectSingleNode("div/div[3]/div/div/div[2]/div/div/table/tbody/tr[" + (k + 1) + "]/td[4]").InnerText.Replace("\r\n", "");
                                     //<remark quantity exchange 12/02/2020 Start>
-                                   // entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") ? "small" : qty.Contains("予約") || qty.Equals("×") || qty.Contains("入荷予定なし") ? "empty" : "empty";
+                                    // entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") ? "small" : qty.Contains("予約") || qty.Equals("×") || qty.Contains("入荷予定なし") ? "empty" : "empty";
                                     entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") ? "small" : qty.Contains("予約") || qty.Contains("×") || qty.Contains("入荷予定なし") ? "empty" : "empty";
                                     // </remark 12/02/2020 End>
                                     if (qty.Contains("("))
@@ -474,8 +474,8 @@ namespace _016ライトウェイ
                                         //{
                                         //    entity.stockDate = "2100-01-01";
                                         //}
-                                     
-                                    if (date.Contains("年") && date.Contains("月"))
+
+                                        if (date.Contains("年") && date.Contains("月"))
                                         {
                                             int YIndex = date.IndexOf('年');
                                             int MIndex = date.IndexOf('月');
@@ -499,12 +499,12 @@ namespace _016ライトウェイ
 
                                             //<remark quantity exchange 12/02/2020 Start>
                                             //if (qty.Contains("入荷未定") || qty.Contains("入荷予定有"))
-                                            if ( qty.Contains("入荷予定有"))
+                                            if (qty.Contains("入荷予定有"))
                                             {
                                                 entity.stockDate = "2100-01-01";
                                             }
                                             // else if (qty.Contains("入荷予定なし") || qty.Contains("×"))
-                                            else if (qty.Contains("入荷予定なし") || qty.Contains("×")|| qty.Contains("入荷未定"))
+                                            else if (qty.Contains("入荷予定なし") || qty.Contains("×") || qty.Contains("入荷未定"))
                                             {
                                                 entity.stockDate = "2100-02-01";
                                             }
@@ -543,23 +543,25 @@ namespace _016ライトウェイ
                                             entity.price = pstr[pstr.Length - 1];
                                         }
                                     }
-                                    if ((dt016.Rows[counts]["在庫情報"].ToString().Contains("empty") || dt016.Rows[counts]["在庫情報"].ToString().Contains("inquiry")) && dt016.Rows[counts]["入荷予定"].ToString().Contains("2100-01-10"))
-                                    {
-                                        if ((entity.qtyStatus.Equals("empty") && (entity.stockDate.Equals("2100-01-01") || entity.stockDate.Equals("2100-02-01"))) || entity.qtyStatus.Equals("inquiry"))
-                                        // if ((entity.qtyStatus.Equals("empty") && entity.stockDate.Equals("2100-01-01")) || (entity.qtyStatus.Equals("empty") && entity.stockDate.Equals("2100-02-01")) || (entity.qtyStatus.Equals("empty") && entity.stockDate.Equals("")) || (entity.qtyStatus.Equals("inquiry") && entity.stockDate.Equals("2100-01-01")) || (entity.qtyStatus.Equals("inquiry") && entity.stockDate.Equals("2100-02-01")) || (entity.qtyStatus.Equals("inquiry") && entity.stockDate.Contains("2018")) || (entity.qtyStatus.Equals("inquiry") && entity.stockDate.Equals("")))
-                                        {
-                                            entity.qtyStatus = dt016.Rows[counts]["在庫情報"].ToString();
-                                            entity.price = dt016.Rows[counts]["下代"].ToString();
-                                            entity.stockDate = dt016.Rows[counts]["入荷予定"].ToString();
-                                        }
-                                        fun.Qbei_Inserts(entity);
-                                    }
+                                    //<remark Close Logic 2020/25/22 Start>
+                                    //    if ((dt016.Rows[counts]["在庫情報"].ToString().Contains("empty") || dt016.Rows[counts]["在庫情報"].ToString().Contains("inquiry")) && dt016.Rows[counts]["入荷予定"].ToString().Contains("2100-01-10"))
+                                    //    {
+                                    //        if ((entity.qtyStatus.Equals("empty") && (entity.stockDate.Equals("2100-01-01") || entity.stockDate.Equals("2100-02-01"))) || entity.qtyStatus.Equals("inquiry"))
+                                    //        // if ((entity.qtyStatus.Equals("empty") && entity.stockDate.Equals("2100-01-01")) || (entity.qtyStatus.Equals("empty") && entity.stockDate.Equals("2100-02-01")) || (entity.qtyStatus.Equals("empty") && entity.stockDate.Equals("")) || (entity.qtyStatus.Equals("inquiry") && entity.stockDate.Equals("2100-01-01")) || (entity.qtyStatus.Equals("inquiry") && entity.stockDate.Equals("2100-02-01")) || (entity.qtyStatus.Equals("inquiry") && entity.stockDate.Contains("2018")) || (entity.qtyStatus.Equals("inquiry") && entity.stockDate.Equals("")))
+                                    //        {
+                                    //            entity.qtyStatus = dt016.Rows[counts]["在庫情報"].ToString();
+                                    //            entity.price = dt016.Rows[counts]["下代"].ToString();
+                                    //            entity.stockDate = dt016.Rows[counts]["入荷予定"].ToString();
+                                    //        }
+                                    //        fun.Qbei_Inserts(entity);
+                                    //    }
 
-                                    else
-                                        fun.Qbei_Inserts(entity);
-                                }
-                                else
-                                {
+                                    //    else
+                                    //        fun.Qbei_Inserts(entity);
+                                    //}
+                                    //else
+                                    //{
+                                    //</reamark 2020/25/22 End>
                                     if (dt016.Rows[counts]["入荷予定"].ToString().Contains("2100-01-10") && dt016.Rows[counts]["在庫情報"].ToString().Contains("empty"))
                                     {
                                         entity.qtyStatus = "empty";
