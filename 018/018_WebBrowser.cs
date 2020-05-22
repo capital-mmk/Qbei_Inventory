@@ -336,18 +336,20 @@ namespace _018日直_ニチナオ_
                     }
                 }
                 //2018/01/10 Start
-                if ((dt018.Rows[i]["在庫情報"].ToString().Contains("empty") || dt018.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt018.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
-                {
-                    if ((entity.qtyStatus.Contains("empty") && (entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry"))
-                    {
-                        entity.qtyStatus = dt018.Rows[i]["在庫情報"].ToString();
-                        entity.stockDate = dt018.Rows[i]["入荷予定"].ToString();
-                        entity.price = dt018.Rows[i]["下代"].ToString();
-                    }
-                    fun.Qbei_Inserts(entity);
-                }
-                else
-                    fun.Qbei_Inserts(entity);
+                //<remark Close Logic 2020/25/22 Start>
+                //if ((dt018.Rows[i]["在庫情報"].ToString().Contains("empty") || dt018.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt018.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
+                //{
+                //    if ((entity.qtyStatus.Contains("empty") && (entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry"))
+                //    {
+                //        entity.qtyStatus = dt018.Rows[i]["在庫情報"].ToString();
+                //        entity.stockDate = dt018.Rows[i]["入荷予定"].ToString();
+                //        entity.price = dt018.Rows[i]["下代"].ToString();
+                //    }
+                //    fun.Qbei_Inserts(entity);
+                //}
+                //else
+                //</reamark 2020/25/22 End>
+                fun.Qbei_Inserts(entity);
                 //2018/01/10 End
             }
             catch (Exception ex)
