@@ -552,18 +552,20 @@ namespace _36PRインターナショナル
                                 }
                                 //2018-04-20 Start
                                 //fun.Qbei_Inserts(entity);
-                                if (dt036.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
-                                {
-                                    if (((entity.qtyStatus.Contains("empty") && (entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry")) || ((entity.qtyStatus.Equals("empty")) && (entity.stockDate.Equals(" "))) || ((entity.stockDate.Equals(" ")) && (entity.qtyStatus.Equals("inquiry"))) || ((entity.stockDate.Equals("2018-02-28")) && (entity.qtyStatus.Equals("inquiry"))))
-                                    {
-                                        entity.qtyStatus = dt036.Rows[i]["在庫情報"].ToString();
-                                        entity.stockDate = dt036.Rows[i]["入荷予定"].ToString();
-                                        entity.price = dt036.Rows[i]["下代"].ToString();
-                                    }
-                                    fun.Qbei_Inserts(entity);
-                                }
-                                else
-                                    fun.Qbei_Inserts(entity);
+                                //<remark Close Logic 2020/25/22 Start>
+                                //if (dt036.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
+                                //{
+                                //    if (((entity.qtyStatus.Contains("empty") && (entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry")) || ((entity.qtyStatus.Equals("empty")) && (entity.stockDate.Equals(" "))) || ((entity.stockDate.Equals(" ")) && (entity.qtyStatus.Equals("inquiry"))) || ((entity.stockDate.Equals("2018-02-28")) && (entity.qtyStatus.Equals("inquiry"))))
+                                //    {
+                                //        entity.qtyStatus = dt036.Rows[i]["在庫情報"].ToString();
+                                //        entity.stockDate = dt036.Rows[i]["入荷予定"].ToString();
+                                //        entity.price = dt036.Rows[i]["下代"].ToString();
+                                //    }
+                                //    fun.Qbei_Inserts(entity);
+                                //}
+                                //else
+                                //</reamark 2020/25/22 End>
+                                fun.Qbei_Inserts(entity);
                                 //2018-04-20 End
                             }
                         }
