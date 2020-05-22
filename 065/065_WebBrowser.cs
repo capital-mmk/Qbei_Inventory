@@ -386,18 +386,20 @@ namespace _65野口
                     {
                         entity.stockDate = new DateTime(DateTime.Now.Year, 2, DateTime.DaysInMonth(DateTime.Now.Year, 2)).ToString("yyyy-MM-dd");
                     }
-                    if ((dt065.Rows[i]["在庫情報"].ToString().Contains("empty") || dt065.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt065.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
-                    {
-                        if (((entity.qtyStatus.Equals("empty") && (entity.stockDate.Equals("2100-01-01") || entity.stockDate.Equals("2100-02-01"))) || entity.qtyStatus.Equals("inquiry")) || ((entity.stockDate.Equals("2018-02-28")) && (entity.qtyStatus.Equals("inquiry"))))
-                        {
-                            entity.qtyStatus = dt065.Rows[i]["在庫情報"].ToString();
-                            entity.price = dt065.Rows[i]["下代"].ToString();
-                            entity.stockDate = dt065.Rows[i]["入荷予定"].ToString();
-                        }
-                        fun.Qbei_Inserts(entity);
-                    }
-                    else
-                        fun.Qbei_Inserts(entity);
+                    //<remark Close Logic 2020/25/22 Start>
+                    //if ((dt065.Rows[i]["在庫情報"].ToString().Contains("empty") || dt065.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt065.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
+                    //{
+                    //    if (((entity.qtyStatus.Equals("empty") && (entity.stockDate.Equals("2100-01-01") || entity.stockDate.Equals("2100-02-01"))) || entity.qtyStatus.Equals("inquiry")) || ((entity.stockDate.Equals("2018-02-28")) && (entity.qtyStatus.Equals("inquiry"))))
+                    //    {
+                    //        entity.qtyStatus = dt065.Rows[i]["在庫情報"].ToString();
+                    //        entity.price = dt065.Rows[i]["下代"].ToString();
+                    //        entity.stockDate = dt065.Rows[i]["入荷予定"].ToString();
+                    //    }
+                    //    fun.Qbei_Inserts(entity);
+                    //}
+                    //else
+                    //</reamark 2020/25/22 End>
+                    fun.Qbei_Inserts(entity);
                 }
             }
             catch (Exception ex)
