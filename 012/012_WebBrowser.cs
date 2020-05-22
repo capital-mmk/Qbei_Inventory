@@ -302,19 +302,20 @@ namespace _12カワシマ
                                 entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") ? "small" : alt.Contains("×") || alt.Contains("終了") || alt.Equals("×(終了)") ? "empty" : "unknown status";                         
                                 entity.stockDate = alt.Equals("○") || alt.Equals("△") || alt.Equals("×") ? "2100-01-01" : alt.Equals("終了") || alt.Equals("×(終了)") ? "2100-02-01" : "unknown date";
                             }
-
-                            if ((dt012.Rows[i]["在庫情報"].ToString().Contains("empty") || dt012.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt012.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
-                            {                               
-                                if ((entity.qtyStatus.Equals("empty") && (entity.stockDate.Equals("2100-01-01") || entity.stockDate.Equals("2100-02-01"))) || entity.qtyStatus.Equals("inquiry"))
-                                {                                  
-                                    entity.qtyStatus = dt012.Rows[i]["在庫情報"].ToString();                                 
-                                    entity.price = dt012.Rows[i]["下代"].ToString();                                
-                                    entity.stockDate = dt012.Rows[i]["入荷予定"].ToString();
-                                }                            
-                                fun.Qbei_Inserts(entity);
-                            }
-                            else                               
-                                fun.Qbei_Inserts(entity);
+                            //<remark Close Logic 2020/25/22 Start>
+                            //if ((dt012.Rows[i]["在庫情報"].ToString().Contains("empty") || dt012.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt012.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
+                            //{                               
+                            //    if ((entity.qtyStatus.Equals("empty") && (entity.stockDate.Equals("2100-01-01") || entity.stockDate.Equals("2100-02-01"))) || entity.qtyStatus.Equals("inquiry"))
+                            //    {                                  
+                            //        entity.qtyStatus = dt012.Rows[i]["在庫情報"].ToString();                                 
+                            //        entity.price = dt012.Rows[i]["下代"].ToString();                                
+                            //        entity.stockDate = dt012.Rows[i]["入荷予定"].ToString();
+                            //    }                            
+                            //    fun.Qbei_Inserts(entity);
+                            //}
+                            //else     
+                            //</reamark 2020/25/22 End>
+                            fun.Qbei_Inserts(entity);
                         }
                     }
                 }
