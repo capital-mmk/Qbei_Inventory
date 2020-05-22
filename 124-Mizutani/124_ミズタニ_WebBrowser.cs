@@ -466,20 +466,22 @@ namespace _124_Mizutani
                     }
                     //2018-08-14 End
                     entity.stockDate = entity.stockDate.Replace("/", "-");
-                    //2018/1/12
-                    if ((dt124.Rows[i]["在庫情報"].ToString().Contains("empty") || dt124.Rows[i]["在庫情報"].ToString().Contains("inquriry")) && dt124.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
-                    {
-                        if ((entity.qtyStatus.Contains("empty") && (entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry"))
-                        {
-                            entity.qtyStatus = dt124.Rows[i]["在庫情報"].ToString();
-                            entity.price = dt124.Rows[i]["下代"].ToString();
-                            entity.stockDate = dt124.Rows[i]["入荷予定"].ToString();
-                        }
-                        fun.Qbei_Inserts(entity);
-                    }
-
-                    else
                         //2018/1/12
+                        //<remark Close Logic 2020/25/22 Start>
+                        //if ((dt124.Rows[i]["在庫情報"].ToString().Contains("empty") || dt124.Rows[i]["在庫情報"].ToString().Contains("inquriry")) && dt124.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
+                        //{
+                        //    if ((entity.qtyStatus.Contains("empty") && (entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry"))
+                        //    {
+                        //        entity.qtyStatus = dt124.Rows[i]["在庫情報"].ToString();
+                        //        entity.price = dt124.Rows[i]["下代"].ToString();
+                        //        entity.stockDate = dt124.Rows[i]["入荷予定"].ToString();
+                        //    }
+                        //    fun.Qbei_Inserts(entity);
+                        //}
+
+                        //else
+                        //2018/1/12
+                        //</reamark 2020/25/22 End>
                         fun.Qbei_Inserts(entity);
                 
                  }
