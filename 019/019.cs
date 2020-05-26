@@ -112,7 +112,7 @@ namespace _019深谷_フカヤ_
                 fun.Qbei_Delete(19);
                 fun.Qbei_ErrorDelete(19);
                 dt019 = fun.GetDatatable("019");
-                dt019 = fun.GetOrderData(dt019, "https://webcart.fukaya-nagoya.co.jp/consumer/", "019", "");
+                //dt019 = fun.GetOrderData(dt019, "https://webcart.fukaya-nagoya.co.jp/consumer/", "019", "");//<remark Close Logic 2020/05/26 />
                 fun.GetTotalCount("019");
 
             }
