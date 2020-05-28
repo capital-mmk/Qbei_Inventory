@@ -116,7 +116,7 @@ namespace _016ライトウェイ
                 fun.Qbei_ErrorDelete(16);
                 dt016 = fun.GetDatatable("016");
                 //2017/12/15 Start
-                dt016 = fun.GetOrderData(dt016, "https://rpj-ec.com/rpj/order/searchItemNo　", "016", string.Empty);
+                //dt016 = fun.GetOrderData(dt016, "https://rpj-ec.com/rpj/order/searchItemNo　", "016", string.Empty);//<remark Close Logic 2020/05/28 />
                 fun.GetTotalCount("016");
                 //2017/12/15 End
                 ReadData();
