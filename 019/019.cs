@@ -243,7 +243,7 @@ namespace _019深谷_フカヤ_
                                     entity.qtyStatus = "empty";
                                     entity.stockDate = "2100-02-01";
                                     entity.price = dt019.Rows[i]["下代"].ToString();
-                                    fun.Qbei_Inserts(entity);//<remark Add Logic for Insert to Qbei Table 2020/05/29 />
+                                    fun.Qbei_Inserts(entity);//<remark Add Logic 2020/05/30 />
                                 }
                                 else
                                 {
@@ -283,61 +283,59 @@ namespace _019深谷_フカヤ_
                                     {
                                         entity.qtyStatus = qty.Equals("在庫○") ? "good" : qty.Equals("取寄×") ? "empty" : qty.Equals("在庫△") ? "small" : qty.Equals("欠品×") ? "empty" : qty.Equals("廃番×") ? "empty" : qty.Equals("廃番(n)") ? "small" : qty.Equals("廃番○") ? "good" : "unknown status";
                                     }
-                                    if (entity.qtyStatus != "unknown status")//<remark Add Logic for quantity is "unknown status" 2020/05/29 />
+
+                                    //<remark>
+                                    //Check to Price
+                                    //</remark>
+                                    entity.price = chrome.FindElement(By.ClassName("price_em")).Text;
+                                    entity.price = entity.price.Replace("卸価格：￥", " ").Replace(",", string.Empty);
+
+                                    //<remark>
+                                    //Check to Stockdate
+                                    //</remark>
+                                    string stockdate = chrome.FindElement(By.ClassName("r_cate_title")).Text;
+                                    if (stockdate.Contains("入荷予定日"))
+                                    {
+                                        entity.stockDate = chrome.FindElement(By.ClassName("availabilityDate")).Text;
+                                        entity.stockDate = entity.stockDate.Replace("入荷予定日:", " ").Replace("/", "-");
+                                        //entity.stockDate = entity.stockDate.Replace("/", "-");
+                                        DateTime da = Convert.ToDateTime(entity.stockDate);
+                                        entity.stockDate = da.ToString("yyyy-MM-dd");
+                                    }
+                                    else
                                     {
                                         //<remark>
-                                        //Check to Price
+                                        //Check to have Digits at Quantity and take Stockdate of Status
                                         //</remark>
-                                        entity.price = chrome.FindElement(By.ClassName("price_em")).Text;
-                                        entity.price = entity.price.Replace("卸価格：￥", " ").Replace(",", string.Empty);
-
-                                        //<remark>
-                                        //Check to Stockdate
-                                        //</remark>
-                                        string stockdate = chrome.FindElement(By.ClassName("r_cate_title")).Text;
-                                        if (stockdate.Contains("入荷予定日"))
+                                        if (isDigitPresent == true)
                                         {
-                                            entity.stockDate = chrome.FindElement(By.ClassName("availabilityDate")).Text;
-                                            entity.stockDate = entity.stockDate.Replace("入荷予定日:", " ").Replace("/", "-");
-                                            //entity.stockDate = entity.stockDate.Replace("/", "-");
-                                            DateTime da = Convert.ToDateTime(entity.stockDate);
-                                            entity.stockDate = da.ToString("yyyy-MM-dd");
+                                            entity.stockDate = "2100-02-01";
                                         }
                                         else
                                         {
-                                            //<remark>
-                                            //Check to have Digits at Quantity and take Stockdate of Status
-                                            //</remark>
-                                            if (isDigitPresent == true)
-                                            {
-                                                entity.stockDate = "2100-02-01";
-                                            }
-                                            else
-                                            {
-                                                entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-01-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";
-                                            }
-
+                                            entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-01-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";
                                         }
-                                        //<remark>
-                                        //Insert to QbeiTable of Statuss
-                                        //</remark>
+                                    }
+                                    //<remark Add Logic 2020/05/30 />
+                                    if (entity.qtyStatus != "unknown status")
+                                    {
                                         fun.Qbei_Inserts(entity);
                                     }
-                                    //<remark Add Logic for quantity is "unknown status" 2020/05/29 Start>
                                     else
                                     {
                                         fun.Qbei_ErrorInsert(19, fun.GetSiteName("019"), "Item doesn't Check!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "019");
                                     }
-                                    //</remark 2020/05/29 End>
+                                    //<remark Add Logic 2020/05/30 />
                                 }
-
-                                //fun.Qbei_Inserts(entity);
+                                //<remark>
+                                //Insert to QbeiTable of Statuss
+                                //</remark>
+                                //fun.Qbei_Inserts(entity);//<remark Close Logic 2020/05/30 />
                             }
                             else
                             {
                                 fun.Qbei_ErrorInsert(19, fun.GetSiteName("019"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "019");
                             }
-
                         }
                     }
                     qe.site = 19;
