@@ -165,7 +165,7 @@ namespace _014_chrome
                     //chrome.FindElement(By.XPath("//*[@id='app']/div[1]/nav/div/div/div[1]/a/img")).Click();
                     //chrome.FindElement(By.XPath("//*[@id='navbar-collapse2']/ul/li[1]/a")).Click();
                     //2019-08-09 Start
-                    Thread.Sleep(2000);
+                    Thread.Sleep(20000);//<remark Add Plus Wait time 2020/06/01 />
                     chrome.FindElement(By.XPath("//*[@id='listForm']/div[5]/div/label/input")).Click();
                     chrome.FindElement(By.XPath("//*[@id='listForm']/div[7]/div[2]/button[1]")).Click();
                     //2019-08-09 End
