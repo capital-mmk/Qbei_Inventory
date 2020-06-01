@@ -556,20 +556,24 @@ namespace _016ライトウェイ
                                     //        fun.Qbei_Inserts(entity);
                                     //    }
 
-                                    //    else
-                                    //        fun.Qbei_Inserts(entity);
+                                    //else
+                                    //</ reamark 2020 / 25 / 22 End >
+                                    fun.Qbei_Inserts(entity);
+                                        
+                                }
+                                else
+                                {
+                                   
+                                    if (dt016.Rows[counts]["入荷予定"].ToString().Contains("2100-01-10") && dt016.Rows[counts]["在庫情報"].ToString().Contains("empty"))
+                                    {
+                                    //<remark Close Logic 2020/06/01 Start>
+                                    //    entity.qtyStatus = "empty";
+                                    //    entity.stockDate = "2100-01-10";
+                                    //    entity.price = dt016.Rows[counts]["下代"].ToString();
                                     //}
                                     //else
                                     //{
-                                    //</reamark 2020/25/22 End>
-                                    if (dt016.Rows[counts]["入荷予定"].ToString().Contains("2100-01-10") && dt016.Rows[counts]["在庫情報"].ToString().Contains("empty"))
-                                    {
-                                        entity.qtyStatus = "empty";
-                                        entity.stockDate = "2100-01-10";
-                                        entity.price = dt016.Rows[counts]["下代"].ToString();
-                                    }
-                                    else
-                                    {
+                                    //</remakr  2020/06/01 End>
                                         entity.qtyStatus = "empty";
                                         entity.stockDate = "2100-02-01";
                                         entity.price = dt016.Rows[counts]["下代"].ToString();
