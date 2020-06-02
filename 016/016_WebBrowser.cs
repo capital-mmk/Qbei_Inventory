@@ -563,22 +563,21 @@ namespace _016ライトウェイ
                                 }
                                 else
                                 {
-                                   
-                                    if (dt016.Rows[counts]["入荷予定"].ToString().Contains("2100-01-10") && dt016.Rows[counts]["在庫情報"].ToString().Contains("empty"))
-                                    {
-                                    //<remark Close Logic 2020/06/01 Start>
+                                    //<remark Close Logic 2020/06/02 Start>
+                                    //if (dt016.Rows[counts]["入荷予定"].ToString().Contains("2100-01-10") && dt016.Rows[counts]["在庫情報"].ToString().Contains("empty"))
+                                    //{
                                     //    entity.qtyStatus = "empty";
                                     //    entity.stockDate = "2100-01-10";
                                     //    entity.price = dt016.Rows[counts]["下代"].ToString();
                                     //}
                                     //else
-                                    //{
-                                    //</remakr  2020/06/01 End>
-                                        entity.qtyStatus = "empty";
-                                        entity.stockDate = "2100-02-01";
-                                        entity.price = dt016.Rows[counts]["下代"].ToString();
-                                    }
+                                    //{                                    
+                                    entity.qtyStatus = "empty";
+                                    entity.stockDate = "2100-02-01";
+                                    entity.price = dt016.Rows[counts]["下代"].ToString();
+                                    //}
                                     fun.Qbei_Inserts(entity);
+                                    //</remakr  2020/06/02 End>
                                 }
                             }
                         }                        
