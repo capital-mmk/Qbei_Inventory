@@ -345,10 +345,14 @@ namespace _20ダイアテック_高難易度_
                                         strQtyStatus = element.Descendants("P").FirstOrDefault().InnerText.Replace("在庫：", string.Empty);
 
                                         entity.qtyStatus = strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || fun.IsGood(strQtyStatus) ? "good" : strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus) ? "small" : strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("上旬") || strQtyStatus.Contains("中旬") || strQtyStatus.Contains("下旬") || strQtyStatus.Contains("未定") || strQtyStatus.Contains("次回入荷限り") ? "empty" : "unknown status";
-                                        if (strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || fun.IsGood(strQtyStatus) || strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus) || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("未定") || strQtyStatus.Contains("次回入荷限り"))
-                                            entity.stockDate = "2100-01-01";
-                                        else if (strQtyStatus.Contains("完売"))
+                                        //<remark Edit to Stockdate of Logic 2020/06/11 Start>
+                                        //if (strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || fun.IsGood(strQtyStatus) || strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus) || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("未定") || strQtyStatus.Contains("次回入荷限り"))
+                                            if (strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || fun.IsGood(strQtyStatus) || strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus) )
+                                                entity.stockDate = "2100-01-01";
+                                        //else if (strQtyStatus.Contains("完売"))
+                                            else if (strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("未定") || strQtyStatus.Contains("次回入荷限り"))
                                             entity.stockDate = "2100-02-01";
+                                            //</remark 2020/06/11 End>
                                         else if (strQtyStatus.Contains("上旬") || strQtyStatus.Contains("中旬") || strQtyStatus.Contains("下旬"))
                                         {
                                             strTemp = Regex.Replace(strQtyStatus, "[^0-9]+", string.Empty);
