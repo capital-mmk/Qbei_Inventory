@@ -306,6 +306,7 @@ namespace _20ダイアテック_高難易度_
                         entity.qtyStatus = "empty";
                         entity.stockDate = "2100-02-01";
                         entity.price = dt020.Rows[i]["下代"].ToString();
+                        fun.Qbei_Inserts(entity);//<remark Add Logic for Insert Qbei Table 2020/06/12 />
                     }
                     else
                     {   
@@ -366,7 +367,7 @@ namespace _20ダイアテック_高難易度_
                                         }
                                         else entity.stockDate = "unknown date";
                                         //2018/01/19 End
-                                        //<remark Close Logic 2020/25/22 Start>
+                                        //<remark Close Logic 2020/05/22 Start>
                                         //if ((dt020.Rows[i]["在庫情報"].ToString().Contains("empty") || (dt020.Rows[i]["在庫情報"].ToString().Contains("inquiry"))) && dt020.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
                                         //{
                                         //    if ((entity.qtyStatus.Contains("empty") && (entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry"))
@@ -376,7 +377,7 @@ namespace _20ダイアテック_高難易度_
                                         //        entity.price = dt020.Rows[i]["下代"].ToString();
                                         //    }
                                         //}
-                                        //</reamark 2020/25/22 End>
+                                        //</reamark 2020/05/22 End>
                                         fun.Qbei_Inserts(entity);
                                     }
                                 }
