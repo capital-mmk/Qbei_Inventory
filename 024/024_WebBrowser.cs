@@ -114,7 +114,7 @@ namespace _24東_アズマ_
                 fun.Qbei_Delete(24);
                 fun.Qbei_ErrorDelete(24);
                 dt024 = fun.GetDatatable("024");
-                dt024 = fun.GetOrderData(dt024, "https://ew.azuma-weborder.jp/azuma/product_detail/multi_request?id=", "024", "");
+                //dt024 = fun.GetOrderData(dt024, "https://ew.azuma-weborder.jp/azuma/product_detail/multi_request?id=", "024", "");//<remark Close Logic 2020/06/16 />
                 fun.GetTotalCount("024");
                 ReadData();
             }
@@ -335,17 +335,21 @@ namespace _24東_アズマ_
                             entity.qtyStatus = "good";
                             dateexists = qtyStatus.Replace("○", string.Empty).Replace("◎", string.Empty);
                         }
+                        //<remark quantity & stockdateの　編集ロジック　2020/06/16 Start>
                         //<remark quantity & stockdateの　編集ロジック　2020/04/07 Start>
                         //else if (qtyStatus.Contains("△") || qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中"))
-                        else if ( qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中"))
+                        //else if ( qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中"))
+                          else if(qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中"))
                         {
                             entity.qtyStatus = "empty";
                             //dateexists = qtyStatus.Replace("△", string.Empty).Replace("台|個|ロット", string.Empty);
                             //dateexists = qtyStatus.Replace("×", string.Empty).Replace("入荷予定", string.Empty).Replace("予約受付中", string.Empty);
                         }
-                        else if (qtyStatus.Contains("△"))
+                        //else if (qtyStatus.Contains("△"))
+                          else if (qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("△"))
                         {
-                            entity.qtyStatus = "good";
+                            //entity.qtyStatus = "good";
+                            entity.qtyStatus = "small";
                         }
                         //</remark 2020/04/07 End>
                         else
@@ -359,9 +363,10 @@ namespace _24東_アズマ_
                         }
                         else
                         {
-                            entity.stockDate = qtyStatus.Equals("○") || qtyStatus.Equals("◎") ? "2100-01-01" : qtyStatus.Contains("△") || qtyStatus.Contains("×") || qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") ? "2100-02-01" : "unknown date";
+                            //entity.stockDate = qtyStatus.Equals("○") || qtyStatus.Equals("◎") ? "2100-01-01" : qtyStatus.Contains("△") || qtyStatus.Contains("×") || qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") ? "2100-02-01" : "unknown date";
+                            entity.stockDate = qtyStatus.Equals("○") || qtyStatus.Equals("◎") || qtyStatus.Contains("△") || qtyStatus.Contains("台|個|ロット") ? "2100-01-01" :  qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") ? "2100-02-01" : "unknown date";
                         }
-
+                        //</remark 2020/06/16 End>
 
                         //if ((dt024.Rows[i]["在庫情報"].ToString().Contains("empty") || dt024.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt024.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
                         //{
@@ -375,7 +380,7 @@ namespace _24東_アズマ_
                         //}
                         //else
 
-                            fun.Qbei_Inserts(entity);
+                        fun.Qbei_Inserts(entity);
                     }
                 }
                 else
