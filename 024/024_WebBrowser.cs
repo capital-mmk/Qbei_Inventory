@@ -191,8 +191,7 @@ namespace _24東_アズマ_
         {   
             try
             {
-               // entity.orderCode = dt024.Rows[i]["発注コード"].ToString().Trim();
-                entity.orderCode = "533TBD12740";
+                entity.orderCode = dt024.Rows[i]["発注コード"].ToString().Trim();
                 entity.janCode = dt024.Rows[i]["JANコード"].ToString().Trim();
                 string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
                 if (body.Contains("This page can't be displayed"))
@@ -234,8 +233,7 @@ namespace _24東_アズマ_
         {
             try
             {
-                //entity.orderCode = dt024.Rows[i]["発注コード"].ToString().Trim();
-                entity.orderCode = "533TBD12740";
+                entity.orderCode = dt024.Rows[i]["発注コード"].ToString().Trim();
                 entity.janCode = dt024.Rows[i]["JANコード"].ToString().Trim();
                 string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
                 if (body.Contains("This page can't be displayed"))
@@ -269,8 +267,7 @@ namespace _24東_アズマ_
             {
                 fun.ClearMemory();
 
-                //entity.orderCode = dt024.Rows[i]["発注コード"].ToString();
-                entity.orderCode = "533TBD12740";
+                entity.orderCode = dt024.Rows[i]["発注コード"].ToString();
                 entity.janCode = dt024.Rows[i]["JANコード"].ToString();
                 string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
                 if (body.Contains("This page can't be displayed"))
@@ -286,8 +283,7 @@ namespace _24東_アズマ_
                 entity.partNo = dt024.Rows[i]["自社品番"].ToString();
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt024.Rows[i]["最終反映日"].ToString();
-               // entity.orderCode = dt024.Rows[i]["発注コード"].ToString().Trim();
-                entity.orderCode = "533TBD12740";
+                entity.orderCode = dt024.Rows[i]["発注コード"].ToString().Trim();
                 entity.purchaseURL = fun.url + "/azuma/product_detail/multi_request?id=" + entity.orderCode;
 
                 if (!string.IsNullOrWhiteSpace(entity.orderCode))
