@@ -298,10 +298,11 @@ namespace _24東_アズマ_
                         Environment.Exit(0);
                     }
                     body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
+                    fun.WriteLog(body, "024_Record");//<remark Add Logic for Data of Record />
                     string Date = DateTime.Now.ToString("yyyy-MM-dd");
 
                     string qtyStatus = string.Empty;
-                    string[] strarr = body.Split('|');
+                    string[] strarr = body.Split('|');                   
                     if (strarr[1] == "[0]")
                     {
                         entity.qtyStatus = "empty";
