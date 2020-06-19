@@ -298,13 +298,13 @@ namespace _24東_アズマ_
                         Environment.Exit(0);
                     }
                     body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
-                    fun.WriteLog(body, "024_Record");//<remark Add Logic for Data of Record 2020/06/17 />
+                    //fun.WriteLog(body, "024_Record");//<remark Close Logic for Data of Record 2020/06/19 />
                     string Date = DateTime.Now.ToString("yyyy-MM-dd");
 
                     string qtyStatus = string.Empty;
                     string[] strarr = body.Split('|');
                     //if (strarr[1] == "[0]")//<remark Close Logic  2020/06/18 />
-                    if (strarr[4] == "=")//<remark Edit Logic 2020/06/18 />
+                    if (strarr[4] == "[=]")//<remark Edit Logic 2020/06/19 />
                     {
                         entity.qtyStatus = "empty";
                         entity.price = dt024.Rows[i]["下代"].ToString();
