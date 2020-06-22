@@ -274,8 +274,12 @@ namespace _87ダートフリーク
                         else
                         {
                             string qtypath = hdoc.DocumentNode.SelectSingleNode("/table/tbody/tr/td[2]/div/table/tbody/tr[2]/td/div/table/tbody/tr/td[9]/font").InnerText;
-                            entity.qtyStatus = qtypath.Equals("◎") ? "good" : qtypath.Equals("○") || qtypath.Equals("▲") ? "small" : qtypath.Equals("×") ? "empty" : qtypath.Equals("※") ? "inquiry" : "invalid status code";
-                            entity.stockDate = qtypath.Equals("◎") || qtypath.Equals("○") || qtypath.Equals("▲") || qtypath.Equals("×") || qtypath.Equals("※") ? "2100-01-01" : "unknown date";
+                            //<remark Edit Logic for Stockdate & Quantity 2020/06/22 Start>
+                            //entity.qtyStatus = qtypath.Equals("◎") ? "good" : qtypath.Equals("○") || qtypath.Equals("▲") ? "small" : qtypath.Equals("×") ? "empty" : qtypath.Equals("※") ? "inquiry" : "invalid status code";
+                            //entity.stockDate = qtypath.Equals("◎") || qtypath.Equals("○") || qtypath.Equals("▲") || qtypath.Equals("×") || qtypath.Equals("※") ? "2100-01-01" : "unknown date";
+                            entity.qtyStatus = qtypath.Equals("◎") ? "good" : qtypath.Equals("○") || qtypath.Equals("▲") ? "small" : qtypath.Equals("×") || qtypath.Equals("※") ? "empty" :  "invalid status code";
+                            entity.stockDate = qtypath.Equals("◎") || qtypath.Equals("○") || qtypath.Equals("▲") ? "2100-01-01" : qtypath.Equals("×") || qtypath.Equals("※") ? "2100-02-01" : "unknown date";
+                            //</remark 2020/06/22 End>
 
                             entity.price = hdoc.DocumentNode.SelectSingleNode("/table/tbody/tr/td[2]/div/table/tbody/tr[2]/td/div/table/tbody/tr/td[7]/font").InnerText;
                             entity.price = entity.price.Replace(",", string.Empty);
