@@ -439,7 +439,10 @@ namespace _143
                                     }
                                     else if (sdimg.Contains("new.gif") && alt.Contains("×"))
                                     {
-                                        entity.stockDate = "2100-01-10";
+                                        //<remark Stockdateの変更　2020/07/08 Start>
+                                        // entity.stockDate = "2100-01-10";
+                                        entity.stockDate = "2100-02-01";
+                                        //<remark Stockdateの変更　2020/07/08 End>
                                     }
                                 }
                                 else if (hdoc.DocumentNode.SelectSingleNode(stockpath3) != null)
