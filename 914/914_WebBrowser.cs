@@ -338,8 +338,12 @@ namespace _914
 
                                     if (isFound) break;
                             }
-                            entity.stockDate = entity.qtyStatus.Contains("○") || entity.qtyStatus.Contains("△") ? "2100-01-01" : entity.qtyStatus.Contains("×") ? "2100-02-01" : "unknown date";
-                            entity.qtyStatus = entity.qtyStatus.Contains("○") ? "good" : entity.qtyStatus.Contains("△") ? "small" : entity.qtyStatus.Contains("×") ? "empty" : "empty";
+                            //<remark 13/07/2020(変更)>
+                            //entity.stockDate = entity.qtyStatus.Contains("○") || entity.qtyStatus.Contains("△") ? "2100-01-01" : entity.qtyStatus.Contains("×") ? "2100-02-01" : "unknown date";
+                            //entity.qtyStatus = entity.qtyStatus.Contains("○") ? "good" : entity.qtyStatus.Contains("△") ? "small" : entity.qtyStatus.Contains("×") ? "empty" : "empty";
+                            entity.stockDate = entity.qtyStatus.Contains("○") ? "2100-01-01" : entity.qtyStatus.Contains("△") || entity.qtyStatus.Contains("×") ? "2100-02-01" : "unknown date";
+                            entity.qtyStatus = entity.qtyStatus.Contains("○") ? "good" :  entity.qtyStatus.Contains("△") || entity.qtyStatus.Contains("×") ? "empty" : "empty";
+                            //</remark>
                             //<remark Close Logic 2020/25/22 Start>
                             //if (dr["入荷予定"].ToString().Contains("2100-01-10"))
                             //{
