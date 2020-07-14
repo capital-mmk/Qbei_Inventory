@@ -192,16 +192,24 @@ namespace _916_Chrome
                     Thread.Sleep(2000);
                     dtItem.Columns.Add(dc);
 
+                    //<remark Change Stockdate 2020/07/13 Start>
                     //empty + 2100-02-01
-                    dtItem.AsEnumerable().Where(x => string.IsNullOrEmpty(x.Field<string>("次回入荷")) && x.Field<string>("在庫数").Equals("×")).ToList<DataRow>()
-                          .ForEach(z => z[dc] = "2100-02-01");
+                    //dtItem.AsEnumerable().Where(x => string.IsNullOrEmpty(x.Field<string>("次回入荷")) && x.Field<string>("在庫数").Equals("×")).ToList<DataRow>()
+                    //      .ForEach(z => z[dc] = "2100-02-01");
+                    dtItem.AsEnumerable().Where(x => string.IsNullOrEmpty(x.Field<string>("次回入荷")) && (x.Field<string>("在庫数").Equals("×") ||
+                                                                           x.Field<string>("在庫数").Equals("△"))).ToList<DataRow>()
+                         .ForEach(z => z[dc] = "2100-02-01");
 
                     //good || small + 2100-01-01
+                    //dtItem.AsEnumerable().Where(x => string.IsNullOrEmpty(x.Field<string>("次回入荷")) &&
+                    //                                                      (x.Field<string>("在庫数").Equals("◎") ||
+                    //                                                       x.Field<string>("在庫数").Equals("○") ||
+                    //                                                       x.Field<string>("在庫数").Equals("△"))).ToList<DataRow>()
                     dtItem.AsEnumerable().Where(x => string.IsNullOrEmpty(x.Field<string>("次回入荷")) &&
                                                                           (x.Field<string>("在庫数").Equals("◎") ||
-                                                                           x.Field<string>("在庫数").Equals("○") ||
-                                                                           x.Field<string>("在庫数").Equals("△"))).ToList<DataRow>()
+                                                                           x.Field<string>("在庫数").Equals("○") )).ToList<DataRow>()
                           .ForEach(z => z[dc] = "2100-01-01");
+                    //</remark 2020/07/13 End>
 
                     //stockdate
                     int currentYear = DateTime.Now.Year;
