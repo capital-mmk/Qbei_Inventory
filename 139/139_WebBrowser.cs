@@ -327,7 +327,10 @@ namespace _139
                                                 if (int.Parse(entity.qtyStatus) >= 10)
                                                     entity.qtyStatus = "good";
                                             //else if (int.Parse(entity.qtyStatus) > 0 && int.Parse(entity.qtyStatus) <= 10)
-                                                else if (int.Parse(entity.qtyStatus) >= 5 && int.Parse(entity.qtyStatus) < 10)
+                                            //<remark Change of Quantity State 2020/07/14 Start>
+                                            //else if (int.Parse(entity.qtyStatus) >= 5 && int.Parse(entity.qtyStatus) < 10)
+                                            else if (int.Parse(entity.qtyStatus) >= 7 && int.Parse(entity.qtyStatus) < 10)
+                                                //</remark  2020/07/14 End>
                                                 entity.qtyStatus = "small";
                                             else
                                                 entity.qtyStatus = "empty";
