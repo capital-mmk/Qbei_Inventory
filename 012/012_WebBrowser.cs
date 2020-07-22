@@ -298,9 +298,13 @@ namespace _12カワシマ
                                 entity.qtyStatus = "empty";
                             }
                             else
-                            {                             
-                                entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") ? "small" : alt.Contains("×") || alt.Contains("終了") || alt.Equals("×(終了)") ? "empty" : "unknown status";                         
-                                entity.stockDate = alt.Equals("○") || alt.Equals("△") || alt.Equals("×") ? "2100-01-01" : alt.Equals("終了") || alt.Equals("×(終了)") ? "2100-02-01" : "unknown date";
+                            {             
+                                //<remark Edit Logic of stockdate 2020/07/21 Start>
+                                //entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") ? "small" : alt.Contains("×") || alt.Contains("終了") || alt.Equals("×(終了)") ? "empty" : "unknown status";                         
+                                //entity.stockDate = alt.Equals("○") || alt.Equals("△") || alt.Equals("×") ? "2100-01-01" : alt.Equals("終了") || alt.Equals("×(終了)") ? "2100-02-01" : "unknown date";
+                                entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") || alt.Contains("×") || alt.Contains("終了") || alt.Equals("×(終了)") ? "empty" : "unknown status";
+                                entity.stockDate = alt.Equals("○") ||  alt.Equals("×") ? "2100-01-01" : alt.Equals("△") || alt.Equals("終了") || alt.Equals("×(終了)") ? "2100-02-01" : "unknown date";
+                                //</remark 2020/07/21 End>
                             }
                             //<remark Close Logic 2020/25/22 Start>
                             //if ((dt012.Rows[i]["在庫情報"].ToString().Contains("empty") || dt012.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt012.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
