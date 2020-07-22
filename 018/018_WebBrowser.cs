@@ -281,7 +281,8 @@ namespace _018日直_ニチナオ_
                         entity.price = hdoc.DocumentNode.SelectSingleNode("div/div[2]/div/div[3]/div/table/tbody/tr/td[2]/table[1]/tbody/tr[5]/td/span").InnerText.Replace("円", string.Empty).Replace(",", string.Empty);
 
                         string qtypath = hdoc.DocumentNode.SelectSingleNode("div/div[2]/div/div[3]/div/table/tbody/tr/td[2]/table[1]/tbody/tr[7]/td").InnerText;
-                        entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") || fun.IsNumber(qtypath) ? "small" : qtypath.Equals("×") || qtypath.Equals("予約") ? "empty" : "No status code";
+                        //entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") || fun.IsNumber(qtypath) ? "small" : qtypath.Equals("×") || qtypath.Equals("予約") ? "empty" : "No status code";//<remark Edit Logic of quantity 2020/07/21 />
+                        entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") || fun.IsNumber(qtypath) || qtypath.Equals("×") || qtypath.Equals("予約") ? "empty" : "No status code";
                         //if (qtypath.Contains("予約"))
                         //{
                         HtmlNode node = hdoc.DocumentNode.SelectSingleNode("div/div[2]/div/div[3]/div/table/tbody/tr/td[2]/table[1]/tbody/tr[8]/td");
@@ -317,13 +318,18 @@ namespace _018日直_ニチナオ_
                             else
                                 entity.stockDate = "2100-01-01";
                         }
-                        else
-                            entity.stockDate = "2100-01-01";
+                        //else
+                        //    entity.stockDate = "2100-01-01";
                         //}
                         //else
                         //{
+                        //<remark Edit Logic of stockdate 2020/07/21  Start>
                         if (string.IsNullOrEmpty(entity.stockDate))
-                            entity.stockDate = qtypath.Equals("×") ? "2100-02-01" : "2100-01-01";
+                        {
+                            //entity.stockDate = qtypath.Equals("×") ? "2100-02-01" : "2100-01-01";
+                            entity.stockDate = qtypath.Equals("△") || fun.IsNumber(qtypath) || qtypath.Equals("×") ? "2100-02-01" : "2100-01-01";
+                        }
+                        //</remark 2020/07/21  End>   
                         //}
                     }
                     else
@@ -334,6 +340,7 @@ namespace _018日直_ニチナオ_
                         entity.stockDate = "2100-02-01";
                         //2018/01/10 End
                     }
+
                 }
                 //2018/01/10 Start
                 //<remark Close Logic 2020/25/22 Start>
