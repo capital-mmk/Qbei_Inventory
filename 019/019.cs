@@ -281,7 +281,8 @@ namespace _019深谷_フカヤ_
                                     }
                                     else
                                     {
-                                        entity.qtyStatus = qty.Equals("在庫○") ? "good" : qty.Equals("取寄×") ? "empty" : qty.Equals("在庫△") ? "small" : qty.Equals("欠品×") ? "empty" : qty.Equals("廃番×") ? "empty" : qty.Equals("廃番(n)") ? "small" : qty.Equals("廃番○") ? "good" : "unknown status";
+                                        //entity.qtyStatus = qty.Equals("在庫○") ? "good" : qty.Equals("取寄×") ? "empty" : qty.Equals("在庫△") ? "small" : qty.Equals("欠品×") ? "empty" : qty.Equals("廃番×") ? "empty" : qty.Equals("廃番(n)") ? "small" : qty.Equals("廃番○") ? "good" : "unknown status";//<remark Edit Logic of quantity 2020/07/21 />
+                                        entity.qtyStatus = qty.Equals("在庫○") ? "good" : qty.Equals("取寄×") ? "empty" : qty.Equals("在庫△") ? "empty" : qty.Equals("欠品×") ? "empty" : qty.Equals("廃番×") ? "empty" : qty.Equals("廃番(n)") ? "small" : qty.Equals("廃番○") ? "good" : "unknown status";
                                     }
 
                                     //<remark>
@@ -313,9 +314,10 @@ namespace _019深谷_フカヤ_
                                         }
                                         else
                                         {
-                                            entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-01-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";
+                                            //entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-01-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";//<remark Edit Logic of stockdate 2020/07/21 />
+                                            entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-02-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";
                                         }
-                                    }
+                                    }                                 
                                     //<remark Add Logic 2020/05/30 />
                                     if (entity.qtyStatus != "unknown status")
                                     {
