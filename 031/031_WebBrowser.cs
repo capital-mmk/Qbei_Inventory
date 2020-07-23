@@ -331,9 +331,11 @@ namespace _031アキボウ
                     {
                         var qty = hdoc.DocumentNode.SelectSingleNode("/html/body/div/div/table/tbody/tr/td[2]/table[2]/tbody/tr[2]/td[1]").InnerText;
 
-                        entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") || qty.Contains("▲") ||fun.IsNumber(qty)? "small" : qty.Contains("予約受付中") || qty.Contains("在庫なし") || qty.Contains("受付終了") ? "empty" : "unknown status";
+                        //entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") || qty.Contains("▲") ||fun.IsNumber(qty)? "small" : qty.Contains("予約受付中") || qty.Contains("在庫なし") || qty.Contains("受付終了") ? "empty" : "unknown status";//<remark Change Logic of Quantity 2020/07/23 />
+                        entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") || qty.Contains("▲") || fun.IsNumber(qty) || qty.Contains("予約受付中") || qty.Contains("在庫なし") || qty.Contains("受付終了") ? "empty" : "unknown status";
                         //entity.stockDate = qty.Contains("○") || qty.Contains("△") || qty.Contains("▲") || qty.Contains("予約受付中") || qty.Contains("在庫なし") || fun.IsNumber(qty) ? "2100-01-01" : qty.Contains("受付終了") ? "2100-02-01" : "unknown date";
-                        entity.stockDate = qty.Contains("○") || qty.Contains("△") || qty.Contains("▲")  || fun.IsNumber(qty) ? "2100-01-01" :  qty.Contains("予約受付中") || qty.Contains("在庫なし") || qty.Contains("受付終了") ? "2100-02-01" : "unknown date";//<remark Stockdateの編集　2020/04/06 />
+                        //entity.stockDate = qty.Contains("○") || qty.Contains("△") || qty.Contains("▲")  || fun.IsNumber(qty) ? "2100-01-01" :  qty.Contains("予約受付中") || qty.Contains("在庫なし") || qty.Contains("受付終了") ? "2100-02-01" : "unknown date";//<remark Stockdateの編集　2020/04/06 />
+                        entity.stockDate = qty.Contains("○")  ? "2100-01-01" : qty.Contains("△") || qty.Contains("▲") || fun.IsNumber(qty) || qty.Contains("予約受付中") || qty.Contains("在庫なし") || qty.Contains("受付終了") ? "2100-02-01" : "unknown date";//<remark Change Logic of Quantity 2020/07/23 />
 
                         //entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") || qty.Contains("▲") ? "small" : qty.Contains("予約受付中") || qty.Contains("在庫なし") || qty.Contains("受付終了") ? "empty" : "unknown status";
                         //entity.stockDate = qty.Contains("○") || qty.Contains("△") || qty.Contains("▲") || qty.Contains("予約受付中") || qty.Contains("在庫なし") ? "2100-01-01" : qty.Contains("受付終了") ? "2100-02-01" : "unknown date";
