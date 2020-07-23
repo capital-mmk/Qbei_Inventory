@@ -286,7 +286,8 @@ namespace _030
                         entity.price = hdoc.DocumentNode.SelectSingleNode("div/div[4]/div[2]/table/tbody/tr[2]/td[4]").InnerText;
                         entity.price = entity.price.Replace("￥", string.Empty).Replace(",", string.Empty);
 
-                        entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") ? "small" : alt.Equals("×") || alt.Equals("完売") ? "empty" : "unknown status";
+                        //entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") ? "small" : alt.Equals("×") || alt.Equals("完売") ? "empty" : "unknown status";//<remark Change Logic of quantity 2020/07/23 />
+                        entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") || alt.Equals("×") || alt.Equals("完売") ? "empty" : "unknown status";
 
                         string date = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");                       
                         //entity.stockDate = alt.Equals("○") || alt.Equals("△") ? "2100-01-01" : alt.Equals("×") || alt.Equals("完売") ? "2100-02-01" : "unknown date";
