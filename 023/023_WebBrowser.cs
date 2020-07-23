@@ -293,6 +293,48 @@ namespace _023パナソニック
                     }
                     else
                     {
+                        if (fun.GetElement("span", "DataGrid1__ctl3_LabelKansu", "id", webBrowser1).InnerText != null)
+                        {
+                            string qtyStatus = fun.GetElement("span", "DataGrid1__ctl3_LabelKansu", "id", webBrowser1).InnerText;
+                            if (qtyStatus.All(char.IsDigit))
+                            {
+                                int num = Convert.ToInt32(qtyStatus);
+                                if (num >= 10)
+                                {
+                                    entity.qtyStatus = "good";
+                                }
+                                else if (num >= 1 && num <= 9)
+                                {
+                                    //entity.qtyStatus = "small";//<remark Change of quantity 2020/07/23 />
+                                    entity.qtyStatus = "empty";
+                                }
+                                else if (num == 0)
+                                {
+                                    entity.qtyStatus = "empty";
+                                }
+                            }
+                            if (qtyStatus.Equals("-"))
+                            {
+                                entity.qtyStatus = "empty";
+                            }
+                            else if (qtyStatus.Equals("○"))
+                            {
+                                entity.qtyStatus = "good";
+                            }
+                            else if (qtyStatus.Equals("△"))
+                            {
+                                //entity.qtyStatus = "small";//<remark Change of quantity 2020/07/23 />
+                                entity.qtyStatus = "empty";
+                            }
+                            else if (qtyStatus.Equals("×"))
+                            {
+                                entity.qtyStatus = "empty";
+                            }
+                        }
+                        else
+                        {
+                            entity.qtyStatus = "empty";
+                        }
                         if (fun.GetElement("span", "DataGrid1__ctl3_LabelKanYotei", "id", webBrowser1).InnerText != null)
                         {
                             string stockdate = fun.GetElement("span", "DataGrid1__ctl3_LabelKanYotei", "id", webBrowser1).InnerText;
@@ -361,49 +403,8 @@ namespace _023パナソニック
                         }
                         else
                         {
-                            entity.stockDate = "2100-02-01";
-                        }
-
-                        if (fun.GetElement("span", "DataGrid1__ctl3_LabelKansu", "id", webBrowser1).InnerText != null)
-                        {
-                            string qtyStatus = fun.GetElement("span", "DataGrid1__ctl3_LabelKansu", "id", webBrowser1).InnerText;
-                            if (qtyStatus.All(char.IsDigit))
-                            {
-                                int num = Convert.ToInt32(qtyStatus);
-                                if (num >= 10)
-                                {
-                                    entity.qtyStatus = "good";
-                                }
-                                else if (num >= 1 && num <= 9)
-                                {
-                                    entity.qtyStatus = "small";
-                                }
-                                else if (num == 0)
-                                {
-                                    entity.qtyStatus = "empty";
-                                }
-                            }
-                            if (qtyStatus.Equals("-"))
-                            {
-                                entity.qtyStatus = "empty";
-                            }
-                            else if (qtyStatus.Equals("○"))
-                            {
-                                entity.qtyStatus = "good";
-                            }
-                            else if (qtyStatus.Equals("△"))
-                            {
-                                entity.qtyStatus = "small";
-                            }
-                            else if (qtyStatus.Equals("×"))
-                            {
-                                entity.qtyStatus = "empty";
-                            }
-                        }
-                        else
-                        {
-                            entity.qtyStatus = "empty";
-                        }
+                            entity.stockDate = entity.qtyStatus.Equals("good") ? "2100-01-01" : "2100-02-01";//<remark Change of quantity 2020/07/23 />
+                        }                       
                         fun.Qbei_Inserts(entity);
                     }
                 }
