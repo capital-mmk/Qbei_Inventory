@@ -346,13 +346,18 @@ namespace _0035
                                 }
                                 if (entity.stockDate.Equals("-") || entity.stockDate.Equals(""))
                                 {
-                                    entity.qtyStatus = qty.Equals("◯") || qty.Equals("◎") ? "good" : qty.Equals("△") || fun.IsSmall1(qty) ? "small" : qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") || fun.IsLessthanzero(qty) ? "empty" : "unknown status";
-                                    entity.stockDate = qty.Equals("◯") || qty.Equals("◎") || qty.Equals("△") || fun.IsSmall1(qty) || fun.IsLessthanzero(qty) || qty.Equals("×") ? "2100-01-01" : qty.Equals("完売") || qty.Equals("終了") ? "2100-02-01" : "unknown date";
+                                    //<remak Change Logic of stockdate 2020/07/23 Start>
+                                    //entity.qtyStatus = qty.Equals("◯") || qty.Equals("◎") ? "good" : qty.Equals("△") || fun.IsSmall1(qty) ? "small" : qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") || fun.IsLessthanzero(qty) ? "empty" : "unknown status";
+                                    //entity.stockDate = qty.Equals("◯") || qty.Equals("◎") || qty.Equals("△") || fun.IsSmall1(qty) || fun.IsLessthanzero(qty) || qty.Equals("×") ? "2100-01-01" : qty.Equals("完売") || qty.Equals("終了") ? "2100-02-01" : "unknown date";
+                                    entity.qtyStatus = qty.Equals("◯") || qty.Equals("◎") ? "good" : qty.Equals("△") || fun.IsLessthanzero(qty) || fun.IsSmall1(qty) || qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") || fun.IsLessthanzero(qty) ? "empty" : "unknown status";
+                                    entity.stockDate = qty.Equals("◯") || qty.Equals("◎") ||  fun.IsLessthanzero(qty)  ? "2100-01-01" : qty.Equals("△") || fun.IsSmall1(qty) || qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") ? "2100-02-01" : "unknown date";
+                                    //</remark 2020/07/23 End>
                                 }
                                 else
                                 {
                                     string date = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-                                    entity.qtyStatus = qty.Equals("◯") || qty.Equals("◎") ? "good" : qty.Equals("△") || fun.IsSmall1(qty) ? "small" : qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") || fun.IsLessthanzero(qty) ? "empty" : "unknown status";
+                                    //entity.qtyStatus = qty.Equals("◯") || qty.Equals("◎") ? "good" : qty.Equals("△") || fun.IsSmall1(qty) ? "small" : qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") || fun.IsLessthanzero(qty) ? "empty" : "unknown status";
+                                    entity.qtyStatus = qty.Equals("◯") || qty.Equals("◎") ? "good" : qty.Equals("△") || fun.IsLessthanzero(qty) || fun.IsSmall1(qty) || qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") || fun.IsLessthanzero(qty) ? "empty" : "unknown status";//<remark Change Logic of Stockdate 2020/07/23 />
                                     entity.stockDate = qty.Equals("◯") || qty.Equals("◎") || qty.Equals("△") || fun.IsSmall1(qty) || qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") || fun.IsLessthanzero(qty) ? entity.stockDate : "unknown date";
                                 }
                                 //<remark Close Logic 2020/25/22 Start>
