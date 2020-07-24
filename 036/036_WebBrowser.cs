@@ -311,14 +311,16 @@ namespace _36PRインターナショナル
                                     qtypath = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]").InnerText;
                                     stockpath = "div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr/td[2]";
                                 }
-                                entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") ? "small" : qtypath.Equals("×") || qtypath.Equals("完売") ? "empty" : "unknown status";
+                                //entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") ? "small" : qtypath.Equals("×") || qtypath.Equals("完売") ? "empty" : "unknown status";
+                                entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") || qtypath.Equals("×") || qtypath.Equals("完売") ? "empty" : "unknown status";//<remark Change Logic of quantity 2020/07/24 />
                                 //</remark 2020/1/21 　End>
 
                                 HtmlNodeCollection nc = hdoc.DocumentNode.SelectNodes(stockpath);
 
                                 if (nc == null)
                                 {
-                                    entity.stockDate = qtypath.Equals("○") || qtypath.Equals("△") || qtypath.Equals("×") ? "2100-01-01" : qtypath.Equals("限定") ? "2100/02/01" : "unknown date";
+                                    //entity.stockDate = qtypath.Equals("○") || qtypath.Equals("△") || qtypath.Equals("×") ? "2100-01-01" : qtypath.Equals("限定") ? "2100/02/01" : "unknown date";
+                                    entity.stockDate = qtypath.Equals("○") || qtypath.Equals("×") ? "2100-01-01" : qtypath.Equals("△") || qtypath.Equals("限定") ? "2100/02/01" : "unknown date";//<remark Change Logic of stockdate 2020/07/24 />
                                 }
                                 else
                                 {
