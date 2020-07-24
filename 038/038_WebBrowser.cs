@@ -338,7 +338,8 @@ namespace _38フタバ
                         int pcmonth = Convert.ToInt32(DateTime.Now.ToString("MM"));
                         string qty = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_zaikojokyo_0").InnerText;
                         //entity.qtyStatus = qty.Contains("○") || fun.IsGood(qty) ? "good" : qty.Equals("△") || fun.IsSmall(qty) ? "small" : qty.Equals("×") ? "empty" : "unknown status";
-                        entity.qtyStatus = qty.Equals("×") ||fun.IsEmpty_38(qty)? "empty" : qty.Equals("△") || fun.IsSmall_38(qty) ? "small" : qty.Contains("○") || fun.IsGood_38(qty) ? "good" :  "unknown status";//<remark Quantityの編集ロジック　2020/04/07 />
+                        //entity.qtyStatus = qty.Equals("×") ||fun.IsEmpty_38(qty)? "empty" : qty.Equals("△") || fun.IsSmall_38(qty) ? "small" : qty.Contains("○") || fun.IsGood_38(qty) ? "good" :  "unknown status";//<remark Quantityの編集ロジック　2020/04/07 />
+                        entity.qtyStatus = qty.Equals("△") || fun.IsSmall_38(qty) || qty.Equals("×") || fun.IsEmpty_38(qty) ? "empty" : qty.Contains("○") || fun.IsGood_38(qty) ? "good" : "unknown status";//<remark Quantityの編集ロジック　2020/07/24 />
                         entity.price = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_tankazeinuki_0").InnerText;
                         entity.price = entity.price.Replace(",", string.Empty);
                         entity.stockDate = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_nyukayotei_0").InnerText;
