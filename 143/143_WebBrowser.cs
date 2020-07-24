@@ -414,11 +414,13 @@ namespace _143
                                 string sdimg;
                                 string sdimg2;
                                 string sdimg3;                            
-                                if (alt.Equals("○") || alt.Equals("▲"))
+                                //if (alt.Equals("○") || alt.Equals("▲"))
+                                if (alt.Equals("○"))//<remark Change Logic of stockdate 2020/07/24 />
                                 {
                                     entity.stockDate = "2100-01-01";
                                 }
-                                else if (alt.Contains("完売"))
+                                //else if (alt.Contains("完売"))
+                                else if (alt.Equals("▲") ||alt.Contains("完売"))//<remark Change Logic of stockdate 2020/07/24 />
                                 {
                                     entity.stockDate = "2100-02-01";
                                 }
@@ -478,7 +480,8 @@ namespace _143
                         {
                             entity.stockDate = "2100-01-10";
                         }
-                        entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("▲") ? "small" : alt.Equals("×") || alt.Contains("完売") ? "empty" : "unknown status";
+                        //entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("▲") ? "small" : alt.Equals("×") || alt.Contains("完売") ? "empty" : "unknown status";
+                        entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("▲") || alt.Equals("×") || alt.Contains("完売") ? "empty" : "unknown status";//<remark Change Logic of quantity 2020/07/24 />
 
                         //if ((dt143.Rows[i]["在庫情報"].ToString().Contains("empty") || dt143.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt143.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
                         //{
