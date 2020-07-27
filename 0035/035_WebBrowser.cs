@@ -350,7 +350,8 @@ namespace _0035
                                     //entity.qtyStatus = qty.Equals("◯") || qty.Equals("◎") ? "good" : qty.Equals("△") || fun.IsSmall1(qty) ? "small" : qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") || fun.IsLessthanzero(qty) ? "empty" : "unknown status";
                                     //entity.stockDate = qty.Equals("◯") || qty.Equals("◎") || qty.Equals("△") || fun.IsSmall1(qty) || fun.IsLessthanzero(qty) || qty.Equals("×") ? "2100-01-01" : qty.Equals("完売") || qty.Equals("終了") ? "2100-02-01" : "unknown date";
                                     entity.qtyStatus = qty.Equals("◯") || qty.Equals("◎") ? "good" : qty.Equals("△") || fun.IsLessthanzero(qty) || fun.IsSmall1(qty) || qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") || fun.IsLessthanzero(qty) ? "empty" : "unknown status";
-                                    entity.stockDate = qty.Equals("◯") || qty.Equals("◎") ||  fun.IsLessthanzero(qty)  ? "2100-01-01" : qty.Equals("△") || fun.IsSmall1(qty) || qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") ? "2100-02-01" : "unknown date";
+                                    //entity.stockDate = qty.Equals("◯") || qty.Equals("◎") ||  fun.IsLessthanzero(qty)  ? "2100-01-01" : qty.Equals("△") || fun.IsSmall1(qty) || qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") ? "2100-02-01" : "unknown date";
+                                    entity.stockDate = qty.Equals("◯") || qty.Equals("◎") ? "2100-01-01" : qty.Equals("△") || fun.IsLessthanzero(qty) || fun.IsSmall1(qty) || qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") ? "2100-02-01" : "unknown date";
                                     //</remark 2020/07/23 End>
                                 }
                                 else
