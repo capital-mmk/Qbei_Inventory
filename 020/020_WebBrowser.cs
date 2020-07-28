@@ -120,7 +120,7 @@ namespace _20ダイアテック_高難易度_
                 fun.Qbei_ErrorDelete(20);
                 dt020 = fun.GetDatatable("020");
                 dt020 = fun.DeleteOldCode(dt020, 20);
-                dt020 = fun.GetOrderData(dt020, "https://www.b2bdiatec.jp/shop/g/g", "020", string.Empty);
+                //dt020 = fun.GetOrderData(dt020, "https://www.b2bdiatec.jp/shop/g/g", "020", string.Empty);//<remark Close Logic of Onceaweek 2020/07/28 />
                 fun.GetTotalCount("020");
                 ReadData();
             }
