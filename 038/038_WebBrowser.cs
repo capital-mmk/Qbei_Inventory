@@ -491,7 +491,8 @@ namespace _38フタバ
                         }
                         else if (entity.stockDate.Contains("NEW!!") || entity.stockDate.Contains("未定") || entity.stockDate.Contains("今夏頃発売予定") || entity.stockDate.Contains(":") || entity.stockDate.Contains("欠品"))
                         {
-                            entity.stockDate = "2100-01-01";
+                            //entity.stockDate = "2100-01-01";
+                            entity.stockDate = "2100-02-01";//<remark Edit Logic of Stockdate 2020/08/04 />
                         }
                         else if (entity.stockDate.Contains("BO"))
                         {
