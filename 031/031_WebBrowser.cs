@@ -116,7 +116,7 @@ namespace _031アキボウ
                 fun.Qbei_Delete(31);
                 fun.Qbei_ErrorDelete(31);
                 dt031 = fun.GetDatatable("031");
-                dt031 = fun.GetOrderData(dt031, "https://joto-order.jp/jotwebb2b/itemList/searchItemList?searchKeiWord=", "031", "");
+                //dt031 = fun.GetOrderData(dt031, "https://joto-order.jp/jotwebb2b/itemList/searchItemList?searchKeiWord=", "031", "");//<remark Close Logic of Onceaweek 2020/08/12 />
                 fun.GetTotalCount("031");
                 ReadData();
             }            
