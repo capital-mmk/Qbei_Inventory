@@ -277,7 +277,8 @@ namespace _019深谷_フカヤ_
                                     bool isDigitPresent = qty.Any(c => char.IsDigit(c));
                                     if (isDigitPresent == true)
                                     {
-                                        entity.qtyStatus = "small";
+                                        //entity.qtyStatus = "small";//<remark Edit Logic of quantity 2020/07/21 />
+                                        entity.qtyStatus = "empty";
                                     }
                                     else
                                     {
