@@ -22,15 +22,15 @@ namespace _13ミズタニ
     /// Data Table and Common Function and Field
     /// </remark>
     public partial class frm013 : Form
-    {        
-        DataTable dt = new DataTable();        
-        Qbeisetting_BL qubl = new Qbeisetting_BL();        
-        Qbeisetting_Entity qe = new Qbeisetting_Entity();        
+    {
+        DataTable dt = new DataTable();
+        Qbeisetting_BL qubl = new Qbeisetting_BL();
+        Qbeisetting_Entity qe = new Qbeisetting_Entity();
         CommonFunction fun = new CommonFunction();
-        DataTable dt013 = new DataTable();        
+        DataTable dt013 = new DataTable();
         Qbei_Entity entity = new Qbei_Entity();
         int i = -1;
-        public static string st = string.Empty;      
+        public static string st = string.Empty;
         string gridViewFormat = "GridView1_ctl{0}";
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace _13ミズタニ
         /// </remark>
         public frm013()
         {
-            InitializeComponent();           
+            InitializeComponent();
             testflag();
         }
 
@@ -55,11 +55,11 @@ namespace _13ミズタニ
         ///"2" is End Process.
         ///</remark>
         private void testflag()
-        {            
+        {
             qe.site = 13;
-            qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");            
+            qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             qe.flag = 1;
-            DataTable dtflag = fun.SelectFlag(13);      
+            DataTable dtflag = fun.SelectFlag(13);
             int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
 
             /// <summary>
@@ -70,7 +70,7 @@ namespace _13ミズタニ
             /// when flag is 0,Change to flag is 1 and Continue to StartRun Process.
             /// </remark>
             if (flag == 0)
-            {      
+            {
                 fun.ChangeFlag(qe);
                 StartRun();
             }
@@ -101,12 +101,12 @@ namespace _13ミズタニ
             try
             {
                 fun.setURL("013");
-                fun.CreateFileAndFolder();  
+                fun.CreateFileAndFolder();
                 fun.Qbei_Delete(13);
                 fun.Qbei_ErrorDelete(13);
                 dt013 = fun.GetDatatable("013");
                 //2017/12/14 Start
-                dt013 = fun.GetOrderData(dt013, "https://www.ordermz.jp/weborder/SyohinSearch.aspx", "013", string.Empty);
+                //dt013 = fun.GetOrderData(dt013, "https://www.ordermz.jp/weborder/SyohinSearch.aspx", "013", string.Empty);<remark Close Logic 2020/09/01 />
                 fun.GetTotalCount("013");
                 //2017/12/14 End
                 ReadData();
@@ -122,7 +122,7 @@ namespace _13ミズタニ
         /// </remark>
         private void ReadData()
         {
-            webBrowser1.ScriptErrorsSuppressed = true;        
+            webBrowser1.ScriptErrorsSuppressed = true;
             qe.SiteID = 13;
             dt = qubl.Qbei_Setting_Select(qe);
             fun.url = dt.Rows[0]["Url"].ToString();
@@ -157,7 +157,7 @@ namespace _13ミズタニ
                 fun.WriteLog("Navigation to Site Url success------", "013-");
                 webBrowser1.ScriptErrorsSuppressed = true;
                 SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
-                instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);                
+                instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
                 qe.SiteID = 13;
                 dt = qubl.Qbei_Setting_Select(qe);
                 string username = dt.Rows[0]["UserName"].ToString();
@@ -192,7 +192,7 @@ namespace _13ミズタニ
                 /// Check to Condition at WebPage.
                 /// </remark>
                 if (body.Contains(" 得意先コード、パスワードが正しくありません"))
-                {        
+                {
                     fun.Qbei_ErrorInsert(13, fun.GetSiteName("013"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "013");
                     Application.Exit();
                 }
@@ -247,14 +247,14 @@ namespace _13ミズタニ
                     //                                                                     "在庫限り発注禁止inquiry", "在庫処分/empry/", "在庫処分empry", "東特価のため完売", "在庫処分small", 
                     //                                                                     "在庫処分empry在庫処分empryempty", "在庫処分empry在庫処分empryinquiry", "在庫処分good",
                     //                                                                     "バラ注文できない為発注禁止/", "在庫処分/","inquiry","empty","/////","////","//","/" });
-                    
+
                     doc.GetElementById("keyword").SetAttribute("Value", orderCode);
                     webBrowser1.Document.GetElementById("btnSearch").InvokeMember("Click");
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemProcessing);
                 }
                 else
-                {                   
-                    qe.site = 13;                   
+                {
+                    qe.site = 13;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
                     qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -293,20 +293,20 @@ namespace _13ミズタニ
             int intCnt = 0;
             string strHtml;
             webBrowser1.ScriptErrorsSuppressed = true;
-            webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemProcessing);    
-            entity.janCode = dt013.Rows[i]["JANコード"].ToString();      
+            webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemProcessing);
+            entity.janCode = dt013.Rows[i]["JANコード"].ToString();
             entity.partNo = dt013.Rows[i]["自社品番"].ToString();
-            entity.makerDate = fun.getCurrentDate();           
+            entity.makerDate = fun.getCurrentDate();
             entity.reflectDate = dt013.Rows[i]["最終反映日"].ToString();
             entity.orderCode = dt013.Rows[i]["発注コード"].ToString().Trim();
             //entity.orderCode = fun.ReplaceOrderCode(entity.orderCode, new string[] {"在庫限り発注禁止", "在庫処分/inquiry/", "在庫処分/empry/-", "在庫処分good", "在庫処分empryinquiry", "在庫処分/empty/", "在庫処分small", 
             //                                                                         "在庫限り発注禁止inquiry", "在庫処分/empry/", "在庫処分empry", "東特価のため完売", "在庫処分small", 
             //                                                                         "在庫処分empry在庫処分empryempty", "在庫処分empry在庫処分empryinquiry", "在庫処分good",
             //                                                                         "バラ注文できない為発注禁止/", "在庫処分/","inquiry","empty","/////","////","//","/" });
-            
+
 
             entity.purchaseURL = webBrowser1.Url.ToString();
-            string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;    
+            string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
             entity.siteID = 13;
             entity.sitecode = "013";
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
@@ -403,7 +403,7 @@ namespace _13ミズタニ
                             }
 
                             if (string.IsNullOrEmpty(entity.qtyStatus) && string.IsNullOrEmpty(entity.stockDate))
-                                {
+                            {
                                 entity.price = dt013.Rows[i]["下代"].ToString();
                                 entity.qtyStatus = "empty";
                                 entity.stockDate = "2100-02-01";
@@ -449,7 +449,7 @@ namespace _13ミズタニ
                             //<remark 13/07/2020(変更)>
                             //<remark 06/12/2019(変更)>
                             //entity.stockDate = qty.Equals("○") || qty.Equals("▲") ? "2100-01-01" : qty.Equals("×") ? "2100-02-01" : entity.stockDate.Replace("/", "-");
-                            entity.stockDate = qty.Equals("○") ? "2100-01-01" :  qty.Equals("▲") || qty.Equals("×") ? "2100-02-01" : entity.stockDate.Replace("/", "-");
+                            entity.stockDate = qty.Equals("○") ? "2100-01-01" : qty.Equals("▲") || qty.Equals("×") ? "2100-02-01" : entity.stockDate.Replace("/", "-");
                             //</remark>
                             //</remark>
                         }
@@ -477,7 +477,7 @@ namespace _13ミズタニ
 
                             else if (entity.stockDate.Contains("下旬"))
                             {
- 
+
                                 if (entity.stockDate.Contains("2月"))
                                     day = "28";
                                 day = "30";
@@ -553,7 +553,7 @@ namespace _13ミズタニ
                             entity.stockDate = new DateTime(DateTime.Now.Year, int.Parse(entity.stockDate), 30).ToString("yyyyMMdd");
                         }
                         //2018-08-14 End
-                        entity.stockDate = entity.stockDate.Replace("/","-");
+                        entity.stockDate = entity.stockDate.Replace("/", "-");
                         //2018/1/12
                         //<remark Close Logic 2020/25/22 Start>
                         //if ((dt013.Rows[i]["在庫情報"].ToString().Contains("empty") || dt013.Rows[i]["在庫情報"].ToString().Contains("inquriry")) && dt013.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
