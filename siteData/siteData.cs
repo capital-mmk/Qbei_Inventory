@@ -99,6 +99,7 @@ namespace siteData
             lstProcess.Add("916_Chrome");
             //(2019/07/24)Add
             lstProcess.Add("124-Mizutani");
+            lstProcess.Add("023パナソニック");//Add Logic 2020/09/01
 
             foreach (string processName in lstProcess)
             {
@@ -119,7 +120,7 @@ namespace siteData
             GenerateCSV(19, "深谷_フカヤ_");
             GenerateCSV(20, "ダイアテック(高難易度)");
             //GenerateCSV(22, "ブリヂストンサイクル西日本販売(株)物流部専用");
-            //GenerateCSV(23, "パナソニック");
+            GenerateCSV(23, "パナソニック");
             GenerateCSV(24, "東(アズマ)");
             GenerateCSV(30, "城東");
             GenerateCSV(31, " アキボウ");
