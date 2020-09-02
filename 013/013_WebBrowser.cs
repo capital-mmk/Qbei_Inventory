@@ -504,10 +504,12 @@ namespace _13ミズタニ
                             //</remark 12/13/2019　end>
                         }
 
-                        else if (entity.stockDate.Contains("月末"))
+                        //else if (entity.stockDate.Contains("月末"))
+                        else if (entity.stockDate.Contains("月末") || entity.stockDate.Contains("月"))//<remark Add Logic of Stockdate 2020/09/02 />
                         {
                             string day = "25";
-                            string month = entity.stockDate.Replace("月末", string.Empty).Replace("予定", string.Empty);
+                            //string month = entity.stockDate.Replace("月末", string.Empty).Replace("予定", string.Empty);
+                            string month = entity.stockDate.Replace("月末", string.Empty).Replace("予定", string.Empty).Replace("月", string.Empty);//<remark Add Logic of Stockdate 2020/09/02 />
 
                             string year = DateTime.Now.ToString("yyyy");
                             DateTime dt = Convert.ToDateTime(year + "-" + month + "-" + day);
@@ -525,7 +527,7 @@ namespace _13ミズタニ
 
                         //<remark 12/13/2019追加　start>
 
-                        else if (entity.stockDate.Contains("年") || entity.stockDate.Contains("月"))
+                        else if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
                         {
 
                             int YIndex = entity.stockDate.IndexOf('年');
