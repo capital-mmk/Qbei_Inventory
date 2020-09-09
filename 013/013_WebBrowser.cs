@@ -504,6 +504,20 @@ namespace _13ミズタニ
                             //</remark 12/13/2019　end>
                         }
 
+                        //<remark 09/09/2020 移動　start>
+                        else if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
+                        {
+
+                            int YIndex = entity.stockDate.IndexOf('年');
+                            int MIndex = entity.stockDate.IndexOf('月');
+                            int year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 4, YIndex + 0));
+                            int month = Convert.ToInt32(entity.stockDate.Substring(YIndex + 1, MIndex - 5));
+                            //entity.stockDate = year + "-" + month + "-" + "15";
+                            DateTime dt = new DateTime(year, month, 15);
+                            entity.stockDate = String.Format("{0:yyyy-MM-dd}", dt);
+                        }
+                        //</remark 09/09/2020　end>
+
                         //else if (entity.stockDate.Contains("月末"))
                         else if (entity.stockDate.Contains("月末") || entity.stockDate.Contains("月"))//<remark Add Logic of Stockdate 2020/09/02 />
                         {
@@ -527,17 +541,17 @@ namespace _13ミズタニ
 
                         //<remark 12/13/2019追加　start>
 
-                        else if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
-                        {
+                        //else if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
+                        //{
 
-                            int YIndex = entity.stockDate.IndexOf('年');
-                            int MIndex = entity.stockDate.IndexOf('月');
-                            int year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 4, YIndex + 0));
-                            int month = Convert.ToInt32(entity.stockDate.Substring(YIndex + 1, MIndex - 5));
-                            //entity.stockDate = year + "-" + month + "-" + "15";
-                            DateTime dt = new DateTime(year, month, 15);
-                            entity.stockDate = String.Format("{0:yyyy-MM-dd}", dt);
-                        }
+                        //    int YIndex = entity.stockDate.IndexOf('年');
+                        //    int MIndex = entity.stockDate.IndexOf('月');
+                        //    int year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 4, YIndex + 0));
+                        //    int month = Convert.ToInt32(entity.stockDate.Substring(YIndex + 1, MIndex - 5));
+                        //    //entity.stockDate = year + "-" + month + "-" + "15";
+                        //    DateTime dt = new DateTime(year, month, 15);
+                        //    entity.stockDate = String.Format("{0:yyyy-MM-dd}", dt);
+                        //}
                         //</remark 12/13/2019　end>
 
                         //<remark 13/07/2020(変更)>
