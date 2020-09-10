@@ -178,6 +178,7 @@ namespace _019深谷_フカヤ_
                     {
                         if (i < Lastrow)
                         {
+                            Thread.Sleep(2000);//<reamark 追加　10/09/2020 />
                             string od;
                             od = dt019.Rows[i]["JANコード"].ToString();
                             chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);
@@ -318,7 +319,7 @@ namespace _019深谷_フカヤ_
                                             //entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-01-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";//<remark Edit Logic of stockdate 2020/07/21 />
                                             entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-02-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";
                                         }
-                                    }                                 
+                                    }
                                     //<remark Add Logic 2020/05/30 />
                                     if (entity.qtyStatus != "unknown status")
                                     {
