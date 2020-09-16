@@ -114,7 +114,8 @@ namespace FileUpload
 
            //Create FTP Request.
 
-           FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://133.242.49.19/maker_stock/" + Path.GetFileName(filelist));
+           //FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://133.242.49.19/maker_stock/" + Path.GetFileName(filelist));
+           FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://27.133.149.167/maker_stock/" + Path.GetFileName(filelist));     
 
            request.Method = WebRequestMethods.Ftp.UploadFile;
 
