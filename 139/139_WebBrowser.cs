@@ -117,7 +117,7 @@ namespace _139
                 objCom.Qbei_Delete(139);
                 objCom.Qbei_ErrorDelete(139);
                 dt139 = objCom.GetDatatable("139");
-                dt139 = objCom.GetOrderData(dt139, "https://www.wave-one.com/oroshi/item/", "139", "/");
+                //dt139 = objCom.GetOrderData(dt139, "https://www.wave-one.com/oroshi/item/", "139", "/");//<remark Close Logic of Onceaweek 2020/10/1 />
                 dt139 = dt139.AsEnumerable().OrderBy(x => x.Field<string>("発注コード")).CopyToDataTable();
                 objCom.GetTotalCount("139");
                 readData();
