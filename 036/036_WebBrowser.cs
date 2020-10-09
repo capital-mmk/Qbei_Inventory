@@ -200,7 +200,7 @@ namespace _36PRインターナショナル
                 else
                 {
                     fun.WriteLog("Login success             ------", "036-");
-                    string purchaserURL = dt036.Rows[0]["purchaserURL"].ToString().Trim();
+                    string purchaserURL = dt036.Rows[0]["purchaserURL"].ToString().Trim();  
                     webBrowser1.Navigate(purchaserURL);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
@@ -393,7 +393,8 @@ namespace _36PRインターナショナル
                                         int MIndex = entity.stockDate.IndexOf('月');
                                         int Year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 4, YIndex + 0));
                                         int Month = Convert.ToInt32(entity.stockDate.Substring(YIndex + 1, MIndex - 5));
-                                        string Day = DateTime.DaysInMonth(DateTime.Now.Year, Month).ToString();
+                                        //string Day = DateTime.DaysInMonth(DateTime.Now.Year, Month).ToString();
+                                        string Day = DateTime.DaysInMonth(Year, Month).ToString();//<remark Edit of Logic for Year 2020/10/09 />
                                         if (entity.stockDate.Contains("日"))
                                         {
                                             entity.stockDate = entity.stockDate.Replace("年", "-").Replace("月", "-").Replace("日", "-");
@@ -427,7 +428,8 @@ namespace _36PRインターナショナル
                                                 int Month = Convert.ToInt32(m[0]);
                                                 if (Month < pcmonth)
                                                 { year = Convert.ToString(Convert.ToInt32(year) + 1); }
-                                                day = DateTime.DaysInMonth(DateTime.Now.Year, Month).ToString();
+                                                //day = DateTime.DaysInMonth(DateTime.Now.Year, Month).ToString();
+                                                day = DateTime.DaysInMonth(Convert.ToInt32(year), Month).ToString();//<remark Edit of Logic for Year 2020/10/09 />
                                                 DateTime dt = Convert.ToDateTime(year + "-" + Month + "-" + day);
                                                 entity.stockDate = dt.ToString("yyyy-MM-dd");
                                             }
@@ -442,7 +444,8 @@ namespace _36PRインターナショナル
                                                         month = Convert.ToInt32(entity.stockDate.Substring(MIndex - 1, MIndex + 0));
                                                         if (month < pcmonth)
                                                         { year = Convert.ToString(Convert.ToInt32(year) + 1); }
-                                                        day = DateTime.DaysInMonth(DateTime.Now.Year, month).ToString();
+                                                        //day = DateTime.DaysInMonth(DateTime.Now.Year, month).ToString();
+                                                        day = DateTime.DaysInMonth(Convert.ToInt32(year), month).ToString();//<remark Edit of Logic for Year 2020/10/09 />
                                                         entity.stockDate = year + "-" + month + "-" + day;
                                                     }
                                                     else
@@ -450,7 +453,8 @@ namespace _36PRインターナショナル
                                                         month = Convert.ToInt32(entity.stockDate.Substring(MIndex - 2, MIndex + 0));
                                                         if (month < pcmonth)
                                                         { year = Convert.ToString(Convert.ToInt32(year) + 1); }
-                                                        day = DateTime.DaysInMonth(DateTime.Now.Year, month).ToString();
+                                                        //day = DateTime.DaysInMonth(DateTime.Now.Year, month).ToString();
+                                                        day = DateTime.DaysInMonth(Convert.ToInt32(year), month).ToString();//<remark Edit of Logic for Year 2020/10/09 />
                                                         entity.stockDate = year + "-" + month + "-" + day;
                                                     }
 
@@ -502,7 +506,8 @@ namespace _36PRインターナショナル
                                                         }
                                                         if (month2 < pcmonth)
                                                         { year = Convert.ToString(Convert.ToInt32(year) + 1); }
-                                                        day2 = DateTime.DaysInMonth(DateTime.Now.Year, month2).ToString();
+                                                        //day2 = DateTime.DaysInMonth(DateTime.Now.Year, month2).ToString();
+                                                        day2 = DateTime.DaysInMonth(Convert.ToInt32(year), month2).ToString();//<remark Edit of Logic for Year 2020/10/09 />
                                                         entity.stockDate = year + "-" + month2 + "-" + day2;
 
                                                     }
