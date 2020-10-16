@@ -381,7 +381,8 @@ namespace _143
                                 //stockpath = fun.GetElement("select", "order_status[0]", "name", webBrowser1).InnerText;
                                 //if (stockpath.Contains("注文"))
                                 //{
-                                entity.stockDate = "2100-01-01";
+                                //entity.stockDate = "2100-01-01";
+                                entity.stockDate = "2100-02-01";//<remark Edit Logic of Stockdate />
                                 //}
                                 //2018-05-08 End
                             }
