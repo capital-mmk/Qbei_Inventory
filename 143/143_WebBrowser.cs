@@ -116,7 +116,7 @@ namespace _143
                 fun.Qbei_Delete(143);
                 fun.Qbei_ErrorDelete(143);
                 dt143 = fun.GetDatatable("143");
-                dt143 = fun.GetOrderData(dt143, "http://www.podium-edi.com//goods/goods_list.html", "143", "");
+                //dt143 = fun.GetOrderData(dt143, "http://www.podium-edi.com//goods/goods_list.html", "143", "");//<remark Close Logic Of Onceaweek />
                 fun.GetTotalCount("143");
                 ReadData();
             }
