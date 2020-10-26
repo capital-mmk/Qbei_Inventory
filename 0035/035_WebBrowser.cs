@@ -133,7 +133,7 @@ namespace _0035
                 if (String.IsNullOrEmpty(strParam))
                 {
                     dt035 = fun.GetDatatable("035");
-                    dt035 = fun.GetOrderData(dt035, "https://intertecinc.jp/ecuser/item/itemDetail?itemCd=", "035", "");
+                   // dt035 = fun.GetOrderData(dt035, "https://intertecinc.jp/ecuser/item/itemDetail?itemCd=", "035", "");//<remark Close Logic of Onceaweek 2020/10/26 />
                 }
                 else
                 {
