@@ -239,6 +239,7 @@ namespace _139
                 objCom.ClearMemory();
 
                 webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_Search);
+
                 //<remark Edit Logic for ItermSearch 2020/10/21 Start>
                 //if (intCnt < dt139.Rows.Count)
                 //{
@@ -271,22 +272,20 @@ namespace _139
                 //    Environment.Exit(0);
                 //}
                 //</remark 2020/10/21 End>
+
                 if (intCnt < dt139.Rows.Count - 1)
                 {
-                    entity.orderCode = dt139.Rows[intCnt]["発注コード"].ToString();
-                    //Really_jancode = dt139.Rows[intCnt]["JANコード"].ToString();
-                    //Really_size = dt139.Rows[intCnt]["サイズ"].ToString();
-                    //entity.orderCode = "kphp028";
-                    //Really_jancode = "4589435703565";
-                    //Really_size = "XL";
-                    //Really_sizedata =Really_size.Split(new char[] { '（', '(' }, StringSplitOptions.RemoveEmptyEntries);
-                    //Really_size= Really_sizedata[0].Trim();
-                    //dtGroupData = dt139.Select("発注コード ='" + entity.orderCode + "'").CopyToDataTable();                        
+                    entity.orderCode = dt139.Rows[intCnt]["発注コード"].ToString();                                         
                     webBrowser1.Navigate(objCom.url + "item/" + entity.orderCode);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Item);
                 }
                 else
                 {
+                    entitySetting.site = 139;
+                    entitySetting.flag = 2;
+                    entitySetting.starttime = string.Empty;
+                    entitySetting.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    objCom.ChangeFlag(entitySetting);
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -454,9 +453,9 @@ namespace _139
                 objCom.Qbei_ErrorInsert(139, objCom.GetSiteName("139"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "139");
                 objCom.WriteLog(ex, "139-", entity.janCode, entity.orderCode);
             }
-            //intCnt++;
 
             //<remark Edit Logic for Jancode 2020/10/21 Start>
+            //intCnt++;
             //foreach (DataRow dr in dtGroupData.Rows)
             //{
             //    objCom.ClearMemory();
@@ -591,9 +590,10 @@ namespace _139
             //        objCom.WriteLog(ex, "139-", entity.janCode, entity.orderCode);
             //    }
             //    intCnt++;
-            //}
-            //</remark 2020/10/21 End>
+            //}           
             //webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_Item);
+            //</remark 2020/10/21 End>
+
             webBrowser1.Navigate(strUrl);
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Search);
         }
