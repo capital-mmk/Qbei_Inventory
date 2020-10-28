@@ -361,6 +361,14 @@ namespace _0035
                                     entity.qtyStatus = qty.Equals("◯") || qty.Equals("◎") ? "good" : qty.Equals("△") || fun.IsLessthanzero(qty) || fun.IsSmall1(qty) || qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") || fun.IsLessthanzero(qty) ? "empty" : "unknown status";//<remark Change Logic of Stockdate 2020/07/23 />
                                     entity.stockDate = qty.Equals("◯") || qty.Equals("◎") || qty.Equals("△") || fun.IsSmall1(qty) || qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") || fun.IsLessthanzero(qty) ? entity.stockDate : "unknown date";
                                 }
+
+                                //<remark Add Logic of Stockdate 2020/10/28 Start>
+                                if (entity.stockDate.Equals("✕"))
+                                {
+                                    entity.stockDate = "2100-02-01";
+                                }
+                                //</remark 2020/10/28 End>
+
                                 //<remark Close Logic 2020/25/22 Start>
                                 //if (dt035.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
                                 //{
