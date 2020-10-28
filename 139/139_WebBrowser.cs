@@ -273,7 +273,7 @@ namespace _139
                 //}
                 //</remark 2020/10/21 End>
 
-                if (intCnt < dt139.Rows.Count - 1)
+                if (intCnt < dt139.Rows.Count)
                 {
                     entity.orderCode = dt139.Rows[intCnt]["発注コード"].ToString();                                         
                     webBrowser1.Navigate(objCom.url + "item/" + entity.orderCode);
@@ -593,7 +593,7 @@ namespace _139
             //}           
             //webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_Item);
             //</remark 2020/10/21 End>
-
+  
             webBrowser1.Navigate(strUrl);
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Search);
         }
