@@ -542,8 +542,46 @@ namespace _38フタバ
                             if (entity.stockDate.Contains("/"))
                             {
                                 string[] m = entity.stockDate.Split('/');
+
+                                //<remark Edit Logic for Stockdate 2020/11/04 Start>
+                                if (entity.stockDate.Contains("月"))
+                                {
+                                    Year = Convert.ToInt32(m[0]);
+                                    int J_Month = m[1].IndexOf("月");
+                                    if (J_Month == 1 || J_Month == 2)
+                                    {
+                                        if (J_Month == 1)
+                                        {
+                                            Month = Convert.ToInt32(m[1].Substring(J_Month - 1, J_Month + 0));                                            
+                                            Day = DateTime.DaysInMonth(Convert.ToInt32(Year), Month).ToString();//<remark Edit Logic for Date of Year 2020/09/25 />
+                                            entity.stockDate = Year + "-" + Month + "-" + Day;
+                                        }
+                                        else
+                                        {
+                                            Month = Convert.ToInt32(m[1].Substring(J_Month - 2, J_Month + 0));
+                                            Day = DateTime.DaysInMonth(Convert.ToInt32(Year), Month).ToString();//<remark Edit Logic for Date of Year 2020/09/25 />
+                                            entity.stockDate = Year + "-" + Month + "-" + Day;
+                                        }
+
+                                        if (strStockDate.Contains("初旬") || strStockDate.Contains("上旬") || strStockDate.Contains("上"))
+                                        {
+                                            entity.stockDate = Year + "-" + Month + "-" + "10";
+                                        }
+                                        else if (strStockDate.Contains("中旬") || strStockDate.Contains("中"))
+                                        {
+                                            entity.stockDate = Year + "-" + Month + "-" + "20";
+                                        }
+                                        else if (strStockDate.Contains("下旬") || entity.stockDate.Contains("末頃") || entity.stockDate.Contains("末") || strStockDate.Contains("下"))
+                                        {
+                                            entity.stockDate = Year + "-" + Month + "-" + Day;
+                                        }
+
+                                    }
+                                }
+                                //</remark 2020/11/04 End>
+
                                 //<remark Edit Logic of Stockdate 2020/10/15 Start>         
-                                if (m.Count() == 3)
+                                else if (m.Count() == 3)
                                 {
                                     Month = Convert.ToInt32(m[1]);
                                     Year = Convert.ToInt32(m[0]);
