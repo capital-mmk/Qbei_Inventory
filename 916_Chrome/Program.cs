@@ -148,9 +148,9 @@ namespace _916_Chrome
                     string password = dt.Rows[0]["Password"].ToString();
                     chrome.FindElement(By.Name("password")).SendKeys(password);
                     fun.WriteLog("Navigation to Site Url success------", "916-");
-                    chrome.FindElement(By.XPath("/html/body/div/main/section/div/div[1]/div/form/button")).Click();                    
-                    Thread.Sleep(2000); 
-                    
+                    chrome.FindElement(By.XPath("/html/body/div/main/section/div/div[1]/div/form/button")).Click();
+                    Thread.Sleep(2000);
+
                     string body = chrome.FindElement(By.TagName("body")).Text;
                     if (body.Contains("認証に失敗しました。"))
                     {
@@ -170,7 +170,7 @@ namespace _916_Chrome
                         for (i = 0; i < Lastrow; i++)
                         {
                             if (i < Lastrow)
-                            {                                               
+                            {
                                 ordercode = dt916.Rows[i]["JANコード"].ToString();
                                 chrome.FindElement(By.Name("header_product_code")).Clear();
                                 chrome.FindElement(By.Name("header_product_code")).SendKeys(ordercode);
@@ -201,10 +201,8 @@ namespace _916_Chrome
                                     else
                                     {
                                         chrome.FindElement(By.ClassName("products-img")).Click();
-                                        //string m = chrome.FindElement(By.ClassName("product-sku")).GetAttribute("innerHTML");
-                                        //var v = chrome.FindElement(By.ClassName("product-sku")).GetAttribute("innerHTML");
                                         int n = chrome.FindElements(By.XPath("/html/body/div[2]/main/ul/li")).Count();
-                                      
+
                                         if (n == 0)
                                         {
                                             entity.qtyStatus = "empty";
@@ -221,194 +219,193 @@ namespace _916_Chrome
                                                 {
                                                     entity.price = chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]/section/dl[2]/div[2]/dd/span")).Text.Replace("¥", "").Replace(",", "").Trim();
                                                     string stock = chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]/section/dl[3]/div[1]/dd")).GetAttribute("innerHTML").ToString().Trim();
-                                                    entity.qtyStatus = stock.Equals("あり") ? "small" : stock.Equals("なし") ? "empty" : "unknown status";
-                                                    if (chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]")).Text.Contains("メーカー入荷予定"))                                                                     
+                                                    entity.qtyStatus = stock.Equals("あり") ? "good" : stock.Equals("僅少") ? "empty" : stock.Equals("なし") ? "empty" : "unknown status";
+                                                    entity.stockDate = entity.qtyStatus.Equals("good") ? "2100-01-01" : entity.qtyStatus.Equals("empty") ? "2100-02-01" : "unknown status";
+                                                    if (chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]")).Text.Contains("メーカー入荷予定"))
                                                     {
                                                         entity.stockDate = chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]/section/dl[3]/div[3]/dd")).GetAttribute("innerHTML").ToString().Trim();
                                                         strStockDate = chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]/section/dl[3]/div[3]/dd")).GetAttribute("innerHTML").ToString().Trim();
-                                                    }
-                                                    else
-                                                    { entity.stockDate = "2100-01-01"; }
-                                                    if (entity.stockDate.Contains("なし"))
-                                                    {
-                                                        entity.stockDate = "2100-02-01";
-                                                    }
-                                                    else if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
-                                                    {
-                                                        int YIndex = entity.stockDate.IndexOf('年');
-                                                        int MIndex = entity.stockDate.IndexOf('月');
-                                                        int Year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 4, YIndex + 0));
-                                                        Month = Convert.ToInt32(entity.stockDate.Substring(YIndex + 1, MIndex - 5));
-                                                        if ((Month < pcmonth) && (Year <= DateTime.Now.Year))
-                                                        { Year = Year + 1; }
-                                                        int Y = Convert.ToInt32(Year);
-                                                        Day = DateTime.DaysInMonth(Y, Month).ToString();
-                                                        if (entity.stockDate.Contains("日"))
+                                                        if (entity.stockDate.Contains("なし"))
                                                         {
-                                                            entity.stockDate = entity.stockDate.Replace("年", "-").Replace("月", "-").Replace("日", "-");
+                                                            entity.stockDate = "2100-02-01";
                                                         }
-                                                        else if (entity.stockDate.Contains("初旬") || entity.stockDate.Contains("上旬") || entity.stockDate.Contains("上"))
+                                                        else if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
                                                         {
-                                                            entity.stockDate = Year + "-" + Month + "-" + "10";
-                                                        }
-                                                        else if (entity.stockDate.Contains("中旬") || entity.stockDate.Contains("中"))
-                                                        {
-                                                            entity.stockDate = Year + "-" + Month + "-" + "20";
-                                                        }
-                                                        else if (entity.stockDate.Contains("下旬") || entity.stockDate.Contains("末頃") || entity.stockDate.Contains("末") || entity.stockDate.Contains("下"))
-                                                        {
-                                                            entity.stockDate = Year + "-" + Month + "-" + Day;
-                                                        }
-                                                        else if (entity.stockDate.Contains("月") && (entity.stockDate.Contains("ごろ") || entity.stockDate.Contains("予定")))
-                                                        {
-                                                            entity.stockDate = Year + "-" + Month + "-" + Day;
-                                                        }
-                                                        else
-                                                        {
-                                                            entity.stockDate = Year + "-" + Month + "-" + Day;
-                                                        }
-                                                    }
-                                                    else if (entity.stockDate.Contains("年") && entity.stockDate.Contains("頃"))
-                                                    {
-                                                        int YIndex = entity.stockDate.IndexOf('年');
-                                                        int Year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 4, YIndex + 0));
-                                                        int pcMonth = Convert.ToInt32(DateTime.Now.ToString("MM"));
-                                                        if (entity.stockDate.Contains("月"))
-                                                        {
+                                                            int YIndex = entity.stockDate.IndexOf('年');
                                                             int MIndex = entity.stockDate.IndexOf('月');
+                                                            int Year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 4, YIndex + 0));
                                                             Month = Convert.ToInt32(entity.stockDate.Substring(YIndex + 1, MIndex - 5));
-                                                            if (Month < pcmonth)
+                                                            if ((Month < pcmonth) && (Year <= DateTime.Now.Year))
                                                             { Year = Year + 1; }
                                                             int Y = Convert.ToInt32(Year);
                                                             Day = DateTime.DaysInMonth(Y, Month).ToString();
-                                                            entity.stockDate = Year + "-" + Month + "-" + Day;
-                                                        }
-                                                        else
-                                                        {
-                                                            if (entity.stockDate.Contains("春"))
+                                                            if (entity.stockDate.Contains("日"))
                                                             {
-                                                                Month = 4;
-                                                                if (Month < pcMonth)
-                                                                { Year = Year + 1; }
-                                                                int Y = Convert.ToInt32(Year);
-                                                                Day = DateTime.DaysInMonth(Y, Month).ToString();
+                                                                entity.stockDate = entity.stockDate.Replace("年", "-").Replace("月", "-").Replace("日", "-");
+                                                            }
+                                                            else if (entity.stockDate.Contains("初旬") || entity.stockDate.Contains("上旬") || entity.stockDate.Contains("上"))
+                                                            {
+                                                                entity.stockDate = Year + "-" + Month + "-" + "10";
+                                                            }
+                                                            else if (entity.stockDate.Contains("中旬") || entity.stockDate.Contains("中"))
+                                                            {
+                                                                entity.stockDate = Year + "-" + Month + "-" + "20";
+                                                            }
+                                                            else if (entity.stockDate.Contains("下旬") || entity.stockDate.Contains("末頃") || entity.stockDate.Contains("末") || entity.stockDate.Contains("下"))
+                                                            {
                                                                 entity.stockDate = Year + "-" + Month + "-" + Day;
                                                             }
-                                                            else if (entity.stockDate.Contains("夏"))
+                                                            else if (entity.stockDate.Contains("月") && (entity.stockDate.Contains("ごろ") || entity.stockDate.Contains("予定")))
                                                             {
-                                                                Month = 7;
-                                                                if (Month < pcMonth)
-                                                                { Year = Year + 1; }
-                                                                int Y = Convert.ToInt32(Year);
-                                                                Day = DateTime.DaysInMonth(Y, Month).ToString();
-                                                                entity.stockDate = Year + "-" + Month + "-" + Day;
-                                                            }
-                                                            else if (entity.stockDate.Contains("秋"))
-                                                            {
-                                                                Month = 10;
-                                                                if (Month < pcMonth)
-                                                                { Year = Year + 1; }
-                                                                int Y = Convert.ToInt32(Year);
-                                                                Day = DateTime.DaysInMonth(Y, Month).ToString();
-                                                                entity.stockDate = Year + "-" + Month + "-" + Day;
-                                                            }
-                                                            else if (entity.stockDate.Contains("冬"))
-                                                            {
-                                                                Month = 1;
-                                                                if (Month < pcMonth)
-                                                                { Year = Year + 1; }
-                                                                int Y = Convert.ToInt32(Year);
-                                                                Day = DateTime.DaysInMonth(Y, Month).ToString();
-                                                                entity.stockDate = Year + "-" + Month + "-" + Day;
-                                                            }
-                                                        }
-                                                    }
-                                                    else if (entity.stockDate.Contains("~") && entity.stockDate.Contains("月"))
-                                                    {
-                                                        int mIndex = entity.stockDate.IndexOf("月");
-                                                        string year = DateTime.Now.ToString("yyyy");
-                                                        int month2;
-
-                                                        if (entity.stockDate.Contains("月") || entity.stockDate.Contains("予定"))
-                                                        {
-                                                            if (entity.stockDate.Contains("~"))
-                                                            {                                                                
-                                                                var D = entity.stockDate.Split('~').ToArray();
-                                                                if (D[1].Contains("月"))
-                                                                {
-                                                                    var M = D[1].ToString().Split('月').ToArray();
-                                                                    month2 = Convert.ToInt32(M[0]);
-                                                                    if (month2 < pcmonth)
-                                                                    {
-                                                                        year = Convert.ToString(Convert.ToInt32(year) + 1);
-                                                                    }
-                                                                }
-                                                                else
-                                                                {
-                                                                    var M = D[0].ToString().Split('月').ToArray();
-                                                                    month2 = Convert.ToInt32(M[0]);
-                                                                    if (month2 < pcmonth)
-                                                                    {
-                                                                        year = Convert.ToString(Convert.ToInt32(year) + 1);
-                                                                    }
-                                                                }                                                                
-                                                                Day = DateTime.DaysInMonth(Convert.ToInt32(year), month2).ToString();//<remak Edit Logic for Date of Day 2020/09/25 />                                    
-                                                                entity.stockDate = year + "-" + month2 + "-" + Day;
-
-                                                                if (D[1].Contains("初旬") || D[1].Contains("上旬") || D[1].Contains("上"))
-                                                                {
-                                                                    entity.stockDate = year + "-" + month2 + "-" + "10";
-                                                                }
-                                                                else if (D[1].Contains("中旬") || D[1].Contains("中"))
-                                                                {
-                                                                    entity.stockDate = year + "-" + month2 + "-" + "20";
-                                                                }
-                                                                else if (D[1].Contains("下旬") || D[1].Contains("末頃") || D[1].Contains("末") || D[1].Contains("下"))
-                                                                {
-                                                                    entity.stockDate = year + "-" + month2 + "-" + Day;
-                                                                }
-                                                                //</remak 2020/04/20 End>
-                                                            }
-                                                        }
-                                                    }
-                                                    else if (entity.stockDate.Contains('月'))
-                                                    {
-                                                        int MIndex = entity.stockDate.IndexOf("月");
-                                                        string Year = DateTime.Now.ToString("yyyy");
-                                                        if (MIndex == 1 || MIndex == 2)
-                                                        {
-                                                            if (MIndex == 1)
-                                                            {
-                                                                Month = Convert.ToInt32(entity.stockDate.Substring(MIndex - 1, MIndex + 0));
-                                                                if (Month < pcmonth)
-                                                                {
-                                                                    Year = Convert.ToString(Convert.ToInt32(Year) + 1);
-                                                                }
-                                                                //Day = DateTime.DaysInMonth(DateTime.Now.Year, Month).ToString();
-                                                                Day = DateTime.DaysInMonth(Convert.ToInt32(Year), Month).ToString();//<remak Edit Logic for Date of Day 2020/09/25 />                                   
                                                                 entity.stockDate = Year + "-" + Month + "-" + Day;
                                                             }
                                                             else
                                                             {
-                                                                Month = Convert.ToInt32(entity.stockDate.Substring(MIndex - 2, MIndex + 0));
+                                                                entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                            }
+                                                        }
+                                                        else if (entity.stockDate.Contains("年") && entity.stockDate.Contains("頃"))
+                                                        {
+                                                            int YIndex = entity.stockDate.IndexOf('年');
+                                                            int Year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 4, YIndex + 0));
+                                                            int pcMonth = Convert.ToInt32(DateTime.Now.ToString("MM"));
+                                                            if (entity.stockDate.Contains("月"))
+                                                            {
+                                                                int MIndex = entity.stockDate.IndexOf('月');
+                                                                Month = Convert.ToInt32(entity.stockDate.Substring(YIndex + 1, MIndex - 5));
                                                                 if (Month < pcmonth)
+                                                                { Year = Year + 1; }
+                                                                int Y = Convert.ToInt32(Year);
+                                                                Day = DateTime.DaysInMonth(Y, Month).ToString();
+                                                                entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                            }
+                                                            else
+                                                            {
+                                                                if (entity.stockDate.Contains("春"))
                                                                 {
-                                                                    Year = Convert.ToString(Convert.ToInt32(Year) + 1);
-                                                                }                                                               
-                                                                Day = DateTime.DaysInMonth(Convert.ToInt32(Year), Month).ToString();//<remak Edit Logic for Date of Day 2020/09/25 />        
-                                                                entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                                    Month = 4;
+                                                                    if (Month < pcMonth)
+                                                                    { Year = Year + 1; }
+                                                                    int Y = Convert.ToInt32(Year);
+                                                                    Day = DateTime.DaysInMonth(Y, Month).ToString();
+                                                                    entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                                }
+                                                                else if (entity.stockDate.Contains("夏"))
+                                                                {
+                                                                    Month = 7;
+                                                                    if (Month < pcMonth)
+                                                                    { Year = Year + 1; }
+                                                                    int Y = Convert.ToInt32(Year);
+                                                                    Day = DateTime.DaysInMonth(Y, Month).ToString();
+                                                                    entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                                }
+                                                                else if (entity.stockDate.Contains("秋"))
+                                                                {
+                                                                    Month = 10;
+                                                                    if (Month < pcMonth)
+                                                                    { Year = Year + 1; }
+                                                                    int Y = Convert.ToInt32(Year);
+                                                                    Day = DateTime.DaysInMonth(Y, Month).ToString();
+                                                                    entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                                }
+                                                                else if (entity.stockDate.Contains("冬"))
+                                                                {
+                                                                    Month = 1;
+                                                                    if (Month < pcMonth)
+                                                                    { Year = Year + 1; }
+                                                                    int Y = Convert.ToInt32(Year);
+                                                                    Day = DateTime.DaysInMonth(Y, Month).ToString();
+                                                                    entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                                }
                                                             }
-                                                            if (strStockDate.Contains("初旬") || strStockDate.Contains("上旬") || strStockDate.Contains("上"))
+                                                        }
+                                                        else if (entity.stockDate.Contains("~") && entity.stockDate.Contains("月"))
+                                                        {
+                                                            int mIndex = entity.stockDate.IndexOf("月");
+                                                            string year = DateTime.Now.ToString("yyyy");
+                                                            int month2;
+
+                                                            if (entity.stockDate.Contains("月") || entity.stockDate.Contains("予定"))
                                                             {
-                                                                entity.stockDate = Year + "-" + Month + "-" + "10";
+                                                                if (entity.stockDate.Contains("~"))
+                                                                {
+                                                                    var D = entity.stockDate.Split('~').ToArray();
+                                                                    if (D[1].Contains("月"))
+                                                                    {
+                                                                        var M = D[1].ToString().Split('月').ToArray();
+                                                                        month2 = Convert.ToInt32(M[0]);
+                                                                        if (month2 < pcmonth)
+                                                                        {
+                                                                            year = Convert.ToString(Convert.ToInt32(year) + 1);
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        var M = D[0].ToString().Split('月').ToArray();
+                                                                        month2 = Convert.ToInt32(M[0]);
+                                                                        if (month2 < pcmonth)
+                                                                        {
+                                                                            year = Convert.ToString(Convert.ToInt32(year) + 1);
+                                                                        }
+                                                                    }
+                                                                    Day = DateTime.DaysInMonth(Convert.ToInt32(year), month2).ToString();//<remak Edit Logic for Date of Day 2020/09/25 />                                    
+                                                                    entity.stockDate = year + "-" + month2 + "-" + Day;
+
+                                                                    if (D[1].Contains("初旬") || D[1].Contains("上旬") || D[1].Contains("上"))
+                                                                    {
+                                                                        entity.stockDate = year + "-" + month2 + "-" + "10";
+                                                                    }
+                                                                    else if (D[1].Contains("中旬") || D[1].Contains("中"))
+                                                                    {
+                                                                        entity.stockDate = year + "-" + month2 + "-" + "20";
+                                                                    }
+                                                                    else if (D[1].Contains("下旬") || D[1].Contains("末頃") || D[1].Contains("末") || D[1].Contains("下"))
+                                                                    {
+                                                                        entity.stockDate = year + "-" + month2 + "-" + Day;
+                                                                    }
+                                                                    //</remak 2020/04/20 End>
+                                                                }
                                                             }
-                                                            else if (strStockDate.Contains("中旬") || strStockDate.Contains("中"))
+                                                        }
+                                                        else if (entity.stockDate.Contains('月'))
+                                                        {
+                                                            int MIndex = entity.stockDate.IndexOf("月");
+                                                            string Year = DateTime.Now.ToString("yyyy");
+                                                            if (MIndex == 1 || MIndex == 2)
                                                             {
-                                                                entity.stockDate = Year + "-" + Month + "-" + "20";
-                                                            }
-                                                            else if (strStockDate.Contains("下旬") || strStockDate.Contains("末頃") || strStockDate.Contains("末") || strStockDate.Contains("下"))
-                                                            {
-                                                                entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                                if (MIndex == 1)
+                                                                {
+                                                                    Month = Convert.ToInt32(entity.stockDate.Substring(MIndex - 1, MIndex + 0));
+                                                                    if (Month < pcmonth)
+                                                                    {
+                                                                        Year = Convert.ToString(Convert.ToInt32(Year) + 1);
+                                                                    }
+                                                                    //Day = DateTime.DaysInMonth(DateTime.Now.Year, Month).ToString();
+                                                                    Day = DateTime.DaysInMonth(Convert.ToInt32(Year), Month).ToString();//<remak Edit Logic for Date of Day 2020/09/25 />                                   
+                                                                    entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                                }
+                                                                else
+                                                                {
+                                                                    Month = Convert.ToInt32(entity.stockDate.Substring(MIndex - 2, MIndex + 0));
+                                                                    if (Month < pcmonth)
+                                                                    {
+                                                                        Year = Convert.ToString(Convert.ToInt32(Year) + 1);
+                                                                    }
+                                                                    Day = DateTime.DaysInMonth(Convert.ToInt32(Year), Month).ToString();//<remak Edit Logic for Date of Day 2020/09/25 />        
+                                                                    entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                                }
+                                                                if (strStockDate.Contains("初旬") || strStockDate.Contains("上旬") || strStockDate.Contains("上"))
+                                                                {
+                                                                    entity.stockDate = Year + "-" + Month + "-" + "10";
+                                                                }
+                                                                else if (strStockDate.Contains("中旬") || strStockDate.Contains("中"))
+                                                                {
+                                                                    entity.stockDate = Year + "-" + Month + "-" + "20";
+                                                                }
+                                                                else if (strStockDate.Contains("下旬") || strStockDate.Contains("末頃") || strStockDate.Contains("末") || strStockDate.Contains("下"))
+                                                                {
+                                                                    entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -428,7 +425,7 @@ namespace _916_Chrome
                                             entity.stockDate = d.ToString("yyyy-MM-dd");
                                             fun.Qbei_Inserts(entity);
                                         }
-                                    }                                   
+                                    }
                                 }
                                 else
                                 {
@@ -458,6 +455,6 @@ namespace _916_Chrome
                 fun.WriteLog(ex.Message, "916-");
                 Environment.Exit(0);
             }
-        }     
+        }
     }
 }
