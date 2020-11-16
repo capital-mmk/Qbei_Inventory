@@ -172,7 +172,17 @@ namespace _916_Chrome
                             if (i < Lastrow)
                             {
                                 ordercode = dt916.Rows[i]["JANコード"].ToString();
-                                chrome.FindElement(By.Name("header_product_code")).Clear();
+                                //chrome.FindElement(By.Name("header_product_code")).Clear();
+                                //<remark Edit Logic for Link Error Case 2020/11/16 Start>
+                                try
+                                { chrome.FindElement(By.Name("header_product_code")).Clear(); }
+                                catch
+                                {
+                                    Thread.Sleep(20000);
+                                    chrome.Navigate().GoToUrl("https://btob.asahi-wsd.jp/website/asahi/index");
+                                    chrome.FindElement(By.Name("header_product_code")).Clear();
+                                }
+                                //</remark 2020/11/16 End>
                                 chrome.FindElement(By.Name("header_product_code")).SendKeys(ordercode);
                                 chrome.FindElement(By.XPath("/html/body/header/div/nav/ul/li[2]/form/button")).Click();
 
