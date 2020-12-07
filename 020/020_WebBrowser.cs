@@ -209,7 +209,7 @@ namespace _20ダイアテック_高難易度_
                 {
                     fun.Qbei_ErrorInsert(20, fun.GetSiteName("020"), "Login Failed", janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "020");
                     fun.WriteLog("Login Failed", "020-");
-                    
+
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -239,7 +239,7 @@ namespace _20ダイアテック_高難易度_
             webBrowser1.ScriptErrorsSuppressed = true;
             webBrowser1.DocumentCompleted -= webBrowser_ItemSearch2;
 
-            orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();            
+            orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();
             webBrowser1.Navigate("https://www.b2bdiatec.jp/shop/g/g" + orderCode);
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
         }
@@ -265,14 +265,63 @@ namespace _20ダイアテック_高難易度_
             //2018/07/12 変更コード(Start)
             string url = webBrowser1.Url.ToString();
             entity = new Qbei_Entity();
-            entity.orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();           
+            entity.orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();
             if (!url.Contains(entity.orderCode))
             {
-                webBrowser1.ScriptErrorsSuppressed = true;
-                orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();
-                webBrowser1.Navigate("https://www.b2bdiatec.jp/shop/g/g" + entity.orderCode);
-                webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
-                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch2);
+                //<remark Edit Logic for 404-Page 2020/12/07 Start>
+                if (webBrowser1.Document.Body.InnerHtml.Contains("大変申し訳ありませんが、該当ページがございません。"))
+                {
+                    entity = new Qbei_Entity();
+                    url = webBrowser1.Url.ToString();
+                    entity.siteID = 20;
+                    entity.sitecode = "020";
+                    entity.janCode = dt020.Rows[i]["JANコード"].ToString();
+                    entity.partNo = dt020.Rows[i]["自社品番"].ToString();
+                    entity.makerDate = fun.getCurrentDate();
+                    entity.reflectDate = dt020.Rows[i]["最終反映日"].ToString();
+                    entity.orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();
+                    entity.purchaseURL = "https://www.b2bdiatec.jp/CustomError/error404.html";
+                    entity.qtyStatus = "empty";
+                    entity.stockDate = "2100-02-01";
+                    entity.price = dt020.Rows[i]["下代"].ToString();
+                    fun.Qbei_Inserts(entity);
+                    if (i < dt020.Rows.Count - 1)
+                    {
+                        orderCode = dt020.Rows[++i]["発注コード"].ToString().Trim();
+                        webBrowser1.AllowNavigation = true;
+                        webBrowser1.Navigate("https://www.b2bdiatec.jp/shop/g/g" + orderCode);
+                        //Thread.Sleep(5000);<remark Close 2020/02/04 />
+                        webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
+                        //<remark 変更　2020/02/04　Start>
+                        //webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch2);
+                        webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
+                        //</remark 2020/02/04　End>
+                    }
+                    else
+                    {
+                        qe.site = 20;
+                        qe.flag = 2;
+                        qe.starttime = string.Empty;
+                        qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                        fun.ChangeFlag(qe);
+                        Application.Exit();
+                        Environment.Exit(0);
+                    }
+                }
+                else
+                {
+                    webBrowser1.ScriptErrorsSuppressed = true;
+                    orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();
+                    webBrowser1.Navigate("https://www.b2bdiatec.jp/shop/g/g" + entity.orderCode);
+                    webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
+                    webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch2);
+                }
+                //</remark 2020/12/07 End>
+                //webBrowser1.ScriptErrorsSuppressed = true;
+                //orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();
+                //webBrowser1.Navigate("https://www.b2bdiatec.jp/shop/g/g" + entity.orderCode);
+                //webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
+                //webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch2);
             }//2018/07/12 変更コード(End)
             else
             {
@@ -309,7 +358,7 @@ namespace _20ダイアテック_高難易度_
                         fun.Qbei_Inserts(entity);//<remark Add Logic for Insert Qbei Table 2020/06/12 />
                     }
                     else
-                    {   
+                    {
                         string html = webBrowser1.Document.Body.InnerHtml;
                         HtmlAgilityPack.HtmlDocument hdoc = new HtmlAgilityPack.HtmlDocument();
                         hdoc.LoadHtml(html);
@@ -319,7 +368,7 @@ namespace _20ダイアテック_高難易度_
                         if (webBrowser1.Document.All.GetElementsByName("frm").Count == 0)
                         {
                             fun.Qbei_ErrorInsert(20, fun.GetSiteName("020"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "020");
-                            fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "020-");   
+                            fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "020-");
 
                             Application.Exit();
                             Environment.Exit(0);
@@ -346,15 +395,15 @@ namespace _20ダイアテック_高難易度_
                                         strQtyStatus = element.Descendants("P").FirstOrDefault().InnerText.Replace("在庫：", string.Empty);
                                         //<remark Edit to Stockdate of Logic 2020/07/22 Start>
                                         //entity.qtyStatus = strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || fun.IsGood(strQtyStatus) ? "good" : strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus) ? "small" : strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("上旬") || strQtyStatus.Contains("中旬") || strQtyStatus.Contains("下旬") || strQtyStatus.Contains("未定") || strQtyStatus.Contains("次回入荷限り") ? "empty" : "unknown status";
-                                        entity.qtyStatus = strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || fun.IsGood(strQtyStatus) ? "good" : strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus) || strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("上旬") || strQtyStatus.Contains("中旬") || strQtyStatus.Contains("下旬") || strQtyStatus.Contains("未定") || strQtyStatus.Contains("次回入荷限り") ? "empty" : "unknown status";                                        
+                                        entity.qtyStatus = strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || fun.IsGood(strQtyStatus) ? "good" : strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus) || strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("上旬") || strQtyStatus.Contains("中旬") || strQtyStatus.Contains("下旬") || strQtyStatus.Contains("未定") || strQtyStatus.Contains("次回入荷限り") ? "empty" : "unknown status";
                                         //<remark Edit to Stockdate of Logic 2020/06/11 Start>
                                         //if (strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || fun.IsGood(strQtyStatus) || strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus) || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("未定") || strQtyStatus.Contains("次回入荷限り"))
                                         //if (strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || fun.IsGood(strQtyStatus) || strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus) )
-                                            if (strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || fun.IsGood(strQtyStatus))
-                                                entity.stockDate = "2100-01-01";
+                                        if (strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || fun.IsGood(strQtyStatus))
+                                            entity.stockDate = "2100-01-01";
                                         //else if (strQtyStatus.Contains("完売"))
-                                            //else if (strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("未定") || strQtyStatus.Contains("次回入荷限り"))
-                                             else if (strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("未定") || strQtyStatus.Contains("次回入荷限り") || strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus))                                           
+                                        //else if (strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("未定") || strQtyStatus.Contains("次回入荷限り"))
+                                        else if (strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("未定") || strQtyStatus.Contains("次回入荷限り") || strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus))
                                             entity.stockDate = "2100-02-01";
                                         //</remark 2020/06/11 End>
                                         //</remark 2020/07/22 End>
@@ -396,10 +445,10 @@ namespace _20ダイアテック_高難易度_
                 }
                 finally
                 {
-                    if (i < dt020.Rows.Count-1)
+                    if (i < dt020.Rows.Count - 1)
                     {
                         orderCode = dt020.Rows[++i]["発注コード"].ToString().Trim();
-                        webBrowser1.AllowNavigation = true;                        
+                        webBrowser1.AllowNavigation = true;
                         webBrowser1.Navigate("https://www.b2bdiatec.jp/shop/g/g" + orderCode);
                         //Thread.Sleep(5000);<remark Close 2020/02/04 />
                         webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
@@ -432,7 +481,7 @@ namespace _20ダイアテック_高難易度_
             string orderCode = dt020.Rows[i]["発注コード"].ToString();
             fun.Qbei_ErrorInsert(20, fun.GetSiteName("020"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "020");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "020-");
-            
+
             Application.Exit();
             Environment.Exit(0);
         }
