@@ -201,7 +201,7 @@ namespace _24東_アズマ_
                 webBrowser1.DocumentCompleted -= webBrowser1_Login;
                 webBrowser1.ScriptErrorsSuppressed = true;
                 body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;
-                if (body.Contains(" 会員コード・パスワードは旧システムの得意先コード、パスワードをご入力ください"))
+                if (body.Contains("会員コード・パスワードは旧システムの得意先コード、パスワードをご入力ください"))
                 {
                     fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
                     fun.WriteLog("Login Failed", "024");
