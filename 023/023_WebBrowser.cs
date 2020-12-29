@@ -343,7 +343,8 @@ namespace _023パナソニック
                             {
                                 entity.stockDate = "2100-01-01";
                             }
-                            else if (stockdate == "生産中止")
+                            //else if (stockdate == "生産中止")
+                            else if (stockdate == "生産中止" || stockdate.Contains("生産中止"))//<remark Edit Logic for Stockdate 2020/12/29 />
                             {
                                 entity.stockDate = "2100-02-01";
                             }
