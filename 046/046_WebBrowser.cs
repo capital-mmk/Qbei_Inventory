@@ -112,7 +112,7 @@ namespace _46トライスポーツ
                 fun.CreateFileAndFolder();
                 fun.Qbei_ErrorDelete(46);
                 dt046 = fun.GetDatatable("046");
-                dt046 = fun.GetOrderData(dt046, "http://www.trisportsdesu.com/products/list.php?mode=search&category_id=&name=", "046", "");
+                //dt046 = fun.GetOrderData(dt046, "http://www.trisportsdesu.com/products/list.php?mode=search&category_id=&name=", "046", "");
                 fun.GetTotalCount("046");
                 ReadData();
             }
@@ -277,6 +277,10 @@ namespace _46トライスポーツ
                             entity.stockDate = "2100-02-01";
                         }
                         entity.purchaseURL = fun.url;
+                        //<remark 2021/01/06>
+                        entity.True_StockDate = "Not Found";
+                        entity.True_Quantity = "Not Found";
+                        //</remark 2021/01/06>
                         fun.Qbei_Inserts(entity);
                         if (i < dt046.Rows.Count - 1)
                         {
@@ -374,7 +378,7 @@ namespace _46トライスポーツ
                 entity.stockDate = alt.Contains("○") ? "2100-01-01" : alt.Contains("△") || alt.Contains("▲") || alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("受付終了") || alt.Contains("null") || alt.Contains("×") ? "2100-02-01" : "unknown date";//<remar Edit Logic 2020/07/24 />
                 //entity.stockDate = alt.Contains("○") || alt.Contains("△") || alt.Contains("▲") ? "2100-01-01" : alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("×") || alt.Contains("受付終了") ? "2100-02-01" : "unknown date";
                 //</remark>
-                entity.price = webBrowser1.Document.GetElementById("price02_default").InnerText; ;
+                entity.price = webBrowser1.Document.GetElementById("price02_default").InnerText;
                 entity.price = entity.price.Replace(",", string.Empty);
                 entity.purchaseURL = webBrowser1.Url.ToString();
                 //fun.Qbei_Inserts(entity);
@@ -392,6 +396,10 @@ namespace _46トライスポーツ
                 //else
                 //</reamark 2020/25/22 End>
                 //2018/1/12
+                //<remark 2021/01/06>
+                entity.True_StockDate = "項目無し";
+                entity.True_Quantity = alt;
+                //</remark 2021/01/06>
                 fun.Qbei_Inserts(entity);
             }
             catch (Exception ex)
