@@ -176,7 +176,7 @@ namespace _24東_アズマ_
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");                
+                fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
                 fun.WriteLog(ex, "024-", entity.janCode, entity.orderCode);
 
                 Application.Exit();
@@ -188,7 +188,7 @@ namespace _24東_アズマ_
         /// Check to Login.
         /// </summary>
         private void webBrowser1_Login(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {   
+        {
             try
             {
                 entity.orderCode = dt024.Rows[i]["発注コード"].ToString().Trim();
@@ -205,7 +205,7 @@ namespace _24東_アズマ_
                 {
                     fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
                     fun.WriteLog("Login Failed", "024");
-                    
+
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -220,7 +220,7 @@ namespace _24東_アズマ_
             {
                 fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
                 fun.WriteLog(ex, "024-", entity.janCode, entity.orderCode);
-                
+
                 Application.Exit();
                 Environment.Exit(0);
             }
@@ -250,9 +250,9 @@ namespace _24東_アズマ_
             }
             catch (Exception ex)
             {
-                fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");                
+                fun.Qbei_ErrorInsert(24, fun.GetSiteName("024"), ex.Message, entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "024");
                 fun.WriteLog(ex, "024-", entity.janCode, entity.orderCode);
-                
+
                 Application.Exit();
                 Environment.Exit(0);
             }
@@ -317,6 +317,10 @@ namespace _24東_アズマ_
                         }
                         else
                         { entity.stockDate = "2100-02-01"; }
+                        //<remark 2021/01/06>
+                        entity.True_StockDate = "Not Found";
+                        entity.True_Quantity = "Not Found";
+                        //</remark 2021/01/06>
                         fun.Qbei_Inserts(entity);
                     }
                     else
@@ -345,14 +349,14 @@ namespace _24東_アズマ_
                         //else if (qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中"))
                         //{
                         //    entity.qtyStatus = "empty";
-                            //dateexists = qtyStatus.Replace("△", string.Empty).Replace("台|個|ロット", string.Empty);
-                            //dateexists = qtyStatus.Replace("×", string.Empty).Replace("入荷予定", string.Empty).Replace("予約受付中", string.Empty);
+                        //dateexists = qtyStatus.Replace("△", string.Empty).Replace("台|個|ロット", string.Empty);
+                        //dateexists = qtyStatus.Replace("×", string.Empty).Replace("入荷予定", string.Empty).Replace("予約受付中", string.Empty);
                         //}
                         //else if (qtyStatus.Contains("△"))
                         //else if (qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("△"))
                         //{
-                            //entity.qtyStatus = "good";
-                            //entity.qtyStatus = "small";                       
+                        //entity.qtyStatus = "good";
+                        //entity.qtyStatus = "small";                       
                         //}
                         else if (qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") || qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("△"))
                         {
@@ -369,12 +373,20 @@ namespace _24東_アズマ_
                         if (dateexists != "")
                         {
                             entity.stockDate = dateexists;
+                            //<remark 2021/01/06>
+                            entity.True_StockDate = dateexists;
+                            entity.True_Quantity = "項目無し";
+                            //</remark 2021/01/06>
                         }
                         else
                         {
                             //entity.stockDate = qtyStatus.Equals("○") || qtyStatus.Equals("◎") ? "2100-01-01" : qtyStatus.Contains("△") || qtyStatus.Contains("×") || qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") ? "2100-02-01" : "unknown date";
                             //entity.stockDate = qtyStatus.Equals("○") || qtyStatus.Equals("◎") || qtyStatus.Contains("△") || qtyStatus.Contains("台|個|ロット") ? "2100-01-01" :  qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") ? "2100-02-01" : "unknown date";//<remark Change Logic of Stockdate />
-                            entity.stockDate = qtyStatus.Equals("○") || qtyStatus.Equals("◎")? "2100-01-01" : qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") || qtyStatus.Contains("△") || qtyStatus.Contains("台|個|ロット") ? "2100-02-01" : "unknown date";
+                            entity.stockDate = qtyStatus.Equals("○") || qtyStatus.Equals("◎") ? "2100-01-01" : qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") || qtyStatus.Contains("△") || qtyStatus.Contains("台|個|ロット") ? "2100-02-01" : "unknown date";
+                            //<remark 2021/01/06>
+                            entity.True_StockDate = "項目無し";
+                            entity.True_Quantity = qtyStatus;
+                            //</remark 2021/01/06>
                         }
                         //</remark 2020/06/16 End>
 
