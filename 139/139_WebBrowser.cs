@@ -275,7 +275,7 @@ namespace _139
 
                 if (intCnt < dt139.Rows.Count)
                 {
-                    entity.orderCode = dt139.Rows[intCnt]["発注コード"].ToString();                                         
+                    entity.orderCode = dt139.Rows[intCnt]["発注コード"].ToString();
                     webBrowser1.Navigate(objCom.url + "item/" + entity.orderCode);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Item);
                 }
@@ -311,6 +311,7 @@ namespace _139
             try
             {
                 //int intLCnt = 0;
+                DateTime dt;//<remark Add Logic for Datetime 2021/12/08 />
                 DataTable Check_Ordercode = dt139.AsEnumerable().Where(y => (y["発注コード"].Equals(entity.orderCode))).CopyToDataTable();
                 int Amount_Order = Check_Ordercode.Rows.Count;
                 foreach (DataRow Check_Rows in Check_Ordercode.Rows)
@@ -320,13 +321,19 @@ namespace _139
                     entity = new Qbei_Entity();
                     string[] strData;
                     webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_Item);
- 
+
                     Really_jancode = Check_Rows["JANコード"].ToString();
                     Really_size = Check_Rows["サイズ"].ToString();
                     DataTable Really_Table = dt139.AsEnumerable().Where(y => (y["JANコード"].Equals(Really_jancode) && y["サイズ"].Equals(Really_size))).CopyToDataTable();
                     strSize = Really_Table.Rows[0]["サイズ"].ToString();
                     strData = strSize.Split(new char[] { '（', '(' }, StringSplitOptions.RemoveEmptyEntries);
                     strSize = strData[0].Trim();
+                    //<remark Add Logic for rellay size 2021/01/06 Start>
+                    if (strSize == "ONE_SIZE")
+                    {
+                        strSize = strSize.Replace("_", " ");
+                    }
+                    //</remark 2021/01/06 End>
                     entity.partNo = Check_Rows["自社品番"].ToString();
                     entity.reflectDate = Check_Rows["最終反映日"].ToString();
                     entity.janCode = Check_Rows["JANコード"].ToString();
@@ -334,16 +341,20 @@ namespace _139
                     entity.price = Check_Rows["下代"].ToString();
 
                     entity.siteID = 139;
-                    entity.sitecode = "139";                   
-                    entity.makerDate = objCom.getCurrentDate();                  
+                    entity.sitecode = "139";
+                    entity.makerDate = objCom.getCurrentDate();
                     entity.purchaseURL = webBrowser1.Url.ToString();
                     entity.qtyStatus = string.Empty;
-                    entity.stockDate = string.Empty;                   
+                    entity.stockDate = string.Empty;
                     if (webBrowser1.Url.Equals(strUrl) || webBrowser1.Url.Equals(objCom.url))
                     {
-                        entity.purchaseURL = "https://www.wave-one.com/oroshi/item/" + entity.orderCode + "/"; 
+                        entity.purchaseURL = "https://www.wave-one.com/oroshi/item/" + entity.orderCode + "/";
                         entity.qtyStatus = "empty";
                         entity.stockDate = "2100-02-01";
+                        //<remark 2021/01/06>
+                        entity.True_StockDate = "Not Found";
+                        entity.True_Quantity = "Not Found";
+                        //</remark 2021/01/06>
                     }
                     else
                     {
@@ -365,8 +376,13 @@ namespace _139
 
                             if (webBrowser1.Document.Body.InnerHtml.Contains("売り切れました"))
                             {
+
                                 entity.qtyStatus = "empty";
                                 entity.stockDate = "2100-02-01";
+                                //<remark 2021/01/06>
+                                entity.True_StockDate = "項目無し";
+                                entity.True_Quantity = "売り切れました";
+                                //</remark 2021/01/06>
                             }
                             else
                             {
@@ -381,6 +397,11 @@ namespace _139
                                     {
                                         entity.qtyStatus = "empty";
                                         entity.stockDate = "2100-02-01";
+                                        //<remark 2021/01/06>
+                                        entity.True_StockDate = "Not Found";
+                                        entity.True_Quantity = "Not Found";
+                                        //</remark 2021/01/06>
+
                                     }
                                     else
                                     {
@@ -403,6 +424,18 @@ namespace _139
                                         }
                                         //entity.stockDate = b.Where(r => r.SelectNodes("td") != null && r.SelectSingleNode("td[1]").InnerText.Equals(strSize)).Select(z => z.SelectSingleNode("td[4]").InnerText).SingleOrDefault();
                                         entity.stockDate = b.Where(r => r.SelectNodes("td") != null && r.SelectSingleNode("td[1]").InnerText.Equals(strSize)).Select(z => z.SelectSingleNode("td[4]").InnerHtml).SingleOrDefault();
+                                        //<remark 2021/01/06>
+                                        if (entity.stockDate == "" || entity.stockDate == "&nbsp;")
+                                        {
+                                            entity.True_StockDate = "項目無し";
+                                            entity.True_Quantity = b.Where(r => r.SelectNodes("td") != null && r.SelectSingleNode("td[1]").InnerText.Equals(strSize)).Select(z => z.SelectSingleNode("td[2]").InnerText).SingleOrDefault(); ;
+                                        }
+                                        else
+                                        {
+                                            entity.True_StockDate = entity.stockDate;
+                                            entity.True_Quantity = b.Where(r => r.SelectNodes("td") != null && r.SelectSingleNode("td[1]").InnerText.Equals(strSize)).Select(z => z.SelectSingleNode("td[2]").InnerText).SingleOrDefault(); ;
+                                        }
+                                        //</remark 2021/01/06>
                                         if (!String.IsNullOrEmpty(entity.stockDate))
                                         {
                                             //strData = entity.stockDate.Split(new char[] { '/', '(' }, StringSplitOptions.RemoveEmptyEntries);
@@ -416,6 +449,14 @@ namespace _139
                                                 strData = temp.ToString().Split(new char[] { '/', '(' }, StringSplitOptions.RemoveEmptyEntries);
                                                 //entity.stockDate = (int.Parse(strData[0]) < DateTime.Now.Month) ? (int.Parse(strData[0]) == 0) ? "2100-01-01" : (DateTime.Now.Year + 1).ToString() + "-" + strData[0].PadLeft(2, '0') + "-" + strData[1].PadLeft(2, '0') : DateTime.Now.Year.ToString() + "-" + strData[0].PadLeft(2, '0') + "-" + strData[1].PadLeft(2, '0');
                                                 entity.stockDate = DateTime.Now.Year.ToString() + "-" + strData[0].PadLeft(2, '0') + "-" + strData[1].PadLeft(2, '0');
+                                                //<remark Add Logic for Plus one year 2021/01/06 Start>
+                                                dt = Convert.ToDateTime(entity.stockDate);
+                                                if (dt <= (DateTime.Now))
+                                                {
+                                                    dt = dt.AddYears(1);
+                                                }
+                                                entity.stockDate = dt.ToString("yyyy-MM-dd");
+                                                //</remark 2021/01/06 End>
                                             }
                                         }
                                         //2018-06-21 Start 
@@ -593,7 +634,7 @@ namespace _139
             //}           
             //webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_Item);
             //</remark 2020/10/21 End>
-  
+
             webBrowser1.Navigate(strUrl);
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Search);
         }
