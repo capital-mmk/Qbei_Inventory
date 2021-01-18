@@ -200,7 +200,7 @@ namespace _36PRインターナショナル
                 else
                 {
                     fun.WriteLog("Login success             ------", "036-");
-                    string purchaserURL = dt036.Rows[0]["purchaserURL"].ToString().Trim();  
+                    string purchaserURL = dt036.Rows[0]["purchaserURL"].ToString().Trim();
                     webBrowser1.Navigate(purchaserURL);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
@@ -258,6 +258,10 @@ namespace _36PRインターナショナル
                             entity.stockDate = "2100-02-01";
                             entity.price = dt036.Rows[i]["下代"].ToString();
                         }
+                        //<remark 2021/01/06>
+                        entity.True_StockDate = "Not Found";
+                        entity.True_Quantity = "Not Found";
+                        //</remark 2021/01/06>
                         fun.Qbei_Inserts(entity);
                     }
                     else
@@ -321,11 +325,19 @@ namespace _36PRインターナショナル
                                 {
                                     //entity.stockDate = qtypath.Equals("○") || qtypath.Equals("△") || qtypath.Equals("×") ? "2100-01-01" : qtypath.Equals("限定") ? "2100/02/01" : "unknown date";
                                     entity.stockDate = qtypath.Equals("○") || qtypath.Equals("×") ? "2100-01-01" : qtypath.Equals("△") || qtypath.Equals("限定") ? "2100/02/01" : "unknown date";//<remark Change Logic of stockdate 2020/07/24 />
+                                    //<remark 2021/01/06>
+                                    entity.True_StockDate = "項目無し";
+                                    entity.True_Quantity = qtypath;
+                                    //</remark 2021/01/06>
                                 }
                                 else
                                 {
                                     entity.stockDate = hdoc.DocumentNode.SelectSingleNode(stockpath).InnerText;
                                     strStockDate = entity.stockDate;
+                                    //<remark 2021/01/06>
+                                    entity.True_StockDate = entity.stockDate;
+                                    entity.True_Quantity = qtypath;
+                                    //</remark 2021/01/06>
 
                                     //<remark 2020/1/17 年月日のチャック　Start>
                                     //if (entity.stockDate.Contains("未定") || entity.stockDate.Contains("時期未定") || entity.stockDate.Contains("18年春予定") || entity.stockDate.Contains("今季終了品") || entity.stockDate.Contains("2018年以降予定") || entity.stockDate.Contains("今季販売終了品"))
