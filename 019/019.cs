@@ -244,6 +244,10 @@ namespace _019深谷_フカヤ_
                                     entity.qtyStatus = "empty";
                                     entity.stockDate = "2100-02-01";
                                     entity.price = dt019.Rows[i]["下代"].ToString();
+                                    //<remark 2021/01/06>
+                                    entity.True_StockDate = "Not Found";
+                                    entity.True_Quantity = "Not Found";
+                                    //</remark 2021/01/06>
                                     fun.Qbei_Inserts(entity);//<remark Add Logic 2020/05/30 />
                                 }
                                 else
@@ -304,6 +308,10 @@ namespace _019深谷_フカヤ_
                                         //entity.stockDate = entity.stockDate.Replace("/", "-");
                                         DateTime da = Convert.ToDateTime(entity.stockDate);
                                         entity.stockDate = da.ToString("yyyy-MM-dd");
+                                        //<remark 2021/01/06>
+                                        entity.True_StockDate = chrome.FindElement(By.ClassName("availabilityDate")).Text.Replace("入荷予定日:", " ");
+                                        entity.True_Quantity = qty;
+                                        //</remark 2021/01/06>
                                     }
                                     else
                                     {
@@ -319,6 +327,10 @@ namespace _019深谷_フカヤ_
                                             //entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-01-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";//<remark Edit Logic of stockdate 2020/07/21 />
                                             entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-02-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";
                                         }
+                                        //<remark 2021/01/06>
+                                        entity.True_StockDate = "項目無し";
+                                        entity.True_Quantity = qty;
+                                        //</remark 2021/01/06>
                                     }
                                     //<remark Add Logic 2020/05/30 />
                                     if (entity.qtyStatus != "unknown status")
