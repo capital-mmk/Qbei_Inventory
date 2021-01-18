@@ -119,7 +119,7 @@ namespace _031アキボウ
                 //dt031 = fun.GetOrderData(dt031, "https://joto-order.jp/jotwebb2b/itemList/searchItemList?searchKeiWord=", "031", "");//<remark Close Logic of Onceaweek 2020/08/12 />
                 fun.GetTotalCount("031");
                 ReadData();
-            }            
+            }
             catch (Exception ex)
             {
                 fun.WriteLog(ex, "031-");
@@ -160,7 +160,7 @@ namespace _031アキボウ
 
                 SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
                 instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
-                
+
                 string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
                 //  webBrowser1.ScriptErrorsSuppressed = true;
                 fun.WriteLog("Navigation to Site Url success------", "031-");
@@ -189,7 +189,7 @@ namespace _031アキボウ
             {
                 string janCode = dt031.Rows[0]["JANコード"].ToString();
                 string orderCode = dt031.Rows[0]["発注コード"].ToString();
-                fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");                
+                fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
                 fun.WriteLog(ex, "031-", janCode, orderCode);
 
                 Application.Exit();
@@ -212,7 +212,7 @@ namespace _031アキボウ
                 {
                     fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
                     fun.WriteLog("Login Faliled", "031-");
-                    
+
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -290,7 +290,7 @@ namespace _031アキボウ
             entity.reflectDate = dt031.Rows[i]["最終反映日"].ToString();
             entity.orderCode = dt031.Rows[i]["発注コード"].ToString();
             entity.purchaseURL = "https://weborder.akibo.jp/item_detail/item_detail.html?goods_code=" + entity.orderCode;
-            
+
             string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
             if (!(body.Contains("上代")))
             {
@@ -306,6 +306,10 @@ namespace _031アキボウ
                     entity.stockDate = "2100-02-01";
                     entity.price = dt031.Rows[i]["下代"].ToString();
                 }
+                //<remark 2021/01/06>
+                entity.True_StockDate = "Not Found";
+                entity.True_Quantity = "Not Found";
+                //</remark 2021/01/06>
                 fun.Qbei_Inserts(entity);
                 // fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), "Item doesn't Exists!", entity.janCode, entity.orderCode, 2, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
             }
@@ -323,7 +327,7 @@ namespace _031アキボウ
                     {
                         fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
                         fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "031-");
-                        
+
                         Application.Exit();
                         Environment.Exit(0);
                     }
@@ -335,7 +339,7 @@ namespace _031アキボウ
                         entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") || qty.Contains("▲") || fun.IsNumber(qty) || qty.Contains("予約受付中") || qty.Contains("在庫なし") || qty.Contains("受付終了") ? "empty" : "unknown status";
                         //entity.stockDate = qty.Contains("○") || qty.Contains("△") || qty.Contains("▲") || qty.Contains("予約受付中") || qty.Contains("在庫なし") || fun.IsNumber(qty) ? "2100-01-01" : qty.Contains("受付終了") ? "2100-02-01" : "unknown date";
                         //entity.stockDate = qty.Contains("○") || qty.Contains("△") || qty.Contains("▲")  || fun.IsNumber(qty) ? "2100-01-01" :  qty.Contains("予約受付中") || qty.Contains("在庫なし") || qty.Contains("受付終了") ? "2100-02-01" : "unknown date";//<remark Stockdateの編集　2020/04/06 />
-                        entity.stockDate = qty.Contains("○")  ? "2100-01-01" : qty.Contains("△") || qty.Contains("▲") || fun.IsNumber(qty) || qty.Contains("予約受付中") || qty.Contains("在庫なし") || qty.Contains("受付終了") ? "2100-02-01" : "unknown date";//<remark Change Logic of Quantity 2020/07/23 />
+                        entity.stockDate = qty.Contains("○") ? "2100-01-01" : qty.Contains("△") || qty.Contains("▲") || fun.IsNumber(qty) || qty.Contains("予約受付中") || qty.Contains("在庫なし") || qty.Contains("受付終了") ? "2100-02-01" : "unknown date";//<remark Change Logic of Quantity 2020/07/23 />
 
                         //entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") || qty.Contains("▲") ? "small" : qty.Contains("予約受付中") || qty.Contains("在庫なし") || qty.Contains("受付終了") ? "empty" : "unknown status";
                         //entity.stockDate = qty.Contains("○") || qty.Contains("△") || qty.Contains("▲") || qty.Contains("予約受付中") || qty.Contains("在庫なし") ? "2100-01-01" : qty.Contains("受付終了") ? "2100-02-01" : "unknown date";
@@ -360,12 +364,16 @@ namespace _031アキボウ
                         //}
                         //else
                         //</remark 2020/04/23 End>
-                            fun.Qbei_Inserts(entity);
+                        //<remark 2021/01/06>
+                        entity.True_StockDate = "項目無し";
+                        entity.True_Quantity = qty;
+                        //</remark 2021/01/06>
+                        fun.Qbei_Inserts(entity);
                     }
                 }
                 catch (Exception ex)
                 {
-                    fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");                    
+                    fun.Qbei_ErrorInsert(31, fun.GetSiteName("031"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "031");
                     fun.WriteLog(ex, "031-", entity.janCode, entity.orderCode);
                 }
             }
