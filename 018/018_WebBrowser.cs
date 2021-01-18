@@ -22,7 +22,7 @@ namespace _018日直_ニチナオ_
     /// Data Table and Common Function and Field
     /// </remark>
     public partial class frm018 : Form
-    { 
+    {
         DataTable dt = new DataTable();
         CommonFunction fun = new CommonFunction();
         Qbeisetting_BL qubl = new Qbeisetting_BL();
@@ -113,7 +113,7 @@ namespace _018日直_ニチナオ_
                 fun.Qbei_Delete(18);
                 fun.Qbei_ErrorDelete(18);
                 dt018 = fun.GetDatatable("018");
-                dt018 = fun.GetOrderData(dt018, "https://1908.nichinao.com/shop/g/g", "018", string.Empty);
+                //dt018 = fun.GetOrderData(dt018, "https://1908.nichinao.com/shop/g/g", "018", string.Empty);
                 fun.GetTotalCount("018");
                 ReadData();
             }
@@ -247,16 +247,24 @@ namespace _018日直_ニチナオ_
                     {
                         entity.stockDate = dt018.Rows[i]["入荷予定"].ToString();
                         entity.qtyStatus = dt018.Rows[i]["在庫情報"].ToString();
+                        //<remark 2021/01/06>
+                        entity.True_StockDate = "Not Found";
+                        entity.True_Quantity = "Not Found";
+                        //</remark 2021/01/06>
                     }
                     else
                     {
-                    //2018/04/25 End
+                        //2018/04/25 End
                         //2018/01/10 Start
                         entity.price = dt018.Rows[i]["下代"].ToString();
                         entity.qtyStatus = "empty";
                         entity.stockDate = "2100-02-01";
                         //fun.Qbei_ErrorInsert(18, fun.GetSiteName("018"), "Item doesn't Exists!", entity.janCode, entity.orderCode, 2, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "018");
                         //2018/01/10 End
+                        //<remark 2021/01/06>
+                        entity.True_StockDate = "Not Found";
+                        entity.True_Quantity = "Not Found";
+                        //</remark 2021/01/06>
                     }
                 }
                 else
@@ -269,7 +277,7 @@ namespace _018日直_ニチナオ_
                     {
                         fun.Qbei_ErrorInsert(18, fun.GetSiteName("018"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "018");
                         fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "018-");
-                        
+
                         Application.Exit();
                         Environment.Exit(0);
                     }
@@ -286,6 +294,12 @@ namespace _018日直_ニチナオ_
                         //if (qtypath.Contains("予約"))
                         //{
                         HtmlNode node = hdoc.DocumentNode.SelectSingleNode("div/div[2]/div/div[3]/div/table/tbody/tr/td[2]/table[1]/tbody/tr[8]/td");
+                        //<remark 2021/01/06>
+                        if (node != null)
+                        { entity.True_StockDate = node.InnerText; }
+                        else { entity.True_StockDate = "項目無し"; }
+                        entity.True_Quantity = qtypath;
+                        //</remark 2021/01/06>
                         if (node != null)
                         {
                             if (node.InnerText.Contains("次回入荷"))
@@ -342,6 +356,7 @@ namespace _018日直_ニチナオ_
                     }
 
                 }
+
                 //2018/01/10 Start
                 //<remark Close Logic 2020/25/22 Start>
                 //if ((dt018.Rows[i]["在庫情報"].ToString().Contains("empty") || dt018.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt018.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
