@@ -206,6 +206,10 @@ namespace _916_Chrome
                                         entity.qtyStatus = "empty";
                                         entity.stockDate = "2100-02-01";
                                         entity.price = dt916.Rows[i]["下代"].ToString();
+                                        //<remark 2021/01/06>
+                                        entity.True_StockDate = "Not Found";
+                                        entity.True_Quantity = "Not Found";
+                                        //</remark 2021/01/06>
                                         fun.Qbei_Inserts(entity);
                                     }
                                     else
@@ -218,6 +222,10 @@ namespace _916_Chrome
                                             entity.qtyStatus = "empty";
                                             entity.stockDate = "2100-02-01";
                                             entity.price = dt916.Rows[i]["下代"].ToString();
+                                            //<remark 2021/01/06>
+                                            entity.True_StockDate = "Not Found";
+                                            entity.True_Quantity = "Not Found";
+                                            //</remark 2021/01/06>
                                             fun.Qbei_Inserts(entity);
                                         }
                                         else
@@ -231,10 +239,18 @@ namespace _916_Chrome
                                                     string stock = chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]/section/dl[3]/div[1]/dd")).GetAttribute("innerHTML").ToString().Trim();
                                                     entity.qtyStatus = stock.Equals("あり") ? "good" : stock.Equals("僅少") ? "empty" : stock.Equals("なし") ? "empty" : "unknown status";
                                                     entity.stockDate = entity.qtyStatus.Equals("good") ? "2100-01-01" : entity.qtyStatus.Equals("empty") ? "2100-02-01" : "unknown status";
+                                                    //<remark 2021/01/06>
+                                                    entity.True_StockDate = "項目無し";
+                                                    entity.True_Quantity = stock;
+                                                    //</remark 2021/01/06>
                                                     if (chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]")).Text.Contains("メーカー入荷予定"))
                                                     {
                                                         entity.stockDate = chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]/section/dl[3]/div[3]/dd")).GetAttribute("innerHTML").ToString().Trim();
                                                         strStockDate = chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]/section/dl[3]/div[3]/dd")).GetAttribute("innerHTML").ToString().Trim();
+                                                        //<remark 2021/01/06>
+                                                        entity.True_StockDate = entity.stockDate;
+                                                        entity.True_Quantity = stock;
+                                                        //</remark 2021/01/06>
                                                         if (entity.stockDate.Contains("なし"))
                                                         {
                                                             entity.stockDate = "2100-02-01";
