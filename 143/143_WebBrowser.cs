@@ -289,11 +289,11 @@ namespace _143
             string strUrl = string.Empty;
             entity = new Qbei_Entity();
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemProcessing);
-            entity.janCode = dt143.Rows[i]["JANコード"].ToString();          
+            entity.janCode = dt143.Rows[i]["JANコード"].ToString();
             entity.partNo = dt143.Rows[i]["自社品番"].ToString();
             entity.makerDate = fun.getCurrentDate();
             entity.reflectDate = dt143.Rows[i]["最終反映日"].ToString();
-            entity.orderCode = dt143.Rows[i]["発注コード"].ToString();                   
+            entity.orderCode = dt143.Rows[i]["発注コード"].ToString();
             entity.purchaseURL = fun.url + "/goods/goods_list.html";
 
             entity.siteID = 143;
@@ -316,6 +316,10 @@ namespace _143
                         entity.stockDate = "2100-02-01";
                         entity.price = dt143.Rows[i]["下代"].ToString();
                     }
+                    //<remark 2021/01/06>
+                    entity.True_StockDate = "Not Found";
+                    entity.True_Quantity = "Not Found";
+                    //</remark 2021/01/06>
                     fun.Qbei_Inserts(entity);
                 }
                 else
@@ -367,6 +371,10 @@ namespace _143
                         //entity.purchaseURL = fun.url + strUrl;
                         //entity.price = ae[0];
                         //entity.price = entity.price.Replace(",", string.Empty).Replace("<", string.Empty);
+                        //<remark 2021/01/06>
+                        entity.True_StockDate = "項目無し";
+                        entity.True_Quantity = alt;
+                        //</remark 2021/01/06>
                         try
                         {
                             //string stockpath = "table/tbody/tr[2]/td/div[2]/div[2]/table/tbody/tr[3]/td[4]/img";
@@ -414,14 +422,14 @@ namespace _143
                                 //}
                                 string sdimg;
                                 string sdimg2;
-                                string sdimg3;                            
+                                string sdimg3;
                                 //if (alt.Equals("○") || alt.Equals("▲"))
                                 if (alt.Equals("○"))//<remark Change Logic of stockdate 2020/07/24 />
                                 {
                                     entity.stockDate = "2100-01-01";
                                 }
                                 //else if (alt.Contains("完売"))
-                                else if (alt.Equals("▲") ||alt.Contains("完売"))//<remark Change Logic of stockdate 2020/07/24 />
+                                else if (alt.Equals("▲") || alt.Contains("完売"))//<remark Change Logic of stockdate 2020/07/24 />
                                 {
                                     entity.stockDate = "2100-02-01";
                                 }
@@ -431,7 +439,7 @@ namespace _143
 
                                     //if (sdimg.Contains("stock.gif"))
                                     //if (alt.Contains("完売") || (sdimg.Contains("limited_stock.gif") && (alt.Equals("○") || alt.Contains("▲") || alt.Contains("×"))))
-                                    if ( (sdimg.Contains("limited_stock.gif") &&  alt.Contains("×") )|| (sdimg.Contains("senkou") && alt.Contains("完売")) || (sdimg.Contains("finish") && alt.Contains("×")))
+                                    if ((sdimg.Contains("limited_stock.gif") && alt.Contains("×")) || (sdimg.Contains("senkou") && alt.Contains("完売")) || (sdimg.Contains("finish") && alt.Contains("×")))
                                     {
                                         entity.stockDate = "2100-02-01";
                                     }
@@ -460,8 +468,8 @@ namespace _143
                                 }
                                 else if (hdoc.DocumentNode.SelectSingleNode(stockpath2) != null)
                                 {
-                                     sdimg = hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("src", "");
-                                     sdimg2 = hdoc.DocumentNode.SelectSingleNode(stockpath2).GetAttributeValue("src", "");//<remark Stockdate Logic 追加　2020/02/28>                                    
+                                    sdimg = hdoc.DocumentNode.SelectSingleNode(stockpath).GetAttributeValue("src", "");
+                                    sdimg2 = hdoc.DocumentNode.SelectSingleNode(stockpath2).GetAttributeValue("src", "");//<remark Stockdate Logic 追加　2020/02/28>                                    
 
                                     //if ((sdimg.Contains("new.gif") && sdimg2.Contains("limited_stock.gif") && alt.Contains("×")) || (sdimg.Contains("limited_stock.gif") && sdimg2.Contains("new.gif") && alt.Contains("×")) || sdimg.Contains("limited_stock.gif"))
                                     //</remark 2020/03/26 End
@@ -470,11 +478,11 @@ namespace _143
                                         entity.stockDate = "2100-02-01";
                                     }
                                 }
-                               
+
                                 else
                                 {
                                     entity.stockDate = "2100-02-01";
-                                }                                
+                                }
                             }
                         }
                         catch
