@@ -321,6 +321,10 @@ namespace _13ミズタニ
                 }
                 else
                 { entity.stockDate = "2100-02-01"; }
+                //<remark 2021/01/06>
+                entity.True_StockDate = "Not Found";
+                entity.True_Quantity = "Not Found";
+                //</remark 2021/01/06>
                 fun.Qbei_Inserts(entity);
             }
 
@@ -398,6 +402,13 @@ namespace _13ミズタニ
                                         entity.stockDate = hdoc.DocumentNode.SelectSingleNode("/tbody/tr[" + j + "]/td[6]").InnerText;
                                     colorpath = hdoc.DocumentNode.SelectSingleNode("/tbody/tr[" + j + "]/td[5]");
                                     color = colorpath.GetAttributeValue("style", string.Empty);
+                                    //<remark 2021/01/06>
+                                    if (entity.stockDate == "&nbsp;")
+                                    { entity.True_StockDate = string.Empty; }
+                                    else
+                                    { entity.True_StockDate = entity.stockDate; }
+                                    entity.True_Quantity = qty;
+                                    //</remark 2021/01/06>
                                     break;
                                 }
                             }
@@ -407,6 +418,10 @@ namespace _13ミズタニ
                                 entity.price = dt013.Rows[i]["下代"].ToString();
                                 entity.qtyStatus = "empty";
                                 entity.stockDate = "2100-02-01";
+                                //<remark 2021/01/06>
+                                entity.True_StockDate = "Not Found";
+                                entity.True_Quantity = "Not Found";
+                                //</remark 2021/01/06>
                             }
                         }
 
@@ -441,6 +456,10 @@ namespace _13ミズタニ
                             if (qty.Equals("▲") || qty.Equals("×") || qty.Equals("★") || qty.Equals("？"))
                                 entity.stockDate = "2100-02-01";
                             //</remark>
+
+                            //<remark 2021/01/06>                         
+                            entity.True_Quantity = qty + "(red)";
+                            //</remark 2021/01/06>
                         }
                         else
                         {
