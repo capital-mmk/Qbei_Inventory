@@ -169,7 +169,7 @@ namespace _030
             {
                 string janCode = dt030.Rows[0]["JANコード"].ToString();
                 string orderCode = dt030.Rows[0]["発注コード"].ToString();
-                fun.Qbei_ErrorInsert(30, fun.GetSiteName("030"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "030");                
+                fun.Qbei_ErrorInsert(30, fun.GetSiteName("030"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "030");
                 fun.WriteLog(ex, "030-", janCode, orderCode);
 
                 Application.Exit();
@@ -191,7 +191,7 @@ namespace _030
                 {
                     fun.Qbei_ErrorInsert(30, fun.GetSiteName("030"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "030");
                     fun.WriteLog("Login Failed", "030-");
-                    
+
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -261,6 +261,10 @@ namespace _030
                         entity.stockDate = "2100-02-01";
                     }
                     entity.price = dt030.Rows[i]["下代"].ToString();
+                    //<remark 2021/01/06>
+                    entity.True_StockDate = "Not Found";
+                    entity.True_Quantity = "Not Found";
+                    //</remark 2021/01/06>
                     fun.Qbei_Inserts(entity);
                     //fun.Qbei_ErrorInsert(30, fun.GetSiteName("030"), "Item doesn't Exists!", entity.janCode, entity.orderCode, 2, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "030");
                     //2018/01/17 End
@@ -277,7 +281,7 @@ namespace _030
                         {
                             fun.Qbei_ErrorInsert(30, fun.GetSiteName("030"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "030");
                             fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "030-");
-                            
+
                             Application.Exit();
                             Environment.Exit(0);
                         }
@@ -289,7 +293,7 @@ namespace _030
                         //entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") ? "small" : alt.Equals("×") || alt.Equals("完売") ? "empty" : "unknown status";//<remark Change Logic of quantity 2020/07/23 />
                         entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") || alt.Equals("×") || alt.Equals("完売") ? "empty" : "unknown status";
 
-                        string date = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");                       
+                        string date = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
                         //entity.stockDate = alt.Equals("○") || alt.Equals("△") ? "2100-01-01" : alt.Equals("×") || alt.Equals("完売") ? "2100-02-01" : "unknown date";
                         //<remark 06/12/2019変更>
                         entity.stockDate = alt.Equals("○") ? "2100-01-01" : alt.Equals("△") || alt.Equals("×") || alt.Equals("完売") ? "2100-02-01" : "unknown date";
@@ -305,12 +309,16 @@ namespace _030
                             }
                         }
                         //2018/01/17 End
+                        //<remark 2021/01/06>
+                        entity.True_StockDate = "項目無し";
+                        entity.True_Quantity = alt;
+                        //</remark 2021/01/06>
                         fun.Qbei_Inserts(entity);
                     }
                     catch (Exception ex)
                     {
                         fun.Qbei_ErrorInsert(30, fun.GetSiteName("030"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "030");
-                        fun.WriteLog(ex, "030-", entity.janCode, entity.orderCode);                        
+                        fun.WriteLog(ex, "030-", entity.janCode, entity.orderCode);
                     }
                 }
             }
