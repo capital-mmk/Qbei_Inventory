@@ -102,7 +102,7 @@ namespace _0035
                 }
                 else
                 {
-                	Application.Exit();
+                    Application.Exit();
                     Environment.Exit(0);
                 }
             }
@@ -133,7 +133,7 @@ namespace _0035
                 if (String.IsNullOrEmpty(strParam))
                 {
                     dt035 = fun.GetDatatable("035");
-                   // dt035 = fun.GetOrderData(dt035, "https://intertecinc.jp/ecuser/item/itemDetail?itemCd=", "035", "");//<remark Close Logic of Onceaweek 2020/10/26 />
+                    // dt035 = fun.GetOrderData(dt035, "https://intertecinc.jp/ecuser/item/itemDetail?itemCd=", "035", "");//<remark Close Logic of Onceaweek 2020/10/26 />
                 }
                 else
                 {
@@ -183,7 +183,7 @@ namespace _0035
                 fun.ClearMemory();
 
                 SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
-                instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);                
+                instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
                 fun.WriteLog("Navigation to Site Url success------", "035-");
                 webBrowser1.ScriptErrorsSuppressed = true;
                 qe.SiteID = 35;
@@ -217,9 +217,9 @@ namespace _0035
             try
             {
                 webBrowser1.ScriptErrorsSuppressed = true;
-                webBrowser1.DocumentCompleted -= webBrowser1_Login;                
+                webBrowser1.DocumentCompleted -= webBrowser1_Login;
                 string body = webBrowser1.Document.GetElementsByTagName("body")[0].InnerText;
-                
+
                 if (body.Contains(" IDを入力してください") || body.Contains("パスワードを入力してください") || body.Contains("IDを正しく入力してください"))
                 {
                     fun.Qbei_ErrorInsert(35, fun.GetSiteName("035"), "Login Failed", dt035.Rows[0]["JANコード"].ToString(), dt035.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "035");
@@ -265,8 +265,8 @@ namespace _0035
                 entity.partNo = dt035.Rows[i]["自社品番"].ToString();
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt035.Rows[i]["最終反映日"].ToString();
-                entity.orderCode = dt035.Rows[i]["発注コード"].ToString();                
-                entity.purchaseURL = "https://intertecinc.jp/ecuser/item/itemDetail?itemCd=" + entity.orderCode;                
+                entity.orderCode = dt035.Rows[i]["発注コード"].ToString();
+                entity.purchaseURL = "https://intertecinc.jp/ecuser/item/itemDetail?itemCd=" + entity.orderCode;
 
                 if (!string.IsNullOrWhiteSpace(entity.orderCode))
                 {
@@ -285,6 +285,10 @@ namespace _0035
                             entity.stockDate = "2100-02-01";
                             entity.price = dt035.Rows[i]["下代"].ToString();
                         }
+                        //<remark 2021/01/06>
+                        entity.True_StockDate = "Not Found";
+                        entity.True_Quantity = "Not Found";
+                        //</remark 2021/01/06>
                         fun.Qbei_Inserts(entity);
                     }
                     else
@@ -299,7 +303,7 @@ namespace _0035
                             hdoc.LoadHtml(html);
                             if ((hdoc.DocumentNode.SelectSingleNode("div[1]/div/div[1]/section[2]/div/div/table/tbody/tr/td[5]") == null) && (hdoc.DocumentNode.SelectSingleNode("div[1]/div/div[1]/section[2]/form/div/div/table/tbody/tr/td[7]/div/span[1]") == null))
                             {
-                                fun.Qbei_ErrorInsert(35, fun.GetSiteName("035"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "035");                                
+                                fun.Qbei_ErrorInsert(35, fun.GetSiteName("035"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "035");
                                 fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "035-");
                                 Application.Exit();
                                 Environment.Exit(0);
@@ -313,7 +317,7 @@ namespace _0035
                                 //entity.price = ((int)(Convert.ToDouble(entity.price) * 0.98)).ToString();
 
                                 entity.stockDate = hdoc.DocumentNode.SelectSingleNode("div[1]/div/div[1]/section[2]/div/div/table/tbody/tr/td[6]/div/span[1]").InnerText;
-                                                                
+
                                 if (entity.stockDate.Contains("上旬") || entity.stockDate.Contains("下旬") || entity.stockDate.Contains("中旬") || entity.stockDate.Contains("初旬"))
                                 {
                                     month = Regex.Replace(entity.stockDate, "[^0-9]+", string.Empty);
@@ -328,14 +332,14 @@ namespace _0035
                                         if (month == "2")
                                             day = "28";
                                         else
-                                        day = "30";
+                                            day = "30";
                                     }
                                     else if (entity.stockDate.Contains("中旬"))
                                         day = "20";
                                     else if (entity.stockDate.Contains("初旬"))
                                         day = "10";
 
-                                   
+
                                     year = DateTime.Now.ToString("yyyy");
                                     DateTime dt = Convert.ToDateTime(year + "-" + month + "-" + day);
                                     string d = fun.getCurrentDate();
@@ -353,6 +357,10 @@ namespace _0035
                                     //entity.stockDate = qty.Equals("◯") || qty.Equals("◎") ||  fun.IsLessthanzero(qty)  ? "2100-01-01" : qty.Equals("△") || fun.IsSmall1(qty) || qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") ? "2100-02-01" : "unknown date";
                                     entity.stockDate = qty.Equals("◯") || qty.Equals("◎") ? "2100-01-01" : qty.Equals("△") || fun.IsLessthanzero(qty) || fun.IsSmall1(qty) || qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") ? "2100-02-01" : "unknown date";
                                     //</remark 2020/07/23 End>
+                                    //<remark 2021/01/06>
+                                    entity.True_StockDate = "項目無し";
+                                    entity.True_Quantity = qty;
+                                    //</remark 2021/01/06>
                                 }
                                 else
                                 {
@@ -360,6 +368,10 @@ namespace _0035
                                     //entity.qtyStatus = qty.Equals("◯") || qty.Equals("◎") ? "good" : qty.Equals("△") || fun.IsSmall1(qty) ? "small" : qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") || fun.IsLessthanzero(qty) ? "empty" : "unknown status";
                                     entity.qtyStatus = qty.Equals("◯") || qty.Equals("◎") ? "good" : qty.Equals("△") || fun.IsLessthanzero(qty) || fun.IsSmall1(qty) || qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") || fun.IsLessthanzero(qty) ? "empty" : "unknown status";//<remark Change Logic of Stockdate 2020/07/23 />
                                     entity.stockDate = qty.Equals("◯") || qty.Equals("◎") || qty.Equals("△") || fun.IsSmall1(qty) || qty.Equals("×") || qty.Equals("完売") || qty.Equals("終了") || fun.IsLessthanzero(qty) ? entity.stockDate : "unknown date";
+                                    //<remark 2021/01/06>
+                                    entity.True_StockDate = entity.stockDate;
+                                    entity.True_Quantity = qty;
+                                    //</remark 2021/01/06>
                                 }
 
                                 //<remark Add Logic of Stockdate 2020/10/28 Start>
