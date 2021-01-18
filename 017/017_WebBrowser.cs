@@ -248,12 +248,20 @@ namespace _17インターマックス
                             entity.qtyStatus = "empty";
                             entity.stockDate = "2100-01-10";
                             entity.price = dt017.Rows[i]["下代"].ToString();
+                            //<remark 2021/01/06>
+                            entity.True_StockDate = "Not Found";
+                            entity.True_Quantity = "Not Found";
+                            //</remark 2021/01/06>
                         }
                         else
                         {
                             entity.qtyStatus = "empty";
                             entity.stockDate = "2100-02-01";
                             entity.price = dt017.Rows[i]["下代"].ToString();
+                            //<remark 2021/01/06>
+                            entity.True_StockDate = "Not Found";
+                            entity.True_Quantity = "Not Found";
+                            //</remark 2021/01/06>
                         }
                         fun.Qbei_Inserts(entity);
                     }
@@ -304,6 +312,18 @@ namespace _17インターマックス
                                     stockDatePath = row.SelectSingleNode("td[2]").InnerText;
                                 }
                             }
+
+                            //<remark 2021/01/06>
+                            if (stockDatePath == "")
+                            {
+                                entity.True_StockDate = "項目無し";
+                            }
+                            else
+                            {
+                                entity.True_StockDate = stockDatePath;
+                            }
+                            entity.True_Quantity = qtyPath;
+                            //</remark 2021/01/06>
 
                             if (string.IsNullOrWhiteSpace(pricePath))
                             {
