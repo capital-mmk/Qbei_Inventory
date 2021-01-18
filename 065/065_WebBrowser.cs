@@ -181,7 +181,7 @@ namespace _65野口
             {
                 string janCode = dt065.Rows[0]["JANコード"].ToString();
                 string orderCode = dt065.Rows[0]["発注コード"].ToString();
-                fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");               
+                fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
                 fun.WriteLog(ex, "065-", janCode, orderCode);
 
                 Application.Exit();
@@ -202,8 +202,8 @@ namespace _65野口
                 if (body.Contains("野口商会Web発注システム ログイン画面"))
                 {
                     fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), "Login Failed", dt065.Rows[0]["JANコード"].ToString(), dt065.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
-                    fun.WriteLog("Login Failed", "065-");                   
-                    
+                    fun.WriteLog("Login Failed", "065-");
+
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -247,7 +247,7 @@ namespace _65野口
         {
             string janCode = string.Empty;
             string orderCode = string.Empty;
-            
+
             try
             {
                 fun.ClearMemory();
@@ -327,6 +327,10 @@ namespace _65野口
                         entity.stockDate = "2100-02-01";
                         entity.price = dt065.Rows[i]["下代"].ToString();
                     }
+                    //<remark 2021/01/06>
+                    entity.True_StockDate = "Not Found";
+                    entity.True_Quantity = "Not Found";
+                    //</remark 2021/01/06>
                     fun.Qbei_Inserts(entity);
                     webBrowser1.Navigate(fun.url + "/nachos/site/item_list");
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_WaitForSearchPage);
@@ -352,7 +356,7 @@ namespace _65野口
 
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemProcessing);
             webBrowser1.ScriptErrorsSuppressed = true;
-                        
+
             try
             {
                 string html = webBrowser1.Document.Body.InnerHtml;
@@ -362,7 +366,7 @@ namespace _65野口
                 {
                     fun.Qbei_ErrorInsert(65, fun.GetSiteName("065"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "065");
                     fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "065-");
-                    
+
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -399,6 +403,10 @@ namespace _65野口
                     //}
                     //else
                     //</reamark 2020/25/22 End>
+                    //<remark 2021/01/06>
+                    entity.True_StockDate = "項目無し";
+                    entity.True_Quantity = qtypath;
+                    //</remark 2021/01/06>
                     fun.Qbei_Inserts(entity);
                 }
             }
