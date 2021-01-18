@@ -310,6 +310,10 @@ namespace _38フタバ
                     entity.stockDate = "2100-02-01";
                     entity.price = dt038.Rows[i]["下代"].ToString();
                 }
+                //<remark 2021/01/06>
+                entity.True_StockDate = "Not Found";
+                entity.True_Quantity = "Not Found";
+                //</remark 2021/01/06>
                 fun.Qbei_Inserts(entity);
             }
             else
@@ -342,8 +346,26 @@ namespace _38フタバ
                         entity.qtyStatus = qty.Equals("△") || fun.IsSmall_38(qty) || qty.Equals("×") || fun.IsEmpty_38(qty) ? "empty" : qty.Contains("○") || fun.IsGood_38(qty) ? "good" : "unknown status";//<remark Quantityの編集ロジック　2020/07/24 />
                         entity.price = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_tankazeinuki_0").InnerText;
                         entity.price = entity.price.Replace(",", string.Empty);
-                        entity.stockDate = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_nyukayotei_0").InnerText;
-                        strStockDate = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_nyukayotei_0").InnerText;
+                        //<remark Edit Logic for stockdate 2021/1/12 Start>
+                        //entity.stockDate = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_kubun_0").InnerText;
+                        //strStockDate = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_kubun_0").InnerText;
+
+                        if (webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_nyukayotei_0").InnerText != null)
+                        {
+                            entity.stockDate = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_nyukayotei_0").InnerText;
+                            strStockDate = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_nyukayotei_0").InnerText;
+                        }
+                        else
+                        {
+                            entity.stockDate = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_kubun_0").InnerText;
+                            strStockDate = webBrowser1.Document.GetElementById("MainContent_gv_syohin_lbl_kubun_0").InnerText;
+                        }
+                        //</remark 2021/1/12 End>
+
+                        //<remark 2021/01/06>
+                        entity.True_StockDate = entity.stockDate;
+                        entity.True_Quantity = qty;
+                        //</remark 2021/01/06>
 
                         //if (string.IsNullOrWhiteSpace(entity.stockDate) || entity.stockDate.Contains("お取り寄せ品"))
                         //{
@@ -479,6 +501,10 @@ namespace _38フタバ
                                 {
                                     entity.stockDate = "2100-02-01";
                                 }
+                                //<remark 2021/01/06>
+                                entity.True_StockDate = "項目無し";
+                                entity.True_Quantity = qty;
+                                //</remark 2021/01/06>
                             }
                             catch
                             {
@@ -552,7 +578,7 @@ namespace _38フタバ
                                     {
                                         if (J_Month == 1)
                                         {
-                                            Month = Convert.ToInt32(m[1].Substring(J_Month - 1, J_Month + 0));                                            
+                                            Month = Convert.ToInt32(m[1].Substring(J_Month - 1, J_Month + 0));
                                             Day = DateTime.DaysInMonth(Convert.ToInt32(Year), Month).ToString();//<remark Edit Logic for Date of Year 2020/09/25 />
                                             entity.stockDate = Year + "-" + Month + "-" + Day;
                                         }
