@@ -33,7 +33,7 @@ namespace Common
         public string excelPath016 = string.Empty;
         int ddr;
         DataTable dtOrder = new DataTable();
-      
+
         /// <summary>
         /// Convert DataTable from Xml format string
         /// </summary>
@@ -59,7 +59,7 @@ namespace Common
         /// </remark>
         public static string RemoveInvalidXmlChars(string content)
         {
-           return  content = Regex.Replace(content, @"&#(x?)([A-Fa-f0-9]+);", "");            
+            return content = Regex.Replace(content, @"&#(x?)([A-Fa-f0-9]+);", "");
         }
 
         /// <summary>
@@ -81,13 +81,13 @@ namespace Common
         ///</remark>
         private static void createConfig(string shopID)
         {
-            Configuration config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");      
+            Configuration config = ConfigurationManager.OpenExeConfiguration(@"C:\Qbei_Log\Config1\App.config");
             if (config.ConnectionStrings.ConnectionStrings["Qbei_DB"] == null)
             {
                 ConnectionStringSettings setting = new ConnectionStringSettings("Qbei_DB", "Data Source= WIN-OIL4TFU9NBH\\LOCAL2014;Initial Catalog=Qbei_Inventory;Persist Security Info=True;User ID=sa;Password=admin123456!", "System.Data.SqlClient");
                 config.ConnectionStrings.ConnectionStrings.Add(setting);
             }
-            
+
             config.Save(ConfigurationSaveMode.Modified);
         }
 
@@ -119,7 +119,7 @@ namespace Common
         /// Do not Use of Qbei_Inventory at now.
         /// </remark>
         private static void AddtoConfig(Configuration config, string key, string value)
-        {          
+        {
             if (config.AppSettings.Settings[key] == null)
                 config.AppSettings.Settings.Add(key, value);
             else
@@ -159,7 +159,7 @@ namespace Common
         /// Create of Directory.
         /// </summary>
         public void CreateFileAndFolder()
-        {            
+        {
             CreateDirectory(@"C:\Qbei_Log");
             CreateDirectory(@"C:\Qbei_Log\Csv");
             CreateFilePath(@"C:\Qbei_Log\logfile\log.txt");
@@ -197,23 +197,23 @@ namespace Common
             string xml;
             Connection con;
             SqlConnection sqlcon;
-            SqlCommand cmd;         
+            SqlCommand cmd;
             dc.DefaultValue = GetSiteName(shopID);
-            string[] columns = { "代理店ID", "JANコード", "在庫情報", "入荷予定", "自社品番", "メーカー情報日", "最終反映日" };       
+            string[] columns = { "代理店ID", "JANコード", "在庫情報", "入荷予定", "自社品番", "メーカー情報日", "最終反映日" };
             string[] filelist = Directory.GetFiles(@"C:\Qbei_Log\Csv");
-           
+
             foreach (string file in filelist)
             {
-                string ext = Path.GetExtension(file);     
+                string ext = Path.GetExtension(file);
                 if (ext.Equals(".csv"))
-                {                  
+                {
                     using (var csv = new CachedCsvReader(new StreamReader(file, Encoding.GetEncoding(932)), true))
                     {
                         DataTable dtCsv = new DataTable();
                         dtCsv.Load(csv);
                         if (dtResult.Columns.Count <= 0)
                             dtResult = dtCsv.Clone();
-                        
+
                         if (checkCsvFormat(dtCsv, columns))
                         {
                             dtResult.Merge(dtCsv);
@@ -227,9 +227,9 @@ namespace Common
                     }
 
                 }
-                else           
+                else
                     File.Move(file, @"C:\Qbei_Log\Trash\" + @"\" + Path.GetFileName(file));
-            }    
+            }
             if (!dtResult.Equals(null))
             {
                 DataRow[] dr = dtResult.Select("代理店ID='" + shopID + "'");
@@ -276,7 +276,7 @@ namespace Common
                         }
                     }
                     //
-                    dr = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' OR 発注コード= '--'"); 
+                    dr = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' OR 発注コード= '--'");
                     if (dr.Count() > 0)
                     {
                         if (!shopID.Equals("036"))
@@ -316,17 +316,17 @@ namespace Common
                             // var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録")));
 
                             //var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Equals("在庫処分/empty/") || r.Field<string>("発注コード").Equals("在庫更新中止/-") || r.Field<string>("発注コード").Equals("在庫更新中止") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録")));
-                            var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Equals("在庫処分/empty/")||r.Field<string>("発注コード").Equals("在庫更新中止/-") ||r.Field<string>("発注コード").Equals("在庫更新中止") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録") || r.Field<string>("発注コード").Contains("#N/A")));//<remark Add Logic for Ordercode 2020/07/30 />
-                        //2018-05-07 End
-                            //2018-08-29 Start
-                            //var notInteger2 = notInteger.AsEnumerable().Where(r => (!r.Field<string>("発注コード").Contains("在庫更新中止")));
-                            //2018-08-29 End
+                            var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Equals("在庫処分/empty/") || r.Field<string>("発注コード").Equals("在庫更新中止/-") || r.Field<string>("発注コード").Equals("在庫更新中止") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録") || r.Field<string>("発注コード").Contains("#N/A")));//<remark Add Logic for Ordercode 2020/07/30 />
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               //2018-05-07 End
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               //2018-08-29 Start
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               //var notInteger2 = notInteger.AsEnumerable().Where(r => (!r.Field<string>("発注コード").Contains("在庫更新中止")));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               //2018-08-29 End
                             if (notInteger.Any())
                             {
                                 /// <remark>
                                 /// Save Data into Qbei_ErrorLog
                                 /// </remark>
-                                
+
                                 //2018-05-07 Start
                                 //dtNotInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("/") || r.Field<string>("発注コード").Contains("データ登録"))).CopyToDataTable();
                                 //dtNotInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Equals("在庫処分/empty/") || r.Field<string>("発注コード").Equals("在庫更新中止/-") || r.Field<string>("発注コード").Equals("在庫更新中止") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録"))).CopyToDataTable();
@@ -363,7 +363,7 @@ namespace Common
                             dtOrder = dtTemp.AsEnumerable().OrderBy(x => x.Field<string>("メーカー情報日")).CopyToDataTable();
                         }
                         //Check (ステータス変更日+6) <= today   
-                        
+
                         //<remark ９ヶ月前の　データーについて、更新ロジック　2020-01-30 Start>
                         ////2018-07-04 Start
                         ////var notRun = dtOrder.AsEnumerable().Where(x => x.Field<string>("在庫情報").Contains("empty") && x.Field<string>("ステータス変更日") != null && DateTime.Parse(x.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-6).Date);
@@ -400,7 +400,7 @@ namespace Common
                             cmd.Connection.Open();
                             cmd.ExecuteNonQuery();
                             cmd.Connection.Close();
-                           
+
                         }
                         var runData = dtOrder.AsEnumerable().Where(x => !dtNotRun.AsEnumerable().Any(y => y.Field<string>("JANコード") == x.Field<string>("JANコード") && y.Field<string>("発注コード") == x.Field<string>("発注コード")));
                         dtOrder = runData.Any() ? runData.CopyToDataTable() : null;
@@ -436,7 +436,7 @@ namespace Common
             Application.Exit();
             Environment.Exit(0);
         }
-        
+
         /// <summary>
         /// GetTotalCount of shopID.
         /// </summary>
@@ -491,14 +491,14 @@ namespace Common
                 cmd.ExecuteNonQuery();
                 cmd.Connection.Close();
 
-                dtOrder = dtResult.AsEnumerable().Where(x =>!(x.Field<string>("発注コード").Contains("|"))).CopyToDataTable();
-                
+                dtOrder = dtResult.AsEnumerable().Where(x => !(x.Field<string>("発注コード").Contains("|"))).CopyToDataTable();
+
 
                 return dtOrder;
             }
             else return null;
         }
-        
+
         /// <summary>
         /// Selete to Order Data.
         /// </summary>
@@ -569,12 +569,12 @@ namespace Common
                 DataTable dtOrder = Qbei_OrderSelect(strSiteCd);
                 dtData = dtCsv.Copy();
                 //Retrieve Once a Week Data from CSV
-                var data = dtData.AsEnumerable().Where(r => (r.Field<string>("在庫情報").Equals("empty") && 
-                                                                (r.Field<string>("入荷予定") == null || 
-                                                                 r.Field<string>("入荷予定").Equals("2100-01-01") || 
+                var data = dtData.AsEnumerable().Where(r => (r.Field<string>("在庫情報").Equals("empty") &&
+                                                                (r.Field<string>("入荷予定") == null ||
+                                                                 r.Field<string>("入荷予定").Equals("2100-01-01") ||
                                                                  r.Field<string>("入荷予定").Equals("2100-02-01"))
-                                                            ) || 
-                                                            (r.Field<string>("在庫情報").Equals("inquiry") && 
+                                                            ) ||
+                                                            (r.Field<string>("在庫情報").Equals("inquiry") &&
                                                                 (r.Field<string>("入荷予定") == null ||
                                                                  !(r.Field<string>("入荷予定").Equals("2100-01-01") && string.IsNullOrEmpty(r.Field<string>("purchaserURL"))) ||
                                                                  !r.Field<string>("入荷予定").Equals("2100-01-10"))
@@ -664,13 +664,13 @@ namespace Common
                     dtData.AsEnumerable().Where(r => (r.Field<string>("メーカー情報日") == null))
                        .Select(r => r["メーカー情報日"] = Nowdate).ToList();
                     dtData = dtData.AsEnumerable().OrderBy(x => x["メーカー情報日"]).ThenBy(x => x["JANコード"]).CopyToDataTable();
-                    dtData.AsEnumerable().ToList().ForEach(r => r["発注コード"] = r.Field<string>("発注コード").Trim());                    
+                    dtData.AsEnumerable().ToList().ForEach(r => r["発注コード"] = r.Field<string>("発注コード").Trim());
                     //</remark End>
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-              
+
                 dtData = null;
             }
             finally
@@ -739,7 +739,7 @@ namespace Common
         /// All GetSiteName.
         /// </summary>
         public string GetSiteName(string shopID)
-        {    
+        {
             switch (shopID)
             {
                 case "011": return "マルイ";
@@ -812,25 +812,25 @@ namespace Common
                     }
                     //using (var csv = new CachedCsvReader(new StreamReader(file, Encoding.GetEncoding(932)), true, ',', '\0', '\0', '#', LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.All))
                     //{
-                        DataTable dtCsv = new DataTable();
-                        dtCsv.Load(csv);
-                        if (dtResult.Columns.Count <= 0)
-                            dtResult = dtCsv.Clone();
-                        if (checkCsvFormat(dtCsv, columns))
-                        {
-                            dtResult.Merge(dtCsv);
-                        }
-                        else
-                        {
-                            WritetoLog("CsvFile Format Wrong!");
-                            return null;
-                        }
+                    DataTable dtCsv = new DataTable();
+                    dtCsv.Load(csv);
+                    if (dtResult.Columns.Count <= 0)
+                        dtResult = dtCsv.Clone();
+                    if (checkCsvFormat(dtCsv, columns))
+                    {
+                        dtResult.Merge(dtCsv);
+                    }
+                    else
+                    {
+                        WritetoLog("CsvFile Format Wrong!");
+                        return null;
+                    }
 
                     //}
                 }
                 else
                     File.Move(file, @"C:\Qbei_Log\Trash\" + @"\" + Path.GetFileName(file));
-                    //File.Move(file, trashPath + @"\" + Path.GetFileName(file));
+                //File.Move(file, trashPath + @"\" + Path.GetFileName(file));
             }
 
             if (!dtResult.Equals(null))
@@ -1024,7 +1024,7 @@ namespace Common
         /// </remark>
         private static bool checkCsvFormat(DataTable dtCsv, string[] columns)
         {
-    
+
             foreach (string colName in columns)
             {
                 DataColumnCollection cols = dtCsv.Columns;
@@ -1085,13 +1085,13 @@ namespace Common
                 cmd.Parameters.AddWithValue("@Start_time", DBNull.Value);
             else cmd.Parameters.AddWithValue("@Start_time", qe.starttime);
             if (qe.endtime == null)
-             cmd.Parameters.AddWithValue("@End_time", DBNull.Value);
-            else cmd.Parameters.AddWithValue("@End_time",qe.endtime);
-           // cmd.Parameters.AddWithValue("@End_time", qe.endtime);
+                cmd.Parameters.AddWithValue("@End_time", DBNull.Value);
+            else cmd.Parameters.AddWithValue("@End_time", qe.endtime);
+            // cmd.Parameters.AddWithValue("@End_time", qe.endtime);
             cmd.Connection.Open();
             cmd.ExecuteNonQuery();
             cmd.Connection.Close();
-            
+
         }
 
         /// <summary>
@@ -1219,6 +1219,11 @@ namespace Common
             cmd.Parameters.AddWithValue("@reflectDate", entity.reflectDate);
             cmd.Parameters.AddWithValue("@siteID", entity.siteID);
 
+            //<remark 2020/11/05>
+            cmd.Parameters.AddWithValue("@True_StockDate", entity.True_StockDate);
+            cmd.Parameters.AddWithValue("@True_Quantity", entity.True_Quantity);
+            //</remark 202/11/05>
+
             cmd.Parameters.AddWithValue("@Updated_Date", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
             cmd.Connection.Open();
             cmd.ExecuteNonQuery();
@@ -1301,7 +1306,7 @@ namespace Common
             }
             return false;
         }
-      
+
         public bool IsLessthanzero(string value)
         {
             if (IsNumber(value))
@@ -1321,12 +1326,12 @@ namespace Common
                 return false;
             }
             return false;
-        }      
+        }
         public bool IsSmall1(string value)
         {
             if (IsNumber(value))
             {
-                if (Convert.ToInt32(value)>0)
+                if (Convert.ToInt32(value) > 0)
                     return true;
                 return false;
             }
@@ -1337,7 +1342,7 @@ namespace Common
         /// Move to Trash.
         /// </summary>
         /// <param name="shopID">Insert to shopID for Move CSV.</param>
-      public void MoveToTrash(string shopID)
+        public void MoveToTrash(string shopID)
         {
             ///<remark>
             ///Move to Download CSV.
@@ -1347,7 +1352,7 @@ namespace Common
             {
                 case "014": path = @"C:\Qbei_Log\014_Download\"; break;
                 case "015": path = @"C:\Qbei_Log\015_Download\"; break;
-                case "035": path = @"C:\Qbei_Log\035_Download\";  break;
+                case "035": path = @"C:\Qbei_Log\035_Download\"; break;
                 case "916": path = @"C:\Qbei_Log\916_Download"; break;
                 case "037": path = @"C:\Qbei_Log\037_Download"; break;
             }
@@ -1360,7 +1365,7 @@ namespace Common
                 //break;
             }
         }
-        
+
         /// <summary>
         /// Replace of Order Code.
         /// </summary>
@@ -1384,7 +1389,7 @@ namespace Common
         /// <param name="attrName">Insert to Hlml Element of attrName.</param>
         /// <param name="webBrowser1">Insert to Hlml Element of webBrowser.</param>
         /// <returns>Use to Html Element for webBrowser at windows form.</returns>
-        public HtmlElement GetElement(string tagName, string value, string attrName,WebBrowser webBrowser1)
+        public HtmlElement GetElement(string tagName, string value, string attrName, WebBrowser webBrowser1)
         {
             HtmlElementCollection col = webBrowser1.Document.GetElementsByTagName(tagName);
             HtmlElement element;
