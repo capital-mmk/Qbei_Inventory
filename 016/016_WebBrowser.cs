@@ -30,7 +30,7 @@ namespace _016ライトウェイ
         Qbei_Entity entity = new Qbei_Entity();
         int i = 0;
         int counts = 0;
-       public static string st = string.Empty;
+        public static string st = string.Empty;
 
         /// <summary>
         /// System(Start).
@@ -167,7 +167,7 @@ namespace _016ライトウェイ
                 webBrowser1.Document.GetElementById("MemberLoginId").SetAttribute("value", username);
                 string password = dt.Rows[0]["Password"].ToString().Trim();
                 webBrowser1.Document.GetElementById("MemberLoginPw").SetAttribute("value", password);
-                fun.GetElement("input", "PCサイトログイン", "alt", webBrowser1).InvokeMember("onclick");                
+                fun.GetElement("input", "PCサイトログイン", "alt", webBrowser1).InvokeMember("onclick");
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Main);
             }
             catch (Exception ex)
@@ -201,7 +201,7 @@ namespace _016ライトウェイ
                 {
                     fun.Qbei_ErrorInsert(16, fun.GetSiteName("016"), "Login Failed", dt016.Rows[i]["JANコード"].ToString(), dt016.Rows[i]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "016");
                     fun.WriteLog("Login Failed", "016-");
-                    
+
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -336,27 +336,27 @@ namespace _016ライトウェイ
         /// <summary>
         /// Check to Inspection of item at Mall.
         /// </summary>
-        private void webBrowser1_SearchClick(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
-            try
-            {
-                webBrowser1.ScriptErrorsSuppressed = true;
+        //private void webBrowser1_SearchClick(object sender, WebBrowserDocumentCompletedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        webBrowser1.ScriptErrorsSuppressed = true;
 
-                webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_SearchClick);
-                fun.GetElement("img", "商品を一括で呼び出す", "value", webBrowser1).InvokeMember("click");
-                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_SearchClick1);
-            }
-            catch (Exception ex)
-            {
-                string janCode = dt016.Rows[i]["JANコード"].ToString();
-                string orderCode = dt016.Rows[i]["発注コード"].ToString();
-                fun.Qbei_ErrorInsert(16, fun.GetSiteName("016"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "016");
-                fun.WriteLog(ex, "016-", janCode, orderCode);
+        //        webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_SearchClick);
+        //        fun.GetElement("img", "商品を一括で呼び出す", "value", webBrowser1).InvokeMember("click");
+        //        webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_SearchClick1);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        string janCode = dt016.Rows[i]["JANコード"].ToString();
+        //        string orderCode = dt016.Rows[i]["発注コード"].ToString();
+        //        fun.Qbei_ErrorInsert(16, fun.GetSiteName("016"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "016");
+        //        fun.WriteLog(ex, "016-", janCode, orderCode);
 
-                Application.Exit();
-                Environment.Exit(0);
-            }
-        }
+        //        Application.Exit();
+        //        Environment.Exit(0);
+        //    }
+        //}
 
         /// <summary>
         /// Wait For Search Page Process.
@@ -424,7 +424,7 @@ namespace _016ライトウェイ
                             {
                                 fun.Qbei_ErrorInsert(16, fun.GetSiteName("016"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "016");
                                 fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "016-");
-                                
+
                                 Application.Exit();
                                 Environment.Exit(0);
                             }
@@ -446,7 +446,7 @@ namespace _016ライトウェイ
                                     // entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") ? "small" : qty.Contains("予約") || qty.Equals("×") || qty.Contains("入荷予定なし") ? "empty" : "empty";
                                     //<remark Edit Logic of quantity 2020/07/21 Start>
                                     //entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") ? "small" : qty.Contains("予約") || qty.Contains("×") || qty.Contains("入荷予定なし") ? "empty" : "empty";
-                                    entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") ||qty.Contains("予約") || qty.Contains("×") || qty.Contains("入荷予定なし") ? "empty" : "empty";
+                                    entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") || qty.Contains("予約") || qty.Contains("×") || qty.Contains("入荷予定なし") ? "empty" : "empty";
                                     //</remark 2020/07/21 End>
                                     // </remark 12/02/2020 End>
                                     if (qty.Contains("("))
@@ -509,8 +509,8 @@ namespace _016ライトウェイ
                                             // else if (qty.Contains("入荷予定なし") || qty.Contains("×"))
                                             //<remark Edit Logic of Stockdate 2020/07/21 Start>
                                             //else if (qty.Contains("入荷予定なし") || qty.Contains("×") || qty.Contains("入荷未定"))
-                                                else if (qty.Contains("△") || qty.Contains("入荷予定なし") || qty.Contains("予定") || qty.Contains("×") || qty.Contains("入荷未定"))
-                                                //</remark 2020/07/21 End>
+                                            else if (qty.Contains("△") || qty.Contains("入荷予定なし") || qty.Contains("予定") || qty.Contains("×") || qty.Contains("入荷未定"))
+                                            //</remark 2020/07/21 End>
                                             {
                                                 entity.stockDate = "2100-02-01";
                                             }
@@ -526,11 +526,19 @@ namespace _016ライトウェイ
                                             }
                                             entity.stockDate = DateTime.Parse(entity.stockDate).ToString("yyyy-MM-dd");
                                         }
+                                        //<remark 2021/01/06>
+                                        entity.True_StockDate = date;
+                                        entity.True_Quantity = str[0];
+                                        //</remark 2021/01/06>
                                     }
                                     else
                                     {
                                         entity.stockDate = "2100-01-01";
                                         entity.stockDate = DateTime.Parse(entity.stockDate).ToString("yyyy-MM-dd");
+                                        //<remark 2021/01/06>
+                                        entity.True_StockDate = "項目無し";
+                                        entity.True_Quantity = qty;
+                                        //</remark 2021/01/06>
                                     }
                                     //</remark 13/1/2020 End>
 
@@ -565,7 +573,7 @@ namespace _016ライトウェイ
                                     //else
                                     //</ reamark 2020 / 25 / 22 End >
                                     fun.Qbei_Inserts(entity);
-                                        
+
                                 }
                                 else
                                 {
@@ -581,13 +589,17 @@ namespace _016ライトウェイ
                                     entity.qtyStatus = "empty";
                                     entity.stockDate = "2100-02-01";
                                     entity.price = dt016.Rows[counts]["下代"].ToString();
+                                    //<remark 2021/01/06>
+                                    entity.True_StockDate = "Not Found";
+                                    entity.True_Quantity = "Not Found";
+                                    //</remark 2021/01/06>
                                     //}
                                     fun.Qbei_Inserts(entity);
                                     //</remakr  2020/06/02 End>
                                 }
                             }
-                        }                        
-                     }
+                        }
+                    }
                     catch (Exception ex)
                     {
                         fun.Qbei_ErrorInsert(16, fun.GetSiteName("016"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "016");
