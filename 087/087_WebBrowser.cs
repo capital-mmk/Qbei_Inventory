@@ -106,7 +106,7 @@ namespace _87ダートフリーク
         public void StartRun()
         {
             try
-            {                
+            {
                 fun.setURL("087");
                 fun.CreateFileAndFolder();
                 fun.Qbei_Delete(87);
@@ -194,7 +194,7 @@ namespace _87ダートフリーク
                 {
                     fun.Qbei_ErrorInsert(87, fun.GetSiteName("087"), "Login Failed", dt087.Rows[0]["JANコード"].ToString(), dt087.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "087");
                     fun.WriteLog("Login Failed", "087-");
-                    
+
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -211,7 +211,7 @@ namespace _87ダートフリーク
                 string janCode = dt087.Rows[0]["JANコード"].ToString();
                 orderCode = dt087.Rows[0]["発注コード"].ToString();
                 fun.Qbei_ErrorInsert(87, fun.GetSiteName("087"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "087");
-                fun.WriteLog(ex, "087-", janCode, orderCode);                
+                fun.WriteLog(ex, "087-", janCode, orderCode);
 
                 Application.Exit();
                 Environment.Exit(0);
@@ -254,6 +254,10 @@ namespace _87ダートフリーク
                         entity.stockDate = "2100-02-01";
                         entity.price = dt087.Rows[i]["下代"].ToString();
                     }
+                    //<remark 2021/01/06>
+                    entity.True_StockDate = "Not Found";
+                    entity.True_Quantity = "Not Found";
+                    //</remark 2021/01/06>
                     fun.Qbei_Inserts(entity);
                 }
                 else
@@ -267,7 +271,7 @@ namespace _87ダートフリーク
                         {
                             fun.Qbei_ErrorInsert(87, fun.GetSiteName("087"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "087");
                             fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "087-");
-                            
+
                             Application.Exit();
                             Environment.Exit(0);
                         }
@@ -280,7 +284,7 @@ namespace _87ダートフリーク
                             //entity.qtyStatus = qtypath.Equals("◎") ? "good" : qtypath.Equals("○") || qtypath.Equals("▲") ? "small" : qtypath.Equals("×") || qtypath.Equals("※") ? "empty" :  "invalid status code";
                             entity.qtyStatus = qtypath.Equals("◎") ? "good" : qtypath.Equals("○") || qtypath.Equals("▲") || qtypath.Equals("×") || qtypath.Equals("※") ? "empty" : "invalid status code";//<remark Change Logic of Quantity 2020/07/24 />
                             //entity.stockDate = qtypath.Equals("◎") || qtypath.Equals("○") || qtypath.Equals("▲") ? "2100-01-01" : qtypath.Equals("×") || qtypath.Equals("※") ? "2100-02-01" : "unknown date";
-                            entity.stockDate = qtypath.Equals("◎") ? "2100-01-01" :  qtypath.Equals("○") || qtypath.Equals("▲") || qtypath.Equals("×") || qtypath.Equals("※") ? "2100-02-01" : "unknown date";//<remark Change Logic of Stockdate 2020/07/24 />
+                            entity.stockDate = qtypath.Equals("◎") ? "2100-01-01" : qtypath.Equals("○") || qtypath.Equals("▲") || qtypath.Equals("×") || qtypath.Equals("※") ? "2100-02-01" : "unknown date";//<remark Change Logic of Stockdate 2020/07/24 />
                             //</remark 2020/06/22 End>
 
                             entity.price = hdoc.DocumentNode.SelectSingleNode("/table/tbody/tr/td[2]/div/table/tbody/tr[2]/td/div/table/tbody/tr/td[7]/font").InnerText;
@@ -304,6 +308,10 @@ namespace _87ダートフリーク
 
                             //else
                             //</reamark 2020/25/22 End>
+                            //<remark 2021/01/06>
+                            entity.True_StockDate = "項目無し";
+                            entity.True_Quantity = qtypath;
+                            //</remark 2021/01/06>
                             fun.Qbei_Inserts(entity);
                         }
                     }
@@ -316,9 +324,9 @@ namespace _87ダートフリーク
             }
             else
             {
-                fun.Qbei_ErrorInsert(87, fun.GetSiteName("087"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),"087");
+                fun.Qbei_ErrorInsert(87, fun.GetSiteName("087"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "087");
             }
-            if (i < dt087.Rows.Count-1)
+            if (i < dt087.Rows.Count - 1)
             {
                 string ordercode = dt087.Rows[++i]["発注コード"].ToString();
                 webBrowser1.Navigate(fun.url + "/search_form.php?dfhinbanA=&dfhinbanB=&textsearch=&cataloghinban=" + ordercode + "&submitall=submit");
