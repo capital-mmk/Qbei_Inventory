@@ -29,7 +29,7 @@ namespace _57モトクロス
         CommonFunction fun = new CommonFunction();
         DataTable dt057 = new DataTable();
         Qbei_Entity entity = new Qbei_Entity();
-        int i =-1;
+        int i = -1;
 
         /// <summary>
         /// System(Start).
@@ -113,7 +113,7 @@ namespace _57モトクロス
                 fun.Qbei_Delete(57);
                 fun.Qbei_ErrorDelete(57);
                 dt057 = fun.GetDatatable("057");
-                dt057 = fun.GetOrderData(dt057, "http://www.mxweborder.com/Member/SyohinSearch.aspx", "057", "");                
+                dt057 = fun.GetOrderData(dt057, "http://www.mxweborder.com/Member/SyohinSearch.aspx", "057", "");
                 fun.GetTotalCount("057");
                 ReadData();
             }
@@ -172,7 +172,7 @@ namespace _57モトクロス
             {
                 string janCode = dt057.Rows[0]["JANコード"].ToString();
                 string orderCode = dt057.Rows[0]["発注コード"].ToString();
-                fun.Qbei_ErrorInsert(57, fun.GetSiteName("057"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "057");                
+                fun.Qbei_ErrorInsert(57, fun.GetSiteName("057"), ex.Message, janCode, orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "057");
                 fun.WriteLog(ex, "057-", janCode, orderCode);
 
                 Application.Exit();
@@ -194,7 +194,7 @@ namespace _57モトクロス
                 {
                     fun.Qbei_ErrorInsert(57, fun.GetSiteName("057"), "Login Failed", entity.janCode, entity.orderCode, 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "057");
                     fun.WriteLog("Login Failed", "057-");
-                    
+
                     Application.Exit();
                     Environment.Exit(0);
                 }
@@ -261,16 +261,16 @@ namespace _57モトクロス
                     Environment.Exit(0);
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 string janCode = dt057.Rows[i]["JANコード"].ToString();
-                fun.Qbei_ErrorInsert(57, fun.GetSiteName("057"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "057");                
-                fun.WriteLog(ex, "057-", janCode, orderCode);                
+                fun.Qbei_ErrorInsert(57, fun.GetSiteName("057"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "057");
+                fun.WriteLog(ex, "057-", janCode, orderCode);
 
                 webBrowser1.Navigate(fun.url + "/Member/SyohinSearch.aspx");
                 webBrowser1.ScriptErrorsSuppressed = true;
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Search);
-            }          
+            }
         }
 
 
@@ -312,17 +312,21 @@ namespace _57モトクロス
                         entity.stockDate = "2100-02-01";
                         entity.price = dt057.Rows[i]["下代"].ToString();
                     }
+                    //<remark 2021/01/06>
+                    entity.True_StockDate = "Not Found";
+                    entity.True_Quantity = "Not Found";
+                    //</remark 2021/01/06>
                     fun.Qbei_Inserts(entity);
                 }
                 else
                 {
                     try
-                    {                      
+                    {
                         if ((fun.GetElement("span", "MainContent_gvSyohin_lblzaikojokyo_0", "ID", webBrowser1) == null) && (fun.GetElement("span", "MainContent_gvSyohin_lblnyukayotei_0", "ID", webBrowser1) == null))
                         {
                             fun.Qbei_ErrorInsert(57, fun.GetSiteName("057"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "057");
                             fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "057-");
-                            
+
                             Application.Exit();
                             Environment.Exit(0);
                         }
@@ -343,6 +347,19 @@ namespace _57モトクロス
                             string day = string.Empty;
                             string month = string.Empty;
                             string year = string.Empty;
+
+                            //<remark 2021/01/06>
+                            if (entity.stockDate == null || entity.stockDate == "")
+                            {
+                                entity.True_StockDate = "項目無し";
+                                entity.True_Quantity = qty;
+                            }
+                            else
+                            {
+                                entity.True_StockDate = entity.stockDate;
+                                entity.True_Quantity = qty;
+                            }
+                            //</remark 2021/01/06>
 
                             if (qty.Contains("×"))
                             {
@@ -442,7 +459,7 @@ namespace _57モトクロス
                     }
                     catch (Exception ex)
                     {
-                        fun.Qbei_ErrorInsert(57, fun.GetSiteName("057"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "057");                        
+                        fun.Qbei_ErrorInsert(57, fun.GetSiteName("057"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "057");
                         fun.WriteLog(ex, "057-", entity.janCode, entity.orderCode);
                     }
                 }
