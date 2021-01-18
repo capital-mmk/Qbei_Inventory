@@ -355,6 +355,10 @@ namespace _20ダイアテック_高難易度_
                         entity.qtyStatus = "empty";
                         entity.stockDate = "2100-02-01";
                         entity.price = dt020.Rows[i]["下代"].ToString();
+                        //<remark 2021/01/06>
+                        entity.True_StockDate = "Not Found";
+                        entity.True_Quantity = "Not Found";
+                        //</remark 2021/01/06>
                         fun.Qbei_Inserts(entity);//<remark Add Logic for Insert Qbei Table 2020/06/12 />
                     }
                     else
@@ -431,6 +435,10 @@ namespace _20ダイアテック_高難易度_
                                         //    }
                                         //}
                                         //</reamark 2020/05/22 End>
+                                        //<remark 2021/01/06>
+                                        entity.True_StockDate = "項目無し";
+                                        entity.True_Quantity = strQtyStatus;
+                                        //</remark 2021/01/06>
                                         fun.Qbei_Inserts(entity);
                                     }
                                 }
