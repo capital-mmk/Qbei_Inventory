@@ -141,7 +141,7 @@ namespace _023パナソニック
         {
             qe.SiteID = 23;
             dt = qubl.Qbei_Setting_Select(qe);
-            fun.url = dt.Rows[0]["Url"].ToString();           
+            fun.url = dt.Rows[0]["Url"].ToString();
             Thread.Sleep(2000);
             webBrowser1.AllowNavigation = true;
             webBrowser1.Navigate(fun.url);
@@ -162,9 +162,9 @@ namespace _023パナソニック
                 instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
                 fun.WriteLog("Navigation to Site Url success------", "023-");
                 qe.SiteID = 23;
-                dt = qubl.Qbei_Setting_Select(qe);              
+                dt = qubl.Qbei_Setting_Select(qe);
                 string username = dt.Rows[0]["UserName"].ToString();
-                fun.GetElement("input", "txtUserName", "name", webBrowser1).InnerText = username;               
+                fun.GetElement("input", "txtUserName", "name", webBrowser1).InnerText = username;
                 string password = dt.Rows[0]["Password"].ToString();
                 webBrowser1.Document.GetElementById("txtPassword").InnerText = password;
                 fun.GetElement("input", "btnLogin", "name", webBrowser1).InvokeMember("click");
@@ -211,7 +211,7 @@ namespace _023パナソニック
                 {
                     fun.WriteLog("Login success             ------", "023-");
 
-                    webBrowser1.Navigate("https://weborder.panabyc.co.jp/dotnet/forms/Sc/ZaiTouMenu.aspx");                   
+                    webBrowser1.Navigate("https://weborder.panabyc.co.jp/dotnet/forms/Sc/ZaiTouMenu.aspx");
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Button);
                 }
             }
@@ -228,12 +228,12 @@ namespace _023パナソニック
         }
 
         private void webBrowser1_Button(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {           
+        {
             webBrowser1.ScriptErrorsSuppressed = true;
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_Button);
             if (i < dt023.Rows.Count)
-            {                
-                string orderCode = dt023.Rows[+i]["発注コード"].ToString();               
+            {
+                string orderCode = dt023.Rows[+i]["発注コード"].ToString();
                 fun.GetElement("input", "TextBoxHinban1", "name", webBrowser1).InnerText = orderCode;
                 fun.GetElement("input", "ImageButton3", "name", webBrowser1).InvokeMember("click");
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
@@ -264,16 +264,20 @@ namespace _023パナソニック
             entity.partNo = dt023.Rows[i]["自社品番"].ToString();
             entity.makerDate = fun.getCurrentDate();
             entity.reflectDate = dt023.Rows[i]["最終反映日"].ToString();
-            entity.orderCode = dt023.Rows[i]["発注コード"].ToString();            
+            entity.orderCode = dt023.Rows[i]["発注コード"].ToString();
             entity.purchaseURL = fun.url;
             entity.price = dt023.Rows[i]["下代"].ToString();
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
             string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
             if (body.Contains("条件に合う商品が存在しません"))
-            {               
-                    entity.qtyStatus = "empty";
-                    entity.stockDate = "2100-02-01";            
-                 fun.Qbei_Inserts(entity);
+            {
+                entity.qtyStatus = "empty";
+                entity.stockDate = "2100-02-01";
+                //<remark 2021/01/06>
+                entity.True_StockDate = "Not Found";
+                entity.True_Quantity = "Not Found";
+                //</remark 2021/01/06>
+                fun.Qbei_Inserts(entity);
                 fun.GetElement("input", "Button1", "name", webBrowser1).InvokeMember("click");
                 webBrowser1.ScriptErrorsSuppressed = true;
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Button);
@@ -296,6 +300,9 @@ namespace _023パナソニック
                         if (fun.GetElement("span", "DataGrid1__ctl3_LabelKansu", "id", webBrowser1).InnerText != null)
                         {
                             string qtyStatus = fun.GetElement("span", "DataGrid1__ctl3_LabelKansu", "id", webBrowser1).InnerText;
+                            //<remark 2021/01/06>
+                            entity.True_Quantity = qtyStatus;
+                            //</remark 2021/01/06>
                             if (qtyStatus.All(char.IsDigit))
                             {
                                 int num = Convert.ToInt32(qtyStatus);
@@ -334,10 +341,16 @@ namespace _023パナソニック
                         else
                         {
                             entity.qtyStatus = "empty";
+                            //<remark 2021/01/06>
+                            entity.True_Quantity = "項目無し";
+                            //</remark 2021/01/06>
                         }
                         if (fun.GetElement("span", "DataGrid1__ctl3_LabelKanYotei", "id", webBrowser1).InnerText != null)
                         {
                             string stockdate = fun.GetElement("span", "DataGrid1__ctl3_LabelKanYotei", "id", webBrowser1).InnerText;
+                            //<remark 2021/01/06>
+                            entity.True_StockDate = stockdate;
+                            //</remark 2021/01/06>
                             //string stockdate = "2020/07/21頃";
                             if (stockdate == "即" || stockdate.Contains("程度"))
                             {
@@ -405,7 +418,10 @@ namespace _023パナソニック
                         else
                         {
                             entity.stockDate = entity.qtyStatus.Equals("good") ? "2100-01-01" : "2100-02-01";//<remark Change of quantity 2020/07/23 />
-                        }                       
+                            //<remark 2021/01/06>
+                            entity.True_StockDate = "項目無し";
+                            //</remark 2021/01/06>
+                        }
                         fun.Qbei_Inserts(entity);
                     }
                 }
