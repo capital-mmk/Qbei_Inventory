@@ -442,6 +442,10 @@ namespace _916_Chrome
                                                 entity.qtyStatus = "empty";
                                                 entity.stockDate = "2100-02-01";
                                                 entity.price = dt916.Rows[i]["下代"].ToString();
+                                                //<remark 2021/01/06>
+                                                entity.True_StockDate = "Not Found";
+                                                entity.True_Quantity = "Not Found";
+                                                //</remark 2021/01/06>
                                             }
                                             DateTime d = Convert.ToDateTime(entity.stockDate);
                                             if (d <= (DateTime.Now))
