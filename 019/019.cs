@@ -126,6 +126,7 @@ namespace _019深谷_フカヤ_
             /// Use to ChormeDriver and Data Table and Common Function and Field
             /// </summary>
             var chromeOptions = new ChromeOptions();
+            chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
             using (IWebDriver chrome = new ChromeDriver(chromeOptions))
             {
                 DataTable dt = new DataTable();
@@ -266,13 +267,22 @@ namespace _019深谷_フカヤ_
                                         {
                                             //od = dt019.Rows[i]["JANコード"].ToString();
                                             //chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);
-                                            Thread.Sleep(10000);
-                                            qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span")).Text;
+                                            //Thread.Sleep(10000);
+                                            qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;
                                         }
                                         catch
                                         {
-                                            Thread.Sleep(10000);
-                                            qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;
+                                            try
+                                            {
+                                                Thread.Sleep(2000);
+                                                qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;
+                                            }
+                                            catch
+                                            {
+                                                Thread.Sleep(2000);
+                                                qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span")).Text;
+                                            }
+
                                         }
                                     }
 
