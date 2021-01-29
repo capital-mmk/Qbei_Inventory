@@ -217,7 +217,6 @@ namespace _019深谷_フカヤ_
                             {
                                 od = dt019.Rows[i]["JANコード"].ToString();
                                 chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);
-
                                 Thread.Sleep(20000);
                                 ItemCheck = chrome.FindElement(By.Id("M_total")).Text;
                             }
