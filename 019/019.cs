@@ -263,11 +263,9 @@ namespace _019深谷_フカヤ_
                                     }
                                     catch
                                     {
+                                        //<remark Edit Logic for Quantity 2020/1/29 Start>
                                         try
                                         {
-                                            //od = dt019.Rows[i]["JANコード"].ToString();
-                                            //chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);
-                                            //Thread.Sleep(10000);
                                             qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;
                                         }
                                         catch
@@ -282,8 +280,8 @@ namespace _019深谷_フカヤ_
                                                 Thread.Sleep(2000);
                                                 qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span")).Text;
                                             }
-
                                         }
+                                        //</remark 2020/1/29 End>
                                     }
 
                                     //<remark>
