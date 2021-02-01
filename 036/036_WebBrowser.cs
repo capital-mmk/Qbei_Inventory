@@ -528,7 +528,8 @@ namespace _36PRインターナショナル
                                             }
                                         }
                                     }
-                                    else if (entity.stockDate.Contains("未定") || entity.stockDate.Contains("予定") || entity.stockDate.Contains("今季") && entity.stockDate.Contains("終了品"))
+                                    //else if (entity.stockDate.Contains("未定") || entity.stockDate.Contains("予定") || entity.stockDate.Contains("今季") && entity.stockDate.Contains("終了品"))
+                                    else if (entity.stockDate.Contains("未定") || entity.stockDate.Contains("お問合せください") || entity.stockDate.Contains("予定") || entity.stockDate.Contains("今季") && entity.stockDate.Contains("終了品"))//<remark Add Logic for Stockdate 2020/02/01 />
                                     {
                                         entity.stockDate = "2100-01-01";
                                     }
