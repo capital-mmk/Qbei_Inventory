@@ -345,6 +345,12 @@ namespace _018日直_ニチナオ_
                         }
                         //</remark 2020/07/21  End>   
                         //}
+                        //<remark Add Logic for Stockdate 2020/02/04 Start>
+                        if (qtypath.Equals("予約"))
+                        {
+                            entity.stockDate = "2100-02-01";
+                        }
+                        //</remark 2020/02/04 End>
                     }
                     else
                     {
@@ -353,6 +359,10 @@ namespace _018日直_ニチナオ_
                         entity.qtyStatus = "empty";
                         entity.stockDate = "2100-02-01";
                         //2018/01/10 End
+                        //<remark 2021/01/06>
+                        entity.True_StockDate = "Not Found";
+                        entity.True_Quantity = "Not Found";
+                        //</remark 2021/01/06>
                     }
 
                 }
