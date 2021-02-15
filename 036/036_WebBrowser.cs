@@ -431,9 +431,10 @@ namespace _36PRインターナショナル
                                         //<remark "末" と　"旬"の追加　2020/03/20 Start>
                                         //if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃") || entity.stockDate.Contains("ごろ"))
                                         //</remark 2020/02/25 End>
-                                        if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃") || entity.stockDate.Contains("ごろ") || entity.stockDate.Contains("末") || entity.stockDate.Contains("旬"))
-                                        //</remark 2020/03/20  End>
-                                        {
+                                        //if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃") || entity.stockDate.Contains("ごろ") || entity.stockDate.Contains("末") || entity.stockDate.Contains("旬"))
+                                            //</remark 2020/03/20  End>
+                                          if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃") || entity.stockDate.Contains("ごろ") || entity.stockDate.Contains("末") || entity.stockDate.Contains("旬") || entity.stockDate.Contains("予定"))//<remark Add Logic for stockdate 2021/02/15 />
+                                            {
                                             if (entity.stockDate.Contains("/"))
                                             {
                                                 string[] m = entity.stockDate.Split('/');
@@ -529,10 +530,10 @@ namespace _36PRインターナショナル
                                         }
                                     }
                                     //else if (entity.stockDate.Contains("未定") || entity.stockDate.Contains("予定") || entity.stockDate.Contains("今季") && entity.stockDate.Contains("終了品"))
-                                    else if (entity.stockDate.Contains("未定") || entity.stockDate.Contains("お問合せください") || entity.stockDate.Contains("予定") || entity.stockDate.Contains("今季") && entity.stockDate.Contains("終了品"))//<remark Add Logic for Stockdate 2020/02/01 />
-                                    {
-                                        entity.stockDate = "2100-01-01";
-                                    }
+                                    //else if (entity.stockDate.Contains("未定") || entity.stockDate.Contains("お問合せください") || entity.stockDate.Contains("予定") || entity.stockDate.Contains("今季") && entity.stockDate.Contains("終了品"))//<remark Add Logic for Stockdate 2020/02/01 />
+                                    //{
+                                    //    entity.stockDate = "2100-01-01";
+                                    //}
                                     else if (entity.stockDate.Contains("取り寄せ"))
                                     {
                                         //<remark 変更　2020/02/04　Start>
@@ -560,6 +561,13 @@ namespace _36PRインターナショナル
                                         entity.stockDate = "2100-02-01";
                                     }
                                     //</remark 2020/05/21 End>
+                                    //<remark Add Logic for 未定 Stockedate 2021/02/15 Start>
+                                    if (strStockDate.Contains("未定") || strStockDate.Contains("お問合せください") || strStockDate.Contains("今季") && strStockDate.Contains("終了品"))
+                                    {
+                                        entity.stockDate = "2100-01-01";
+                                        entity.qtyStatus = "empty";
+                                    }
+                                    //</remark 2021/02/15 End>
                                     //2018-04-20 Start
                                     if (strStockDate.Equals("2月"))
                                     {
