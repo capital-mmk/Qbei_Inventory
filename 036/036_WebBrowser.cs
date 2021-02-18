@@ -398,8 +398,14 @@ namespace _36PRインターナショナル
                                     //    entity.stockDate = entity.stockDate.Replace("年", "-") + entity.stockDate.Replace("月", "-").Replace("頃入荷予定", "30");
                                     //}
 
-
-                                    if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
+                                    //<remark Add Logic for 未定 Stockedate 2021/02/18 Start>
+                                    if (strStockDate.Contains("未定") || strStockDate.Contains("お問合せください") || strStockDate.Contains("今季") && strStockDate.Contains("終了品") || strStockDate.Contains("お問い合わせください"))
+                                    {
+                                        entity.stockDate = "2100-01-01";
+                                        entity.qtyStatus = "empty";
+                                    }
+                                    //</remark 2021/02/18 End>
+                                    else if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
                                     {
                                         int YIndex = entity.stockDate.IndexOf('年');
                                         int MIndex = entity.stockDate.IndexOf('月');
@@ -560,14 +566,7 @@ namespace _36PRインターナショナル
                                     {
                                         entity.stockDate = "2100-02-01";
                                     }
-                                    //</remark 2020/05/21 End>
-                                    //<remark Add Logic for 未定 Stockedate 2021/02/15 Start>
-                                    if (strStockDate.Contains("未定") || strStockDate.Contains("お問合せください") || strStockDate.Contains("今季") && strStockDate.Contains("終了品"))
-                                    {
-                                        entity.stockDate = "2100-01-01";
-                                        entity.qtyStatus = "empty";
-                                    }
-                                    //</remark 2021/02/15 End>
+                                    //</remark 2020/05/21 End>                           
                                     //2018-04-20 Start
                                     if (strStockDate.Equals("2月"))
                                     {
