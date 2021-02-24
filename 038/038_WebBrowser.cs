@@ -865,15 +865,18 @@ namespace _38フタバ
                                 }
                             }
                         }
-                        else if (entity.stockDate.Contains("~") && entity.stockDate.Contains("月"))
+                        //else if (entity.stockDate.Contains("~") && entity.stockDate.Contains("月"))//<remark Add Logic for stockdate 2021/02/24 />
+                        else if ((entity.stockDate.Contains("~") && entity.stockDate.Contains("月")) || (entity.stockDate.Contains("～") && entity.stockDate.Contains("月")))
                         {
                             int mIndex = entity.stockDate.IndexOf("月");
                             string year = DateTime.Now.ToString("yyyy");
                             int month2;
 
+
                             if (entity.stockDate.Contains("月") || entity.stockDate.Contains("予定"))
                             {
-                                if (entity.stockDate.Contains("~"))
+                                //if (entity.stockDate.Contains("~"))//<remark Add Logic for Stockdate 2021/02/24 />
+                                if (entity.stockDate.Contains("~") || entity.stockDate.Contains("～"))
                                 {
                                     //int bIndex = entity.stockDate.IndexOf('~');
                                     //string charater = entity.stockDate.Substring(bIndex + 1, mIndex - 2);
@@ -891,7 +894,10 @@ namespace _38フタバ
                                     //}
 
                                     //<remak　追加ロジック と　変更ロジック 2020/04/20 Start>
-                                    var D = entity.stockDate.Split('~').ToArray();
+                                    //var D = entity.stockDate.Split('~').ToArray();
+                                    //<remark Add Logic for Stockdate 2021/02/24 Start>                                
+                                    var D = entity.stockDate.Contains("~") ? entity.stockDate.Split('~').ToArray() : entity.stockDate.Split('～').ToArray();
+                                    //</remark 2021/02/24 End>
                                     if (D[1].Contains("月"))
                                     {
                                         var M = D[1].ToString().Split('月').ToArray();
