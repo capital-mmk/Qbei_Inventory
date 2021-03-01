@@ -399,7 +399,8 @@ namespace _36PRインターナショナル
                                     //}
 
                                     //<remark Add Logic for 未定 Stockedate 2021/02/18 Start>
-                                    if (strStockDate.Contains("未定") || strStockDate.Contains("お問合せください") || strStockDate.Contains("今季") && strStockDate.Contains("終了品") || strStockDate.Contains("お問い合わせください"))
+                                    //if (strStockDate.Contains("未定") || strStockDate.Contains("お問合せください") || strStockDate.Contains("今季") && strStockDate.Contains("終了品") || strStockDate.Contains("お問い合わせください"))//<remark Edit Logic for Stockdate 2021/03/01 />
+                                    if (strStockDate.Contains("未定") || strStockDate.Contains("お問合せください") || strStockDate.Contains("今季") && strStockDate.Contains("終了品") || strStockDate.Contains("お問い合わせください") || strStockDate.Contains("以降"))
                                     {
                                         entity.stockDate = "2100-01-01";
                                         entity.qtyStatus = "empty";
