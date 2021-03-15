@@ -769,6 +769,22 @@ namespace _38フタバ
                                     if (Month < pcMonth)
                                     { year = Convert.ToString((Convert.ToInt32(year)) + 1); }
                                     Day = b[1];
+                                    //<remark Add Logic for Stockdate 2021/03/15 Start>
+                                    if (Day.Contains("の週"))
+                                    {
+                                        int DayIndex = Day.IndexOf('の');
+                                        if (DayIndex == 2)
+                                        {
+                                            Day = Day.Substring(DayIndex - 2, DayIndex + 0);
+                                            Day= Convert.ToString((Convert.ToInt32(Day)) + 4);
+                                        }
+                                        else if(DayIndex == 1)
+                                        {
+                                            Day = Day.Substring(DayIndex - 1, DayIndex + 0);
+                                            Day = Convert.ToString((Convert.ToInt32(Day)) + 4);
+                                        }
+                                    }
+                                    //</remark 2021/03/15 End>
                                     entity.stockDate = year + "-" + Month + "-" + Day;
                                 }
                             }
