@@ -181,8 +181,10 @@ namespace _019深谷_フカヤ_
                         {
                             Thread.Sleep(2000);//<reamark 追加　10/09/2020 />
                             string od;
-                            od = dt019.Rows[i]["JANコード"].ToString();
-                            chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);
+                            //od = dt019.Rows[i]["JANコード"].ToString();//<Edit Logic for Search 2021/03/24 />
+                            od = dt019.Rows[i]["発注コード"].ToString();
+                            //chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);//<Edit Logic for Search 2021/03/24 />
+                            chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
 
                             entity = new Qbei_Entity();
                             entity.siteID = 19;
@@ -192,17 +194,21 @@ namespace _019深谷_フカヤ_
                             entity.makerDate = fun.getCurrentDate();
                             entity.reflectDate = dt019.Rows[i]["最終反映日"].ToString();
                             entity.orderCode = dt019.Rows[i]["発注コード"].ToString().Trim();
-                            entity.purchaseURL = "https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od;
+                            //entity.purchaseURL = "https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od;//<Edit Logic for Search 2021/03/24 />
+                            entity.purchaseURL = "https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od;
 
                             //<remark>
                             //Check to  Url is Correct 
                             //</remark>
-                            if (!chrome.Url.ToString().Contains("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1="))
+                            //if (!chrome.Url.ToString().Contains("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1="))//<Edit Logic for Search 2021/03/24 />
+                            if (!chrome.Url.ToString().Contains("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1="))
 
                             {
                                 Thread.Sleep(50000);
-                                od = dt019.Rows[i]["JANコード"].ToString();
-                                chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);
+                                //od = dt019.Rows[i]["JANコード"].ToString();
+                                od = dt019.Rows[i]["発注コード"].ToString();
+                                //chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);//<Edit Logic for Search 2021/03/24 />
+                                chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
                             }
 
                             //<remark>
@@ -215,8 +221,10 @@ namespace _019深谷_フカヤ_
                             }
                             catch
                             {
-                                od = dt019.Rows[i]["JANコード"].ToString();
-                                chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);
+                                //od = dt019.Rows[i]["JANコード"].ToString();
+                                od = dt019.Rows[i]["発注コード"].ToString();
+                                //chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);//<Edit Logic for Search 2021/03/24 />
+                                chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
                                 Thread.Sleep(20000);
                                 ItemCheck = chrome.FindElement(By.Id("M_total")).Text;
                             }
