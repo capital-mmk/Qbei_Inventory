@@ -789,13 +789,27 @@ namespace _38フタバ
                                 }
                             }
                         }
-
+                        
                         else if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
-                        {
+                        {                      
+                            int Year;
                             int YIndex = entity.stockDate.IndexOf('年');
                             int MIndex = entity.stockDate.IndexOf('月');
-                            int Year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 4, YIndex + 0));
-                            Month = Convert.ToInt32(entity.stockDate.Substring(YIndex + 1, MIndex - 5));
+                            //int Year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 4, YIndex + 0));
+                            //Month = Convert.ToInt32(entity.stockDate.Substring(YIndex + 1, MIndex - 5));
+                            //<remark Add Logic for Stockdate 2021/04/02 Start>
+                            if (YIndex == 2)
+                            {
+                                Year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 2, YIndex + 0));
+                                Year = 2000 + Year;
+                                Month = Convert.ToInt32(entity.stockDate.Substring(YIndex + 1, MIndex - 3));
+                            }
+                            else
+                            {
+                                Year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 4, YIndex + 0));
+                                Month = Convert.ToInt32(entity.stockDate.Substring(YIndex + 1, MIndex - 5));
+                            }
+                            //</remark 2021/04/02 End>                             
                             if ((Month < pcmonth) && (Year <= DateTime.Now.Year))
                             { Year = Year + 1; }
                             int Y = Convert.ToInt32(Year);
