@@ -182,7 +182,7 @@ namespace _019深谷_フカヤ_
                             Thread.Sleep(2000);//<reamark 追加　10/09/2020 />
                             string od;
                             //od = dt019.Rows[i]["JANコード"].ToString();//<Edit Logic for Search 2021/03/24 />
-                            od = dt019.Rows[i]["発注コード"].ToString();
+                            od = dt019.Rows[i]["発注コード"].ToString();                           
                             //chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);//<Edit Logic for Search 2021/03/24 />
                             chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
 
@@ -279,7 +279,8 @@ namespace _019深谷_フカヤ_
                                         {
                                             try
                                             {
-                                                Thread.Sleep(2000);
+                                                chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);//<remark Add Logic for Stockdate 2021/04/06 />
+                                                Thread.Sleep(2000);                                
                                                 qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;
                                             }
                                             catch
