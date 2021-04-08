@@ -273,20 +273,30 @@ namespace _019深谷_フカヤ_
                                         //<remark Edit Logic for Quantity 2020/1/29 Start>
                                         try
                                         {
+                                            Thread.Sleep(2000);
                                             qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;
                                         }
                                         catch
                                         {
                                             try
                                             {
-                                                chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);//<remark Add Logic for Stockdate 2021/04/06 />
-                                                Thread.Sleep(2000);                                
+                                                chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);//<remark Add Logic for Stockdate 2021/04/06 />                                                                              
                                                 qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;
                                             }
                                             catch
                                             {
-                                                Thread.Sleep(2000);
-                                                qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span")).Text;
+                                                //<remark Add Logic for Stockdate 2021/04/08 Start>
+                                                try
+                                                {
+                                                    Thread.Sleep(20000);
+                                                    qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;
+                                                }
+                                                catch
+                                                {
+                                                    Thread.Sleep(2000);
+                                                    qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span")).Text;
+                                                }
+                                                //<remark Add Logic for Stockdate 2021/04/08 End>
                                             }
                                         }
                                         //</remark 2020/1/29 End>
