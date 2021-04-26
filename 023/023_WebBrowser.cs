@@ -139,6 +139,7 @@ namespace _023パナソニック
         /// </remark>
         private void ReadData()
         {
+            webBrowser1.ScriptErrorsSuppressed = true;
             qe.SiteID = 23;
             dt = qubl.Qbei_Setting_Select(qe);
             fun.url = dt.Rows[0]["Url"].ToString();
