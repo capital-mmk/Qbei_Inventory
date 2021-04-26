@@ -98,8 +98,11 @@ namespace siteData
             lstProcess.Add("914");
             lstProcess.Add("916_Chrome");
             //(2019/07/24)Add
-            lstProcess.Add("124-Mizutani");
+            lstProcess.Add("124-Mizutani");            
             lstProcess.Add("023パナソニック");//Add Logic 2020/09/01
+            //(2021/04/21)Add
+            lstProcess.Add("051_Chrome");
+            lstProcess.Add("110_Chrome");
 
             foreach (string processName in lstProcess)
             {
@@ -146,6 +149,9 @@ namespace siteData
             GenerateCSV(916, "(株)あさひ");
             //(2019/07/24)Add
             GenerateCSV(124, "ミズタニ自転車");
+            //(2021/04/21)Add
+            GenerateCSV(51, "スタイルバイク");
+            GenerateCSV(110, "アサヒサイクル");
         }
 
         /// <summary>
