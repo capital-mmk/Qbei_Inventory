@@ -400,16 +400,46 @@ namespace Common
                             cmd.Connection.Open();
                             cmd.ExecuteNonQuery();
                             cmd.Connection.Close();
-
+                            //<remark Edit Logic for dtNotRun 2021/04/23 Start>
+                            var runData = dtOrder.AsEnumerable().Where(x => !dtNotRun.AsEnumerable().Any(y => y.Field<string>("JANコード") == x.Field<string>("JANコード") && y.Field<string>("発注コード") == x.Field<string>("発注コード")));
+                            dtOrder = runData.Any() ? runData.CopyToDataTable() : null;
                         }
-                        var runData = dtOrder.AsEnumerable().Where(x => !dtNotRun.AsEnumerable().Any(y => y.Field<string>("JANコード") == x.Field<string>("JANコード") && y.Field<string>("発注コード") == x.Field<string>("発注コード")));
-                        dtOrder = runData.Any() ? runData.CopyToDataTable() : null;
+          
+                        //var runData = dtOrder.AsEnumerable().Where(x => !dtNotRun.AsEnumerable().Any(y => y.Field<string>("JANコード") == x.Field<string>("JANコード") && y.Field<string>("発注コード") == x.Field<string>("発注コード")));
+                        //dtOrder = runData.Any() ? runData.CopyToDataTable() : null;
+                        //</remark 2021/04/23 End>
+
                         //<remark ９ヶ月前の　データーについて、更新ロジック　2020-01-30 Start>                         
                         dtOrder.AsEnumerable().Where(r => (DateTime.Parse(r.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-9).Date))
                        .Select(r => r["入荷予定"] = "2100-02-01").ToList();
                         dtOrder.AsEnumerable().Where(r => (DateTime.Parse(r.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-9).Date))
                        .Select(r => r["在庫情報"] = "empty").ToList();
                         //</remark 2020-01-30 End>
+
+                        //<remark Add Logic for Siteid-110 2021/04/09 Start>
+                        if (shopID.Equals("110"))
+                        {
+
+                            DataTable dt_ci = dtOrder.Select("自社品番 like 'ci%'").CopyToDataTable();
+                            xml = DataTableToXml(dt_ci);
+                            //xml = RemoveInvalidXmlChars(xml);
+                            con = new Connection();
+                            sqlcon = con.GetConnection();
+                            cmd = new SqlCommand("Qbei_ErrorLog_3_InsertXml", sqlcon);
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@xml", xml);
+                            cmd.Parameters.AddWithValue("@sitename", GetSiteName(shopID));
+                            cmd.Parameters.AddWithValue("@Description", "ci-Item");
+                            cmd.Parameters.AddWithValue("@ErrorType", 6);
+                            cmd.Parameters.AddWithValue("@SiteCode", shopID);
+                            cmd.CommandTimeout = 600;
+                            cmd.Connection.Open();
+                            cmd.ExecuteNonQuery();
+                            cmd.Connection.Close();
+
+                            dtOrder = dtOrder.Select("自社品番 like 'pi%'").CopyToDataTable();
+                        }
+                        //</remark 2021/04/09 End>
                     }
                     return dtOrder;
                 }
@@ -776,6 +806,9 @@ namespace Common
                 case "914": return "（株）イノセントデザインワークス";
                 //2019/07/24 Add
                 case "124": return "ミズタニ";
+                //2021/04/21 Add
+                case "051": return "スタイルバイク";
+                case "110": return "アサヒサイクル";
                 default: return "unknwon site";
 
 
@@ -1470,6 +1503,10 @@ namespace Common
                 cmd.Parameters.AddWithValue("@makerDate", entity.makerDate);
                 cmd.Parameters.AddWithValue("@reflectDate", entity.reflectDate);
                 cmd.Parameters.AddWithValue("@siteCd", entity.sitecode);
+                //<remark 2020/11/05>
+                cmd.Parameters.AddWithValue("@True_StockDate", entity.True_StockDate);
+                cmd.Parameters.AddWithValue("@True_Quantity", entity.True_Quantity);
+                //</remark 202/11/05>
                 cmd.CommandTimeout = 600;
                 cmd.Connection.Open();
                 cmd.ExecuteNonQuery();
