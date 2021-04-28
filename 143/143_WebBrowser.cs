@@ -294,8 +294,7 @@ namespace _143
             entity.makerDate = fun.getCurrentDate();
             entity.reflectDate = dt143.Rows[i]["最終反映日"].ToString();
             entity.orderCode = dt143.Rows[i]["発注コード"].ToString();
-            entity.purchaseURL = fun.url + "/goods/goods_list.html";
-
+            entity.purchaseURL = fun.url + "/goods/goods_list.html?search_C_sSyohinCd_item=" +entity.orderCode;
             entity.siteID = 143;
             entity.sitecode = "143";
 
