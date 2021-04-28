@@ -42,14 +42,7 @@ namespace _916_Chrome
         /// </summary>
         /// <param name="args">constant string</param>
         static void Main(string[] args)
-        {
-
-            if (args.Count() > 0)
-            {
-                strParam = args[0].ToString();
-                StartRun();
-            }
-            else
+        {          
                 testflag();
         }
 
@@ -194,7 +187,7 @@ namespace _916_Chrome
                                 entity.makerDate = fun.getCurrentDate();
                                 entity.reflectDate = dt916.Rows[i]["最終反映日"].ToString();
                                 entity.orderCode = dt916.Rows[i]["発注コード"].ToString();
-                                entity.purchaseURL = "https://btob.asahi-wsd.jp/website/asahi/product/list";
+                                entity.purchaseURL = "https://btob.asahi-wsd.jp/website/asahi/product/list?product_code=" +entity.orderCode;
 
                                 //<remark>
                                 //Check to Ordercode
