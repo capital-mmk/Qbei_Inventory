@@ -276,7 +276,8 @@ namespace Common
                         }
                     }
                     //
-                    dr = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' OR 発注コード= '--'");
+                    //dr = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' OR 発注コード= '--'");<remark Edit Logic for ordercode 2021/04/05 />
+                    dr = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' OR 発注コード= '--' OR 発注コード like '/%' OR 発注コード like '-%'");
                     if (dr.Count() > 0)
                     {
                         if (!shopID.Equals("036"))
@@ -284,7 +285,8 @@ namespace Common
                             /// <remark>
                             /// Save Data into Qbei_ErrorLog
                             /// </remark>
-                            DataTable dtBlankOrder = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード='-' OR 発注コード= '--'").CopyToDataTable();
+                            //DataTable dtBlankOrder = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード='-' OR 発注コード= '--'").CopyToDataTable();<remark Edit Logic for ordercode 2021/04/05 />
+                            DataTable dtBlankOrder = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード='-' OR 発注コード= '--'OR 発注コード like '/%' OR 発注コード like '-%'").CopyToDataTable();
                             dtBlankOrder.Columns.Add(dc);
                             int col = dtBlankOrder.Rows.Count;
                             xml = DataTableToXml(dtBlankOrder);
@@ -311,6 +313,11 @@ namespace Common
                             dtNotNull = dtTemp.Select("発注コード<>' ' AND 発注コード <> '' AND 発注コード is not NULL AND 発注コード<> '-' AND 発注コード<> '--'").CopyToDataTable();
                             //Trim 
                             dtNotNull.AsEnumerable().ToList().ForEach(r => r["発注コード"] = r.Field<string>("発注コード").Trim());
+                            //<remark Add Logic 2021/05/04 Start>
+                            DataTable dtselect = dtTemp.Select("発注コード like '/%' OR 発注コード like '-%'").CopyToDataTable();
+                            var select= dtNotNull.AsEnumerable().Where(r => !dtselect.AsEnumerable().Any(y => y.Field<string>("JANコード") == r.Field<string>("JANコード")));
+                            dtNotNull= select.OrderBy(x => x.Field<string>("メーカー情報日")).CopyToDataTable();
+                            //</remark Add Logic 2021/05/04 End>
                             //2018-05-07 Start
                             //var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("/") || r.Field<string>("発注コード").Contains("データ登録")));
                             // var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録")));
@@ -420,7 +427,7 @@ namespace Common
                         if (shopID.Equals("110"))
                         {
 
-                            DataTable dt_ci = dtOrder.Select("自社品番 like 'ci%'").CopyToDataTable();
+                            DataTable dt_ci = dtOrder.Select("自社品番 like 'ci-%'").CopyToDataTable();
                             xml = DataTableToXml(dt_ci);
                             //xml = RemoveInvalidXmlChars(xml);
                             con = new Connection();
@@ -437,7 +444,7 @@ namespace Common
                             cmd.ExecuteNonQuery();
                             cmd.Connection.Close();
 
-                            dtOrder = dtOrder.Select("自社品番 like 'pi%'").CopyToDataTable();
+                            dtOrder = dtOrder.Select("自社品番 not like 'ci-%'").CopyToDataTable();
                         }
                         //</remark 2021/04/09 End>
                     }
