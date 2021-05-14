@@ -439,9 +439,10 @@ namespace _36PRインターナショナル
                                         //if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃") || entity.stockDate.Contains("ごろ"))
                                         //</remark 2020/02/25 End>
                                         //if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃") || entity.stockDate.Contains("ごろ") || entity.stockDate.Contains("末") || entity.stockDate.Contains("旬"))
-                                            //</remark 2020/03/20  End>
-                                          if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃") || entity.stockDate.Contains("ごろ") || entity.stockDate.Contains("末") || entity.stockDate.Contains("旬") || entity.stockDate.Contains("予定"))//<remark Add Logic for stockdate 2021/02/15 />
-                                            {
+                                        //</remark 2020/03/20  End>
+                                        //if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃") || entity.stockDate.Contains("ごろ") || entity.stockDate.Contains("末") || entity.stockDate.Contains("旬") || entity.stockDate.Contains("予定"))//<remark Add Logic for stockdate 2021/02/15 />
+                                        if (entity.stockDate.Contains("月頃") || entity.stockDate.Contains("頃") || entity.stockDate.Contains("ごろ") || entity.stockDate.Contains("末") || entity.stockDate.Contains("旬") || entity.stockDate.Contains("予定") || entity.stockDate.Contains("入荷"))//<remark Add Logic for stockdate 2021/05/14 />
+                                        {
                                             if (entity.stockDate.Contains("/"))
                                             {
                                                 string[] m = entity.stockDate.Split('/');
@@ -465,7 +466,27 @@ namespace _36PRインターナショナル
                                                         if (month < pcmonth)
                                                         { year = Convert.ToString(Convert.ToInt32(year) + 1); }
                                                         //day = DateTime.DaysInMonth(DateTime.Now.Year, month).ToString();
-                                                        day = DateTime.DaysInMonth(Convert.ToInt32(year), month).ToString();//<remark Edit of Logic for Year 2020/10/09 />
+
+                                                        //<remark Add Logic for Stockdate 2021/05/14 Start>
+                                                        //day = DateTime.DaysInMonth(Convert.ToInt32(year), month).ToString();//<remark Edit of Logic for Year 2020/10/09 />
+                                                        if (strStockDate.Contains("日"))
+                                                        {
+                                                            int YIndex = entity.stockDate.IndexOf('日');
+                                                            if (YIndex == 3)
+                                                            {
+                                                                day = entity.stockDate.Substring(YIndex - 1, YIndex - 2).ToString();
+                                                            }
+                                                            else
+                                                            {
+                                                                day = entity.stockDate.Substring(YIndex - 2, YIndex - 2).ToString();
+                                                            }                                                           
+                                                        }
+                                                        else
+                                                        {
+                                                            day = DateTime.DaysInMonth(Convert.ToInt32(year), month).ToString();
+                                                        }
+                                                        //</remark 2021/05/14 End>
+
                                                         entity.stockDate = year + "-" + month + "-" + day;
                                                     }
                                                     else
@@ -474,7 +495,27 @@ namespace _36PRインターナショナル
                                                         if (month < pcmonth)
                                                         { year = Convert.ToString(Convert.ToInt32(year) + 1); }
                                                         //day = DateTime.DaysInMonth(DateTime.Now.Year, month).ToString();
-                                                        day = DateTime.DaysInMonth(Convert.ToInt32(year), month).ToString();//<remark Edit of Logic for Year 2020/10/09 />
+
+                                                        //<remark Add Logic for Stockdate 2021/05/14 Start>
+                                                        //day = DateTime.DaysInMonth(Convert.ToInt32(year), month).ToString();//<remark Edit of Logic for Year 2020/10/09 />
+                                                        if (strStockDate.Contains("日"))
+                                                        {
+                                                            int YIndex = entity.stockDate.IndexOf('日');
+                                                            if (YIndex == 5)
+                                                            {
+                                                                day = entity.stockDate.Substring(YIndex - 2, YIndex - 3).ToString();
+                                                            }
+                                                            else
+                                                            {
+                                                                day = entity.stockDate.Substring(YIndex - 1, YIndex - 3).ToString();
+                                                            }                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            day = DateTime.DaysInMonth(Convert.ToInt32(year), month).ToString();
+                                                        }
+                                                        //</remark 2021/05/14 End>
+
                                                         entity.stockDate = year + "-" + month + "-" + day;
                                                     }
 
