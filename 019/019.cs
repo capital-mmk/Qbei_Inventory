@@ -182,7 +182,7 @@ namespace _019深谷_フカヤ_
                             Thread.Sleep(2000);//<reamark 追加　10/09/2020 />
                             string od;
                             //od = dt019.Rows[i]["JANコード"].ToString();//<Edit Logic for Search 2021/03/24 />
-                            od = dt019.Rows[i]["発注コード"].ToString();                           
+                            od = dt019.Rows[i]["発注コード"].ToString();
                             //chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);//<Edit Logic for Search 2021/03/24 />
                             chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
 
@@ -260,119 +260,150 @@ namespace _019深谷_フカヤ_
                                 }
                                 else
                                 {
-                                    //<remark>
-                                    //Check to Quantity
-                                    //</remark>      
-                                    string qty;
-                                    try
+                                    //<remark Add Logic for Item Search 2021/05/11 Start>      
+                                    int n = Convert.ToInt32(chrome.FindElements(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr")).Count()) - 1;
+                                    if (n == 0)
                                     {
-                                        qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;
-                                    }
-                                    catch
-                                    {
-                                        //<remark Edit Logic for Quantity 2020/1/29 Start>
-                                        try
-                                        {
-                                            Thread.Sleep(2000);
-                                            qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;
-                                        }
-                                        catch
-                                        {
-                                            try
-                                            {
-                                                chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);//<remark Add Logic for Stockdate 2021/04/06 />                                                                              
-                                                qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;
-                                            }
-                                            catch
-                                            {
-                                                //<remark Add Logic for Stockdate 2021/04/08 Start>
-                                                try
-                                                {
-                                                    Thread.Sleep(20000);
-                                                    qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;
-                                                }
-                                                catch
-                                                {
-                                                    Thread.Sleep(2000);
-                                                    qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span")).Text;
-                                                }
-                                                //<remark Add Logic for Stockdate 2021/04/08 End>
-                                            }
-                                        }
-                                        //</remark 2020/1/29 End>
-                                    }
-
-                                    //<remark>
-                                    //Check to have Digits at Quantity and take Quantity of Status
-                                    //</remark>   
-                                    bool isDigitPresent = qty.Any(c => char.IsDigit(c));
-                                    if (isDigitPresent == true)
-                                    {
-                                        //entity.qtyStatus = "small";//<remark Edit Logic of quantity 2020/07/21 />
                                         entity.qtyStatus = "empty";
-                                    }
-                                    else
-                                    {
-                                        //entity.qtyStatus = qty.Equals("在庫○") ? "good" : qty.Equals("取寄×") ? "empty" : qty.Equals("在庫△") ? "small" : qty.Equals("欠品×") ? "empty" : qty.Equals("廃番×") ? "empty" : qty.Equals("廃番(n)") ? "small" : qty.Equals("廃番○") ? "good" : "unknown status";//<remark Edit Logic of quantity 2020/07/21 />
-                                        entity.qtyStatus = qty.Equals("在庫○") ? "good" : qty.Equals("取寄×") ? "empty" : qty.Equals("在庫△") ? "empty" : qty.Equals("欠品×") ? "empty" : qty.Equals("廃番×") ? "empty" : qty.Equals("廃番(n)") ? "small" : qty.Equals("廃番○") ? "good" : "unknown status";
-                                    }
-
-                                    //<remark>
-                                    //Check to Price
-                                    //</remark>
-                                    entity.price = chrome.FindElement(By.ClassName("price_em")).Text;
-                                    entity.price = entity.price.Replace("卸価格：￥", " ").Replace(",", string.Empty);
-
-                                    //<remark>
-                                    //Check to Stockdate
-                                    //</remark>
-                                    string stockdate = chrome.FindElement(By.ClassName("r_cate_title")).Text;
-                                    if (stockdate.Contains("入荷予定日"))
-                                    {
-                                        entity.stockDate = chrome.FindElement(By.ClassName("availabilityDate")).Text;
-                                        entity.stockDate = entity.stockDate.Replace("入荷予定日:", " ").Replace("/", "-");
-                                        //entity.stockDate = entity.stockDate.Replace("/", "-");
-                                        DateTime da = Convert.ToDateTime(entity.stockDate);
-                                        entity.stockDate = da.ToString("yyyy-MM-dd");
-                                        //<remark 2021/01/06>
-                                        entity.True_StockDate = chrome.FindElement(By.ClassName("availabilityDate")).Text.Replace("入荷予定日:", " ");
-                                        entity.True_Quantity = qty;
-                                        //</remark 2021/01/06>
-                                    }
-                                    else
-                                    {
-                                        //<remark>
-                                        //Check to have Digits at Quantity and take Stockdate of Status
-                                        //</remark>
-                                        if (isDigitPresent == true)
-                                        {
-                                            entity.stockDate = "2100-02-01";
-                                        }
-                                        else
-                                        {
-                                            //entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-01-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";//<remark Edit Logic of stockdate 2020/07/21 />
-                                            entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-02-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";
-                                        }
-                                        //<remark 2021/01/06>
-                                        entity.True_StockDate = "項目無し";
-                                        entity.True_Quantity = qty;
-                                        //</remark 2021/01/06>
-                                    }
-                                    //<remark Add Logic 2020/05/30 />
-                                    if (entity.qtyStatus != "unknown status")
-                                    {
+                                        entity.stockDate = "2100-02-01";
+                                        entity.price = dt019.Rows[i]["下代"].ToString();
+                                        entity.True_StockDate = "Not Found";
+                                        entity.True_Quantity = "Not Found";
                                         fun.Qbei_Inserts(entity);
                                     }
                                     else
                                     {
-                                        fun.Qbei_ErrorInsert(19, fun.GetSiteName("019"), "Item doesn't Check!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "019");
+                                        for (int i = 1; i <= n; i++)
+                                        {
+                                            if (chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i+1) + "]/td[2]/p[2]")).Text.Equals(entity.orderCode))
+                                            {                                               
+                                                //<remark>
+                                                //Check to Quantity
+                                                //</remark>      
+                                                string qty;
+                                                try
+                                                {
+                                                    //qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;//<remark Edit Logic for Quantity 2021/05/12 />
+                                                    qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[5]/span[2]")).Text;
+                                                }
+                                                catch
+                                                {
+                                                    //<remark Edit Logic for Quantity 2020/1/29 Start>
+                                                    try
+                                                    {
+                                                        Thread.Sleep(2000);
+                                                        //qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;//<remark Edit Logic for Quantity 2021/05/12 />
+                                                        qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[5]/span[2]")).Text;
+                                                    }
+                                                    catch
+                                                    {
+                                                        try
+                                                        {
+                                                            chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);//<remark Add Logic for Stockdate 2021/04/06 />                                                                              
+                                                            //qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;//<remark Edit Logic for Quantity 2021/05/12 />
+                                                            qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[5]/span[2]")).Text;
+                                                        }
+                                                        catch
+                                                        {
+                                                            //<remark Add Logic for Stockdate 2021/04/08 Start>
+                                                            try
+                                                            {
+                                                                Thread.Sleep(20000);
+                                                                //qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;//<remark Edit Logic for Quantity 2021/05/12 />
+                                                                qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[5]/span[2]")).Text;
+                                                            }
+                                                            catch
+                                                            {
+                                                                Thread.Sleep(2000);
+                                                                //qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span")).Text;//<remark Edit Logic for Quantity 2021/05/12 />
+                                                                qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[5]/span")).Text;
+                                                            }
+                                                            //<remark Add Logic for Stockdate 2021/04/08 End>
+                                                        }
+                                                    }
+                                                    //</remark 2020/1/29 End>
+                                                }
+
+                                                //<remark>
+                                                //Check to have Digits at Quantity and take Quantity of Status
+                                                //</remark>   
+                                                bool isDigitPresent = qty.Any(c => char.IsDigit(c));
+                                                if (isDigitPresent == true)
+                                                {
+                                                    //entity.qtyStatus = "small";//<remark Edit Logic of quantity 2020/07/21 />
+                                                    entity.qtyStatus = "empty";
+                                                }
+                                                else
+                                                {
+                                                    //entity.qtyStatus = qty.Equals("在庫○") ? "good" : qty.Equals("取寄×") ? "empty" : qty.Equals("在庫△") ? "small" : qty.Equals("欠品×") ? "empty" : qty.Equals("廃番×") ? "empty" : qty.Equals("廃番(n)") ? "small" : qty.Equals("廃番○") ? "good" : "unknown status";//<remark Edit Logic of quantity 2020/07/21 />
+                                                    entity.qtyStatus = qty.Equals("在庫○") ? "good" : qty.Equals("取寄×") ? "empty" : qty.Equals("在庫△") ? "empty" : qty.Equals("欠品×") ? "empty" : qty.Equals("廃番×") ? "empty" : qty.Equals("廃番(n)") ? "small" : qty.Equals("廃番○") ? "good" : "unknown status";
+                                                }
+
+                                                //<remark>
+                                                //Check to Price
+                                                //</remark>
+                                                //entity.price = chrome.FindElement(By.ClassName("price_em")).Text;//<remark Edit Logic for price 2021/05/12 />
+                                                entity.price = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[4]/p[1]/em")).Text;
+                                                entity.price = entity.price.Replace("卸価格：￥", " ").Replace(",", string.Empty);
+
+                                                //<remark>
+                                                //Check to Stockdate
+                                                //</remark>
+                                                //string stockdate = chrome.FindElement(By.ClassName("r_cate_title")).Text;//<remark Edit Logic for stockdate 2021/05/12 />
+                                                string stockdate = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[2]")).Text;
+                                                if (stockdate.Contains("入荷予定日"))
+                                                {
+                                                    //entity.stockDate = chrome.FindElement(By.ClassName("availabilityDate")).Text;//<remark Edit Logic for stockdate 2021/05/12 />
+                                                    entity.stockDate = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[2]/p[5]")).Text;
+                                                    entity.stockDate = entity.stockDate.Replace("入荷予定日:", " ").Replace("/", "-");
+                                                    //entity.stockDate = entity.stockDate.Replace("/", "-");
+                                                    DateTime da = Convert.ToDateTime(entity.stockDate);
+                                                    entity.stockDate = da.ToString("yyyy-MM-dd");
+                                                    //<remark 2021/01/06>
+                                                    entity.True_StockDate = chrome.FindElement(By.ClassName("availabilityDate")).Text.Replace("入荷予定日:", " ");
+                                                    entity.True_Quantity = qty;
+                                                    //</remark 2021/01/06>
+                                                }
+                                                else
+                                                {
+                                                    //<remark>
+                                                    //Check to have Digits at Quantity and take Stockdate of Status
+                                                    //</remark>
+                                                    if (isDigitPresent == true)
+                                                    {
+                                                        entity.stockDate = "2100-02-01";
+                                                    }
+                                                    else
+                                                    {
+                                                        //entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-01-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";//<remark Edit Logic of stockdate 2020/07/21 />
+                                                        entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-02-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";
+                                                    }
+                                                    //<remark 2021/01/06>
+                                                    entity.True_StockDate = "項目無し";
+                                                    entity.True_Quantity = qty;
+                                                    //</remark 2021/01/06>
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        //</remark 2021/05/11 End>
+
+                                        //<remark Add Logic 2020/05/30 />
+                                        if (entity.qtyStatus != "unknown status")
+                                        {
+                                            fun.Qbei_Inserts(entity);
+                                        }
+                                        else
+                                        {
+                                            fun.Qbei_ErrorInsert(19, fun.GetSiteName("019"), "Item doesn't Check!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "019");
+                                        }
+                                        //<remark Add Logic 2020/05/30 />
                                     }
-                                    //<remark Add Logic 2020/05/30 />
+                                    //<remark>
+                                    //Insert to QbeiTable of Statuss
+                                    //</remark>
+                                    //fun.Qbei_Inserts(entity);//<remark Close Logic 2020/05/30 />
                                 }
-                                //<remark>
-                                //Insert to QbeiTable of Statuss
-                                //</remark>
-                                //fun.Qbei_Inserts(entity);//<remark Close Logic 2020/05/30 />
                             }
                             else
                             {
