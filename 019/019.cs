@@ -179,12 +179,12 @@ namespace _019深谷_フカヤ_
                     {
                         if (i < Lastrow)
                         {
-                            Thread.Sleep(2000);//<reamark 追加　10/09/2020 />
                             string od;
                             //od = dt019.Rows[i]["JANコード"].ToString();//<Edit Logic for Search 2021/03/24 />
                             od = dt019.Rows[i]["発注コード"].ToString();
                             //chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);//<Edit Logic for Search 2021/03/24 />
                             chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
+                            Thread.Sleep(2000);//<reamark 追加　18/05/2021 />
 
                             entity = new Qbei_Entity();
                             entity.siteID = 19;
@@ -275,8 +275,8 @@ namespace _019深谷_フカヤ_
                                     {
                                         for (int i = 1; i <= n; i++)
                                         {
-                                            if (chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i+1) + "]/td[2]/p[2]")).Text.Equals(entity.orderCode))
-                                            {                                               
+                                            if (chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[2]/p[2]")).Text.Equals(entity.orderCode))
+                                            {
                                                 //<remark>
                                                 //Check to Quantity
                                                 //</remark>      
@@ -326,7 +326,7 @@ namespace _019深谷_フカヤ_
 
                                                 //<remark>
                                                 //Check to have Digits at Quantity and take Quantity of Status
-                                                //</remark>   
+                                                //</remark>
                                                 bool isDigitPresent = qty.Any(c => char.IsDigit(c));
                                                 if (isDigitPresent == true)
                                                 {
@@ -386,24 +386,24 @@ namespace _019深谷_フカヤ_
                                                 break;
                                             }
                                         }
-                                        //</remark 2021/05/11 End>
+                                            //</remark 2021/05/11 End>
 
-                                        //<remark Add Logic 2020/05/30 />
-                                        if (entity.qtyStatus != "unknown status")
-                                        {
-                                            fun.Qbei_Inserts(entity);
+                                            //<remark Add Logic 2020/05/30 />
+                                            if (entity.qtyStatus != "unknown status")
+                                            {
+                                                fun.Qbei_Inserts(entity);
+                                            }
+                                            else
+                                            {
+                                                fun.Qbei_ErrorInsert(19, fun.GetSiteName("019"), "Item doesn't Check!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "019");
+                                            }
+                                            //<remark Add Logic 2020/05/30 />
                                         }
-                                        else
-                                        {
-                                            fun.Qbei_ErrorInsert(19, fun.GetSiteName("019"), "Item doesn't Check!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "019");
-                                        }
-                                        //<remark Add Logic 2020/05/30 />
-                                    }
-                                    //<remark>
-                                    //Insert to QbeiTable of Statuss
-                                    //</remark>
-                                    //fun.Qbei_Inserts(entity);//<remark Close Logic 2020/05/30 />
-                                }
+                                        //<remark>
+                                        //Insert to QbeiTable of Statuss
+                                        //</remark>
+                                        //fun.Qbei_Inserts(entity);//<remark Close Logic 2020/05/30 />
+                                    }                   
                             }
                             else
                             {
