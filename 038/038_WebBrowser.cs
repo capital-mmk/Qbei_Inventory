@@ -135,6 +135,7 @@ namespace _38フタバ
         /// </remark>
         private void ReadData()
         {
+            webBrowser1.ScriptErrorsSuppressed = true;
             qe.SiteID = 38;
             dt = qubl.Qbei_Setting_Select(qe);
             fun.url = dt.Rows[0]["Url"].ToString();
@@ -246,8 +247,7 @@ namespace _38フタバ
                 System.Windows.Forms.HtmlDocument doc = this.webBrowser1.Document;
                 if (i < dt038.Rows.Count - 1)
                 {
-                    //doc.GetElementById("MainContent_tbx_freeword").SetAttribute("Value", dt038.Rows[++i]["発注コード"].ToString());
-                    doc.GetElementById("MainContent_tbx_freeword").SetAttribute("Value", "4519389542729");
+                    doc.GetElementById("MainContent_tbx_freeword").SetAttribute("Value", dt038.Rows[++i]["発注コード"].ToString());
                     webBrowser1.Document.GetElementById("MainContent_btn_search").InvokeMember("Click");
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemProcessing);
                 }
@@ -289,11 +289,11 @@ namespace _38フタバ
             entity = new Qbei_Entity();
             entity.siteID = 38;
             entity.sitecode = "038";
-            entity.janCode = dt038.Rows[++i]["JANコード"].ToString();
-            entity.partNo = dt038.Rows[++i]["自社品番"].ToString();
+            entity.janCode = dt038.Rows[i]["JANコード"].ToString();
+            entity.partNo = dt038.Rows[i]["自社品番"].ToString();
             entity.makerDate = fun.getCurrentDate();
-            entity.reflectDate = dt038.Rows[++i]["最終反映日"].ToString();
-            entity.orderCode = dt038.Rows[++i]["発注コード"].ToString();
+            entity.reflectDate = dt038.Rows[i]["最終反映日"].ToString();
+            entity.orderCode = dt038.Rows[i]["発注コード"].ToString();
             entity.purchaseURL = fun.url + "/Account/SyohinSearch.aspx";
             webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemProcessing);
             string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
@@ -489,7 +489,6 @@ namespace _38フタバ
                         ////{
                         ////    entity.stockDate = "2100-01-01";
                         ////}                       
-                        entity.stockDate = "4/20頃";
                         if (string.IsNullOrWhiteSpace(entity.stockDate) || entity.stockDate.Contains("お取り寄せ品"))
                         {
 
