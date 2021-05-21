@@ -132,6 +132,7 @@ namespace _87ダートフリーク
         /// </remark>
         private void ReadData()
         {
+            webBrowser1.ScriptErrorsSuppressed = true;
             qe.SiteID = 87;
             dt = qubl.Qbei_Setting_Select(qe);
             fun.url = dt.Rows[0]["Url"].ToString();
