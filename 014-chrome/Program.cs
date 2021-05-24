@@ -119,6 +119,7 @@ namespace _014_chrome
             try
             {
                 var chromeOptions = new ChromeOptions();
+                chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";//<Add Logic for Chrome Path 2021/05/24 />
                 chromeOptions.AddUserProfilePreference("download.default_directory", @"C:\Qbei_Log\014_Download\");
                 chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");
                 chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
