@@ -121,6 +121,7 @@ namespace _110_Chrome
                 try
                 {
                     var chromeOptions = new ChromeOptions();
+                    chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";//<Add Logic for Chrome Path 2021/05/24 />
                     using (IWebDriver chrome = new ChromeDriver(chromeOptions))
                     {
                         DataTable dt = new DataTable();
