@@ -382,7 +382,8 @@ namespace Common
                         //dtNotRun = empty.Any() ? empty.CopyToDataTable() : null;
                         ////2018-08-29 End
                         //// dtNotRun = notRun.Any() ? notRun.CopyToDataTable() : null;
-                        var notRun = dtOrder.AsEnumerable().Where(x => x.Field<string>("在庫情報").Contains("empty") && x.Field<string>("ステータス変更日") != null && x.Field<string>("入荷予定") == "2100-02-01" && DateTime.Parse(x.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-9).Date);
+                        //var notRun = dtOrder.AsEnumerable().Where(x => x.Field<string>("在庫情報").Contains("empty") && x.Field<string>("ステータス変更日") != null && x.Field<string>("入荷予定") == "2100-02-01" && DateTime.Parse(x.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-9).Date);//<remark Edit Logic for 18ヶ月前の　データー 2021/05/26 />
+                        var notRun = dtOrder.AsEnumerable().Where(x => x.Field<string>("在庫情報").Contains("empty") && x.Field<string>("ステータス変更日") != null && x.Field<string>("入荷予定") == "2100-02-01" && DateTime.Parse(x.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-18).Date);
                         dtNotRun = notRun.Any() ? notRun.CopyToDataTable() : null;
                         //</remark 2020-01-30 End>
                         if (dtNotRun != null)
