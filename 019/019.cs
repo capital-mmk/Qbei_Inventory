@@ -275,7 +275,8 @@ namespace _019深谷_フカヤ_
                                     {
                                         for (int i = 1; i <= n; i++)
                                         {
-                                            if (chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[2]/p[2]")).Text.Equals(entity.orderCode))
+                                            if (chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[2]/p[3]")).Text.Equals("JAN:" + entity.janCode))
+                                            //if (chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[2]/p[2]")).Text.Equals(entity.orderCode))//<remark Edit Logic for check to jancode 2021/05/27 />
                                             {
                                                 //<remark>
                                                 //Check to Quantity
@@ -386,24 +387,31 @@ namespace _019深谷_フカヤ_
                                                 break;
                                             }
                                         }
-                                            //</remark 2021/05/11 End>
+                                        //</remark 2021/05/11 End>
 
-                                            //<remark Add Logic 2020/05/30 />
-                                            if (entity.qtyStatus != "unknown status")
+                                        //<remark Add Logic 2021/05/27 />
+                                        if ((entity.qtyStatus != "unknown status"))
+                                        {
+                                            if (entity.qtyStatus != null)
                                             {
                                                 fun.Qbei_Inserts(entity);
                                             }
                                             else
                                             {
-                                                fun.Qbei_ErrorInsert(19, fun.GetSiteName("019"), "Item doesn't Check!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "019");
+                                                fun.Qbei_ErrorInsert(19, fun.GetSiteName("019"), "Jancode doesn't exit!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "019");
                                             }
-                                            //<remark Add Logic 2020/05/30 />
                                         }
-                                        //<remark>
-                                        //Insert to QbeiTable of Statuss
-                                        //</remark>
-                                        //fun.Qbei_Inserts(entity);//<remark Close Logic 2020/05/30 />
-                                    }                   
+                                        else
+                                        {
+                                            fun.Qbei_ErrorInsert(19, fun.GetSiteName("019"), "Item doesn't Check!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "019");
+                                        }
+                                        //<remark Add Logic 2021/05/27 />
+                                    }
+                                    //<remark>
+                                    //Insert to QbeiTable of Statuss
+                                    //</remark>
+                                    //fun.Qbei_Inserts(entity);//<remark Close Logic 2020/05/30 />
+                                }
                             }
                             else
                             {
