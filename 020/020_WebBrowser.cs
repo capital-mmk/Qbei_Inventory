@@ -384,11 +384,12 @@ namespace _20ダイアテック_高難易度_
                             entity.price = ((int)(Convert.ToDouble(entity.price) * 0.75)).ToString();
                         }
 
-                        HtmlNode variationlistNode = hdoc.DocumentNode.SelectSingleNode("div[2]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]/div/div[1]");
+                        //HtmlNode variationlistNode = hdoc.DocumentNode.SelectSingleNode("div[2]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]/div/div[1]");//<remark Edit Logic for Quantity 2021/06/01 />
+                        HtmlNode variationlistNode = hdoc.DocumentNode.SelectSingleNode("div[2]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]");
 
                         foreach (var he in variationlistNode.ChildNodes)
                         {
-                            var dlNodes = he.Descendants("DL");
+                            var dlNodes = he.Descendants("dl");
 
                             if (dlNodes != null)
                             {
@@ -487,11 +488,30 @@ namespace _20ダイアテック_高難易度_
         {
             string janCode = dt020.Rows[i]["JANコード"].ToString();
             string orderCode = dt020.Rows[i]["発注コード"].ToString();
-            fun.Qbei_ErrorInsert(20, fun.GetSiteName("020"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "020");
+            //<remark Close Logic for No Access Denied of ordercode 2021/06/01 Start>
+            //fun.Qbei_ErrorInsert(20, fun.GetSiteName("020"), "Access Denied!", janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "020");
             fun.WriteLog(StatusCode.ToString() + " " + janCode + " " + orderCode, "020-");
+            //Application.Exit();
+            //Environment.Exit(0);
+            //</remark 2021/06/01 End>
 
-            Application.Exit();
-            Environment.Exit(0);
+            //<remark Add Logic for No Access Denied of ordercode 2021/06/01 Start>
+            if (i < dt020.Rows.Count - 1)
+            {
+                webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
+                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
+            }
+            else
+            {
+                qe.site = 20;
+                qe.flag = 2;
+                qe.starttime = string.Empty;
+                qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                fun.ChangeFlag(qe);
+                Application.Exit();
+                Environment.Exit(0);
+            }
+            //</remark 2021/06/01 End>
         }
     }
 }
