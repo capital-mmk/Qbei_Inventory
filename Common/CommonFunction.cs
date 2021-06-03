@@ -401,7 +401,7 @@ namespace Common
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@xml", xml);
                             cmd.Parameters.AddWithValue("@sitename", GetSiteName(shopID));
-                            cmd.Parameters.AddWithValue("@Description", "Item doesn't Run!(9M)");
+                            cmd.Parameters.AddWithValue("@Description", "Item doesn't Run!(18M)");
                             cmd.Parameters.AddWithValue("@ErrorType", 6);
                             cmd.Parameters.AddWithValue("@SiteCode", shopID);
                             cmd.CommandTimeout = 600;
@@ -412,17 +412,23 @@ namespace Common
                             var runData = dtOrder.AsEnumerable().Where(x => !dtNotRun.AsEnumerable().Any(y => y.Field<string>("JANコード") == x.Field<string>("JANコード") && y.Field<string>("発注コード") == x.Field<string>("発注コード")));
                             dtOrder = runData.Any() ? runData.CopyToDataTable() : null;
                         }
-          
+
                         //var runData = dtOrder.AsEnumerable().Where(x => !dtNotRun.AsEnumerable().Any(y => y.Field<string>("JANコード") == x.Field<string>("JANコード") && y.Field<string>("発注コード") == x.Field<string>("発注コード")));
                         //dtOrder = runData.Any() ? runData.CopyToDataTable() : null;
                         //</remark 2021/04/23 End>
 
+                        //<remark 18ヶ月前の　データーについて、更新ロジック　2021-06-03 Start> 
                         //<remark ９ヶ月前の　データーについて、更新ロジック　2020-01-30 Start>                         
-                        dtOrder.AsEnumerable().Where(r => (DateTime.Parse(r.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-9).Date))
+                        // dtOrder.AsEnumerable().Where(r => (DateTime.Parse(r.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-9).Date))
+                        //.Select(r => r["入荷予定"] = "2100-02-01").ToList();
+                        // dtOrder.AsEnumerable().Where(r => (DateTime.Parse(r.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-9).Date))
+                        //.Select(r => r["在庫情報"] = "empty").ToList();
+                        dtOrder.AsEnumerable().Where(r => (DateTime.Parse(r.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-18).Date))
                        .Select(r => r["入荷予定"] = "2100-02-01").ToList();
-                        dtOrder.AsEnumerable().Where(r => (DateTime.Parse(r.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-9).Date))
+                        dtOrder.AsEnumerable().Where(r => (DateTime.Parse(r.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-18).Date))
                        .Select(r => r["在庫情報"] = "empty").ToList();
                         //</remark 2020-01-30 End>
+                        //</remark 2021-06-03 End>
 
                         //<remark Add Logic for Siteid-110 2021/04/09 Start>
                         if (shopID.Equals("110"))
