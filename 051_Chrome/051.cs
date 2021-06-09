@@ -160,7 +160,7 @@ namespace _051スタイルバイク
                     chrome.FindElement(By.Name("loginEmail")).SendKeys(username);
                     string password = dt.Rows[0]["Password"].ToString();
                     chrome.FindElement(By.Name("loginPassword")).SendKeys(password);
-                    fun.WriteLog("Navigation to Site Url success------", "037-");
+                    fun.WriteLog("Navigation to Site Url success------", "051-");
                     chrome.FindElement(By.Name("login")).Click();
                     Thread.Sleep(8000);
 
@@ -322,8 +322,16 @@ namespace _051スタイルバイク
                                                             d = d.AddYears(1);
                                                         }
                                                         entity.stockDate = d.ToString("yyyy-MM-dd");
+
+                                                    if ((entity.qtyStatus != "unknown status"))
+                                                    {
                                                         fun.Qbei_Inserts(entity);
                                                     }
+                                                    else
+                                                    {
+                                                        fun.Qbei_ErrorInsert(51, fun.GetSiteName("051"), "Item doesn't Check!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "051");
+                                                    }
+                                                }
                                                 }
                                             }
                                         }
