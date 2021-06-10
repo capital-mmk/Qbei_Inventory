@@ -137,6 +137,7 @@ namespace _110_Chrome
                         fun.url = dt.Rows[0]["Url"].ToString();
 
                         chrome.Url = fun.url;
+                        Thread.Sleep(4000);
                         chrome.FindElement(By.XPath("/html/body/center/div/div[1]/div/div/div[2]/ul/li/a")).Click();
                         string username = dt.Rows[0]["UserName"].ToString();
                         chrome.FindElement(By.Name("id")).SendKeys(username);
