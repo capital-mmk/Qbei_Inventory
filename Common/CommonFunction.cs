@@ -823,6 +823,8 @@ namespace Common
                 //2021/04/21 Add
                 case "051": return "スタイルバイク";
                 case "110": return "アサヒサイクル";
+                //2021/06/15 Add
+                case "58": return "リンエイ";
                 default: return "unknwon site";
 
 
