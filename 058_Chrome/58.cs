@@ -242,7 +242,7 @@ namespace _058リンエイ
                                         }
                                         else
                                         {
-                                            entity.price = chrome.FindElement(By.Id("ICInputSuryo_tanka1")).GetAttribute("value");
+                                            entity.price = chrome.FindElement(By.Id("ICInputSuryo_tanka1")).GetAttribute("value").Replace(",", "").Trim();
                                             if (entity.price == "")
                                             {
                                                 entity.price = dt058.Rows[i]["下代"].ToString();
