@@ -366,8 +366,12 @@ namespace _17インターマックス
                                     }
                                     else
                                     {
-                                        entity.qtyStatus = "inquiry";
-                                        entity.stockDate = "2100-01-01";
+                                        //<remark Edit Logic for New Stockdate 2021/06/24 Start>
+                                        //entity.qtyStatus = "inquiry";
+                                        //entity.stockDate = "2100-01-01";
+                                        entity.qtyStatus = "empty";
+                                        entity.stockDate = "2100-02-01";
+                                        //</remark 2021/06/24 End>
                                     }
                                 }
                                 else
