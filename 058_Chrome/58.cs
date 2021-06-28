@@ -254,7 +254,8 @@ namespace _058リンエイ
                                                 string[] stringSeparators = new string[] { "\r\n" };
                                                 string[] lines = qty.Split(stringSeparators, StringSplitOptions.None);
                                                 var check_month = lines[1].Split('月');
-                                                Month = Convert.ToInt32(check_month[0]);
+                                                //Month = Convert.ToInt32(check_month[0]);//<remark Edit Logic for halfwidth of number 2021/06/28 />
+                                                Month = Convert.ToInt32(check_month[0].Normalize(NormalizationForm.FormKC));
                                                 Year = DateTime.Now.ToString("yyyy");
                                                 Day = DateTime.DaysInMonth(Convert.ToInt32(Year), Month).ToString();
                                                 entity.True_Quantity = lines[0];
