@@ -249,35 +249,81 @@ namespace _058リンエイ
                                             }
                                             qty = chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[1]/div[2]/div[3]/form/table[3]/tbody/tr[2]/td[3]")).Text;
                                             strStockDate = qty;
-                                            if (qty.Contains("月"))
+                                            if (qty.Contains("年") || qty.Contains("月"))
                                             {
                                                 string[] stringSeparators = new string[] { "\r\n" };
                                                 string[] lines = qty.Split(stringSeparators, StringSplitOptions.None);
-                                                var check_month = lines[1].Split('月');
-                                                //Month = Convert.ToInt32(check_month[0]);//<remark Edit Logic for halfwidth of number 2021/06/28 />
-                                                Month = Convert.ToInt32(check_month[0].Normalize(NormalizationForm.FormKC));
-                                                Year = DateTime.Now.ToString("yyyy");
-                                                Day = DateTime.DaysInMonth(Convert.ToInt32(Year), Month).ToString();
+                                                //<remark Add Logic for year of stockdate 2021/07/05 Start>
+
+                                                if (qty.Contains("年") && qty.Contains("月"))
+                                                {
+                                                    var check_year = lines[1].Split('年');
+                                                    Year = check_year[0];
+                                                    var check_month_1 = check_year[1].Split('月');
+                                                    Month = Convert.ToInt32(check_month_1[0].Normalize(NormalizationForm.FormKC));
+                                                    Day = DateTime.DaysInMonth(Convert.ToInt32(Year), Month).ToString();
+                                                    if (strStockDate.Contains("初旬") || strStockDate.Contains("上旬") || strStockDate.Contains("上"))
+                                                    {
+                                                        entity.stockDate = Year + "-" + Month + "-" + "10";
+                                                    }
+                                                    else if (strStockDate.Contains("中旬") || strStockDate.Contains("中") || strStockDate.Contains("中頃"))
+                                                    {
+                                                        entity.stockDate = Year + "-" + Month + "-" + "20";
+                                                    }
+                                                    else if (strStockDate.Contains("下旬") || strStockDate.Contains("末頃") || strStockDate.Contains("末") || strStockDate.Contains("下") || strStockDate.Contains("頃"))
+                                                    {
+                                                        entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                    }
+                                                    else
+                                                    {
+                                                        entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                    }
+                                                }
+                                                else if (qty.Contains("月"))
+                                                {                                                    
+                                                    var check_month_2 = lines[1].Split('月');
+                                                    //Month = Convert.ToInt32(check_month[0]);//<remark Edit Logic for halfwidth of number 2021/06/28 />
+                                                    Month = Convert.ToInt32(check_month_2[0].Normalize(NormalizationForm.FormKC));
+                                                    Year = DateTime.Now.ToString("yyyy");
+                                                    Day = DateTime.DaysInMonth(Convert.ToInt32(Year), Month).ToString();
+                                                    if (strStockDate.Contains("初旬") || strStockDate.Contains("上旬") || strStockDate.Contains("上"))
+                                                    {
+                                                        entity.stockDate = Year + "-" + Month + "-" + "10";
+                                                    }
+                                                    else if (strStockDate.Contains("中旬") || strStockDate.Contains("中") || strStockDate.Contains("中頃"))
+                                                    {
+                                                        entity.stockDate = Year + "-" + Month + "-" + "20";
+                                                    }
+                                                    else if (strStockDate.Contains("下旬") || strStockDate.Contains("末頃") || strStockDate.Contains("末") || strStockDate.Contains("下") || strStockDate.Contains("頃"))
+                                                    {
+                                                        entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                    }
+                                                    else
+                                                    {
+                                                        entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                    }
+                                                }
+                                                //if (strStockDate.Contains("初旬") || strStockDate.Contains("上旬") || strStockDate.Contains("上"))
+                                                //{
+                                                //    entity.stockDate = Year + "-" + Month + "-" + "10";
+                                                //}
+                                                //else if (strStockDate.Contains("中旬") || strStockDate.Contains("中") || strStockDate.Contains("中頃"))
+                                                //{
+                                                //    entity.stockDate = Year + "-" + Month + "-" + "20";
+                                                //}
+                                                //else if (strStockDate.Contains("下旬") || strStockDate.Contains("末頃") || strStockDate.Contains("末") || strStockDate.Contains("下") || strStockDate.Contains("頃"))
+                                                //{
+                                                //    entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                //}
+                                                //else
+                                                //{
+                                                //    entity.stockDate = Year + "-" + Month + "-" + Day;
+                                                //}
                                                 entity.True_Quantity = lines[0];
                                                 entity.True_StockDate = lines[1];
-                                                if (strStockDate.Contains("初旬") || strStockDate.Contains("上旬") || strStockDate.Contains("上"))
-                                                {
-                                                    entity.stockDate = Year + "-" + Month + "-" + "10";
-                                                }
-                                                else if (strStockDate.Contains("中旬") || strStockDate.Contains("中") || strStockDate.Contains("中頃"))
-                                                {
-                                                    entity.stockDate = Year + "-" + Month + "-" + "20";
-                                                }
-                                                else if (strStockDate.Contains("下旬") || strStockDate.Contains("末頃") || strStockDate.Contains("末") || strStockDate.Contains("下"))
-                                                {
-                                                    entity.stockDate = Year + "-" + Month + "-" + Day;
-                                                }
-                                                else
-                                                {
-                                                    entity.stockDate = Year + "-" + Month + "-" + Day;
-                                                }
-
+                                                //</remark 2021/07/05 End>
                                             }
+
                                             entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") ? "small" : qty.Contains("×") || qty.Contains("入荷待ち") || qty.Contains("廃番") ? "empty" : qty.Contains("取り寄せ") ? "inquily" : "unknown status";
                                             if (entity.stockDate == null || entity.stockDate == " ")
                                             {
