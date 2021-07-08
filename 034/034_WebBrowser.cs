@@ -112,7 +112,7 @@ namespace _34シマノ
                 fun.Qbei_Delete(34);
                 fun.Qbei_ErrorDelete(34);
                 dt034 = fun.GetDatatable("034");
-                dt034 = fun.GetOrderData(dt034, "https://sips.shimano.co.jp/front/g/g", "034", string.Empty);
+                //dt034 = fun.GetOrderData(dt034, "https://sips.shimano.co.jp/front/g/g", "034", string.Empty);
                 fun.GetTotalCount("034");
                 ReadData();
             }
