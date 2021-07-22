@@ -477,7 +477,8 @@ namespace _13ミズタニ
 
                         //<remark 12/13/2019更新　start>
                         //if (entity.stockDate.Contains("月中旬") || entity.stockDate.Contains("月上旬"))
-                        if (entity.stockDate.Contains("月上旬") || entity.stockDate.Contains("月中旬") || entity.stockDate.Contains("月下旬") || entity.stockDate.Contains("月予定"))
+                        //if (entity.stockDate.Contains("月上旬") || entity.stockDate.Contains("月中旬") || entity.stockDate.Contains("月下旬") || entity.stockDate.Contains("月予定"))//<remark Edit Logic for Stockdate 2021/07/22 />
+                        if (entity.stockDate.Contains("月上旬") || entity.stockDate.Contains("月中旬") || entity.stockDate.Contains("月下旬") || entity.stockDate.Contains("月予定") || entity.stockDate.Contains("月初旬"))
                         //</remark 12/13/2019　end>
                         {
                             entity.stockDate = entity.stockDate.Replace("次回", "").Replace("入荷", "");
@@ -489,7 +490,8 @@ namespace _13ミズタニ
 
                             //<remark 12/13/2019更新　start>
                             //else if (entity.stockDate.Contains("上旬") || entity.stockDate.Contains("月予定"))
-                            else if (entity.stockDate.Contains("上旬"))
+                            //else if (entity.stockDate.Contains("上旬"))//<remark Edit Logic for Stockdate 2021/07/22 />
+                            else if (entity.stockDate.Contains("上旬") || entity.stockDate.Contains("初旬"))
                                 //</remark 12/13/2019　end>
                                 day = "10";
 
