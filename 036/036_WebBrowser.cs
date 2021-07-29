@@ -115,7 +115,7 @@ namespace _36PRインターナショナル
                 fun.Qbei_Delete(36);
                 fun.Qbei_ErrorDelete(36);
                 dt036 = fun.GetDatatable("036");
-                dt036 = fun.GetOrderData(dt036, "http://www.g-style.ne.jp/shop", "036", "");
+                //dt036 = fun.GetOrderData(dt036, "http://www.g-style.ne.jp/shop", "036", "");<remark Close Logic 2021/07/29 />
                 fun.GetTotalCount("036");
                 ReadData();
             }
@@ -608,7 +608,13 @@ namespace _36PRインターナショナル
                                     {
                                         entity.stockDate = "2100-02-01";
                                     }
-                                    //</remark 2020/05/21 End>                           
+                                    //</remark 2020/05/21 End>
+                                    //<remark Add Logic for String is not Stockdate 2021/07/29 Start>
+                                    else
+                                    {
+                                        entity.stockDate = "2100-02-01";
+                                    }
+                                    //</remark 2021/07/29 End>
                                     //2018-04-20 Start
                                     if (strStockDate.Equals("2月"))
                                     {
