@@ -316,24 +316,43 @@ namespace _139
                 int Amount_Order = Check_Ordercode.Rows.Count;
                 foreach (DataRow Check_Rows in Check_Ordercode.Rows)
                 {
-
-
                     entity = new Qbei_Entity();
                     string[] strData;
                     webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_Item);
-
                     Really_jancode = Check_Rows["JANコード"].ToString();
                     Really_size = Check_Rows["サイズ"].ToString();
-                    DataTable Really_Table = dt139.AsEnumerable().Where(y => (y["JANコード"].Equals(Really_jancode) && y["サイズ"].Equals(Really_size))).CopyToDataTable();
-                    strSize = Really_Table.Rows[0]["サイズ"].ToString();
-                    strData = strSize.Split(new char[] { '（', '(' }, StringSplitOptions.RemoveEmptyEntries);
-                    strSize = strData[0].Trim();
+
+                    //<remark Add Logic for Check Size 2021/08/06 Start>
+                    //DataTable Really_Table = dt139.AsEnumerable().Where(y => (y["JANコード"].Equals(Really_jancode) && y["サイズ"].Equals(Really_size))).CopyToDataTable();
+                    //strSize = Really_Table.Rows[0]["サイズ"].ToString();
+                    //strData = strSize.Split(new char[] { '（', '(' }, StringSplitOptions.RemoveEmptyEntries);
+                    //strSize = strData[0].Trim();
                     //<remark Add Logic for rellay size 2021/01/06 Start>
-                    if (strSize == "ONE_SIZE")
-                    {
-                        strSize = strSize.Replace("_", " ");
-                    }
+                    //if (strSize == "ONE_SIZE")
+                    //{
+                    //    strSize = strSize.Replace("_", " ");
+                    //}
                     //</remark 2021/01/06 End>
+
+                    if (Really_size == "" && Amount_Order == 1)
+                    {
+
+                    }
+                    else
+                    {
+                        DataTable Really_Table = dt139.AsEnumerable().Where(y => (y["JANコード"].Equals(Really_jancode) && y["サイズ"].Equals(Really_size))).CopyToDataTable();
+                        strSize = Really_Table.Rows[0]["サイズ"].ToString();
+                        strData = strSize.Split(new char[] { '（', '(' }, StringSplitOptions.RemoveEmptyEntries);
+                        strSize = strData[0].Trim();
+                        //<remark Add Logic for rellay size 2021/01/06 Start>
+                        if (strSize == "ONE_SIZE")
+                        {
+                            strSize = strSize.Replace("_", " ");
+                        }
+                        //</remark 2021/01/06 End>
+                    }                    
+                    //</remark 2021/08/06 End>
+
                     entity.partNo = Check_Rows["自社品番"].ToString();
                     entity.reflectDate = Check_Rows["最終反映日"].ToString();
                     entity.janCode = Check_Rows["JANコード"].ToString();
