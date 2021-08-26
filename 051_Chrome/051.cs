@@ -192,8 +192,15 @@ namespace _051スタイルバイク
                                 //    Thread.Sleep(2000);
                                 //    chrome.FindElement(By.Id("modaal-close")).Click();
                                 //}
-                                var page_no = chrome.FindElement(By.ClassName("__count")).GetAttribute("innerHTML");
-                                for (int i = 1; i <= Convert.ToInt32(page_no); ++i)
+                                //<remark Edit&Add Logic for Close Advertisments 2021/08/26 Start>
+                                //var page_no = chrome.FindElement(By.ClassName("__count")).GetAttribute("innerHTML");
+                                string page = chrome.FindElement(By.ClassName("__page-info")).GetAttribute("innerHTML").ToString();
+                                string[] page_no = page.Split('>');
+                                page = page_no[3];
+                                string[] page_last = page.Split('<');
+                                for (int i = 1; i <= Convert.ToInt32(page_last[0]); ++i)
+                                // for (int i = 1; i <= Convert.ToInt32(page_no); ++i)
+                                //</remark 2021/08/26 End>
                                 {
                                     Thread.Sleep(2000);
                                     chrome.FindElement(By.Id("modaal-close")).Click();
@@ -210,36 +217,47 @@ namespace _051スタイルバイク
                             fun.WriteLog("Error Case of Advertisemnts             ------", "051-");
                         }
 
-                            /// <summary>
-                            /// Inspection of item information at Mall.
-                            /// </summary>
-                            try
+                        /// <summary>
+                        /// Inspection of item information at Mall.
+                        /// </summary>
+                        try
+                        {
+                            int Lastrow = dt051.Rows.Count;
+                            for (i = 0; i < Lastrow; i++)
                             {
-                                int Lastrow = dt051.Rows.Count;
-                                for (i = 0; i < Lastrow; i++)
+                                if (i < Lastrow)
                                 {
-                                    if (i < Lastrow)
+                                    Thread.Sleep(2000);
+                                    ordercode = dt051.Rows[i]["発注コード"].ToString();
+                                    chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/section[3]/form/div/input")).Clear();
+                                    chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/section[3]/form/div/input")).SendKeys(ordercode);
+                                    chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/section[3]/form/div/button")).Click();
+
+                                    entity = new Qbei_Entity();
+                                    entity.siteID = 51;
+                                    entity.sitecode = "051";
+                                    entity.janCode = dt051.Rows[i]["JANコード"].ToString();
+                                    entity.partNo = dt051.Rows[i]["自社品番"].ToString();
+                                    entity.makerDate = fun.getCurrentDate();
+                                    entity.reflectDate = dt051.Rows[i]["最終反映日"].ToString();
+                                    entity.orderCode = dt051.Rows[i]["発注コード"].ToString().Trim();
+                                    entity.purchaseURL = "https://sb2b.jp/list.php?keyword=" + entity.orderCode;
+
+                                    if (!string.IsNullOrWhiteSpace(entity.orderCode))
                                     {
-                                        Thread.Sleep(2000);
-                                        ordercode = dt051.Rows[i]["発注コード"].ToString();
-                                        chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/section[3]/form/div/input")).Clear();
-                                        chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/section[3]/form/div/input")).SendKeys(ordercode);
-                                        chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/section[3]/form/div/button")).Click();
-
-                                        entity = new Qbei_Entity();
-                                        entity.siteID = 51;
-                                        entity.sitecode = "051";
-                                        entity.janCode = dt051.Rows[i]["JANコード"].ToString();
-                                        entity.partNo = dt051.Rows[i]["自社品番"].ToString();
-                                        entity.makerDate = fun.getCurrentDate();
-                                        entity.reflectDate = dt051.Rows[i]["最終反映日"].ToString();
-                                        entity.orderCode = dt051.Rows[i]["発注コード"].ToString().Trim();
-                                        entity.purchaseURL = "https://sb2b.jp/list.php?keyword=" + entity.orderCode;
-
-                                        if (!string.IsNullOrWhiteSpace(entity.orderCode))
+                                        body = chrome.FindElement(By.TagName("body")).Text;
+                                        if (body.Contains("お探しの検索条件に合致する商品は見つかりませんでした。"))
                                         {
-                                            body = chrome.FindElement(By.TagName("body")).Text;
-                                            if (body.Contains("お探しの検索条件に合致する商品は見つかりませんでした。"))
+                                            entity.qtyStatus = "empty";
+                                            entity.stockDate = "2100-02-01";
+                                            entity.price = dt051.Rows[i]["下代"].ToString();
+                                            entity.True_StockDate = "Not Found";
+                                            entity.True_Quantity = "Not Found";
+                                            fun.Qbei_Inserts(entity);
+                                        }
+                                        else
+                                        {
+                                            if (chrome.FindElement(By.ClassName("__photo")) == null)
                                             {
                                                 entity.qtyStatus = "empty";
                                                 entity.stockDate = "2100-02-01";
@@ -250,7 +268,9 @@ namespace _051スタイルバイク
                                             }
                                             else
                                             {
-                                                if (chrome.FindElement(By.ClassName("__photo")) == null)
+                                                int n = chrome.FindElements(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr")).Count();
+
+                                                if (n == 0)
                                                 {
                                                     entity.qtyStatus = "empty";
                                                     entity.stockDate = "2100-02-01";
@@ -261,67 +281,54 @@ namespace _051スタイルバイク
                                                 }
                                                 else
                                                 {
-                                                    int n = chrome.FindElements(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr")).Count();
-
-                                                    if (n == 0)
+                                                    for (int i = 1; i <= n; i++)
                                                     {
-                                                        entity.qtyStatus = "empty";
-                                                        entity.stockDate = "2100-02-01";
-                                                        entity.price = dt051.Rows[i]["下代"].ToString();
-                                                        entity.True_StockDate = "Not Found";
-                                                        entity.True_Quantity = "Not Found";
-                                                        fun.Qbei_Inserts(entity);
-                                                    }
-                                                    else
-                                                    {
-                                                        for (int i = 1; i <= n; i++)
+                                                        if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[1]/span[2]")).Text.Equals("[" + entity.orderCode + "]"))
                                                         {
-                                                            if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[1]/span[2]")).Text.Equals("[" + entity.orderCode + "]"))
+                                                            entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[1]/div/span[1]/span")).Text.Replace("円", "").Replace(",", "").Trim();
+                                                            string stock = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]")).GetAttribute("innerHTML").ToString().Trim();
+                                                            if (stock.Contains("__input"))
                                                             {
-                                                                entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[1]/div/span[1]/span")).Text.Replace("円", "").Replace(",", "").Trim();
-                                                                string stock = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]")).GetAttribute("innerHTML").ToString().Trim();
-                                                                if (stock.Contains("__input"))
-                                                                {
-                                                                    if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[2]/div[3]/dl/dd")) == null)
-                                                                    {
-                                                                        entity.qtyStatus = "empty";
-                                                                        entity.stockDate = "2100-02-01";
-                                                                        entity.True_StockDate = "Not Found";
-                                                                        entity.True_Quantity = "Not Found";
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[2]/div[3]/dl/dd")).Text;
-                                                                        entity.qtyStatus = qty.Equals("○") || qty.Contains("最少") ? "good" : qty.Equals("△") ? "empty" : qty.Equals("×") ? "empty" : "unknown status";
-                                                                        entity.stockDate = qty.Equals("○") || qty.Contains("最少") ? "2100-01-01" : qty.Equals("△") ? "2100-02-01" : "unknown status";
-                                                                        entity.True_StockDate = "Not Found";
-                                                                        entity.True_Quantity = qty;
-                                                                    }
-                                                                }
-                                                                else
+                                                                if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[2]/div[3]/dl/dd")) == null)
                                                                 {
                                                                     entity.qtyStatus = "empty";
                                                                     entity.stockDate = "2100-02-01";
                                                                     entity.True_StockDate = "Not Found";
                                                                     entity.True_Quantity = "Not Found";
                                                                 }
-                                                                break;
+                                                                else
+                                                                {
+                                                                    qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[2]/div[3]/dl/dd")).Text;
+                                                                    entity.qtyStatus = qty.Equals("○") || qty.Contains("最少") ? "good" : qty.Equals("△") ? "empty" : qty.Equals("×") ? "empty" : "unknown status";
+                                                                    entity.stockDate = qty.Equals("○") || qty.Contains("最少") ? "2100-01-01" : qty.Equals("△") ? "2100-02-01" : "unknown status";
+                                                                    entity.True_StockDate = "Not Found";
+                                                                    entity.True_Quantity = qty;
+                                                                }
                                                             }
+                                                            else
+                                                            {
+                                                                entity.qtyStatus = "empty";
+                                                                entity.stockDate = "2100-02-01";
+                                                                entity.True_StockDate = "Not Found";
+                                                                entity.True_Quantity = "Not Found";
+                                                            }
+                                                            break;
                                                         }
-                                                        if (entity.price == null || entity.qtyStatus == null || entity.stockDate == null)
-                                                        {
-                                                            entity.qtyStatus = "empty";
-                                                            entity.stockDate = "2100-02-01";
-                                                            entity.price = dt051.Rows[i]["下代"].ToString();
-                                                            entity.True_StockDate = "Not Found";
-                                                            entity.True_Quantity = "Not Found";
-                                                        }
-                                                        DateTime d = Convert.ToDateTime(entity.stockDate);
-                                                        if (d <= (DateTime.Now))
-                                                        {
-                                                            d = d.AddYears(1);
-                                                        }
-                                                        entity.stockDate = d.ToString("yyyy-MM-dd");
+                                                    }
+                                                    if (entity.price == null || entity.qtyStatus == null || entity.stockDate == null)
+                                                    {
+                                                        entity.qtyStatus = "empty";
+                                                        entity.stockDate = "2100-02-01";
+                                                        entity.price = dt051.Rows[i]["下代"].ToString();
+                                                        entity.True_StockDate = "Not Found";
+                                                        entity.True_Quantity = "Not Found";
+                                                    }
+                                                    DateTime d = Convert.ToDateTime(entity.stockDate);
+                                                    if (d <= (DateTime.Now))
+                                                    {
+                                                        d = d.AddYears(1);
+                                                    }
+                                                    entity.stockDate = d.ToString("yyyy-MM-dd");
 
                                                     if ((entity.qtyStatus != "unknown status"))
                                                     {
@@ -332,30 +339,30 @@ namespace _051スタイルバイク
                                                         fun.Qbei_ErrorInsert(51, fun.GetSiteName("051"), "Item doesn't Check!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "051");
                                                     }
                                                 }
-                                                }
                                             }
                                         }
-                                        else
-                                        {
-                                            fun.Qbei_ErrorInsert(51, fun.GetSiteName("051"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "051");
-                                        }
+                                    }
+                                    else
+                                    {
+                                        fun.Qbei_ErrorInsert(51, fun.GetSiteName("051"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "051");
                                     }
                                 }
-                                qe.site = 51;
-                                qe.flag = 2;
-                                qe.starttime = string.Empty;
-                                qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                                fun.ChangeFlag(qe);
-                                chrome.Quit();
-                                Environment.Exit(0);
                             }
-                            catch (Exception ex)
-                            {
-                                string janCode = dt051.Rows[i]["JANコード"].ToString();
-                                orderCode = dt051.Rows[i]["発注コード"].ToString();
-                                fun.Qbei_ErrorInsert(51, fun.GetSiteName("051"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "051");
-                                fun.WriteLog(ex, "051-", janCode, orderCode);
-                            } 
+                            qe.site = 51;
+                            qe.flag = 2;
+                            qe.starttime = string.Empty;
+                            qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                            fun.ChangeFlag(qe);
+                            chrome.Quit();
+                            Environment.Exit(0);
+                        }
+                        catch (Exception ex)
+                        {
+                            string janCode = dt051.Rows[i]["JANコード"].ToString();
+                            orderCode = dt051.Rows[i]["発注コード"].ToString();
+                            fun.Qbei_ErrorInsert(51, fun.GetSiteName("051"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "051");
+                            fun.WriteLog(ex, "051-", janCode, orderCode);
+                        }
                     }
                 }
             }
