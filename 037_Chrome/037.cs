@@ -51,17 +51,17 @@ namespace _037
         ///</remark>
         public static void testFlag()
         {
-        	try
-        	{
-	            Qbeisetting_Entity qe = new Qbeisetting_Entity();
-	            DataTable dtSetting = new DataTable();
-	
-	            int intFlag;
-	            qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-	            qe.site = 037;
-	            qe.flag = 1;
-	            dtSetting = fun.SelectFlag(037);
-	            intFlag = int.Parse(dtSetting.Rows[0]["FlagIsFinished"].ToString());
+            try
+            {
+                Qbeisetting_Entity qe = new Qbeisetting_Entity();
+                DataTable dtSetting = new DataTable();
+
+                int intFlag;
+                qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                qe.site = 037;
+                qe.flag = 1;
+                dtSetting = fun.SelectFlag(037);
+                intFlag = int.Parse(dtSetting.Rows[0]["FlagIsFinished"].ToString());
 
                 /// <summary>
                 /// Flag Number of Check.
@@ -71,25 +71,25 @@ namespace _037
                 /// when flag is 0,Change to flag is 1 and Continue to StartRun Process.
                 /// </remark>
                 if (intFlag == 0)
-	            {
-	                fun.ChangeFlag(qe);
-	                startRun();
-	            }
+                {
+                    fun.ChangeFlag(qe);
+                    startRun();
+                }
 
                 ///<remark>
                 ///when flag is 1,To Continue to StartRun Process.
                 ///</remark>
                 else if (intFlag == 1)
-	            {
-	                fun.deleteData(037);
-	                fun.ChangeFlag(qe);
-	                startRun();
-	            }
-	            else
-	            {
-	                Environment.Exit(0);
-	            }
-	        }
+                {
+                    fun.deleteData(037);
+                    fun.ChangeFlag(qe);
+                    startRun();
+                }
+                else
+                {
+                    Environment.Exit(0);
+                }
+            }
             catch (Exception ex)
             {
                 fun.WriteLog(ex, "037-");
@@ -131,7 +131,10 @@ namespace _037
             chromeOptions.AddUserProfilePreference("download.default_directory", @"C:\Qbei_Log\037_Download\");
             chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");
             chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
-            using (IWebDriver chrome = new ChromeDriver(chromeOptions))
+            chromeOptions.AddArguments("-no-sandbox");//<remark Add Logic for ChormeDriver 2021/09/02 />
+            var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);//<remark Add Logic for ChormeDriver 2021/09/02 />
+            //using (IWebDriver chrome = new ChromeDriver(chromeOptions))
+            using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))//<remark Edit Logic for ChormeDriver 2021/09/02 />
             {
                 DataTable dt = new DataTable();
                 Qbeisetting_BL qubl = new Qbeisetting_BL();
@@ -173,7 +176,7 @@ namespace _037
                 }
 
                 DataTable dt037 = fun.GetDatatable("037");
-               // dt037 = fun.GetOrderData(dt037, "https://ec.tsss.co.jp/aec/user/csv_export_download_info?schedule_id=csv_export_49c35718d482aecec14e92168a955b66", "037", "");//<remark Close Logic 2020/04/28 />
+                // dt037 = fun.GetOrderData(dt037, "https://ec.tsss.co.jp/aec/user/csv_export_download_info?schedule_id=csv_export_49c35718d482aecec14e92168a955b66", "037", "");//<remark Close Logic 2020/04/28 />
                 fun.GetTotalCount("037");
                 string[] str = { "在庫数量", "商品コード", "下代単価" };
                 DataTable dtItem = fun.GetDatatableFromDownloadPath(@"C:\Qbei_Log\037_Download\", str);
