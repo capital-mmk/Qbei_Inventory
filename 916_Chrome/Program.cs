@@ -42,8 +42,8 @@ namespace _916_Chrome
         /// </summary>
         /// <param name="args">constant string</param>
         static void Main(string[] args)
-        {          
-                testflag();
+        {
+            testflag();
         }
 
         /// <summary>
@@ -122,7 +122,12 @@ namespace _916_Chrome
             {
                 var chromeOptions = new ChromeOptions();
                 chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";//<Add Logic for Chrome Path 2021/05/24 />
-                using (IWebDriver chrome = new ChromeDriver(chromeOptions))
+                chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");//<remark Add Logic for ChormeDriver 2021/09/02 />
+                chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");//<remark Add Logic for ChormeDriver 2021/09/02 />
+                chromeOptions.AddArguments("-no-sandbox");//<remark Add Logic for ChormeDriver 2021/09/02 />
+                var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);//<remark Add Logic for ChormeDriver 2021/09/02 />                                                                                                                       
+                //using (IWebDriver chrome = new ChromeDriver(chromeOptions))
+                using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))//<remark Edit Logic for ChormeDriver 2021/09/02 />
                 {
                     DataTable dt = new DataTable();
                     Qbeisetting_BL qubl = new Qbeisetting_BL();
@@ -188,7 +193,7 @@ namespace _916_Chrome
                                 entity.makerDate = fun.getCurrentDate();
                                 entity.reflectDate = dt916.Rows[i]["最終反映日"].ToString();
                                 entity.orderCode = dt916.Rows[i]["発注コード"].ToString();
-                                entity.purchaseURL = "https://btob.asahi-wsd.jp/website/asahi/product/list?product_code=" +entity.orderCode;
+                                entity.purchaseURL = "https://btob.asahi-wsd.jp/website/asahi/product/list?product_code=" + entity.orderCode;
 
                                 //<remark>
                                 //Check to Ordercode
