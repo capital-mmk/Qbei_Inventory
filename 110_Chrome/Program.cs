@@ -120,10 +120,15 @@ namespace _110_Chrome
                 }
                 try
                 {
-                    var chromeOptions = new ChromeOptions();
-                    chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
-                    using (IWebDriver chrome = new ChromeDriver(chromeOptions))
-                    {
+                var chromeOptions = new ChromeOptions();
+                chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";//<Add Logic for Chrome Path 2021/05/24 />
+                chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");//<remark Add Logic for ChormeDriver 2021/09/02 />
+                chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");//<remark Add Logic for ChormeDriver 2021/09/02 />
+                chromeOptions.AddArguments("-no-sandbox");//<remark Add Logic for ChormeDriver 2021/09/02 />
+                var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);//<remark Add Logic for ChormeDriver 2021/09/02 />                                                                                                                       
+                //using (IWebDriver chrome = new ChromeDriver(chromeOptions))
+                using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))//<remark Edit Logic for ChormeDriver 2021/09/02 />
+                {
                         DataTable dt = new DataTable();
                         Qbeisetting_BL qubl = new Qbeisetting_BL();
                         Qbeisetting_Entity qe = new Qbeisetting_Entity();
