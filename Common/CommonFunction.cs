@@ -314,9 +314,15 @@ namespace Common
                             //Trim 
                             dtNotNull.AsEnumerable().ToList().ForEach(r => r["発注コード"] = r.Field<string>("発注コード").Trim());
                             //<remark Add Logic 2021/05/04 Start>
-                            DataTable dtselect = dtTemp.Select("発注コード like '/%' OR 発注コード like '-%'").CopyToDataTable();
-                            var select= dtNotNull.AsEnumerable().Where(r => !dtselect.AsEnumerable().Any(y => y.Field<string>("JANコード") == r.Field<string>("JANコード")));
-                            dtNotNull= select.OrderBy(x => x.Field<string>("メーカー情報日")).CopyToDataTable();
+                            //<remark Add Logic 2021/09/10 Start>
+                            DataRow[] dr_percent = dtTemp.Select("発注コード like '/%' OR 発注コード like '-%'");
+                            if (dr_percent.Count() > 0)
+                            {
+                                DataTable dtselect = dtTemp.Select("発注コード like '/%' OR 発注コード like '-%'").CopyToDataTable();
+                                var select = dtNotNull.AsEnumerable().Where(r => !dtselect.AsEnumerable().Any(y => y.Field<string>("JANコード") == r.Field<string>("JANコード")));
+                                dtNotNull = select.OrderBy(x => x.Field<string>("メーカー情報日")).CopyToDataTable();
+                            }
+                            //</remark Add Logic 2021/09/10 End>
                             //</remark Add Logic 2021/05/04 End>
                             //2018-05-07 Start
                             //var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Contains("在庫") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("/") || r.Field<string>("発注コード").Contains("データ登録")));
@@ -964,24 +970,24 @@ namespace Common
             /// <remark>
             /// Insert to  Error of Data into Qbei_ErrorLog Table.
             /// </remark>
-            Connection con = new Connection();
-            SqlConnection sqlcon = con.GetConnection();
-            SqlCommand cmd = new SqlCommand("Qbei_ErrorInsert", sqlcon);
-            cmd.CommandType = CommandType.StoredProcedure;
-            // cmd.Parameters.AddWithValue("@id", id);
-            cmd.Parameters.AddWithValue("@site", site);
-            cmd.Parameters.AddWithValue("@sitename", sitename);
-            cmd.Parameters.AddWithValue("@jancode", janCode);
-            cmd.Parameters.AddWithValue("@OrderCode", orderCode);
-            cmd.Parameters.AddWithValue("@Description", description);
-            cmd.Parameters.AddWithValue("@errortype", errortype);
-            cmd.Parameters.AddWithValue("@Date", Date);
-            cmd.Parameters.AddWithValue("@sitecode", sitecode);
+                Connection con = new Connection();
+                SqlConnection sqlcon = con.GetConnection();
+                SqlCommand cmd = new SqlCommand("Qbei_ErrorInsert", sqlcon);
+                cmd.CommandType = CommandType.StoredProcedure;
+                // cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@site", site);
+                cmd.Parameters.AddWithValue("@sitename", sitename);
+                cmd.Parameters.AddWithValue("@jancode", janCode);
+                cmd.Parameters.AddWithValue("@OrderCode", orderCode);
+                cmd.Parameters.AddWithValue("@Description", description);
+                cmd.Parameters.AddWithValue("@errortype", errortype);
+                cmd.Parameters.AddWithValue("@Date", Date);
+                cmd.Parameters.AddWithValue("@sitecode", sitecode);
 
-            //  cmd.Parameters.AddWithValue("@Updated_Date", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
-            cmd.Connection.Open();
-            cmd.ExecuteNonQuery();
-            cmd.Connection.Close();
+                //  cmd.Parameters.AddWithValue("@Updated_Date", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+                cmd.Connection.Open();
+                cmd.ExecuteNonQuery();
+                cmd.Connection.Close();
         }
 
         /// <summary>

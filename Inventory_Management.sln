@@ -101,13 +101,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "023", "023\023.csproj", "{3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "124-Mizutani", "124-Mizutani\124-Mizutani.csproj", "{72A9BC79-7191-4E83-BF51-90D745C784E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "110", "110\110.csproj", "{3EAE7675-7AA9-4218-8A7E-D1FA34BAFFF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "145", "110\145.csproj", "{3EAE7675-7AA9-4218-8A7E-D1FA34BAFFF5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "110_Chrome", "110_Chrome\110_Chrome.csproj", "{14FABD69-25E2-4E32-99B0-D627C7FABB8F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "051_Chrome", "051_Chrome\051_Chrome.csproj", "{80143C33-FF7F-410E-8EA3-D425645D7CBC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "058_Chrome", "058_Chrome\058_Chrome.csproj", "{4FB7C9AA-BB11-4F8E-BE43-6B98584ADDA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "145_Chrome", "145_Chrome\145_Chrome.csproj", "{B4CEA30F-890F-4B0B-8B7E-878A03756170}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -617,6 +619,18 @@ Global
 		{4FB7C9AA-BB11-4F8E-BE43-6B98584ADDA5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4FB7C9AA-BB11-4F8E-BE43-6B98584ADDA5}.Release|x86.ActiveCfg = Release|Any CPU
 		{4FB7C9AA-BB11-4F8E-BE43-6B98584ADDA5}.Release|x86.Build.0 = Release|Any CPU
+		{B4CEA30F-890F-4B0B-8B7E-878A03756170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4CEA30F-890F-4B0B-8B7E-878A03756170}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4CEA30F-890F-4B0B-8B7E-878A03756170}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B4CEA30F-890F-4B0B-8B7E-878A03756170}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B4CEA30F-890F-4B0B-8B7E-878A03756170}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B4CEA30F-890F-4B0B-8B7E-878A03756170}.Debug|x86.Build.0 = Debug|Any CPU
+		{B4CEA30F-890F-4B0B-8B7E-878A03756170}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4CEA30F-890F-4B0B-8B7E-878A03756170}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4CEA30F-890F-4B0B-8B7E-878A03756170}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B4CEA30F-890F-4B0B-8B7E-878A03756170}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B4CEA30F-890F-4B0B-8B7E-878A03756170}.Release|x86.ActiveCfg = Release|Any CPU
+		{B4CEA30F-890F-4B0B-8B7E-878A03756170}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
