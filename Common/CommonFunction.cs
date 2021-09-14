@@ -831,6 +831,8 @@ namespace Common
                 case "110": return "アサヒサイクル";
                 //2021/06/15 Add
                 case "58": return "リンエイ";
+                //2021/09/14 Add
+                case "145": return "Many'S";
                 default: return "unknwon site";
 
 
