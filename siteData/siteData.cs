@@ -209,6 +209,10 @@ namespace siteData
             QbeiUser_Entity que = new QbeiUser_Entity();
             QbeiUser_BL qubl = new QbeiUser_BL();
             DataTable dtresult = qubl.GetSiteData(siteID);
+            //<remark Add Logic for stockdate at CSV 2021/09/24 Start>
+            dtresult.AsEnumerable().Where(r => ((Convert.ToDateTime(r.Field<string>("stockDate")) >= DateTime.Now.AddMonths(9).Date)) && (r.Field<string>("stockDate") != "2100-02-01") && (r.Field<string>("stockDate") != "2100-01-10") && (r.Field<string>("stockDate") != "2100-01-01"))
+            .Select(r => r["stockDate"] = "2100-01-01").ToList();
+            //</remark 2021/09/24 End>
             if (dtresult!= null && dtresult.Rows.Count > 0)
             {
                 int dtcount = Convert.ToInt32(dtresult.Rows.Count);
