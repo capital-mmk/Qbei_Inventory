@@ -105,6 +105,8 @@ namespace siteData
             lstProcess.Add("110_Chrome");
             //(2021/06/15)Add
             lstProcess.Add("058リンエイ");
+            //(2021/09/24)Add
+            lstProcess.Add("145_Chrome");
 
             foreach (string processName in lstProcess)
             {
@@ -156,6 +158,8 @@ namespace siteData
             GenerateCSV(110, "アサヒサイクル");
             //(2021/06/15)Add
             GenerateCSV(58, "リンエイ");
+            //(2021/09/24)Add
+            GenerateCSV(145, "Many'S");
         }
 
         /// <summary>
