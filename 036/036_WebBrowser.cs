@@ -200,7 +200,11 @@ namespace _36PRインターナショナル
                 else
                 {
                     fun.WriteLog("Login success             ------", "036-");
-                    string purchaserURL = dt036.Rows[0]["purchaserURL"].ToString().Trim();
+                    //<remark Add Logic for Item search 2021/10/08 Start>
+                    //string purchaserURL = dt036.Rows[0]["purchaserURL"].ToString().Trim();
+                    string janCode = dt036.Rows[0]["JANコード"].ToString();
+                    string purchaserURL = "https://order.g-style.ne.jp/products/list.php?mode=search_navi_plus_linking&name="+janCode+"&search_brand=&category_id=&pricefrom=&priceto=";
+                    //</remark 2021/10/08 End>
                     webBrowser1.Navigate(purchaserURL);
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
@@ -239,12 +243,14 @@ namespace _36PRインターナショナル
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt036.Rows[i]["最終反映日"].ToString();
                 entity.orderCode = dt036.Rows[i]["発注コード"].ToString();
-                entity.purchaseURL = dt036.Rows[i]["purchaserURL"].ToString().Trim();
+                //entity.purchaseURL = dt036.Rows[i]["purchaserURL"].ToString().Trim();//<remark Edit Logic for Item search 2021/10/08 />
+                entity.purchaseURL = "https://order.g-style.ne.jp/products/list.php?mode=search_navi_plus_linking&name=" + entity.janCode + "&search_brand=&category_id=&pricefrom=&priceto=";
 
                 if (!string.IsNullOrWhiteSpace(entity.purchaseURL))
                 {
                     string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
-                    if (body.Contains("ご指定のページはございません。"))
+                    //if (body.Contains("ご指定のページはございません。"))//<remark Edit Logic for Item Check 2021/10/08 />
+                    if (body.Contains("ご指定のページはございません。")|| body.Contains("現在、商品はございません。"))
                     {
                         if (dt036.Rows[i]["入荷予定"].ToString().Contains("2100-01-10") && dt036.Rows[i]["在庫情報"].ToString().Contains("empty"))
                         {
@@ -271,18 +277,22 @@ namespace _36PRインターナショナル
                             string html = webBrowser1.Document.Body.InnerHtml;
                             HtmlAgilityPack.HtmlDocument hdoc = new HtmlAgilityPack.HtmlDocument();
                             hdoc.LoadHtml(html);
-                            if ((hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]") == null))
-                            {
-                                fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Access Denied!", entity.janCode, entity.purchaseURL, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
-                                fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "036-");
+                            //<remark Close Logic for Item search 2021/10/08 Start>
+                            //if ((hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]") == null))
+                            //{
+                            //    //fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Access Denied!", entity.janCode, entity.purchaseURL, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
+                            //    fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), "Access Denied!", entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");//<remark Edit Logic for Log 2021/10/07 />
+                            //    fun.WriteLog("Access Denied! " + entity.janCode + " " + entity.orderCode, "036-");
 
-                                Application.Exit();
-                                Environment.Exit(0);
-                            }
-                            else
-                            {
-                                //2018-04-23 Start
-                                if (!webBrowser1.Url.ToString().Equals(entity.purchaseURL))
+                            //    Application.Exit();//<remark Close Logic 2021/10/07 />
+                            //    Environment.Exit(0);//<remark Close Logic 2021/10/07 />
+                            //}
+                            //else
+                            //{
+                            //2018-04-23 Start
+                            //</remark  2021/10/08 End>
+
+                            if (!webBrowser1.Url.ToString().Equals(entity.purchaseURL))
                                 {
                                     webBrowser1.Navigate(entity.purchaseURL);
                                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
@@ -302,26 +312,44 @@ namespace _36PRインターナショナル
                                 strStockDate = string.Empty;
                                 string qtypath;
                                 string stockpath;
-                                entity.price = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]").InnerText;
+                                
+                                //<remark Add&Edit Logic for Item search 2021/10/08 Start>
+                                string html_price;
+                                string html_quantity;
+                                var Tables = webBrowser1.Document.GetElementsByTagName("table");
+                                foreach (HtmlElement Table in Tables)
+                                {
+                                    if (Table.InnerText.Contains("在庫状況"))
+                                    {
+                                        var a = Table.GetElementsByTagName("TD");                                     
+                                        html_price = a[0].InnerText;
+                                        html_quantity = a[1].InnerText;    
+
+
+                                //entity.price = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]").InnerText;
+                                entity.price = html_price;
                                 if (entity.price.Contains("円"))
                                 {
-                                    entity.price = entity.price.Replace("円", string.Empty).Replace(",", string.Empty);
-                                    qtypath = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[1]").InnerText;
-                                    stockpath = "div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[2]";
+                                    entity.price = entity.price.Replace("円", string.Empty).Replace(",", string.Empty).Replace(" ", string.Empty);
+                                    //qtypath = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[1]").InnerText;
+                                    //stockpath = "div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[2]";
+                                    qtypath=html_quantity;
                                 }
                                 else
                                 {
                                     entity.price = dt036.Rows[i]["下代"].ToString();
-                                    qtypath = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]").InnerText;
-                                    stockpath = "div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr/td[2]";
+                                    //qtypath = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]").InnerText;
+                                    //stockpath = "div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr/td[2]";
+                                    qtypath=html_quantity;
                                 }
                                 //entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") ? "small" : qtypath.Equals("×") || qtypath.Equals("完売") ? "empty" : "unknown status";
                                 entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") || qtypath.Equals("×") || qtypath.Equals("完売") ? "empty" : "unknown status";//<remark Change Logic of quantity 2020/07/24 />
                                 //</remark 2020/1/21 　End>
 
-                                HtmlNodeCollection nc = hdoc.DocumentNode.SelectNodes(stockpath);
+                                //HtmlNodeCollection nc = hdoc.DocumentNode.SelectNodes(stockpath);
 
-                                if (nc == null)
+                                //if (nc == null)
+                                if(!Table.InnerText.Contains("入荷時期"))
                                 {
                                     //entity.stockDate = qtypath.Equals("○") || qtypath.Equals("△") || qtypath.Equals("×") ? "2100-01-01" : qtypath.Equals("限定") ? "2100/02/01" : "unknown date";
                                     entity.stockDate = qtypath.Equals("○") || qtypath.Equals("×") ? "2100-01-01" : qtypath.Equals("△") || qtypath.Equals("限定") ? "2100/02/01" : "unknown date";//<remark Change Logic of stockdate 2020/07/24 />
@@ -332,13 +360,22 @@ namespace _36PRインターナショナル
                                 }
                                 else
                                 {
-                                    entity.stockDate = hdoc.DocumentNode.SelectSingleNode(stockpath).InnerText;
+                                        //entity.stockDate = hdoc.DocumentNode.SelectSingleNode(stockpath).InnerText;
+                                        if (a.Count == 3)
+                                        {
+                                            entity.stockDate = a[2].InnerText;
+                                        }
+                                        else
+                                        {
+                                            entity.stockDate = a[3].InnerText;
+                                        }
                                     strStockDate = entity.stockDate;
                                     //<remark 2021/01/06>
                                     entity.True_StockDate = entity.stockDate;
                                     entity.True_Quantity = qtypath;
                                     //</remark 2021/01/06>
-
+                                    //</remark 2021/10/08 End>
+                                        
                                     //<remark 2020/1/17 年月日のチャック　Start>
                                     //if (entity.stockDate.Contains("未定") || entity.stockDate.Contains("時期未定") || entity.stockDate.Contains("18年春予定") || entity.stockDate.Contains("今季終了品") || entity.stockDate.Contains("2018年以降予定") || entity.stockDate.Contains("今季販売終了品"))
                                     //{
@@ -479,7 +516,7 @@ namespace _36PRインターナショナル
                                                             else
                                                             {
                                                                 day = entity.stockDate.Substring(YIndex - 2, YIndex - 2).ToString();
-                                                            }                                                           
+                                                            }
                                                         }
                                                         else
                                                         {
@@ -508,7 +545,7 @@ namespace _36PRインターナショナル
                                                             else
                                                             {
                                                                 day = entity.stockDate.Substring(YIndex - 1, YIndex - 3).ToString();
-                                                            }                                                            
+                                                            }
                                                         }
                                                         else
                                                         {
@@ -644,6 +681,8 @@ namespace _36PRインターナショナル
                                 //2018-04-20 End
                             }
                         }
+                            //}
+                        }
                         catch (Exception ex)
                         {
                             fun.Qbei_ErrorInsert(36, fun.GetSiteName("036"), ex.Message, entity.janCode, entity.purchaseURL, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "036");
@@ -657,7 +696,11 @@ namespace _36PRインターナショナル
                 }
                 if (i < dt036.Rows.Count - 1)
                 {
-                    string purchaseURL = dt036.Rows[++i]["purchaserURL"].ToString().Trim();
+                    //<remark Add Logic for Item search 2021/10/08 Start>
+                    //string purchaseURL = dt036.Rows[++i]["purchaserURL"].ToString().Trim();
+                    string janCode = dt036.Rows[++i]["JANコード"].ToString();
+                    string purchaseURL = "https://order.g-style.ne.jp/products/list.php?mode=search_navi_plus_linking&name=" + janCode + "&search_brand=&category_id=&pricefrom=&priceto=";
+                    //</remark 2021/10/08 End>
                     webBrowser1.Navigate(purchaseURL);
                     webBrowser1.ScriptErrorsSuppressed = true;
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
@@ -699,7 +742,8 @@ namespace _36PRインターナショナル
                 entity.makerDate = fun.getCurrentDate();
                 entity.reflectDate = dt036.Rows[i]["最終反映日"].ToString();
                 entity.orderCode = dt036.Rows[i]["発注コード"].ToString();
-                entity.purchaseURL = dt036.Rows[i]["purchaserURL"].ToString().Trim();
+                //entity.purchaseURL = dt036.Rows[i]["purchaserURL"].ToString().Trim();//<remark Edit Logic for Item search 2021/10/08 />
+                entity.purchaseURL = "https://order.g-style.ne.jp/products/list.php?mode=search_navi_plus_linking&name=" + entity.janCode + "&search_brand=&category_id=&pricefrom=&priceto=";
                 if (dt036.Rows[i]["入荷予定"].ToString().Contains("2100-01-10") && dt036.Rows[i]["在庫情報"].ToString().Contains("empty"))
                 {
                     entity.qtyStatus = "empty";
@@ -712,10 +756,18 @@ namespace _36PRインターナショナル
                     entity.stockDate = "2100-02-01";
                     entity.price = dt036.Rows[i]["下代"].ToString();
                 }
+                //<remark 2021/01/06>
+                entity.True_StockDate = "Not Found";
+                entity.True_Quantity = "Not Found";
+                //</remark 2021/01/06>
                 fun.Qbei_Inserts(entity);
                 if (i < dt036.Rows.Count - 1)
                 {
-                    string purchaseURL = dt036.Rows[++i]["purchaserURL"].ToString().Trim();
+                    //<remark Add Logic for Item search 2021/10/08 Start>
+                    //string purchaseURL = dt036.Rows[++i]["purchaserURL"].ToString().Trim();
+                    string janCode = dt036.Rows[++i]["JANコード"].ToString();
+                    string purchaseURL = "https://order.g-style.ne.jp/products/list.php?mode=search_navi_plus_linking&name=" + janCode + "&search_brand=&category_id=&pricefrom=&priceto=";
+                    //</remark 2021/10/08 End>
                     webBrowser1.Navigate(purchaseURL);
                     webBrowser1.ScriptErrorsSuppressed = true;
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
