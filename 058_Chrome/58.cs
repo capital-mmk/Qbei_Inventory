@@ -288,7 +288,12 @@ namespace _058リンエイ
                                                 {                                                    
                                                     var check_month_2 = lines[1].Split('月');
                                                     //Month = Convert.ToInt32(check_month[0]);//<remark Edit Logic for halfwidth of number 2021/06/28 />
-                                                    Month = Convert.ToInt32(check_month_2[0].Normalize(NormalizationForm.FormKC));
+                                                    //<remark Edit Logic for number 2021/10/13 Start>
+                                                    //Month = Convert.ToInt32(check_month_2[0].Normalize(NormalizationForm.FormKC));
+                                                    string numeric = new String(check_month_2[0].Where(Char.IsDigit).ToArray());
+                                                    numeric = numeric.Normalize(NormalizationForm.FormKC);
+                                                    Month = Convert.ToInt32(numeric);
+                                                    //</remark 2021/10/13 End>
                                                     Year = DateTime.Now.ToString("yyyy");
                                                     Day = DateTime.DaysInMonth(Convert.ToInt32(Year), Month).ToString();
                                                     if (strStockDate.Contains("初旬") || strStockDate.Contains("上旬") || strStockDate.Contains("上"))
