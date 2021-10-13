@@ -71,8 +71,8 @@ namespace siteData
             lstProcess.Add("Rerun");
             lstProcess.Add("11マルイ");
             lstProcess.Add("12カワシマ");
-            lstProcess.Add("013-mizutani");
-            lstProcess.Add("014_Firefox");
+            //lstProcess.Add("013-mizutani");
+            //lstProcess.Add("014_Firefox");
             lstProcess.Add("016ライトウェイ");
             lstProcess.Add("17インターマックス");
             lstProcess.Add("018日直(ニチナオ)");
@@ -99,6 +99,9 @@ namespace siteData
             lstProcess.Add("916_Chrome");
             //(2019/07/24)Add
             lstProcess.Add("124-Mizutani");
+            //(2019/10/21)Add
+            lstProcess.Add("13");
+            lstProcess.Add("014_chrome");
             lstProcess.Add("023パナソニック");//Add Logic 2020/09/01
             //(2021/04/21)Add
             lstProcess.Add("051_Chrome");
@@ -262,10 +265,10 @@ namespace siteData
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 string log = ex.ToString();
-                ErrorLogSitData(log,siteID,sitename);
+                ErrorLogSitData(log, siteID, sitename);
             }
         }
 
