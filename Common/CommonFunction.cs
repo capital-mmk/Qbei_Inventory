@@ -282,8 +282,8 @@ namespace Common
                     dr = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' OR 発注コード= '--' OR 発注コード like '/%' OR 発注コード like '-%'");
                     if (dr.Count() > 0)
                     {
-                        if (!shopID.Equals("036"))
-                        {
+                        //if (!shopID.Equals("036"))
+                        //{
                             /// <remark>
                             /// Save Data into Qbei_ErrorLog
                             /// </remark>
@@ -303,15 +303,15 @@ namespace Common
                             cmd.ExecuteNonQuery();
                             cmd.Connection.Close();
 
-                        }
+                        //}
                     }
 
 
                     dr = dtTemp.Select("発注コード<>' ' AND 発注コード <> '' AND 発注コード is not NULL AND 発注コード<> '-' AND 発注コード<> '--' ");
                     if (dr.Count() > 0)
                     {
-                        if (!shopID.Equals("036"))
-                        {
+                        //if (!shopID.Equals("036"))
+                        //{
                             dtNotNull = dtTemp.Select("発注コード<>' ' AND 発注コード <> '' AND 発注コード is not NULL AND 発注コード<> '-' AND 発注コード<> '--'").CopyToDataTable();
                             //Trim 
                             dtNotNull.AsEnumerable().ToList().ForEach(r => r["発注コード"] = r.Field<string>("発注コード").Trim());
@@ -370,13 +370,13 @@ namespace Common
                             }
                             else
                                 dtOrder = dtNotNull.AsEnumerable().OrderBy(x => x.Field<string>("メーカー情報日")).CopyToDataTable();
-                        }
+                        //}
 
 
-                        if (shopID.Equals("036"))
-                        {
-                            dtOrder = dtTemp.AsEnumerable().OrderBy(x => x.Field<string>("メーカー情報日")).CopyToDataTable();
-                        }
+                        //if (shopID.Equals("036"))
+                        //{
+                        //    dtOrder = dtTemp.AsEnumerable().OrderBy(x => x.Field<string>("メーカー情報日")).CopyToDataTable();
+                        //}
                         //Check (ステータス変更日+6) <= today   
 
                         //<remark ９ヶ月前の　データーについて、更新ロジック　2020-01-30 Start>
