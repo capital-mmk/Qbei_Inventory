@@ -246,35 +246,37 @@ namespace Common
                         ddr = dtTemp.Rows.Count;
                     }
                     //
-                    if (shopID.Equals("036"))
-                    {
-                        DataTable dtpblank = dtTemp.Select("purchaserURL =' ' OR purchaserURL = '' OR purchaserURL is NULL").CopyToDataTable();
-                        int dtcount = dtpblank.Rows.Count;
-                        if (dtpblank != null)
-                        {
-                            /// <remark>
-                            /// Save Data into Qbei_ErrorLog
-                            /// </remark>
+                    //<remark Close Logic 2021/10/29 Start>
+                    //if (shopID.Equals("036"))
+                    //{
+                    //    DataTable dtpblank = dtTemp.Select("purchaserURL =' ' OR purchaserURL = '' OR purchaserURL is NULL").CopyToDataTable();
+                    //    int dtcount = dtpblank.Rows.Count;
+                    //    if (dtpblank != null)
+                    //    {
+                    //        /// <remark>
+                    //        /// Save Data into Qbei_ErrorLog
+                    //        /// </remark>
 
-                            xml = DataTableToXml(dtpblank);
+                    //        xml = DataTableToXml(dtpblank);
 
-                            con = new Connection();
-                            sqlcon = con.GetConnection();
-                            cmd = new SqlCommand("Qbei_ErrorLog_3_InsertXml", sqlcon);
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@xml", xml);
-                            cmd.Parameters.AddWithValue("@sitename", GetSiteName(shopID));
-                            cmd.Parameters.AddWithValue("@Description", "Item doesn't Run!");
-                            cmd.Parameters.AddWithValue("@ErrorType", 6);
-                            cmd.Parameters.AddWithValue("@SiteCode", shopID);
-                            cmd.CommandTimeout = 600;
-                            cmd.Connection.Open();
-                            cmd.ExecuteNonQuery();
-                            cmd.Connection.Close();
-                            var runData = dtTemp.AsEnumerable().Where(x => !dtpblank.AsEnumerable().Any(y => y.Field<string>("JANコード") == x.Field<string>("JANコード") && y.Field<string>("発注コード") == x.Field<string>("発注コード")));
-                            dtTemp = runData.Any() ? runData.CopyToDataTable() : null;
-                        }
-                    }
+                    //        con = new Connection();
+                    //        sqlcon = con.GetConnection();
+                    //        cmd = new SqlCommand("Qbei_ErrorLog_3_InsertXml", sqlcon);
+                    //        cmd.CommandType = CommandType.StoredProcedure;
+                    //        cmd.Parameters.AddWithValue("@xml", xml);
+                    //        cmd.Parameters.AddWithValue("@sitename", GetSiteName(shopID));
+                    //        cmd.Parameters.AddWithValue("@Description", "Item doesn't Run!");
+                    //        cmd.Parameters.AddWithValue("@ErrorType", 6);
+                    //        cmd.Parameters.AddWithValue("@SiteCode", shopID);
+                    //        cmd.CommandTimeout = 600;
+                    //        cmd.Connection.Open();
+                    //        cmd.ExecuteNonQuery();
+                    //        cmd.Connection.Close();
+                    //        var runData = dtTemp.AsEnumerable().Where(x => !dtpblank.AsEnumerable().Any(y => y.Field<string>("JANコード") == x.Field<string>("JANコード") && y.Field<string>("発注コード") == x.Field<string>("発注コード")));
+                    //        dtTemp = runData.Any() ? runData.CopyToDataTable() : null;
+                    //    }
+                    //}
+                    //</remark 2021/10/29 End>
                     //
                     //dr = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' OR 発注コード= '--'");<remark Edit Logic for ordercode 2021/04/05 />
                     dr = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' OR 発注コード= '--' OR 発注コード like '/%' OR 発注コード like '-%'");
@@ -1663,32 +1665,34 @@ namespace Common
                         dtCsv = dtCsv.AsEnumerable().OrderBy(x => x.Field<string>("メーカー情報日")).ThenBy(x => x.Field<string>("JANコード")).CopyToDataTable();
 
                         //Remove Blank Url from Site 36
-                        if (strShopId.Equals("036"))
-                        {
-                            var blankUrl = dtCsv.Select("purchaserURL =' ' OR purchaserURL = '' OR purchaserURL is NULL");
-                            if (blankUrl.Any())
-                            {
-                                dtBlankUrl = blankUrl.CopyToDataTable();
-                                var NonBlankUrl = dtCsv.AsEnumerable().Where(x => !dtBlankUrl.AsEnumerable().Any(y => x.Field<string>("JANコード") == y.Field<string>("JANコード") && x.Field<string>("発注コード") == y.Field<string>("発注コード")));
-                                dtCsv = NonBlankUrl.Any() ? NonBlankUrl.CopyToDataTable() : null;
-                                strDescription = "Item doesn't Run!";
-                                dtBlankUrl.Columns.Add(dc);
-                                xml = DataTableToXml(dtBlankUrl);
-                                con = new Connection();
-                                sqlcon = con.GetConnection();
-                                cmd = new SqlCommand("Qbei_Rerun_ErrorInsert", sqlcon);
-                                cmd.CommandType = CommandType.StoredProcedure;
-                                cmd.Parameters.AddWithValue("@condition", xml);
-                                cmd.Parameters.AddWithValue("@siteCd", strShopId);
-                                cmd.Parameters.AddWithValue("@description", strDescription);
-                                cmd.Parameters.AddWithValue("@ErrorType", 6);
-                                cmd.CommandTimeout = 600;
-                                cmd.Connection.Open();
-                                cmd.ExecuteNonQuery();
-                                cmd.Connection.Close();
-                            }
-                            //return dtCsv;
-                        }
+                        //<remark Close Logic 2021/10/29 Start>
+                        //if (strShopId.Equals("036"))
+                        //{
+                        //    var blankUrl = dtCsv.Select("purchaserURL =' ' OR purchaserURL = '' OR purchaserURL is NULL");
+                        //    if (blankUrl.Any())
+                        //    {
+                        //        dtBlankUrl = blankUrl.CopyToDataTable();
+                        //        var NonBlankUrl = dtCsv.AsEnumerable().Where(x => !dtBlankUrl.AsEnumerable().Any(y => x.Field<string>("JANコード") == y.Field<string>("JANコード") && x.Field<string>("発注コード") == y.Field<string>("発注コード")));
+                        //        dtCsv = NonBlankUrl.Any() ? NonBlankUrl.CopyToDataTable() : null;
+                        //        strDescription = "Item doesn't Run!";
+                        //        dtBlankUrl.Columns.Add(dc);
+                        //        xml = DataTableToXml(dtBlankUrl);
+                        //        con = new Connection();
+                        //        sqlcon = con.GetConnection();
+                        //        cmd = new SqlCommand("Qbei_Rerun_ErrorInsert", sqlcon);
+                        //        cmd.CommandType = CommandType.StoredProcedure;
+                        //        cmd.Parameters.AddWithValue("@condition", xml);
+                        //        cmd.Parameters.AddWithValue("@siteCd", strShopId);
+                        //        cmd.Parameters.AddWithValue("@description", strDescription);
+                        //        cmd.Parameters.AddWithValue("@ErrorType", 6);
+                        //        cmd.CommandTimeout = 600;
+                        //        cmd.Connection.Open();
+                        //        cmd.ExecuteNonQuery();
+                        //        cmd.Connection.Close();
+                        //    }
+                        //    //return dtCsv;
+                        //}
+                        //</remark 2021/10/29 End>
                         var temp = dtCsv.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' OR 発注コード= '--'");
                         //Insert Null Order Code
                         if (temp.Any())
