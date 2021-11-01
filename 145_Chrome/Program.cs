@@ -202,7 +202,7 @@ namespace _145_Chrome
                             entity = new Qbei_Entity();
                             entity.siteID = 145;
                             entity.sitecode = "145";
-                            entity.janCode = dt145.Rows[i]["発注コード"].ToString();
+                            entity.janCode = dt145.Rows[i]["JANコード"].ToString();
                             entity.partNo = dt145.Rows[i]["自社品番"].ToString();
                             entity.makerDate = fun.getCurrentDate();
                             entity.reflectDate = dt145.Rows[i]["最終反映日"].ToString();
@@ -315,7 +315,8 @@ namespace _145_Chrome
                                                                 qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + i + "]/td[2]/div[3]/dl[1]/dd")).Text;
                                                             }
                                                             catch
-                                                            {
+                                                            {                            
+                                                                chrome.Navigate().GoToUrl("https://manys.i10.bcart.jp/list.php?keyword=" + od);//<remark Add Logic for Stockdate 2021/11/01 /> 
                                                                 Thread.Sleep(2000);
                                                                 //qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span")).Text;//<remark Edit Logic for Quantity 2021/05/12 />
                                                                 qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + i + "]/td[2]/div[3]/dl[1]/dd")).Text;
