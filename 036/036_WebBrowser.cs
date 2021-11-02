@@ -323,11 +323,20 @@ namespace _36PRインターナショナル
                                     {
                                         var a = Table.GetElementsByTagName("TD");                                     
                                         html_price = a[0].InnerText;
-                                        html_quantity = a[1].InnerText;    
+                                        //<remark Add Logic for take to quantity 2021/11/02 Start>
+                                        //html_quantity = a[1].InnerText;
+                                        if (a.Count<=3)
+                                        {
+                                            html_quantity = a[1].InnerText;
+                                        }
+                                        else
+                                        {
+                                            html_quantity = a[2].InnerText;
+                                        }
+                                        //</remark 2021/11/02 End>
 
-
-                                //entity.price = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]").InnerText;
-                                entity.price = html_price;
+                                    //entity.price = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]").InnerText;
+                                    entity.price = html_price;
                                 if (entity.price.Contains("円"))
                                 {
                                     entity.price = entity.price.Replace("円", string.Empty).Replace(",", string.Empty).Replace(" ", string.Empty);
