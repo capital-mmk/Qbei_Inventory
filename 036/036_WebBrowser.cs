@@ -321,38 +321,79 @@ namespace _36PRインターナショナル
                                 {
                                     if (Table.InnerText.Contains("在庫状況"))
                                     {
-                                        var a = Table.GetElementsByTagName("TD");                                     
-                                        html_price = a[0].InnerText;
+                                        var a = Table.GetElementsByTagName("TD");  
                                         //<remark Add Logic for take to quantity 2021/11/02 Start>
+                                        var b=Table.GetElementsByTagName("TH");
+                                        int p_count=0;
+                                        int q_count=0;
+                                        int d_count=0;
+                                        //html_price = a[0].InnerText;                                        
                                         //html_quantity = a[1].InnerText;
-                                        if (a.Count<=3)
+                                        while(p_count<=b.Count-1)
                                         {
-                                            html_quantity = a[1].InnerText;
+                                          if (b[p_count].InnerText == "下代(税抜)")
+                                         {
+                                            html_price = a[p_count].InnerText;
+                                            entity.price = html_price;
+                                            break;
+                                         }
+                                           ++p_count;
                                         }
-                                        else
+                                        
+
+                                        while(q_count<=b.Count-1)
                                         {
-                                            html_quantity = a[2].InnerText;
+                                          if (b[q_count].InnerText == "在庫状況")
+                                         {
+                                            html_quantity = a[q_count].InnerText;
+                                            entity.qtyStatus = html_quantity;
+                                            break;
+                                         }
+                                           ++q_count;
                                         }
+                                        
+
+                                        while(d_count<=b.Count-1)
+                                        {
+                                          if (b[d_count].InnerText == "入荷時期")
+                                         {
+                                            entity.stockDate = a[d_count].InnerText;
+                                            break;
+                                         }
+                                           ++d_count;
+                                        }
+                                           
+                                        entity.True_StockDate = entity.stockDate;
+                                        entity.True_Quantity = entity.qtyStatus;
+                                        //if (a.Count<=3)
+                                        //{
+                                        //    html_quantity = a[1].InnerText;
+                                        //}
+                                        //else
+                                        //{
+                                        //      html_quantity = a[2].InnerText;                                          
+                                        //}
                                         //</remark 2021/11/02 End>
 
                                     //entity.price = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]").InnerText;
-                                    entity.price = html_price;
+                                    //entity.price = html_price;//<remark Close Logic 2021/11/02 />
                                 if (entity.price.Contains("円"))
                                 {
                                     entity.price = entity.price.Replace("円", string.Empty).Replace(",", string.Empty).Replace(" ", string.Empty);
-                                    //qtypath = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[1]").InnerText;
-                                    //stockpath = "div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[2]";
-                                    qtypath=html_quantity;
-                                }
-                                else
+                                        //qtypath = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[1]").InnerText;
+                                        //stockpath = "div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[2]";
+                                        //qtypath=html_quantity;//<remark Close Logic 2021/11/02 />
+                                    }
+                                    else
                                 {
                                     entity.price = dt036.Rows[i]["下代"].ToString();
-                                    //qtypath = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]").InnerText;
-                                    //stockpath = "div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr/td[2]";
-                                    qtypath=html_quantity;
-                                }
-                                //entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") ? "small" : qtypath.Equals("×") || qtypath.Equals("完売") ? "empty" : "unknown status";
-                                entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") || qtypath.Equals("×") || qtypath.Equals("完売") ? "empty" : "unknown status";//<remark Change Logic of quantity 2020/07/24 />
+                                        //qtypath = hdoc.DocumentNode.SelectSingleNode("div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[1]").InnerText;
+                                        //stockpath = "div[3]/div/div/div[2]/div/div[2]/div/div/div[2]/table/tbody/tr/td[2]";
+                                        //qtypath=html_quantity;//<remark Close Logic 2021/11/02 />
+                                    }
+                                    //entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") ? "small" : qtypath.Equals("×") || qtypath.Equals("完売") ? "empty" : "unknown status";//<remark Edit Logic of quantity 2020/07/24 />
+                                    //entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") || qtypath.Equals("×") || qtypath.Equals("完売") ? "empty" : "unknown status";//<remark Edit Logic of quantity 2021/11/03 />
+                                    entity.qtyStatus = entity.qtyStatus.Equals("○") ? "good" : entity.qtyStatus.Equals("△") || entity.qtyStatus.Equals("×") || entity.qtyStatus.Equals("完売") ? "empty" : "unknown status";
                                 //</remark 2020/1/21 　End>
 
                                 //HtmlNodeCollection nc = hdoc.DocumentNode.SelectNodes(stockpath);
@@ -360,29 +401,34 @@ namespace _36PRインターナショナル
                                 //if (nc == null)
                                 if(!Table.InnerText.Contains("入荷時期"))
                                 {
-                                    //entity.stockDate = qtypath.Equals("○") || qtypath.Equals("△") || qtypath.Equals("×") ? "2100-01-01" : qtypath.Equals("限定") ? "2100/02/01" : "unknown date";
-                                    entity.stockDate = qtypath.Equals("○") || qtypath.Equals("×") ? "2100-01-01" : qtypath.Equals("△") || qtypath.Equals("限定") ? "2100/02/01" : "unknown date";//<remark Change Logic of stockdate 2020/07/24 />
+                                        //entity.stockDate = qtypath.Equals("○") || qtypath.Equals("△") || qtypath.Equals("×") ? "2100-01-01" : qtypath.Equals("限定") ? "2100/02/01" : "unknown date";//<remark Edit Logic of quantity 2020/07/24 />
+                                        //entity.stockDate = qtypath.Equals("○") || qtypath.Equals("×") ? "2100-01-01" : qtypath.Equals("△") || qtypath.Equals("限定") ? "2100/02/01" : "unknown date";//<remark Edit Logic of quantity 2021/11/02 />
+                                        entity.stockDate = entity.True_Quantity.Equals("○") || entity.True_Quantity.Equals("×") ? "2100-01-01" : entity.True_Quantity.Equals("△") || entity.True_Quantity.Equals("限定") ? "2100-02-01" : "unknown date";
                                     //<remark 2021/01/06>
                                     entity.True_StockDate = "項目無し";
-                                    entity.True_Quantity = qtypath;
+                                    //entity.True_Quantity = qtypath;//<remark Close Logic 2021/11/02 />
                                     //</remark 2021/01/06>
                                 }
                                 else
                                 {
                                         //entity.stockDate = hdoc.DocumentNode.SelectSingleNode(stockpath).InnerText;
-                                        if (a.Count == 3)
-                                        {
-                                            entity.stockDate = a[2].InnerText;
-                                        }
-                                        else
-                                        {
-                                            entity.stockDate = a[3].InnerText;
-                                        }
+                                        //<remark Close Logic 2021/11/02 Start>
+                                        //if (a.Count == 3)
+                                        //{
+                                        //    entity.stockDate = a[2].InnerText;
+                                        //}
+                                        //else
+                                        //{
+                                        //    entity.stockDate = a[3].InnerText;
+                                        //}
+                                        //</remark 2021/11/02 End>
                                     strStockDate = entity.stockDate;
+                                    //<remark Close Logic 2021/11/02 Start>
                                     //<remark 2021/01/06>
-                                    entity.True_StockDate = entity.stockDate;
-                                    entity.True_Quantity = qtypath;
+                                    //entity.True_StockDate = entity.stockDate;
+                                    //entity.True_Quantity = entity.qtyStatus;
                                     //</remark 2021/01/06>
+                                    //</remark 2021/11/02 End>
                                     //</remark 2021/10/08 End>
                                         
                                     //<remark 2020/1/17 年月日のチャック　Start>
