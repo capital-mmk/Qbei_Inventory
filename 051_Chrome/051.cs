@@ -294,7 +294,8 @@ namespace _051スタイルバイク
                                                             string stock = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]")).GetAttribute("innerHTML").ToString().Trim();
                                                             if (stock.Contains("__input"))
                                                             {
-                                                                if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[2]/div[3]/dl/dd")) == null)
+                                                                //if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[2]/div[3]/dl/dd")) == null)//<remark Edit Logic for Check to Quantity 2021/11/05 />
+                                                                if (!stock.Contains("在庫"))
                                                                 {
                                                                     entity.qtyStatus = "empty";
                                                                     entity.stockDate = "2100-02-01";
