@@ -199,8 +199,7 @@ namespace _17インターマックス
                 else
                 {
                     fun.WriteLog("Login success             ------", "017-");
-                    //orderCode = dt017.Rows[i]["発注コード"].ToString().Trim();
-                    orderCode = "8022530020053";
+                    orderCode = dt017.Rows[i]["発注コード"].ToString().Trim();
                     webBrowser1.Navigate(fun.url + "/shop/g/g" + orderCode.Trim() + "/");
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
@@ -242,9 +241,17 @@ namespace _17インターマックス
                 if (!string.IsNullOrWhiteSpace(entity.orderCode))
                 {
                     string body = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
-                    if (body.Contains("申し訳ございません。"))
+
+                    //if (body.Contains("申し訳ございません。"))//<remark Edit Logic for Check to Ordercode 2021/15/11 />
+                    if (body.Contains("申し訳ございません。") || entity.orderCode.Contains(@"\"))
                     {
-                        if (dt017.Rows[i]["入荷予定"].ToString().Contains("2100-01-10") && dt017.Rows[i]["在庫情報"].ToString().Contains("empty"))
+                        //<remark Add Logic for Check to Ordercode 2021/15/11 Start>
+                        if (entity.orderCode.Contains(@"\"))
+                        {
+                            fun.Qbei_ErrorInsert(17, fun.GetSiteName("017"), "Check Skipped by ”/”", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "017");
+                        }
+                        //</remark 2021/15/11 End>
+                        else if (dt017.Rows[i]["入荷予定"].ToString().Contains("2100-01-10") && dt017.Rows[i]["在庫情報"].ToString().Contains("empty"))
                         {
                             entity.qtyStatus = "empty";
                             entity.stockDate = "2100-01-10";
@@ -253,6 +260,7 @@ namespace _17インターマックス
                             entity.True_StockDate = "Not Found";
                             entity.True_Quantity = "Not Found";
                             //</remark 2021/01/06>
+                            fun.Qbei_Inserts(entity);
                         }
                         else
                         {
@@ -263,8 +271,9 @@ namespace _17インターマックス
                             entity.True_StockDate = "Not Found";
                             entity.True_Quantity = "Not Found";
                             //</remark 2021/01/06>
+                            fun.Qbei_Inserts(entity);
                         }
-                        fun.Qbei_Inserts(entity);
+                        //fun.Qbei_Inserts(entity);
                     }
                     else
                     {
@@ -421,7 +430,7 @@ namespace _17インターマックス
                                         //entity.stockDate = qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("あり") || qty.Contains("僅か") || qty.Contains("予約受付中") || qty.Contains("予約") ? DateTime.Now.ToString("yyyy/MM/dd") : qty.Contains("完売") || qty.Contains("終了") || qty.Contains("欠品") || qty.Contains("取寄") || qty.Contains("入荷待ち") || qty.Contains("お問") || qty.Contains("取り寄せ") ? "2100-02-01" : "unknown date";//<remark Stockdate Logic　編集　2020/03/04>
                                         //entity.stockDate = qty.Contains("完売") || qty.Contains("終了") || qty.Contains("欠品") || qty.Contains("取寄") || qty.Contains("入荷待ち") || qty.Contains("お問") || qty.Contains("取り寄せ") ? "2100-02-01" : qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("あり") || qty.Contains("僅か") || qty.Contains("予約受付中") || qty.Contains("予約") ? DateTime.Now.ToString("yyyy/MM/dd") : "unknown date";//<remark Stockdate Logic　編集　2020/03/17>
                                         //entity.stockDate = qty.Contains("完売") || qty.Contains("終了") || qty.Contains("欠品") || qty.Contains("取寄") || qty.Contains("入荷待ち") || qty.Contains("お問") || qty.Contains("取り寄せ") || qty.Contains("未定") ? "2100-02-01" : qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("あり") || qty.Contains("僅か") || qty.Contains("予約受付中") || qty.Contains("予約") ? DateTime.Now.ToString("yyyy/MM/dd") : "unknown date";//<remark Stockdate Logic　編集　2020/12/02>
-                                        entity.stockDate = qty.Contains("完売") || qty.Contains("終了") || qty.Contains("欠品") || qty.Contains("取寄") || qty.Contains("入荷待ち") || qty.Contains("お問") || qty.Contains("取り寄せ") || qty.Contains("未定") || qty.Contains("予約受付中") || qty.Contains("予約") ? "2100-02-01" : qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("あり") || qty.Contains("僅か")  ? DateTime.Now.ToString("yyyy/MM/dd") : "unknown date";//<remark Stockdate Logic　編集　2021/06/28>
+                                        entity.stockDate = qty.Contains("完売") || qty.Contains("終了") || qty.Contains("欠品") || qty.Contains("取寄") || qty.Contains("入荷待ち") || qty.Contains("お問") || qty.Contains("取り寄せ") || qty.Contains("未定") || qty.Contains("予約受付中") || qty.Contains("予約") ? "2100-02-01" : qty.Contains("わずか") || qty.Contains("有り") || qty.Contains("あり") || qty.Contains("僅か") ? DateTime.Now.ToString("yyyy/MM/dd") : "unknown date";//<remark Stockdate Logic　編集　2021/06/28>
                                         entity.stockDate = entity.stockDate.Replace("/", "-");
                                     }
                                     //</remark  17/02/2020 End>
