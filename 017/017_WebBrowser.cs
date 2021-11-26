@@ -155,15 +155,104 @@ namespace _17インターマックス
                 instance.NavigateError += new SHDocVw.DWebBrowserEvents2_NavigateErrorEventHandler(instance_NavigateError);
                 webBrowser1.ScriptErrorsSuppressed = true;
                 fun.WriteLog("Navigation to Site Url success------", "017-");
-                qe.SiteID = 17;
-                dt = qubl.Qbei_Setting_Select(qe);
-                string username = dt.Rows[0]["UserName"].ToString();
-                webBrowser1.Document.GetElementById("login_uid").InnerText = username;
-                string password = dt.Rows[0]["Password"].ToString();
-                fun.GetElement("input", "pwd", "name", webBrowser1).InnerText = password;
-                fun.GetElement("input", "order", "name", webBrowser1).InvokeMember("click");
-                webBrowser1.DocumentCompleted -= webBrowser1_Start;
-                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Login);
+                //<remark Add&Edit Logic for Site Page at Maintain 2021/11/26 Start>
+                string check_page = webBrowser1.Document.GetElementsByTagName("html")[0].InnerText;
+                if (check_page.Contains("棚卸") || check_page.Contains("出荷停止") || check_page.Contains("お休み"))
+                {
+                    int i = 0;
+                    while (i <= dt017.Rows.Count-1)
+                    {
+                        try
+                        {
+                            entity = new Qbei_Entity();
+                            entity.siteID = 17;
+                            entity.sitecode = "017";
+                            entity.janCode = dt017.Rows[i]["JANコード"].ToString();
+                            entity.partNo = dt017.Rows[i]["自社品番"].ToString();
+                            entity.makerDate = fun.getCurrentDate();
+                            entity.reflectDate = dt017.Rows[i]["最終反映日"].ToString();
+                            entity.stockDate = dt017.Rows[i]["入荷予定"].ToString();
+                            entity.orderCode = dt017.Rows[i]["発注コード"].ToString().Trim();// "8022530007719";                
+                            entity.purchaseURL = fun.url + "/shop/g/g" + entity.orderCode + "/";
+                            if (entity.orderCode.Contains(@"\"))
+                            {
+                                //<remark Add Logic for Check to Ordercode 2021/15/11 Start>
+                                if (entity.orderCode.Contains(@"\"))
+                                {
+                                    fun.Qbei_ErrorInsert(17, fun.GetSiteName("017"), "Check Skipped by ”/”", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "017");
+                                }
+                                //</remark 2021/15/11 End>
+                                else if (dt017.Rows[i]["入荷予定"].ToString().Contains("2100-01-10") && dt017.Rows[i]["在庫情報"].ToString().Contains("empty"))
+                                {
+                                    entity.qtyStatus = "empty";
+                                    entity.stockDate = "2100-01-10";
+                                    entity.price = dt017.Rows[i]["下代"].ToString();
+                                    //<remark 2021/01/06>
+                                    entity.True_StockDate = "Not Found";
+                                    entity.True_Quantity = "Not Found";
+                                    //</remark 2021/01/06>
+                                    fun.Qbei_Inserts(entity);
+                                }
+                                else
+                                {
+                                    entity.qtyStatus = "empty";
+                                    entity.stockDate = "2100-02-01";
+                                    entity.price = dt017.Rows[i]["下代"].ToString();
+                                    //<remark 2021/01/06>
+                                    entity.True_StockDate = "Not Found";
+                                    entity.True_Quantity = "Not Found";
+                                    //</remark 2021/01/06>
+                                    fun.Qbei_Inserts(entity);
+                                }
+                                //fun.Qbei_Inserts(entity);
+                            }
+                            else
+                            {
+                                entity.qtyStatus = "empty";
+                                entity.stockDate = "2100-02-01";
+                                entity.price = dt017.Rows[i]["下代"].ToString();
+                                entity.True_StockDate = "出荷停止中";
+                                entity.True_Quantity = "出荷停止中";
+                                fun.Qbei_Inserts(entity);
+                            }
+                            ++i;
+                        }
+                        catch (Exception ex)
+                        {
+                            fun.Qbei_ErrorInsert(17, fun.GetSiteName("017"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "017");
+                            fun.WriteLog(ex, "017-", entity.janCode, entity.orderCode);
+                        }
+                    }
+                    qe.site = 17;
+                    qe.flag = 2;
+                    qe.starttime = string.Empty;
+                    qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    fun.ChangeFlag(qe);
+                    Application.Exit();
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    qe.SiteID = 17;
+                    dt = qubl.Qbei_Setting_Select(qe);
+                    string username = dt.Rows[0]["UserName"].ToString();
+                    webBrowser1.Document.GetElementById("login_uid").InnerText = username;
+                    string password = dt.Rows[0]["Password"].ToString();
+                    fun.GetElement("input", "pwd", "name", webBrowser1).InnerText = password;
+                    fun.GetElement("input", "order", "name", webBrowser1).InvokeMember("click");
+                    webBrowser1.DocumentCompleted -= webBrowser1_Start;
+                    webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Login);
+                }
+                //</remark 2021/11/26 End>
+                //qe.SiteID = 17;
+                //dt = qubl.Qbei_Setting_Select(qe);
+                //string username = dt.Rows[0]["UserName"].ToString();
+                //webBrowser1.Document.GetElementById("login_uid").InnerText = username;
+                //string password = dt.Rows[0]["Password"].ToString();
+                //fun.GetElement("input", "pwd", "name", webBrowser1).InnerText = password;
+                //fun.GetElement("input", "order", "name", webBrowser1).InvokeMember("click");
+                //webBrowser1.DocumentCompleted -= webBrowser1_Start;
+                //webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Login);
             }
             catch (Exception ex)
             {
