@@ -152,6 +152,62 @@ namespace _145_Chrome
                 dt = qubl.Qbei_Setting_Select(qe);
                 string url = dt.Rows[0]["Url"].ToString();
                 chrome.Url = url;
+                //<remark Add Logic for Site Page at Maintain 2021/11/30 Start> >
+                string check_page = chrome.FindElement(By.TagName("body")).Text;
+                if (check_page.Contains("棚卸中") ||chrome.Url.Contains("stop.php"))
+                {
+                    int i = 0;
+                    while (i <= dt145.Rows.Count - 1)
+                    {
+                        try
+                        {
+                            entity = new Qbei_Entity();
+                            entity.siteID = 145;
+                            entity.sitecode = "145";
+                            entity.janCode = dt145.Rows[i]["JANコード"].ToString();
+                            entity.partNo = dt145.Rows[i]["自社品番"].ToString();
+                            entity.makerDate = fun.getCurrentDate();
+                            entity.reflectDate = dt145.Rows[i]["最終反映日"].ToString();
+                            entity.stockDate = dt145.Rows[i]["入荷予定"].ToString();
+                            entity.orderCode = dt145.Rows[i]["発注コード"].ToString().Trim();// "8022530007719";                
+                            entity.purchaseURL = fun.url + "/shop/g/g" + entity.orderCode + "/";
+                            if (dt145.Rows[i]["入荷予定"].ToString().Contains("2100-01-10") && dt145.Rows[i]["在庫情報"].ToString().Contains("empty"))
+                                {
+                                    entity.qtyStatus = "empty";
+                                    entity.stockDate = "2100-01-10";
+                                    entity.price = dt145.Rows[i]["下代"].ToString();
+                                    //<remark 2021/01/06>
+                                    entity.True_StockDate = "Not Found";
+                                    entity.True_Quantity = "Not Found";
+                                    //</remark 2021/01/06>
+                                    fun.Qbei_Inserts(entity);
+                                }
+                             else
+                                {
+                                entity.qtyStatus = "empty";
+                                entity.stockDate = "2100-02-01";
+                                entity.price = dt145.Rows[i]["下代"].ToString();
+                                entity.True_StockDate = "出荷停止中";
+                                entity.True_Quantity = "出荷停止中";
+                                fun.Qbei_Inserts(entity);
+                                }
+                            ++i;
+                        }
+                        catch (Exception ex)
+                        {
+                            fun.Qbei_ErrorInsert(145, fun.GetSiteName("145"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "145");
+                            fun.WriteLog(ex, "145-", entity.janCode, entity.orderCode);
+                        }
+                    }
+                    qe.site = 145;
+                    qe.flag = 2;
+                    qe.starttime = string.Empty;
+                    qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    fun.ChangeFlag(qe);
+                    chrome.Quit();
+                    Environment.Exit(0);
+                }
+                //</remark 2021/11/30 End>
                 string title = chrome.Title;
 
                 string username = dt.Rows[0]["UserName"].ToString();
