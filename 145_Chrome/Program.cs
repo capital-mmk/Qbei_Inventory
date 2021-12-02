@@ -332,8 +332,12 @@ namespace _145_Chrome
                                     {
                                         for (int i = 1; i <= n; i++)
                                         {
-                                            if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr["+i+"]/td[1]/span[2]")).Text.Equals("[" + od + "]"))
+                                            //<remark Add Logic for Check to Order Code 2021/12/02 Start>
+                                            string check_ordercode = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + i + "]/td[1]/span[2]")).Text.Replace("[", " ").Replace("]", " ").Trim();
+                                            if (check_ordercode.Equals(od))
+                                            //if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr["+i+"]/td[1]/span[2]")).Text.Equals("[" + od + "]"))                                            
                                             //if (chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[2]/p[2]")).Text.Equals(entity.orderCode))//<remark Edit Logic for check to jancode 2021/05/27 />
+                                            //</remark 2021/12/02 End>
                                             {
                                                 //<remark>
                                                 //Check to Quantity
@@ -341,8 +345,11 @@ namespace _145_Chrome
                                                 string qty;
                                                 try
                                                 {
+                                                    //</remark Add Logic for Take to Quantity 2021/12/02 Start>
+                                                        qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + i + "]/td[2]/div[2]/dl/dd")).Text;
                                                     //qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;//<remark Edit Logic for Quantity 2021/05/12 />
-                                                    qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + i + "]/td[2]/div[3]/dl[1]/dd")).Text;
+                                                    //qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + i + "]/td[2]/div[3]/dl[1]/dd")).Text;
+                                                    //<remark 2021/12/02 End>
                                                 }
                                                 catch
                                                 {
@@ -373,7 +380,7 @@ namespace _145_Chrome
                                                             catch
                                                             {                            
                                                                 chrome.Navigate().GoToUrl("https://manys.i10.bcart.jp/list.php?keyword=" + od);//<remark Add Logic for Stockdate 2021/11/01 /> 
-                                                                Thread.Sleep(2000);
+                                                                Thread.Sleep(20000);
                                                                 //qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span")).Text;//<remark Edit Logic for Quantity 2021/05/12 />
                                                                 qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + i + "]/td[2]/div[3]/dl[1]/dd")).Text;
                                                             }
