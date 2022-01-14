@@ -214,7 +214,18 @@ namespace _916_Chrome
                                     }
                                     else
                                     {
-                                        chrome.FindElement(By.ClassName("products-img")).Click();
+                                        //<remark Add Logic for wait page & check page 2022/01/14 Start>
+                                        //chrome.FindElement(By.ClassName("products-img")).Click();
+                                        try
+                                        {
+                                            chrome.FindElement(By.ClassName("products-img")).Click();
+                                        }
+                                        catch
+                                        {
+                                            Thread.Sleep(20000);
+                                            chrome.FindElement(By.ClassName("products-img")).Click();
+                                        }
+                                        //</remark 2022/01/14 End>
                                         int n = chrome.FindElements(By.XPath("/html/body/div[2]/main/ul/li")).Count();
 
                                         if (n == 0)
@@ -230,6 +241,7 @@ namespace _916_Chrome
                                         }
                                         else
                                         {
+                                            Thread.Sleep(2000);//<remark Add Logic for wait time 2022/01/14 />
                                             for (int i = 1; i <= n; i++)
                                             {
                                                 //i =i+ 1;
