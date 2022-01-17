@@ -201,6 +201,19 @@ namespace _916_Chrome
                                 //</remark>
                                 if (!string.IsNullOrWhiteSpace(entity.orderCode))
                                 {
+                                    //<remark Add Logic for website page of list to wait timw 2022/01/17 Start>
+                                    try
+                                    {
+                                        if (!chrome.FindElement(By.Id("productsList")).GetAttribute("innerHTML").Contains("products-list-item"))
+                                        {                                           
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        fun.WriteLog("Fail for website page of list", "916-");
+                                        Thread.Sleep(20000);
+                                    }
+                                    //</remark 2022/01/17 End>
                                     if (!chrome.FindElement(By.Id("productsList")).GetAttribute("innerHTML").Contains("products-list-item"))
                                     {
                                         entity.qtyStatus = "empty";
