@@ -506,9 +506,28 @@ namespace _13ミズタニ
 
 
                             else day = "25";
-                            string month = entity.stockDate.Split('月')[0];
 
-                            string year = DateTime.Now.ToString("yyyy");
+                            //<remark Add Logic for Stockdate of Month 2022/01/18 Start>
+                            //string month = entity.stockDate.Split('月')[0];
+
+                            //string year = DateTime.Now.ToString("yyyy");
+
+                            string month;
+                            string year;
+                            if (entity.stockDate.Contains("年"))
+                            {
+                                int YIndex = entity.stockDate.IndexOf('年');
+                                int MIndex = entity.stockDate.IndexOf('月');
+                                year = entity.stockDate.Substring(YIndex - 4, YIndex + 0);
+                                month = entity.stockDate.Substring(YIndex + 1, MIndex - 5);
+                            }
+                            else
+                            {
+                                month = entity.stockDate.Split('月')[0];
+                                year = DateTime.Now.ToString("yyyy");
+                            }
+                            //</remark 2022/01/18 End>
+
                             DateTime dt = Convert.ToDateTime(year + "-" + month + "-" + day);
 
                             if (dt < DateTime.Now)
