@@ -207,7 +207,11 @@ namespace _058リンエイ
                                     }
                                     catch
                                     {
-                                        Thread.Sleep(4000);
+                                        //<remark Add&Edit Logic for return go to url 2022/01/19 Start>
+                                        //Thread.Sleep(4000);
+                                        chrome.Navigate().GoToUrl("https://www.rinei-web.jp/shop/item_code/");
+                                        Thread.Sleep(20000);
+                                        //</remark 2022/01/19 End>
                                         chrome.FindElement(By.Id("ItemCode_cdgds")).Clear();
                                         chrome.FindElement(By.Id("ItemCode_cdgds")).SendKeys(ordercode);
                                         chrome.FindElement(By.Id("button_kensaku")).Click();
