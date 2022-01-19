@@ -211,7 +211,13 @@ namespace _916_Chrome
                                     catch
                                     {
                                         fun.WriteLog("Fail for website page of list", "916-");
+                                        //<remark Add Logic for return go to url 2022/01/19 Start>
+                                        chrome.Navigate().GoToUrl("https://btob.asahi-wsd.jp/website/asahi/index");
                                         Thread.Sleep(20000);
+                                        chrome.FindElement(By.Name("header_product_code")).Clear();
+                                        chrome.FindElement(By.Name("header_product_code")).SendKeys(ordercode);
+                                        chrome.FindElement(By.XPath("/html/body/header/div/nav/ul/li[2]/form/li[2]/button")).Click();
+                                        //</remark 2022/01/19 End>
                                     }
                                     //</remark 2022/01/17 End>
                                     if (!chrome.FindElement(By.Id("productsList")).GetAttribute("innerHTML").Contains("products-list-item"))
@@ -262,8 +268,10 @@ namespace _916_Chrome
                                                 {
                                                     entity.price = chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]/section/dl[2]/div[2]/dd/span")).Text.Replace("¥", "").Replace(",", "").Trim();
                                                     string stock = chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]/section/dl[3]/div[1]/dd")).GetAttribute("innerHTML").ToString().Trim();
-                                                    entity.qtyStatus = stock.Equals("あり") ? "good" : stock.Equals("僅少") ? "empty" : stock.Equals("なし") ? "empty" : "unknown status";
-                                                    entity.stockDate = entity.qtyStatus.Equals("good") ? "2100-01-01" : entity.qtyStatus.Equals("empty") ? "2100-02-01" : "unknown status";
+                                                    //entity.qtyStatus = stock.Equals("あり") ? "good" : stock.Equals("僅少") ? "empty" : stock.Equals("なし") ? "empty" : "unknown status";
+                                                    entity.qtyStatus = stock.Equals("あり") ? "good" : stock.Equals("僅少") ? "small" : stock.Equals("なし") ? "empty" : "unknown status";//<remark ロジックの変更　2022/01/19 />
+                                                    //entity.stockDate = entity.qtyStatus.Equals("good") ? "2100-01-01" : entity.qtyStatus.Equals("empty") ? "2100-02-01" : "unknown status";
+                                                    entity.stockDate = entity.qtyStatus.Equals("good") || entity.qtyStatus.Equals("small") ? "2100-01-01" : entity.qtyStatus.Equals("empty") ? "2100-02-01" : "unknown status";//<remark ロジックの変更　2022/01/19 />
                                                     //<remark 2021/01/06>
                                                     entity.True_StockDate = "項目無し";
                                                     entity.True_Quantity = stock;
