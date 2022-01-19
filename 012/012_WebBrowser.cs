@@ -320,11 +320,11 @@ namespace _12カワシマ
                             else
                             {
                                 //<remark Edit Logic of stockdate 2020/07/21 Start>
-                                //entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") ? "small" : alt.Contains("×") || alt.Contains("終了") || alt.Equals("×(終了)") ? "empty" : "unknown status";                         
+                                entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") ? "small" : alt.Contains("×") || alt.Contains("終了") || alt.Equals("×(終了)") ? "empty" : "unknown status";//<remark ロジックの変更　2022/01/19 />                         
                                 //entity.stockDate = alt.Equals("○") || alt.Equals("△") || alt.Equals("×") ? "2100-01-01" : alt.Equals("終了") || alt.Equals("×(終了)") ? "2100-02-01" : "unknown date";
-                                entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") || alt.Contains("×") || alt.Contains("終了") || alt.Equals("×(終了)") ? "empty" : "unknown status";
-                                //entity.stockDate = alt.Equals("○") ||  alt.Equals("×") ? "2100-01-01" : alt.Equals("△") || alt.Equals("終了") || alt.Equals("×(終了)") ? "2100-02-01" : "unknown date";
-                                entity.stockDate = alt.Equals("○") ? "2100-01-01" : alt.Equals("△") || alt.Equals("×") || alt.Equals("終了") || alt.Equals("×(終了)") ? "2100-02-01" : "unknown date";//<remark Change Logic of stockdate 2020/07/27 />
+                                //entity.qtyStatus = alt.Equals("○") ? "good" : alt.Equals("△") || alt.Contains("×") || alt.Contains("終了") || alt.Equals("×(終了)") ? "empty" : "unknown status";
+                                entity.stockDate = alt.Equals("○") ||  alt.Equals("△") ||alt.Equals("×") ? "2100-01-01" : alt.Equals("終了") || alt.Equals("×(終了)") ? "2100-02-01" : "unknown date";//<remark ロジックの変更　2022/01/19 />
+                                //entity.stockDate = alt.Equals("○") ? "2100-01-01" : alt.Equals("△") || alt.Equals("×") || alt.Equals("終了") || alt.Equals("×(終了)") ? "2100-02-01" : "unknown date";//<remark Change Logic of stockdate 2020/07/27 />
                                 //</remark 2020/07/21 End>                                                                                                                                                                  //</remark 2020/07/21 End>
 
                                 //<remark 2021/01/06>
