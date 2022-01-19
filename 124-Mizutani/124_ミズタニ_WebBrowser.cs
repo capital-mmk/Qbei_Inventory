@@ -334,7 +334,8 @@ namespace _124_Mizutani
                                     qty = webBrowser1.Document.GetElementById(gridView + "_Label1").InnerText;
                                     //entity.qtyStatus = qty.Equals("○") ? "good" : qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("☆") ? "empty" : qty.Equals("★") || qty.Equals("？") ? "inquiry" : "unknown status";
                                     //<remark 28/11/2019(変更)>
-                                    entity.qtyStatus = qty.Equals("○") ? "good" : qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("☆") || qty.Equals("★") || qty.Equals("？") ? "empty" : "unknown status";
+                                    entity.qtyStatus = qty.Equals("○") ? "good" : qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("☆") || qty.Equals("★") || qty.Equals("？") ? "empty" : "unknown status";//<remark ロジックの変更　2022/01/19 />
+                                    //entity.qtyStatus = qty.Equals("○") ? "good" : qty.Equals("▲") || qty.Equals("×") || qty.Equals("☆") || qty.Equals("★") || qty.Equals("？") ? "empty" : "unknown status";
                                     //</remark>
                                     entity.price = webBrowser1.Document.GetElementById(gridView + "_hanbaikakaku").InnerText;
                                     entity.price = entity.price.Replace("￥", string.Empty).Replace(",", string.Empty).Replace("円", string.Empty);
@@ -378,9 +379,20 @@ namespace _124_Mizutani
                             //    entity.stockDate = "2100-01-01";
 
                             //<remark 28/11/2019(変更)>
-                            if (qty.Equals("▲") || qty.Equals("×") || qty.Equals("★") || qty.Equals("？"))
-                                entity.stockDate = "2100-02-01";
+                            //if (qty.Equals("▲") || qty.Equals("×") || qty.Equals("★") || qty.Equals("？"))
+                            //    entity.stockDate = "2100-02-01";
                             //</remark>
+
+                            //<remark 19/01/2022(変更) Start>
+                            if (qty.Equals("×") || qty.Equals("★") || qty.Equals("？"))
+                            {
+                                entity.stockDate = "2100-02-01";
+                            }
+                            else if (qty.Equals("▲"))
+                            {
+                                entity.stockDate = "2100-01-01";
+                            }
+                            //</remark 19/01/2022 End>
 
                             //<remark 2021/01/06>                         
                             entity.True_Quantity = qty + "(red)";
@@ -391,7 +403,8 @@ namespace _124_Mizutani
 
                             //entity.stockDate = qty.Equals("○") || qty.Equals("▲") || qty.Equals("×") ? "2100-01-01" : entity.stockDate;
                             //<remark 06/12/2019(変更)>
-                            entity.stockDate = qty.Equals("○") || qty.Equals("▲") ? "2100-01-01" : qty.Equals("×") ? "2100-02-01" : entity.stockDate.Replace("/", "-");
+                            entity.stockDate = qty.Equals("○") || qty.Equals("▲") ? "2100-01-01" : qty.Equals("×") ? "2100-02-01" : entity.stockDate.Replace("/", "-");//<remark ロジックの変更　2022/01/19 />
+                            //entity.stockDate = qty.Equals("○") ? "2100-01-01" : qty.Equals("▲") || qty.Equals("×") ? "2100-02-01" : entity.stockDate.Replace("/", "-");
                             //</remark>
                         }
 
