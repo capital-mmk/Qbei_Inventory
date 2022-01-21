@@ -393,19 +393,21 @@ namespace _36PRインターナショナル
                                     }
                                     //entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") ? "small" : qtypath.Equals("×") || qtypath.Equals("完売") ? "empty" : "unknown status";//<remark Edit Logic of quantity 2020/07/24 />
                                     //entity.qtyStatus = qtypath.Equals("○") ? "good" : qtypath.Equals("△") || qtypath.Equals("×") || qtypath.Equals("完売") ? "empty" : "unknown status";//<remark Edit Logic of quantity 2021/11/03 />
-                                    entity.qtyStatus = entity.qtyStatus.Equals("○") ? "good" : entity.qtyStatus.Equals("△") || entity.qtyStatus.Equals("×") || entity.qtyStatus.Equals("完売") ? "empty" : "unknown status";
-                                //</remark 2020/1/21 　End>
+                                    //entity.qtyStatus = entity.qtyStatus.Equals("○") ? "good" : entity.qtyStatus.Equals("△") || entity.qtyStatus.Equals("×") || entity.qtyStatus.Equals("完売") ? "empty" : "unknown status";
+                                    entity.qtyStatus = entity.qtyStatus.Equals("○") || entity.qtyStatus.Equals("△") ? "good" :  entity.qtyStatus.Equals("×") || entity.qtyStatus.Equals("完売") ? "empty" : "unknown status";//<remark ロジックの変更　2022/01/21 />
+                                    //</remark 2020/1/21 　End>
 
-                                //HtmlNodeCollection nc = hdoc.DocumentNode.SelectNodes(stockpath);
+                                    //HtmlNodeCollection nc = hdoc.DocumentNode.SelectNodes(stockpath);
 
-                                //if (nc == null)
-                                if(!Table.InnerText.Contains("入荷時期"))
+                                    //if (nc == null)
+                                    if (!Table.InnerText.Contains("入荷時期"))
                                 {
                                         //entity.stockDate = qtypath.Equals("○") || qtypath.Equals("△") || qtypath.Equals("×") ? "2100-01-01" : qtypath.Equals("限定") ? "2100/02/01" : "unknown date";//<remark Edit Logic of quantity 2020/07/24 />
                                         //entity.stockDate = qtypath.Equals("○") || qtypath.Equals("×") ? "2100-01-01" : qtypath.Equals("△") || qtypath.Equals("限定") ? "2100/02/01" : "unknown date";//<remark Edit Logic of quantity 2021/11/02 />
-                                        entity.stockDate = entity.True_Quantity.Equals("○") || entity.True_Quantity.Equals("×") ? "2100-01-01" : entity.True_Quantity.Equals("△") || entity.True_Quantity.Equals("限定") ? "2100-02-01" : "unknown date";
-                                    //<remark 2021/01/06>
-                                    entity.True_StockDate = "項目無し";
+                                        //entity.stockDate = entity.True_Quantity.Equals("○") || entity.True_Quantity.Equals("×") ? "2100-01-01" : entity.True_Quantity.Equals("△") || entity.True_Quantity.Equals("限定") ? "2100-02-01" : "unknown date";
+                                        entity.stockDate = entity.True_Quantity.Equals("○") || entity.True_Quantity.Equals("△") || entity.True_Quantity.Equals("×") ? "2100-01-01" :  entity.True_Quantity.Equals("限定") ? "2100-02-01" : "unknown date";//<remark ロジックの変更　2022/01/21 />
+                                        //<remark 2021/01/06>
+                                        entity.True_StockDate = "項目無し";
                                     //entity.True_Quantity = qtypath;//<remark Close Logic 2021/11/02 />
                                     //</remark 2021/01/06>
                                 }
