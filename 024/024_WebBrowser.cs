@@ -336,7 +336,8 @@ namespace _24東_アズマ_
                         qtyStatus = strarr[4];
                         qtyStatus = qtyStatus.Replace("[", string.Empty).Replace("]", string.Empty).Replace("=", string.Empty);
 
-                        if (qtyStatus.Contains("○") || qtyStatus.Contains("◎"))
+                        //if (qtyStatus.Contains("○") || qtyStatus.Contains("◎"))
+                        if (qtyStatus.Contains("○") || qtyStatus.Contains("◎") || qtyStatus.Contains("△"))//<remark ロジックの変更　2022/01/21 />
                         {
                             entity.qtyStatus = "good";
                             dateexists = qtyStatus.Replace("○", string.Empty).Replace("◎", string.Empty);
@@ -358,7 +359,8 @@ namespace _24東_アズマ_
                         //entity.qtyStatus = "good";
                         //entity.qtyStatus = "small";                       
                         //}
-                        else if (qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") || qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("△"))
+                        //else if (qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") || qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("△"))
+                        else if (qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") || qtyStatus.Contains("台|個|ロット"))//<remark ロジックの変更　2022/01/21 />
                         {
                             entity.qtyStatus = "empty";
                             dateexists = qtyStatus.Replace("×", string.Empty).Replace("入荷予定", string.Empty).Replace("予約受付中", string.Empty).Replace("台|個|ロット", string.Empty).Replace("△", string.Empty);
@@ -382,7 +384,8 @@ namespace _24東_アズマ_
                         {
                             //entity.stockDate = qtyStatus.Equals("○") || qtyStatus.Equals("◎") ? "2100-01-01" : qtyStatus.Contains("△") || qtyStatus.Contains("×") || qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") ? "2100-02-01" : "unknown date";
                             //entity.stockDate = qtyStatus.Equals("○") || qtyStatus.Equals("◎") || qtyStatus.Contains("△") || qtyStatus.Contains("台|個|ロット") ? "2100-01-01" :  qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") ? "2100-02-01" : "unknown date";//<remark Change Logic of Stockdate />
-                            entity.stockDate = qtyStatus.Equals("○") || qtyStatus.Equals("◎") ? "2100-01-01" : qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") || qtyStatus.Contains("△") || qtyStatus.Contains("台|個|ロット") ? "2100-02-01" : "unknown date";
+                            //entity.stockDate = qtyStatus.Equals("○") || qtyStatus.Equals("◎") ? "2100-01-01" : qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") || qtyStatus.Contains("△") || qtyStatus.Contains("台|個|ロット") ? "2100-02-01" : "unknown date";
+                            entity.stockDate = qtyStatus.Equals("○") || qtyStatus.Equals("◎") || qtyStatus.Contains("△") ? "2100-01-01" : qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中") ? "2100-02-01" : "unknown date";//<remark ロジックの変更　2022/01/21 />
                             //<remark 2021/01/06>
                             entity.True_StockDate = "項目無し";
                             entity.True_Quantity = qtyStatus;
