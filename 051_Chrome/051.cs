@@ -305,8 +305,10 @@ namespace _051スタイルバイク
                                                                 else
                                                                 {
                                                                     qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[2]/div[3]/dl/dd")).Text;
-                                                                    entity.qtyStatus = qty.Equals("○") || qty.Contains("最少") ? "good" : qty.Equals("△") ? "empty" : qty.Equals("×") ? "empty" : "unknown status";
-                                                                    entity.stockDate = qty.Equals("○") || qty.Contains("最少") ? "2100-01-01" : qty.Equals("△") ? "2100-02-01" : "unknown status";
+                                                                    //entity.qtyStatus = qty.Equals("○") || qty.Contains("最少") ? "good" : qty.Equals("△") ? "empty" : qty.Equals("×") ? "empty" : "unknown status";
+                                                                    entity.qtyStatus = qty.Equals("○") || qty.Contains("最少") ? "good" : qty.Equals("△") ? "small" : qty.Equals("×") ? "empty" : "unknown status";//<remark ロジックの変更　2022/01/21 />
+                                                                    //entity.stockDate = qty.Equals("○") || qty.Contains("最少") ? "2100-01-01" : qty.Equals("△") ? "2100-02-01" : "unknown status";
+                                                                    entity.stockDate = qty.Equals("○") || qty.Equals("△") || qty.Contains("最少") ? "2100-01-01" : "unknown status";//<remark ロジックの変更　2022/01/21 />
                                                                     entity.True_StockDate = "Not Found";
                                                                     entity.True_Quantity = qty;
                                                                 }
