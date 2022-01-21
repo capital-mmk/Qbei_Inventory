@@ -320,7 +320,8 @@ namespace _34シマノ
                             //<remark qtyStatus(編集) 2020/5/19 Start>
                             //<remark 13/07/2020(変更)>
                             //entity.qtyStatus = alt.Contains("×") ? "empty" : only.Contains("在庫限り") ? "small" : alt.Contains("○") ? "good" : alt.Contains("△") ? "empty" : "NO STATUS CODE";
-                            entity.qtyStatus = alt.Contains("×") ? "empty" : alt.Contains("○") ? "good" : alt.Contains("△") ? "empty" : "NO STATUS CODE";
+                            //entity.qtyStatus = alt.Contains("×") ? "empty" : alt.Contains("○") ? "good" : alt.Contains("△") ? "empty" : "NO STATUS CODE";
+                            entity.qtyStatus = alt.Contains("×") ? "empty" : alt.Contains("○") ? "good" : alt.Contains("△") ? "small" : "NO STATUS CODE";//<remark ロジックの変更　2022/01/21 />
                             //</remark>
                             //</remark 2020/5/19 End>
                             // 価格は太文字の販売価格(税抜き)
@@ -343,7 +344,8 @@ namespace _34シマノ
                                 //    entity.stockDate = "2100-01-01";
                                 //}
                                 //<remark stockdate(編集) 2020/5/19 Start>
-                                if (alt.Contains("○"))
+                                //if (alt.Contains("○"))
+                                if (alt.Contains("○"))//<remark ロジックの変更　2022/01/21 />
                                 {
                                     entity.stockDate = "2100-01-01";
                                 }
