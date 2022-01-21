@@ -370,12 +370,12 @@ namespace _46トライスポーツ
 
                 //string alt = hdoc.DocumentNode.SelectSingleNode(qty).GetAttributeValue("alt", "");
                 //entity.qtyStatus = alt.Contains("○") ? "good" : alt.Contains("△") || alt.Contains("▲") ? "small" : alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("受付終了") || alt.Contains("×") ? "empty" : "unknown status";
-                //entity.qtyStatus = alt.Contains("○") ? "good" : alt.Contains("△") || alt.Contains("▲") ? "small" : alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("受付終了") || alt.Contains("null") || alt.Contains("×") ? "empty" : "unknown status";//<remar Edit Logic 2020/05/04 />
-                entity.qtyStatus = alt.Contains("○") ? "good" : alt.Contains("△") || alt.Contains("▲") || alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("受付終了") || alt.Contains("null") || alt.Contains("×") ? "empty" : "unknown status";//<remar Edit Logic 2020/07/24 />
+                entity.qtyStatus = alt.Contains("○") ? "good" : alt.Contains("△") || alt.Contains("▲") ? "small" : alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("受付終了") || alt.Contains("null") || alt.Contains("×") ? "empty" : "unknown status";//<remark ロジックの変更　2022/01/21 />
+                //entity.qtyStatus = alt.Contains("○") ? "good" : alt.Contains("△") || alt.Contains("▲") || alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("受付終了") || alt.Contains("null") || alt.Contains("×") ? "empty" : "unknown status";//<remar Edit Logic 2020/07/24 />
                 //entity.stockDate = alt.Contains("○") || alt.Contains("△") || alt.Contains("▲") || alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("×") ? "2100-01-01" : alt.Contains("受付終了") ? "2100-02-01" : "unknown date";
                 //<remark 06/12/2019変更>
-                //entity.stockDate = alt.Contains("○") || alt.Contains("△") || alt.Contains("▲") ? "2100-01-01" : alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("受付終了") || alt.Contains("null") || alt.Contains("×") ? "2100-02-01" : "unknown date";//<remar Edit Logic 2020/05/04 />
-                entity.stockDate = alt.Contains("○") ? "2100-01-01" : alt.Contains("△") || alt.Contains("▲") || alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("受付終了") || alt.Contains("null") || alt.Contains("×") ? "2100-02-01" : "unknown date";//<remar Edit Logic 2020/07/24 />
+                entity.stockDate = alt.Contains("○") || alt.Contains("△") || alt.Contains("▲") ? "2100-01-01" : alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("受付終了") || alt.Contains("null") || alt.Contains("×") ? "2100-02-01" : "unknown date";//<remark ロジックの変更　2022/01/21 />
+                //entity.stockDate = alt.Contains("○") ? "2100-01-01" : alt.Contains("△") || alt.Contains("▲") || alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("受付終了") || alt.Contains("null") || alt.Contains("×") ? "2100-02-01" : "unknown date";//<remar Edit Logic 2020/07/24 />
                 //entity.stockDate = alt.Contains("○") || alt.Contains("△") || alt.Contains("▲") ? "2100-01-01" : alt.Contains("予約受付中") || alt.Contains("在庫なし") || alt.Contains("×") || alt.Contains("受付終了") ? "2100-02-01" : "unknown date";
                 //</remark>
                 entity.price = webBrowser1.Document.GetElementById("price02_default").InnerText;
