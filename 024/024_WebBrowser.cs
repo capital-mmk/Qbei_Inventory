@@ -336,12 +336,18 @@ namespace _24東_アズマ_
                         qtyStatus = strarr[4];
                         qtyStatus = qtyStatus.Replace("[", string.Empty).Replace("]", string.Empty).Replace("=", string.Empty);
 
-                        //if (qtyStatus.Contains("○") || qtyStatus.Contains("◎"))
-                        if (qtyStatus.Contains("○") || qtyStatus.Contains("◎") || qtyStatus.Contains("△"))//<remark ロジックの変更　2022/01/21 />
+                        if (qtyStatus.Contains("○") || qtyStatus.Contains("◎"))
                         {
                             entity.qtyStatus = "good";
                             dateexists = qtyStatus.Replace("○", string.Empty).Replace("◎", string.Empty);
                         }
+                        //<remark ロジックの変更　2022/01/21 Start>
+                        else if (qtyStatus.Contains("△"))
+                        {
+                            entity.qtyStatus = "small";
+                            dateexists = qtyStatus.Replace("△", string.Empty);
+                        }
+                        //</remark 2022/01/21 End>
                         //<remark quantity & stockdateの　編集ロジック　2020/06/16 Start>
                         //<remark quantity & stockdateの　編集ロジック　2020/04/07 Start>
                         //else if (qtyStatus.Contains("△") || qtyStatus.Contains("台|個|ロット") || qtyStatus.Contains("×") || qtyStatus.Contains("入荷予定") || qtyStatus.Contains("予約受付中"))
