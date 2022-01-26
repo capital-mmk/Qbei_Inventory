@@ -339,12 +339,22 @@ namespace _058リンエイ
                                             }
 
                                             entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") ? "small" : qty.Contains("×") || qty.Contains("入荷待ち") || qty.Contains("廃番") ? "empty" : qty.Contains("取り寄せ") ? "inquily" : "unknown status";
-                                            if (entity.stockDate == null || entity.stockDate == " ")
+                                            //<remark Add Logic for quantity and stockdate at qty.Contains("×") or qty.Contains("廃番") or qty.Contains("入荷待ち") 2022/01/26 Start>
+                                            if (qty.Contains("×") || qty.Contains("入荷待ち") || qty.Contains("廃番"))
                                             {
-                                                entity.stockDate = qty.Contains("○") || qty.Contains("最少") ? "2100-01-01" : qty.Contains("△") || qty.Contains("入荷待ち") || qty.Contains("×") || qty.Contains("取り寄せ") ? "2100-01-01" : qty.Contains("廃番") ? "2100-02-01" : "unknown status";
+                                                entity.stockDate = "2100-02-01";
                                                 entity.True_Quantity = qty;
                                                 entity.True_StockDate = "項目無し";
                                             }
+                                            //if (entity.stockDate == null || entity.stockDate == " ")
+                                            else if (entity.stockDate == null || entity.stockDate == " ")
+                                            {
+                                                //entity.stockDate = qty.Contains("○") || qty.Contains("最少") ? "2100-01-01" : qty.Contains("△") || qty.Contains("入荷待ち") || qty.Contains("×") || qty.Contains("取り寄せ") ? "2100-01-01" : qty.Contains("廃番") ? "2100-02-01" : "unknown status";
+                                                entity.stockDate = qty.Contains("○") || qty.Contains("△") || qty.Contains("取り寄せ") ? "2100-01-01" : "unknown date";
+                                                entity.True_Quantity = qty;
+                                                entity.True_StockDate = "項目無し";
+                                            }
+                                            //</remark 2022/01/26 End>
 
                                             DateTime d = Convert.ToDateTime(entity.stockDate);
                                             if (d <= (DateTime.Now))
