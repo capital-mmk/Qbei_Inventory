@@ -157,10 +157,23 @@ namespace _011マルイ
                 qe.SiteID = 11;
                 dt = qubl.Qbei_Setting_Select(qe);
                 string username = dt.Rows[0]["UserName"].ToString();
-                webBrowser1.Document.GetElementById("id").InnerText = username;
+                //webBrowser1.Document.GetElementById("id").InnerText = username;
+                webBrowser1.Document.GetElementById("login_id").InnerText = username;
                 string password = dt.Rows[0]["Password"].ToString();
-                webBrowser1.Document.GetElementById("psw").InnerText = password;
-                fun.GetElement("input", "　ロ グ イ ン　", "value", webBrowser1).InvokeMember("click");
+                //webBrowser1.Document.GetElementById("psw").InnerText = password;
+                webBrowser1.Document.GetElementById("password").InnerText = password;
+                var links = webBrowser1.Document.GetElementsByTagName("div");
+                foreach (HtmlElement link in links)
+                {
+                    if (link.GetAttribute("class") == "recaptcha-checkbox goog-inline-block recaptcha-checkbox-unchecked rc-anchor-checkbox")
+                    {
+                        MessageBox.Show("Click here");
+                        link.InvokeMember("click");
+                    }
+                }
+                fun.GetElement("span", "recaptcha-checkbox goog-inline-block recaptcha-checkbox-unchecked rc-anchor-checkbox", "class", webBrowser1).InvokeMember("click");
+                //fun.GetElement("input", "　ロ グ イ ン　", "value", webBrowser1).InvokeMember("click");
+                fun.GetElement("button", "submit", "type", webBrowser1).InvokeMember("click");
                 webBrowser1.DocumentCompleted -= webBrowser1_Start;
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Login);
             }
@@ -202,7 +215,8 @@ namespace _011マルイ
                 else
                 {
                     fun.WriteLog("Login success             ------", "011-");
-                    orderCode = fun.ReplaceOrderCode(dt011.Rows[0]["発注コード"].ToString(), new string[] { "-" });
+                    //orderCode = fun.ReplaceOrderCode(dt011.Rows[0]["発注コード"].ToString(), new string[] { "-" });
+                    orderCode = "TIR22100";
                     webBrowser1.Navigate(fun.url + "/index.php?action_goods=true&id=" + orderCode + "00000");
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }

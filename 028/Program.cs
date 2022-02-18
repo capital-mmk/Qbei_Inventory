@@ -14,20 +14,16 @@ using QbeiAgencies_BL;
 using QbeiAgencies_Common;
 using System.Globalization;
 
-namespace _011マルイ
+namespace _028
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <remark>
+    /// Data Table and Common Function and Field
+    /// </remark>
     class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        //[STAThread]
-        //static void Main()
-        //{
-        //    Application.EnableVisualStyles();
-        //    Application.SetCompatibleTextRenderingDefault(false);
-        //    Application.Run(new frm011());
-        //}
         /// <summary>
         /// Constructor
         /// </summary>
@@ -36,7 +32,7 @@ namespace _011マルイ
         /// </remark>               
         Qbeisetting_BL blQbei = new Qbeisetting_BL();
         Qbei_Entity entity = new Qbei_Entity();
-        DataTable dt011 = new DataTable();
+        DataTable dt028 = new DataTable();
         public static CommonFunction fun = new CommonFunction();
         DataTable dtGroupData = new DataTable();
         private static int i;
@@ -70,9 +66,9 @@ namespace _011マルイ
 
                 int intFlag;
                 qe.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                qe.site = 11;
+                qe.site = 28;
                 qe.flag = 1;
-                dtSetting = fun.SelectFlag(11);
+                dtSetting = fun.SelectFlag(28);
                 intFlag = int.Parse(dtSetting.Rows[0]["FlagIsFinished"].ToString());
 
                 /// <summary>
@@ -93,7 +89,7 @@ namespace _011マルイ
                 ///</remark>
                 else if (intFlag == 1)
                 {
-                    fun.deleteData(11);
+                    fun.deleteData(28);
                     fun.ChangeFlag(qe);
                     startRun();
                 }
@@ -104,7 +100,7 @@ namespace _011マルイ
             }
             catch (Exception ex)
             {
-                fun.WriteLog(ex, "011-");
+                fun.WriteLog(ex, "028-");
                 Environment.Exit(0);
             }
         }
@@ -117,19 +113,19 @@ namespace _011マルイ
         /// </remark>
         public static void startRun()
         {
-            DataTable dt011 = new DataTable();
+            DataTable dt028 = new DataTable();
             try
             {
-                fun.setURL("011");
-                fun.Qbei_Delete(11);
-                fun.Qbei_ErrorDelete(11);
-                dt011 = fun.GetDatatable("011");
-                fun.GetTotalCount("011");
+                fun.setURL("028");
+                fun.Qbei_Delete(28);
+                fun.Qbei_ErrorDelete(28);
+                dt028 = fun.GetDatatable("028");
+                fun.GetTotalCount("028");
 
             }
             catch (Exception ex)
             {
-                fun.WriteLog(ex, "011-");
+                fun.WriteLog(ex, "028-");
                 Environment.Exit(0);
             }
 
@@ -137,7 +133,7 @@ namespace _011マルイ
             /// Use to ChormeDriver and Data Table and Common Function and Field
             /// </summary>
             var chromeOptions = new ChromeOptions();
-            //chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";//<Add Logic for Chrome Path 2021/05/24 />
+            chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";//<Add Logic for Chrome Path 2021/05/24 />
             chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");//<remark Add Logic for ChormeDriver 2021/09/02 />
             chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");//<remark Add Logic for ChormeDriver 2021/09/02 />
             chromeOptions.AddArguments("-no-sandbox");//<remark Add Logic for ChormeDriver 2021/09/02 />
@@ -153,19 +149,17 @@ namespace _011マルイ
                 /// <summary>
                 /// Login of Mall.
                 /// </summary>
-                qe.SiteID = 11;
+                qe.SiteID = 28;
                 dt = qubl.Qbei_Setting_Select(qe);
                 string url = dt.Rows[0]["Url"].ToString();
                 chrome.Url = url;
                 string title = chrome.Title;
                 string username = dt.Rows[0]["UserName"].ToString();
-                chrome.FindElement(By.Name("login_id")).SendKeys(username);
+                chrome.FindElement(By.Id("UserName")).SendKeys(username);
                 string password = dt.Rows[0]["Password"].ToString();
-                chrome.FindElement(By.Name("password")).SendKeys(password);
-                fun.WriteLog("Navigation to Site Url success------", "037-");  
-                chrome.SwitchTo().Frame(0);
-                chrome.FindElement(By.Id("recaptcha-anchor")).Click();
-                chrome.FindElement(By.XPath("/html/body/div[1]/div/form/div/div[4]/div/button")).Click();
+                chrome.FindElement(By.Id("UserPW")).SendKeys(password);
+                fun.WriteLog("Navigation to Site Url success------", "037-");
+                chrome.FindElement(By.Id("Button1")).Click();
                 Thread.Sleep(8000);
 
                 /// <summary>
@@ -175,15 +169,15 @@ namespace _011マルイ
                 string body = chrome.FindElement(By.TagName("body")).Text;
                 if (body.Contains("Invalid username and/or password."))
                 {
-                    fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), "Login Failed", dt011.Rows[0]["JANコード"].ToString(), dt011.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
-                    fun.WriteLog("Login Failed", "011-");
+                    fun.Qbei_ErrorInsert(28, fun.GetSiteName("028"), "Login Failed", dt028.Rows[0]["JANコード"].ToString(), dt028.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "028");
+                    fun.WriteLog("Login Failed", "028-");
 
                     chrome.Quit();
                     Environment.Exit(0);
                 }
                 else
                 {
-                    fun.WriteLog("Login success             ------", "011-");
+                    fun.WriteLog("Login success             ------", "028-");
                 }
 
                 /// <summary>
@@ -191,14 +185,13 @@ namespace _011マルイ
                 /// </summary>
                 try
                 {
-                    int Lastrow = dt011.Rows.Count;
+                    int Lastrow = dt028.Rows.Count;
                     for (i = 0; i < Lastrow; i++)
                     {
                         if (i < Lastrow)
                         {
                             string ordercode;
-                            //ordercode = dt028.Rows[i]["発注コード"].ToString();
-                            ordercode = "YQBJNC386B";
+                            ordercode = dt028.Rows[i]["発注コード"].ToString();
                             chrome.FindElement(By.Id("SearchParam")).Clear();
                             chrome.FindElement(By.Id("SearchParam")).SendKeys(ordercode);
                             try
@@ -216,13 +209,13 @@ namespace _011マルイ
                             Thread.Sleep(4000);
 
                             entity = new Qbei_Entity();
-                            entity.siteID = 11;
-                            entity.sitecode = "011";
-                            entity.janCode = dt011.Rows[i]["JANコード"].ToString();
-                            entity.partNo = dt011.Rows[i]["自社品番"].ToString();
+                            entity.siteID = 28;
+                            entity.sitecode = "028";
+                            entity.janCode = dt028.Rows[i]["JANコード"].ToString();
+                            entity.partNo = dt028.Rows[i]["自社品番"].ToString();
                             entity.makerDate = fun.getCurrentDate();
-                            entity.reflectDate = dt011.Rows[i]["最終反映日"].ToString();
-                            entity.orderCode = dt011.Rows[i]["発注コード"].ToString().Trim();
+                            entity.reflectDate = dt028.Rows[i]["最終反映日"].ToString();
+                            entity.orderCode = dt028.Rows[i]["発注コード"].ToString().Trim();
                             entity.purchaseURL = "https://cegnet.com/ustock/storage.aspx";
 
                             //<remark>
@@ -240,19 +233,19 @@ namespace _011マルイ
                                 {
                                     entity.qtyStatus = "empty";
                                     entity.stockDate = "2100-02-01";
-                                    entity.price = dt011.Rows[i]["下代"].ToString();
+                                    entity.price = dt028.Rows[i]["下代"].ToString();
                                     entity.True_StockDate = "Not Found";
                                     entity.True_Quantity = "Not Found";
                                     fun.Qbei_Inserts(entity);
                                 }
                                 else
-                                {
+                                {   
                                     int n = Convert.ToInt32(chrome.FindElements(By.XPath("/html/body/form/div[3]/div/div/div/div[2]/div/table/tbody/tr")).Count());
                                     if (n == 0)
                                     {
                                         entity.qtyStatus = "empty";
                                         entity.stockDate = "2100-02-01";
-                                        entity.price = dt011.Rows[i]["下代"].ToString();
+                                        entity.price = dt028.Rows[i]["下代"].ToString();
                                         entity.True_StockDate = "Not Found";
                                         entity.True_Quantity = "Not Found";
                                         fun.Qbei_Inserts(entity);
@@ -284,7 +277,7 @@ namespace _011マルイ
                                                         qty = " ";
                                                     }
                                                 }
-                                                entity.qtyStatus = qty.Equals(" ") || qty.Equals(null) || qty.Equals("0") || qty.Equals("1") || qty.Equals("2") ? "empty" : qty.Equals("10+") ? "small" : Convert.ToInt32(qty) >= 3 ? "small" : "empty";
+                                                entity.qtyStatus = qty.Equals(" ") || qty.Equals(null) || qty.Equals("0") || qty.Equals("1") || qty.Equals("2") ? "empty" : qty.Equals("10+") ? "small" : Convert.ToInt32(qty)>=3 ? "small" : "empty";
 
                                                 //<remark>
                                                 //Check to Price
@@ -296,18 +289,18 @@ namespace _011マルイ
                                                     //entity.price = price_split[0];
                                                     entity.price = entity.price.Replace("円", " ").Replace(".", string.Empty);
                                                 }
-                                                entity.price = entity.price.Replace("円", " ").Replace(",", string.Empty);
+                                                entity.price = entity.price.Replace("円", " ").Replace(",", string.Empty);                                                                                               
 
-                                                string start_month = chrome.FindElement(By.XPath("/html/body/form/div[3]/div/div/div/div[2]/div/table/thead/tr/th[6]")).Text;
+                                                string start_month= chrome.FindElement(By.XPath("/html/body/form/div[3]/div/div/div/div[2]/div/table/thead/tr/th[6]")).Text;
                                                 int now_month = DateTime.ParseExact(start_month, "MMM", CultureInfo.CreateSpecificCulture("en-GB")).Month;
-                                                int now_year = Convert.ToInt32(DateTime.Now.Year);
+                                                int now_year= Convert.ToInt32(DateTime.Now.Year);
                                                 int month_colunms = Convert.ToInt32(chrome.FindElements(By.XPath("/html/body/form/div[3]/div/div/div/div[2]/div/table/tbody/tr[" + j + "]/td")).Count());
                                                 string month;
-                                                for (int g = 6; g <= month_colunms; g++)
+                                                for (int g = 6; g <=month_colunms ; g++)
                                                 {
-                                                    string check_month = chrome.FindElement(By.XPath("/html/body/form/div[3]/div/div/div/div[2]/div/table/tbody/tr[" + j + "]/td[" + g + "]")).Text;
+                                                    string check_month= chrome.FindElement(By.XPath("/html/body/form/div[3]/div/div/div/div[2]/div/table/tbody/tr[" + j + "]/td[" + g + "]")).Text;
                                                     month = check_month;
-                                                    if (check_month == "")
+                                                    if (check_month =="")
                                                     {
                                                         entity.stockDate = "2100-01-01";
                                                         entity.True_Quantity = qty;
@@ -352,23 +345,23 @@ namespace _011マルイ
                                             }
                                             else
                                             {
-                                                fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), "Jancode doesn't exit!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
+                                                fun.Qbei_ErrorInsert(28, fun.GetSiteName("028"), "Jancode doesn't exit!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "028");
                                             }
                                         }
                                         else
                                         {
-                                            fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), "Item doesn't Check!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
+                                            fun.Qbei_ErrorInsert(28, fun.GetSiteName("028"), "Item doesn't Check!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "028");
                                         }
                                     }
                                 }
                             }
                             else
                             {
-                                fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
+                                fun.Qbei_ErrorInsert(28, fun.GetSiteName("028"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "028");
                             }
                         }
                     }
-                    qe.site = 11;
+                    qe.site = 28;
                     qe.flag = 2;
                     qe.starttime = string.Empty;
                     qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -378,10 +371,10 @@ namespace _011マルイ
                 }
                 catch (Exception ex)
                 {
-                    string janCode = dt011.Rows[i]["JANコード"].ToString();
-                    orderCode = dt011.Rows[i]["発注コード"].ToString();
-                    fun.Qbei_ErrorInsert(11, fun.GetSiteName("011"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "011");
-                    fun.WriteLog(ex, "011-", janCode, orderCode);
+                    string janCode = dt028.Rows[i]["JANコード"].ToString();
+                    orderCode = dt028.Rows[i]["発注コード"].ToString();
+                    fun.Qbei_ErrorInsert(28, fun.GetSiteName("028"), ex.Message, janCode, orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "028");
+                    fun.WriteLog(ex, "028-", janCode, orderCode);
                 }
             }
         }

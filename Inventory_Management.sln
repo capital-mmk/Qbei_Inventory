@@ -111,6 +111,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "058_Chrome", "058_Chrome\05
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "145_Chrome", "145_Chrome\145_Chrome.csproj", "{B4CEA30F-890F-4B0B-8B7E-878A03756170}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "028", "028\028.csproj", "{6031B582-FC3D-4F44-8B8F-B5DB6EEDF515}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -631,6 +633,18 @@ Global
 		{B4CEA30F-890F-4B0B-8B7E-878A03756170}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B4CEA30F-890F-4B0B-8B7E-878A03756170}.Release|x86.ActiveCfg = Release|Any CPU
 		{B4CEA30F-890F-4B0B-8B7E-878A03756170}.Release|x86.Build.0 = Release|Any CPU
+		{6031B582-FC3D-4F44-8B8F-B5DB6EEDF515}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6031B582-FC3D-4F44-8B8F-B5DB6EEDF515}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6031B582-FC3D-4F44-8B8F-B5DB6EEDF515}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6031B582-FC3D-4F44-8B8F-B5DB6EEDF515}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6031B582-FC3D-4F44-8B8F-B5DB6EEDF515}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6031B582-FC3D-4F44-8B8F-B5DB6EEDF515}.Debug|x86.Build.0 = Debug|Any CPU
+		{6031B582-FC3D-4F44-8B8F-B5DB6EEDF515}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6031B582-FC3D-4F44-8B8F-B5DB6EEDF515}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6031B582-FC3D-4F44-8B8F-B5DB6EEDF515}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6031B582-FC3D-4F44-8B8F-B5DB6EEDF515}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6031B582-FC3D-4F44-8B8F-B5DB6EEDF515}.Release|x86.ActiveCfg = Release|Any CPU
+		{6031B582-FC3D-4F44-8B8F-B5DB6EEDF515}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -99,7 +99,7 @@ namespace _014_chrome
             try
             {
                 fun.setURL("014");
-                fun.MoveToTrash("014");
+                //fun.MoveToTrash("014");
                 fun.CreateFileAndFolder();
                 fun.Qbei_Delete(14);
                 fun.Qbei_ErrorDelete(14);
