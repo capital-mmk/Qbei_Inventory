@@ -192,10 +192,12 @@ namespace _028
                         {
                             string ordercode;
                             ordercode = dt028.Rows[i]["発注コード"].ToString();
-                            chrome.FindElement(By.Id("SearchParam")).Clear();
-                            chrome.FindElement(By.Id("SearchParam")).SendKeys(ordercode);
+                            //chrome.FindElement(By.Id("SearchParam")).Clear();
+                            //chrome.FindElement(By.Id("SearchParam")).SendKeys(ordercode);
                             try
                             {
+                                chrome.FindElement(By.Id("SearchParam")).Clear();
+                                chrome.FindElement(By.Id("SearchParam")).SendKeys(ordercode);
                                 chrome.FindElement(By.Id("Search")).Click();
                             }
                             catch
@@ -308,21 +310,22 @@ namespace _028
                                                     }
                                                     else
                                                     {
-                                                        int compare_month = Convert.ToInt32(DateTime.Now.Month);
                                                         if (now_month >= 4 && now_month > 12)
                                                         {
                                                             now_year = now_year + 1;
                                                             now_month = now_month - 12;
                                                             entity.stockDate = now_year + "-" + now_month + "-" + "15";
                                                             entity.True_Quantity = qty;
-                                                            entity.True_StockDate = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(now_month);
+                                                            //entity.True_StockDate = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(now_month);
+                                                            entity.True_StockDate = CultureInfo.InvariantCulture.DateTimeFormat.GetAbbreviatedMonthName(now_month);
                                                             break;
                                                         }
                                                         else
                                                         {
                                                             entity.stockDate = now_year + "-" + now_month + "-" + "15";
                                                             entity.True_Quantity = qty;
-                                                            entity.True_StockDate = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(now_month);
+                                                            //entity.True_StockDate = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(now_month);
+                                                            entity.True_StockDate = CultureInfo.InvariantCulture.DateTimeFormat.GetAbbreviatedMonthName(now_month);
                                                             break;
                                                         }
                                                     }
