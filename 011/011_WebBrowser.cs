@@ -157,23 +157,10 @@ namespace _011マルイ
                 qe.SiteID = 11;
                 dt = qubl.Qbei_Setting_Select(qe);
                 string username = dt.Rows[0]["UserName"].ToString();
-                //webBrowser1.Document.GetElementById("id").InnerText = username;
-                webBrowser1.Document.GetElementById("login_id").InnerText = username;
+                webBrowser1.Document.GetElementById("id").InnerText = username;
                 string password = dt.Rows[0]["Password"].ToString();
-                //webBrowser1.Document.GetElementById("psw").InnerText = password;
-                webBrowser1.Document.GetElementById("password").InnerText = password;
-                var links = webBrowser1.Document.GetElementsByTagName("div");
-                foreach (HtmlElement link in links)
-                {
-                    if (link.GetAttribute("class") == "recaptcha-checkbox goog-inline-block recaptcha-checkbox-unchecked rc-anchor-checkbox")
-                    {
-                        MessageBox.Show("Click here");
-                        link.InvokeMember("click");
-                    }
-                }
-                fun.GetElement("span", "recaptcha-checkbox goog-inline-block recaptcha-checkbox-unchecked rc-anchor-checkbox", "class", webBrowser1).InvokeMember("click");
-                //fun.GetElement("input", "　ロ グ イ ン　", "value", webBrowser1).InvokeMember("click");
-                fun.GetElement("button", "submit", "type", webBrowser1).InvokeMember("click");
+                webBrowser1.Document.GetElementById("psw").InnerText = password;
+                fun.GetElement("input", "　ロ グ イ ン　", "value", webBrowser1).InvokeMember("click");
                 webBrowser1.DocumentCompleted -= webBrowser1_Start;
                 webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Login);
             }
@@ -215,8 +202,7 @@ namespace _011マルイ
                 else
                 {
                     fun.WriteLog("Login success             ------", "011-");
-                    //orderCode = fun.ReplaceOrderCode(dt011.Rows[0]["発注コード"].ToString(), new string[] { "-" });
-                    orderCode = "TIR22100";
+                    orderCode = fun.ReplaceOrderCode(dt011.Rows[0]["発注コード"].ToString(), new string[] { "-" });
                     webBrowser1.Navigate(fun.url + "/index.php?action_goods=true&id=" + orderCode + "00000");
                     webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_ItemSearch);
                 }
@@ -320,7 +306,7 @@ namespace _011マルイ
                                 {
                                     //entity.stockDate = alt.Equals("○") || alt.Equals("△") || alt.Equals("×") ? "2100-01-01" : alt.Equals("完売") ? "2100-02-01" : "unknown status";
                                     entity.stockDate = alt.Equals("○") || alt.Equals("△") ? "2100-01-01" : alt.Equals("完売") || alt.Equals("×") ? "2100-02-01" : "unknown status";//<remark ロジックの変更　2022/01/19 />
-                                   //entity.stockDate = alt.Equals("○") ? "2100-01-01" : alt.Equals("完売") || alt.Equals("△") || alt.Equals("×") ? "2100-02-01" : "unknown status";//<remark ロジックの変更　2020/05/20 />
+                                                                                                                                                                                 //entity.stockDate = alt.Equals("○") ? "2100-01-01" : alt.Equals("完売") || alt.Equals("△") || alt.Equals("×") ? "2100-02-01" : "unknown status";//<remark ロジックの変更　2020/05/20 />
                                 }
                                 else
                                 {
@@ -328,7 +314,7 @@ namespace _011マルイ
                                     //entity.stockDate = alt.Equals("○") || alt.Equals("△") || alt.Equals("×") ? stockDate : alt.Equals("完売") ? "2100-02-01" : "unknown date";
                                     //entity.stockDate = alt.Equals("○") || alt.Equals("△") ? stockDate : alt.Equals("×") ||alt.Equals("完売") ? "2100-02-01" : "unknown date";//<remark ロジックの変更　2020/04/22 />
                                     //entity.stockDate = alt.Equals("○") ? stockDate : alt.Equals("×") || alt.Equals("△") || alt.Equals("完売") ? "2100-02-01" : "unknown date";//<remark ロジックの変更　2020/05/20 />
-                                    entity.stockDate = alt.Equals("○") ? stockDate : alt.Equals("△") ? "2100-01-01" : alt.Equals("×") ||  alt.Equals("完売") ? "2100-02-01" : "unknown date";//<remark ロジックの変更　2022/01/19 />
+                                    entity.stockDate = alt.Equals("○") ? stockDate : alt.Equals("△") ? "2100-01-01" : alt.Equals("×") || alt.Equals("完売") ? "2100-02-01" : "unknown date";//<remark ロジックの変更　2022/01/19 />
                                 }
                                 //<remark Close Logic 2020/25/22 Start>
                                 //if ((dt011.Rows[i]["在庫情報"].ToString().Contains("empty") || dt011.Rows[i]["在庫情報"].ToString().Contains("inquiry")) && dt011.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
