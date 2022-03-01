@@ -171,7 +171,7 @@ namespace _011マルイ
                             entity.makerDate = fun.getCurrentDate();
                             entity.reflectDate = dt011.Rows[i]["最終反映日"].ToString();
                             entity.orderCode = dt011.Rows[i]["発注コード"].ToString().Trim();
-                            entity.purchaseURL = "https://cegnet.com/ustock/storage.aspx";
+                            entity.purchaseURL = "https://marui-ltd.jp/products?search_product_no="+entity.orderCode;
 
                         if (dt011.Rows[i]["在庫情報"].ToString().Equals("good"))
                         {
