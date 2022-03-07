@@ -441,25 +441,31 @@ namespace Common
                         //<remark Add Logic for Siteid-110 2021/04/09 Start>
                         if (shopID.Equals("110"))
                         {
-
-                            DataTable dt_ci = dtOrder.Select("自社品番 like 'ci-%'").CopyToDataTable();
-                            xml = DataTableToXml(dt_ci);
-                            //xml = RemoveInvalidXmlChars(xml);
-                            con = new Connection();
-                            sqlcon = con.GetConnection();
-                            cmd = new SqlCommand("Qbei_ErrorLog_3_InsertXml", sqlcon);
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@xml", xml);
-                            cmd.Parameters.AddWithValue("@sitename", GetSiteName(shopID));
-                            cmd.Parameters.AddWithValue("@Description", "ci-Item");
-                            cmd.Parameters.AddWithValue("@ErrorType", 6);
-                            cmd.Parameters.AddWithValue("@SiteCode", shopID);
-                            cmd.CommandTimeout = 600;
-                            cmd.Connection.Open();
-                            cmd.ExecuteNonQuery();
-                            cmd.Connection.Close();
-
-                            dtOrder = dtOrder.Select("自社品番 not like 'ci-%'").CopyToDataTable();
+                            int check_ci_count = dtOrder.Select("自社品番 like 'ci%'").Count();//<remark Add Logic for Siteid-110 2022/03/07 />
+                            if (check_ci_count > 0)//<remark Add Logic for Siteid-110 2022/03/07 />
+                            {
+                                DataTable dt_ci = dtOrder.Select("自社品番 like 'ci-%'").CopyToDataTable();
+                                xml = DataTableToXml(dt_ci);
+                                //xml = RemoveInvalidXmlChars(xml);
+                                con = new Connection();
+                                sqlcon = con.GetConnection();
+                                cmd = new SqlCommand("Qbei_ErrorLog_3_InsertXml", sqlcon);
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.Parameters.AddWithValue("@xml", xml);
+                                cmd.Parameters.AddWithValue("@sitename", GetSiteName(shopID));
+                                cmd.Parameters.AddWithValue("@Description", "ci-Item");
+                                cmd.Parameters.AddWithValue("@ErrorType", 6);
+                                cmd.Parameters.AddWithValue("@SiteCode", shopID);
+                                cmd.CommandTimeout = 600;
+                                cmd.Connection.Open();
+                                cmd.ExecuteNonQuery();
+                                cmd.Connection.Close();
+                            }
+                            int check_count = dtOrder.Select("自社品番 not like 'ci-%'").Count();//<remark Add Logic for Siteid-110 2022/03/07 />
+                            if (check_count > 0)//<remark Add Logic for Siteid-110 2022/03/07 />
+                            {
+                                dtOrder = dtOrder.Select("自社品番 not like 'ci-%'").CopyToDataTable();
+                            }
                         }
                         //</remark 2021/04/09 End>
                     }
@@ -1726,6 +1732,39 @@ namespace Common
                             cmd.ExecuteNonQuery();
                             cmd.Connection.Close();
                         }
+
+                        //<remark Add Logic for Siteid-110 2021/04/09 Start>
+                        if (strShopId.Equals("110"))
+                        {
+                            int check_ci_count = dtCsv.Select("自社品番 like 'ci%'").Count();//<remark Add Logic for Siteid-110 2022/03/07 />
+                            if (check_ci_count > 0)//<remark Add Logic for Siteid-110 2022/03/07 />
+                            {
+                                DataTable dt_ci = dtCsv.Select("自社品番 like 'ci%'").CopyToDataTable();
+                                xml = DataTableToXml(dt_ci);
+                                //xml = RemoveInvalidXmlChars(xml);
+                                con = new Connection();
+                                sqlcon = con.GetConnection();
+                                cmd = new SqlCommand("Qbei_ErrorLog_3_InsertXml", sqlcon);
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.Parameters.AddWithValue("@xml", xml);
+                                cmd.Parameters.AddWithValue("@sitename", GetSiteName(strShopId));
+                                cmd.Parameters.AddWithValue("@Description", "ci-Item");
+                                cmd.Parameters.AddWithValue("@ErrorType", 6);
+                                cmd.Parameters.AddWithValue("@SiteCode", strShopId);
+                                cmd.CommandTimeout = 600;
+                                cmd.Connection.Open();
+                                cmd.ExecuteNonQuery();
+                                cmd.Connection.Close();
+                            }
+
+                            int check_count = dtCsv.Select("自社品番 not like 'ci-%'").Count();//<remark Add Logic for Siteid-110 2022/03/07 />
+                            if (check_count > 0)//<remark Add Logic for Siteid-110 2022/03/07 />
+                            {
+                                dtCsv = dtCsv.Select("自社品番 not like 'ci-%'").CopyToDataTable();
+                            }
+                        }
+                        //</remark 2021/04/09 End>
+
                         if (dtCsv != null)
                         {
                             //Order Code Trim
