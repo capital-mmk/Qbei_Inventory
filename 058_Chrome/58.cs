@@ -163,11 +163,11 @@ namespace _058リンエイ
                     string title = chrome.Title;
 
                     string username = dt.Rows[0]["UserName"].ToString();
-                    chrome.FindElement(By.Name("Login[loginid]")).SendKeys(username);
+                    chrome.FindElement(By.Name("member[email]")).SendKeys(username);
                     string password = dt.Rows[0]["Password"].ToString();
-                    chrome.FindElement(By.Name("Login[loginpass]")).SendKeys(password);
+                    chrome.FindElement(By.Name("member[password]")).SendKeys(password);
                     fun.WriteLog("Navigation to Site Url success------", "058-");
-                    chrome.FindElement(By.Name("login")).Click();
+                    chrome.FindElement(By.XPath("/html/body/div/main/div[3]/div[1]/div[2]/div[2]/div[1]/div/form/div/button")).Click();
                     Thread.Sleep(8000);
 
                     /// <summary>
@@ -175,7 +175,7 @@ namespace _058リンエイ
                     /// </summary>
                     string orderCode = string.Empty;
                     string body = chrome.FindElement(By.TagName("body")).Text;
-                    if (body.Contains("お客さまコードを入力してください。") || body.Contains("パスワードを入力してください。") || body.Contains("お客さまコード、あるいは、パスワードが間違っています。入力内容をご確認ください。"))
+                    if (body.Contains("メールアドレスまたはパスワードが違います"))
                     {
                         fun.Qbei_ErrorInsert(58, fun.GetSiteName("058"), "Login Failed", dt058.Rows[0]["JANコード"].ToString(), dt058.Rows[0]["発注コード"].ToString(), 1, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "058");
                         fun.WriteLog("Login Failed", "058-");
@@ -192,29 +192,24 @@ namespace _058リンエイ
                         /// </summary>
                         try
                         {
-                            chrome.Navigate().GoToUrl("https://www.rinei-web.jp/shop/item_code/");
                             int Lastrow = dt058.Rows.Count;
                             for (i = 0; i < Lastrow; i++)
                             {
                                 if (i < Lastrow)
                                 {
                                     ordercode = dt058.Rows[i]["発注コード"].ToString();
-                                    chrome.FindElement(By.Id("ItemCode_cdgds")).Clear();
-                                    chrome.FindElement(By.Id("ItemCode_cdgds")).SendKeys(ordercode);
+                                    chrome.FindElement(By.Id("keyword")).Clear();
+                                    chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
                                     try
                                     {
-                                        chrome.FindElement(By.Id("button_kensaku")).Click();
+                                        chrome.FindElement(By.Id("search-button")).Click();
                                     }
                                     catch
                                     {
-                                        //<remark Add&Edit Logic for return go to url 2022/01/19 Start>
-                                        //Thread.Sleep(4000);
-                                        chrome.Navigate().GoToUrl("https://www.rinei-web.jp/shop/item_code/");
                                         Thread.Sleep(20000);
-                                        //</remark 2022/01/19 End>
-                                        chrome.FindElement(By.Id("ItemCode_cdgds")).Clear();
-                                        chrome.FindElement(By.Id("ItemCode_cdgds")).SendKeys(ordercode);
-                                        chrome.FindElement(By.Id("button_kensaku")).Click();
+                                        chrome.FindElement(By.Id("keyword")).Clear();
+                                        chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
+                                        chrome.FindElement(By.Id("search-button")).Click();
                                     }
                                     Thread.Sleep(4000);
 
@@ -226,12 +221,12 @@ namespace _058リンエイ
                                     entity.makerDate = fun.getCurrentDate();
                                     entity.reflectDate = dt058.Rows[i]["最終反映日"].ToString();
                                     entity.orderCode = dt058.Rows[i]["発注コード"].ToString().Trim();
-                                    entity.purchaseURL = "https://www.rinei-web.jp/shop/item_code/";
+                                    entity.purchaseURL = "https://www.rinei-web.jp/products?keyword="+entity.orderCode;
 
                                     if (!string.IsNullOrWhiteSpace(entity.orderCode))
                                     {
                                         body = chrome.FindElement(By.TagName("body")).Text;
-                                        if (body.Contains("該当する商品はありません。"))
+                                        if (body.Contains("検索結果はありません。"))
                                         {
                                             entity.qtyStatus = "empty";
                                             entity.stockDate = "2100-02-01";
@@ -250,112 +245,67 @@ namespace _058リンエイ
                                             fun.Qbei_Inserts(entity);
                                         }
                                         else
-                                        {
-                                            entity.price = chrome.FindElement(By.Id("ICInputSuryo_tanka1")).GetAttribute("value").Replace(",", "").Trim();
-                                            if (entity.price == "")
-                                            {
-                                                entity.price = dt058.Rows[i]["下代"].ToString();
-                                            }
-                                            qty = chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[1]/div[2]/div[3]/form/table[3]/tbody/tr[2]/td[3]")).Text;
-                                            strStockDate = qty;
-                                            if (qty.Contains("年") || qty.Contains("月"))
-                                            {
-                                                string[] stringSeparators = new string[] { "\r\n" };
-                                                string[] lines = qty.Split(stringSeparators, StringSplitOptions.None);
-                                                //<remark Add Logic for year of stockdate 2021/07/05 Start>
+                                        {                 
+                                            int n = chrome.FindElements(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr")).Count();
 
-                                                if (qty.Contains("年") && qty.Contains("月"))
-                                                {
-                                                    var check_year = lines[1].Split('年');
-                                                    Year = check_year[0];
-                                                    var check_month_1 = check_year[1].Split('月');
-                                                    Month = Convert.ToInt32(check_month_1[0].Normalize(NormalizationForm.FormKC));
-                                                    Day = DateTime.DaysInMonth(Convert.ToInt32(Year), Month).ToString();
-                                                    if (strStockDate.Contains("初旬") || strStockDate.Contains("上旬") || strStockDate.Contains("上"))
-                                                    {
-                                                        entity.stockDate = Year + "-" + Month + "-" + "10";
-                                                    }
-                                                    else if (strStockDate.Contains("中旬") || strStockDate.Contains("中") || strStockDate.Contains("中頃"))
-                                                    {
-                                                        entity.stockDate = Year + "-" + Month + "-" + "20";
-                                                    }
-                                                    else if (strStockDate.Contains("下旬") || strStockDate.Contains("末頃") || strStockDate.Contains("末") || strStockDate.Contains("下") || strStockDate.Contains("頃"))
-                                                    {
-                                                        entity.stockDate = Year + "-" + Month + "-" + Day;
-                                                    }
-                                                    else
-                                                    {
-                                                        entity.stockDate = Year + "-" + Month + "-" + Day;
-                                                    }
-                                                }
-                                                else if (qty.Contains("月"))
-                                                {                                                    
-                                                    var check_month_2 = lines[1].Split('月');
-                                                    //Month = Convert.ToInt32(check_month[0]);//<remark Edit Logic for halfwidth of number 2021/06/28 />
-                                                    //<remark Edit Logic for number 2021/10/13 Start>
-                                                    //Month = Convert.ToInt32(check_month_2[0].Normalize(NormalizationForm.FormKC));
-                                                    string numeric = new String(check_month_2[0].Where(Char.IsDigit).ToArray());
-                                                    numeric = numeric.Normalize(NormalizationForm.FormKC);
-                                                    Month = Convert.ToInt32(numeric);
-                                                    //</remark 2021/10/13 End>
-                                                    Year = DateTime.Now.ToString("yyyy");
-                                                    Day = DateTime.DaysInMonth(Convert.ToInt32(Year), Month).ToString();
-                                                    if (strStockDate.Contains("初旬") || strStockDate.Contains("上旬") || strStockDate.Contains("上"))
-                                                    {
-                                                        entity.stockDate = Year + "-" + Month + "-" + "10";
-                                                    }
-                                                    else if (strStockDate.Contains("中旬") || strStockDate.Contains("中") || strStockDate.Contains("中頃"))
-                                                    {
-                                                        entity.stockDate = Year + "-" + Month + "-" + "20";
-                                                    }
-                                                    else if (strStockDate.Contains("下旬") || strStockDate.Contains("末頃") || strStockDate.Contains("末") || strStockDate.Contains("下") || strStockDate.Contains("頃"))
-                                                    {
-                                                        entity.stockDate = Year + "-" + Month + "-" + Day;
-                                                    }
-                                                    else
-                                                    {
-                                                        entity.stockDate = Year + "-" + Month + "-" + Day;
-                                                    }
-                                                }
-                                                //if (strStockDate.Contains("初旬") || strStockDate.Contains("上旬") || strStockDate.Contains("上"))
-                                                //{
-                                                //    entity.stockDate = Year + "-" + Month + "-" + "10";
-                                                //}
-                                                //else if (strStockDate.Contains("中旬") || strStockDate.Contains("中") || strStockDate.Contains("中頃"))
-                                                //{
-                                                //    entity.stockDate = Year + "-" + Month + "-" + "20";
-                                                //}
-                                                //else if (strStockDate.Contains("下旬") || strStockDate.Contains("末頃") || strStockDate.Contains("末") || strStockDate.Contains("下") || strStockDate.Contains("頃"))
-                                                //{
-                                                //    entity.stockDate = Year + "-" + Month + "-" + Day;
-                                                //}
-                                                //else
-                                                //{
-                                                //    entity.stockDate = Year + "-" + Month + "-" + Day;
-                                                //}
-                                                entity.True_Quantity = lines[0];
-                                                entity.True_StockDate = lines[1];
-                                                //</remark 2021/07/05 End>
-                                            }
-
-                                            entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") ? "small" : qty.Contains("×") || qty.Contains("入荷待ち") || qty.Contains("廃番") ? "empty" : qty.Contains("取り寄せ") ? "inquily" : "unknown status";
-                                            //<remark Add Logic for quantity and stockdate at qty.Contains("×") or qty.Contains("廃番") or qty.Contains("入荷待ち") 2022/01/26 Start>
-                                            if (qty.Contains("×") || qty.Contains("入荷待ち") || qty.Contains("廃番"))
+                                            if (n == 0)
                                             {
+                                                Thread.Sleep(20000);
+                                                chrome.FindElement(By.Id("keyword")).Clear();
+                                                chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
+                                                chrome.FindElement(By.Id("search-button")).Click();
+                                            }
+                                            body = chrome.FindElement(By.TagName("body")).Text;
+                                            if (body.Contains("検索結果はありません。"))
+                                            {
+                                                entity.qtyStatus = "empty";
                                                 entity.stockDate = "2100-02-01";
-                                                entity.True_Quantity = qty;
-                                                entity.True_StockDate = "項目無し";
+                                                entity.price = dt058.Rows[i]["下代"].ToString();
+                                                entity.True_StockDate = "Not Found";
+                                                entity.True_Quantity = " ";
+                                                fun.Qbei_Inserts(entity);
                                             }
-                                            //if (entity.stockDate == null || entity.stockDate == " ")
-                                            else if (entity.stockDate == null || entity.stockDate == " ")
+                                            else if (n == 1)
                                             {
-                                                //entity.stockDate = qty.Contains("○") || qty.Contains("最少") ? "2100-01-01" : qty.Contains("△") || qty.Contains("入荷待ち") || qty.Contains("×") || qty.Contains("取り寄せ") ? "2100-01-01" : qty.Contains("廃番") ? "2100-02-01" : "unknown status";
-                                                entity.stockDate = qty.Contains("○") || qty.Contains("△") || qty.Contains("取り寄せ") ? "2100-01-01" : "unknown date";
-                                                entity.True_Quantity = qty;
-                                                entity.True_StockDate = "項目無し";
+                                                if (chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/th[1]")).Text.Contains(ordercode))
+                                                {
+                                                    entity.price = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/th[3]")).Text.Replace("円", "").Replace(",", "").Replace("@", "").Trim();
+                                                    string stock = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/th[6]")).GetAttribute("innerHTML").ToString().Trim();
+                                                    entity.qtyStatus = stock.Equals("○") ? "good" : stock.Equals("▲") ? "small" : stock.Equals("×") ? "empty" : stock.Contains("入荷予定") ? "empty" : stock.Equals("取り寄せ") ? "empty" : stock.Equals("廃番") ? "empty" : "unknown status";
+                                                    entity.stockDate = entity.qtyStatus.Equals("good") || entity.qtyStatus.Equals("small") ? "2100-01-01" : entity.qtyStatus.Equals("empty") ? "2100-02-01" : "unknown status";
+                                                    entity.True_StockDate = "項目無し";
+                                                    entity.True_Quantity = stock;
+                                                    string a = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/td[1]")).Text;
+                                                    if (chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/td[1]")).Text.Contains("未定")|| chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/td[1]")).Text.Contains("月"))
+                                                    {
+                                                        entity.stockDate = "2100-02-01";
+                                                        entity.True_StockDate = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/td[1]")).Text;
+                                                    }
+                                                }
                                             }
-                                            //</remark 2022/01/26 End>
-
+                                            else
+                                            {
+                                                Thread.Sleep(2000);
+                                                for (int i = 1; i <= n; i++)
+                                                {
+                                                    //i =i+ 1;
+                                                    if (chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr[" + (i) + "]/th[1]")).Text.Contains(ordercode))
+                                                    {
+                                                        entity.price = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr[" + (i) + "]/th[3]")).Text.Replace("円", "").Replace(",", "").Replace("@", "").Trim();
+                                                        string stock = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr[" + (i) + "]/th[6]")).GetAttribute("innerHTML").ToString().Trim();
+                                                        entity.qtyStatus = stock.Equals("○") ? "good" : stock.Equals("▲") ? "small" : stock.Equals("×") ? "empty" : stock.Contains("入荷予定") ? "empty" : stock.Equals("取り寄せ") ? "empty" : stock.Equals("廃番") ? "empty" : "unknown status";
+                                                        entity.stockDate = entity.qtyStatus.Equals("good") || entity.qtyStatus.Equals("small") ? "2100-01-01" : entity.qtyStatus.Equals("empty") ? "2100-02-01" : "unknown status";
+                                                        entity.True_StockDate = "項目無し";
+                                                        entity.True_Quantity = stock;
+                                                        string a = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr[" + (i) + "]/td[1]")).GetAttribute("innerHTML").ToString();
+                                                        if (chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr[" + (i) + "]/td[1]")).Text.Contains("未定") || chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr[" + (i) + "]/td[1]")).Text.Contains("月"))
+                                                        {
+                                                            entity.stockDate = "2100-02-01";
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+                                            }
                                             DateTime d = Convert.ToDateTime(entity.stockDate);
                                             if (d <= (DateTime.Now))
                                             {
