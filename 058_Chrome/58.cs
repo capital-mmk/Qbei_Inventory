@@ -212,7 +212,7 @@ namespace _058リンエイ
                                         chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
                                         chrome.FindElement(By.Id("search-button")).Click();
                                     }
-                                    Thread.Sleep(4000);
+                                    //Thread.Sleep(4000);
 
                                     entity = new Qbei_Entity();
                                     entity.siteID = 58;
@@ -286,7 +286,7 @@ namespace _058リンエイ
                                             }
                                             else
                                             {
-                                                Thread.Sleep(2000);
+                                                //Thread.Sleep(2000);
                                                 for (int i = 1; i <= n; i++)
                                                 {
                                                     //i =i+ 1;
