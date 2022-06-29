@@ -198,7 +198,7 @@ namespace _058リンエイ
                             {
                                 if (i < Lastrow)
                                 {
-                                    ordercode = dt058.Rows[i]["発注コード"].ToString();
+                                    ordercode = dt058.Rows[i]["JANコード"].ToString();
                                     chrome.FindElement(By.Id("keyword")).Clear();
                                     chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
                                     try
@@ -268,7 +268,7 @@ namespace _058リンエイ
                                             }
                                             else if (n == 1)
                                             {
-                                                if (chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/th[1]")).Text.Contains(ordercode))
+                                                if (chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/th[1]")).Text.Contains(entity.orderCode))
                                                 {
                                                     entity.price = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/th[3]")).Text.Replace("円", "").Replace(",", "").Replace("@", "").Trim();
                                                     string stock = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/th[6]")).GetAttribute("innerHTML").ToString().Trim();
@@ -290,7 +290,7 @@ namespace _058リンエイ
                                                 for (int i = 1; i <= n; i++)
                                                 {
                                                     //i =i+ 1;
-                                                    if (chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr[" + (i) + "]/th[1]")).Text.Contains(ordercode))
+                                                    if (chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr[" + (i) + "]/th[1]")).Text.Contains(entity.orderCode))
                                                     {
                                                         entity.price = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr[" + (i) + "]/th[3]")).Text.Replace("円", "").Replace(",", "").Replace("@", "").Trim();
                                                         string stock = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr[" + (i) + "]/th[6]")).GetAttribute("innerHTML").ToString().Trim();
