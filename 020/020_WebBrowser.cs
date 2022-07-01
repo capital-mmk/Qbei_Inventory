@@ -266,8 +266,8 @@ namespace _20ダイアテック_高難易度_
             string url = webBrowser1.Url.ToString();
             entity = new Qbei_Entity();
             entity.orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();
-            if (!url.Contains(entity.orderCode))
-            {
+            //if (!url.Contains(entity.orderCode))
+            //{
                 //<remark Edit Logic for 404-Page 2020/12/07 Start>
                 if (webBrowser1.Document.Body.InnerHtml.Contains("大変申し訳ありませんが、該当ページがございません。"))
                 {
@@ -308,23 +308,23 @@ namespace _20ダイアテック_高難易度_
                         Environment.Exit(0);
                     }
                 }
-                else
-                {
-                    webBrowser1.ScriptErrorsSuppressed = true;
-                    orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();
-                    webBrowser1.Navigate("https://www.b2bdiatec.jp/shop/g/g" + entity.orderCode);
-                    webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
-                    webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch2);
-                }
+                //else
+                //{
+                //    webBrowser1.ScriptErrorsSuppressed = true;
+                //    orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();
+                //    webBrowser1.Navigate("https://www.b2bdiatec.jp/shop/g/g" + entity.orderCode);
+                //    webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
+                //    webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch2);
+                //}
                 //</remark 2020/12/07 End>
                 //webBrowser1.ScriptErrorsSuppressed = true;
                 //orderCode = dt020.Rows[i]["発注コード"].ToString().Trim();
                 //webBrowser1.Navigate("https://www.b2bdiatec.jp/shop/g/g" + entity.orderCode);
                 //webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch1);
                 //webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_ItemSearch2);
-            }//2018/07/12 変更コード(End)
-            else
-            {
+            //}//2018/07/12 変更コード(End)
+            //else
+            //{
                 try
                 {
                     SHDocVw.WebBrowser instance = (SHDocVw.WebBrowser)this.webBrowser1.ActiveXInstance;
@@ -480,7 +480,7 @@ namespace _20ダイアテック_高難易度_
                         Environment.Exit(0);
                     }
                 }
-            }
+            //}
         }
 
         /// <summary>
