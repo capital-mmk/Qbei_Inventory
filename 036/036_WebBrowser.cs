@@ -357,7 +357,8 @@ namespace _36PRインターナショナル
                                         {
                                           if (b[d_count].InnerText == "入荷時期")
                                          {
-                                            entity.stockDate = a[d_count].InnerText;
+                                            //entity.stockDate = a[d_count].InnerText;<//remark Edit Logic for Stockdate 2022/07/06 />
+                                            entity.stockDate = a[d_count].InnerText.Replace("'", string.Empty);
                                             break;
                                          }
                                            ++d_count;
