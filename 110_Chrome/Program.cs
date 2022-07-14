@@ -348,6 +348,12 @@ namespace _110_Chrome
                                                     {
                                                         sp_month_day = sp_month_day[1].Split('入').ToArray();
                                                         day = sp_month_day[0];
+                                                        //<remark Add Logic for Check to Stockdate 2022/07/14 Start>
+                                                        if (day.Contains("頃"))
+                                                        {
+                                                            day = day.Replace("頃"," ");
+                                                        }
+                                                        //<remark 2022/07/14 End>
                                                     }
                                                     else
                                                     {
