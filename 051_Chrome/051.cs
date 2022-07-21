@@ -297,8 +297,12 @@ namespace _051スタイルバイク
                                                                 //if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[2]/div[3]/dl/dd")) == null)//<remark Edit Logic for Check to Quantity 2021/11/05 />
                                                                 if (!stock.Contains("在庫"))
                                                                 {
-                                                                    entity.qtyStatus = "empty";
-                                                                    entity.stockDate = "2100-02-01";
+                                                                    //<remark Edit Logic for Stockdate 2022/07/21 Start>
+                                                                    //entity.qtyStatus = "empty";
+                                                                    //entity.stockDate = "2100-02-01";
+                                                                    entity.qtyStatus = "good";
+                                                                    entity.stockDate = "2100-01-01";
+                                                                    //</remark 2022/07/21 End>
                                                                     entity.True_StockDate = "Not Found";
                                                                     entity.True_Quantity = "Not Found";
                                                                 }
