@@ -340,6 +340,12 @@ namespace _36PRインターナショナル
                                            ++p_count;
                                         }
                                         
+                                        //<remark Add Logic for Stockdate 2022/08/05 Start>
+                                        if(entity.price==null)
+                                        {
+                                          entity.price= dt036.Rows[i]["下代"].ToString();
+                                        }
+                                        //</remark 2022/08/05 End>
 
                                         while(q_count<=b.Count-1)
                                         {
