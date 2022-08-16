@@ -457,13 +457,13 @@ namespace _13ミズタニ
                             //</remark>
 
                             //<remark 19/01/2022(変更) Start>
-                            //if (qty.Equals("×") || qty.Equals("★") || qty.Equals("？"))
-                              if ((qty.Equals("×") || qty.Equals("★") || qty.Equals("？"))&&(string.IsNullOrEmpty(entity.stockDate))) //<remark Add&Edit Logic for 出荷開始 Stockdat 2022/08/12 Start>
+                            if (qty.Equals("×") || qty.Equals("★") || qty.Equals("？")) //<remark Edit Logic for 出荷開始 Stockdat 2022/08/16 />
+                            //if ((qty.Equals("×") || qty.Equals("★") || qty.Equals("？"))&&(string.IsNullOrEmpty(entity.stockDate))) //<remark Add&Edit Logic for 出荷開始 Stockdat 2022/08/12 />
                             {
                                 entity.stockDate = "2100-02-01";
                             }
-                            //else if(qty.Equals("▲"))
-                              else if (qty.Equals("▲")|| qty.Equals("★")) //<remark Add&Edit Logic for 出荷開始 Stockdat 2022/08/12 Start>
+                            else if(qty.Equals("▲"))//<remark Edit Logic for 出荷開始 Stockdat 2022/08/16 />
+                            //else if (qty.Equals("▲")|| qty.Equals("★")) //<remark Add&Edit Logic for 出荷開始 Stockdat 2022/08/12 />
                             {
                                 entity.stockDate = "2100-01-01";
                             }
@@ -479,7 +479,8 @@ namespace _13ミズタニ
                             //entity.stockDate = qty.Equals("○") || qty.Equals("▲") || qty.Equals("×") ? "2100-01-01" : entity.stockDate;
                             //<remark 13/07/2020(変更)>
                             //<remark 06/12/2019(変更)>
-                            entity.stockDate = qty.Equals("○") || qty.Equals("▲") ? "2100-01-01" : qty.Equals("×") ? "2100-02-01" : entity.stockDate.Replace("/", "-");//<remark ロジックの変更　2022/01/19 />
+                            //entity.stockDate = qty.Equals("○") || qty.Equals("▲") ? "2100-01-01" : qty.Equals("×") ? "2100-02-01" : entity.stockDate.Replace("/", "-");//<remark ロジックの変更　2022/01/19 />
+                            entity.stockDate = qty.Equals("○") || qty.Equals("▲") ? "2100-01-01" : qty.Equals("×") || qty.Equals("☆") ? "2100-02-01" : entity.stockDate.Replace("/", "-");//<remark ロジックの変更　2022/08/16 />
                             //entity.stockDate = qty.Equals("○") ? "2100-01-01" : qty.Equals("▲") || qty.Equals("×") ? "2100-02-01" : entity.stockDate.Replace("/", "-");
                             //</remark>
                             //</remark>
@@ -487,172 +488,204 @@ namespace _13ミズタニ
 
                         //entity.stockDate = color.Contains("red") ? "2100-02-01" : (stockDate == "-" || string.IsNullOrWhiteSpace(stockDate) || stockDate.Equals("&nbsp;")) ? "2100-01-01" : stockDate;
 
-                        //<remark 12/13/2019更新　start>
-                        //if (entity.stockDate.Contains("月中旬") || entity.stockDate.Contains("月上旬"))
-                        //if (entity.stockDate.Contains("月上旬") || entity.stockDate.Contains("月中旬") || entity.stockDate.Contains("月下旬") || entity.stockDate.Contains("月予定"))//<remark Edit Logic for Stockdate 2021/07/22 />
-                        if (entity.True_StockDate.Contains("月上旬") || entity.True_StockDate.Contains("月中旬") || entity.True_StockDate.Contains("月下旬") || entity.True_StockDate.Contains("月予定") || entity.True_StockDate.Contains("月初旬"))
-                        //</remark 12/13/2019　end>
-                        {
-                            //entity.stockDate = entity.stockDate.Replace("次回", "").Replace("入荷", "");
-                            string check_stockdate = entity.True_StockDate.Replace("次回", "").Replace("入荷", "");
-                            string day = string.Empty;
+                        //<remark Close Logic of stockdate 2022/08/16 Start>
 
-                            if (check_stockdate.Contains("中旬"))
-                                day = "20";
-
-
-                            //<remark 12/13/2019更新　start>
-                            //else if (entity.stockDate.Contains("上旬") || entity.stockDate.Contains("月予定"))
-                            //else if (entity.stockDate.Contains("上旬"))//<remark Edit Logic for Stockdate 2021/07/22 />
-                            else if (check_stockdate.Contains("上旬") || check_stockdate.Contains("初旬"))
-                                //</remark 12/13/2019　end>
-                                day = "10";
-
-
-                            else if (check_stockdate.Contains("下旬"))
-                            {
-
-                                if (check_stockdate.Contains("2月"))
-                                    day = "28";
-                                day = "30";
-                            }
-
-
-                            else day = "25";
-
-                            //<remark Add Logic for Stockdate of Month 2022/01/18 Start>
-                            //string month = entity.stockDate.Split('月')[0];
-
-                            //string year = DateTime.Now.ToString("yyyy");
-
-                            string month;
-                            string year;
-                            if (check_stockdate.Contains("年"))
-                            {
-                                int YIndex = check_stockdate.IndexOf('年');
-                                int MIndex = check_stockdate.IndexOf('月');
-                                year = check_stockdate.Substring(YIndex - 4, YIndex + 0);
-                                month = check_stockdate.Substring(YIndex + 1, MIndex - 5);
-                            }
-                            else
-                            {
-                                month = check_stockdate.Split('月')[0];
-                                year = DateTime.Now.ToString("yyyy");
-                            }
-                            //</remark 2022/01/18 End>
-
-                            DateTime dt = Convert.ToDateTime(year + "-" + month + "-" + day);
-
-                            if (dt < DateTime.Now)
-                                dt = dt.AddYears(1);
-
-                            entity.stockDate = dt.ToString("yyyy-MM-dd");
-
-                        }
-                        else if (entity.True_StockDate.Contains("月末～"))
-                        {
-                            //<remark 12/13/2019更新　start>
-                            //entity.stockDate = "未定(=2100-01-01)";                          
-                            entity.stockDate = "2100-01-01";
-                            //</remark 12/13/2019　end>
-                        }
-
-                        //<remark 09/09/2020 移動　start>
-                        else if (entity.True_StockDate.Contains("年") && entity.True_StockDate.Contains("月"))
-                        {
-
-                            int YIndex = entity.True_StockDate.IndexOf('年');
-                            int MIndex = entity.True_StockDate.IndexOf('月');
-                            int year = Convert.ToInt32(entity.True_StockDate.Substring(YIndex - 4, YIndex + 0));
-                            int month = Convert.ToInt32(entity.True_StockDate.Substring(YIndex + 1, MIndex - 5));
-                            //entity.stockDate = year + "-" + month + "-" + "15";
-                            DateTime dt = new DateTime(year, month, 15);
-                            entity.stockDate = String.Format("{0:yyyy-MM-dd}", dt);
-                        }
-                        //</remark 09/09/2020　end>
-
-                        //else if (entity.stockDate.Contains("月末"))
-                        //else if (entity.stockDate.Contains("月末") || entity.stockDate.Contains("月"))//<remark Add Logic of Stockdate 2020/09/02 />
-                        else if (entity.True_StockDate.Contains("月末") || entity.True_StockDate.Contains("月") || entity.True_StockDate.Contains("初回分完売 次回"))//<remark Add Logic of Stockdate 2022/08/09 />
-                        {
-                            //<remark Add&Edit Logic for 出荷開始 Stockdat 2022/08/09 Start>
-                            string day;
-                            string month;
-                            string year;
-                            DateTime dt;
-                            if (entity.True_StockDate.Contains("出荷開始") && entity.True_StockDate.Contains("日") && entity.True_StockDate.Contains("月"))
-                            {
-                                int MIndex = entity.True_StockDate.IndexOf('月');
-                                if (MIndex == 1)
-                                {
-                                    month = entity.True_StockDate.Substring(MIndex - 1, MIndex + 0);
-                                }
-                                else
-                                {
-                                    month = entity.True_StockDate.Substring(MIndex - 2, MIndex + 0);
-                                }
-                                year = DateTime.Now.ToString("yyyy");
-                                //day = DateTime.DaysInMonth(Convert.ToInt32(year), Convert.ToInt32(month)).ToString();
-                                day = "30";
-                                dt = Convert.ToDateTime(year + "-" + month + "-" + day);
-                                if (dt < DateTime.Now)
-                                    dt = dt.AddYears(1);
-
-                                entity.stockDate = dt.ToString("yyyy-MM-dd");
-                            }
-                            else
-                            {
-                                day = "25";
-                                //string month = entity.stockDate.Replace("月末", string.Empty).Replace("予定", string.Empty);
-                                //string month = entity.stockDate.Replace("月末", string.Empty).Replace("予定", string.Empty).Replace("月", string.Empty);//<remark Add Logic of Stockdate 2020/09/02 />
-                                month = entity.True_StockDate.Replace("月末", string.Empty).Replace("予定", string.Empty).Replace("月", string.Empty).Replace("初回分完売 次回", string.Empty);//<remark Add Logic of Stockdate 2022/08/09 />
-                                year = DateTime.Now.ToString("yyyy");
-                                dt = Convert.ToDateTime(year + "-" + month + "-" + day);
-                                if (dt < DateTime.Now)
-                                    dt = dt.AddYears(1);
-
-                                entity.stockDate = dt.ToString("yyyy-MM-dd");
-                            }
-                            //</remark 2022/08/09 End>
-                        }
-
-                        else if (entity.True_StockDate.Contains("未定"))
-                        {
-                            entity.stockDate = "2100-01-01";
-                        }
-
-                        //<remark 12/13/2019追加　start>
-
-                        //else if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
+                        ////<remark 12/13/2019更新　start>
+                        ////if (entity.stockDate.Contains("月中旬") || entity.stockDate.Contains("月上旬"))
+                        ////if (entity.stockDate.Contains("月上旬") || entity.stockDate.Contains("月中旬") || entity.stockDate.Contains("月下旬") || entity.stockDate.Contains("月予定"))//<remark Edit Logic for Stockdate 2021/07/22 />
+                        //if (entity.True_StockDate.Contains("月上旬") || entity.True_StockDate.Contains("月中旬") || entity.True_StockDate.Contains("月下旬") || entity.True_StockDate.Contains("月予定") || entity.True_StockDate.Contains("月初旬"))
+                        ////</remark 12/13/2019　end>
                         //{
+                        //    //entity.stockDate = entity.stockDate.Replace("次回", "").Replace("入荷", "");
+                        //    string check_stockdate = entity.True_StockDate.Replace("次回", "").Replace("入荷", "");
+                        //    string day = string.Empty;
 
-                        //    int YIndex = entity.stockDate.IndexOf('年');
-                        //    int MIndex = entity.stockDate.IndexOf('月');
-                        //    int year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 4, YIndex + 0));
-                        //    int month = Convert.ToInt32(entity.stockDate.Substring(YIndex + 1, MIndex - 5));
+                        //    if (check_stockdate.Contains("中旬"))
+                        //        day = "20";
+
+
+                        //    //<remark 12/13/2019更新　start>
+                        //    //else if (entity.stockDate.Contains("上旬") || entity.stockDate.Contains("月予定"))
+                        //    //else if (entity.stockDate.Contains("上旬"))//<remark Edit Logic for Stockdate 2021/07/22 />
+                        //    else if (check_stockdate.Contains("上旬") || check_stockdate.Contains("初旬"))
+                        //        //</remark 12/13/2019　end>
+                        //        day = "10";
+
+
+                        //    else if (check_stockdate.Contains("下旬"))
+                        //    {
+
+                        //        if (check_stockdate.Contains("2月"))
+                        //            day = "28";
+                        //        day = "30";
+                        //    }
+
+
+                        //    else day = "25";
+
+                        //    //<remark Add Logic for Stockdate of Month 2022/01/18 Start>
+                        //    //string month = entity.stockDate.Split('月')[0];
+
+                        //    //string year = DateTime.Now.ToString("yyyy");
+
+                        //    string month;
+                        //    string year;
+                        //    if (check_stockdate.Contains("年"))
+                        //    {
+                        //        int YIndex = check_stockdate.IndexOf('年');
+                        //        int MIndex = check_stockdate.IndexOf('月');
+                        //        year = check_stockdate.Substring(YIndex - 4, YIndex + 0);
+                        //        month = check_stockdate.Substring(YIndex + 1, MIndex - 5);
+                        //    }
+                        //    else
+                        //    {
+                        //        month = check_stockdate.Split('月')[0];
+                        //        year = DateTime.Now.ToString("yyyy");
+                        //    }
+                        //    //</remark 2022/01/18 End>
+
+                        //    DateTime dt = Convert.ToDateTime(year + "-" + month + "-" + day);
+
+                        //    if (dt < DateTime.Now)
+                        //        dt = dt.AddYears(1);
+
+                        //    entity.stockDate = dt.ToString("yyyy-MM-dd");
+
+                        //}
+                        //else if (entity.True_StockDate.Contains("月末～"))
+                        //{
+                        //    //<remark 12/13/2019更新　start>
+                        //    //entity.stockDate = "未定(=2100-01-01)";                          
+                        //    entity.stockDate = "2100-01-01";
+                        //    //</remark 12/13/2019　end>
+                        //}
+
+                        ////<remark 09/09/2020 移動　start>
+                        //else if (entity.True_StockDate.Contains("年") && entity.True_StockDate.Contains("月"))
+                        //{
+                        //    //<remark Add&Edit Logic of Check to year 2022/08/15 Start>
+                        //    int year;
+                        //    int month;
+                        //    int day;
+                        //    DateTime dt;
+                        //    if (entity.True_StockDate.Contains("以降"))
+                        //    {
+                        //        entity.True_StockDate = entity.True_StockDate.Replace("以降", "");
+                        //        day = 30;
+                        //    }
+                        //    else
+                        //    {
+                        //        day = 15;
+                        //    }
+                        //    int YIndex = entity.True_StockDate.IndexOf('年');
+                        //    int MIndex = entity.True_StockDate.IndexOf('月');                                                     
+                        //    if (YIndex == 2)
+                        //    {
+                        //        year = Convert.ToInt32(entity.True_StockDate.Substring(YIndex - 2, YIndex + 0));
+                        //        year = 2000 + year;
+                        //        month = Convert.ToInt32(entity.True_StockDate.Substring(YIndex + 1, MIndex - 3));
+                        //    }
+                        //    else
+                        //    {
+                        //        year = Convert.ToInt32(entity.True_StockDate.Substring(YIndex - 4, YIndex + 0));
+                        //        month = Convert.ToInt32(entity.True_StockDate.Substring(YIndex + 1, MIndex - 5));                               
+                        //    }
+                        //    //</remark 2022/08/15 End>
                         //    //entity.stockDate = year + "-" + month + "-" + "15";
-                        //    DateTime dt = new DateTime(year, month, 15);
+                        //    dt = new DateTime(year, month, day);
                         //    entity.stockDate = String.Format("{0:yyyy-MM-dd}", dt);
                         //}
-                        //</remark 12/13/2019　end>
+                        ////</remark 09/09/2020　end>
 
-                        //<remark 13/07/2020(変更)>
-                        //else if ((qty.Equals("☆")) && string.IsNullOrWhiteSpace(entity.stockDate)) { entity.stockDate = "2100-01-10"; }
-                        else if ((qty.Equals("☆")) && string.IsNullOrWhiteSpace(entity.stockDate)) { entity.stockDate = "2100-02-01"; }
-                        //</remark>
+                        ////else if (entity.stockDate.Contains("月末"))
+                        ////else if (entity.stockDate.Contains("月末") || entity.stockDate.Contains("月"))//<remark Add Logic of Stockdate 2020/09/02 />
+                        //else if (entity.True_StockDate.Contains("月末") || entity.True_StockDate.Contains("月") || entity.True_StockDate.Contains("初回分完売 次回"))//<remark Add Logic of Stockdate 2022/08/09 />
+                        //{
+                        //    //<remark Add&Edit Logic for 出荷開始 Stockdat 2022/08/09 Start>
+                        //    string day;
+                        //    string month;
+                        //    string year;
+                        //    DateTime dt;
+                        //    if (entity.True_StockDate.Contains("月以降"))
+                        //    {
+                        //        entity.stockDate = Regex.Replace(entity.True_StockDate, "[^0-9]", string.Empty);
+                        //        entity.stockDate = new DateTime(DateTime.Now.Year, int.Parse(entity.stockDate), 30).ToString("yyyy-MM-dd");
+                        //    }
+                        //    else if (entity.True_StockDate.Contains("出荷開始") && entity.True_StockDate.Contains("日") && entity.True_StockDate.Contains("月"))
+                        //    {
+                        //        int MIndex = entity.True_StockDate.IndexOf('月');
+                        //        if (MIndex == 1)
+                        //        {
+                        //            month = entity.True_StockDate.Substring(MIndex - 1, MIndex + 0);
+                        //        }
+                        //        else
+                        //        {
+                        //            month = entity.True_StockDate.Substring(MIndex - 2, MIndex + 0);
+                        //        }
+                        //        year = DateTime.Now.ToString("yyyy");
+                        //        //day = DateTime.DaysInMonth(Convert.ToInt32(year), Convert.ToInt32(month)).ToString();
+                        //        day = "30";
+                        //        dt = Convert.ToDateTime(year + "-" + month + "-" + day);
+                        //        if (dt < DateTime.Now)
+                        //            dt = dt.AddYears(1);
 
-                        else if (entity.stockDate.Contains("在庫限り"))
-                            entity.stockDate = "2100-02-01";
-                        //2018-08-14 Start
+                        //        entity.stockDate = dt.ToString("yyyy-MM-dd");
+                        //    }
+                        //    else
+                        //    {
+                        //        day = "25";
+                        //        //string month = entity.stockDate.Replace("月末", string.Empty).Replace("予定", string.Empty);
+                        //        //string month = entity.stockDate.Replace("月末", string.Empty).Replace("予定", string.Empty).Replace("月", string.Empty);//<remark Add Logic of Stockdate 2020/09/02 />
+                        //        month = entity.True_StockDate.Replace("月末", string.Empty).Replace("予定", string.Empty).Replace("月", string.Empty).Replace("初回分完売 次回", string.Empty);//<remark Add Logic of Stockdate 2022/08/09 />
+                        //        year = DateTime.Now.ToString("yyyy");
+                        //        dt = Convert.ToDateTime(year + "-" + month + "-" + day);
+                        //        if (dt < DateTime.Now)
+                        //            dt = dt.AddYears(1);
 
-                        else if (entity.stockDate.Contains("月以降"))
-                        {
-                            entity.stockDate = Regex.Replace(entity.stockDate, "[^0-9]", string.Empty);
-                            entity.stockDate = new DateTime(DateTime.Now.Year, int.Parse(entity.stockDate), 30).ToString("yyyyMMdd");
-                        }
-                        //2018-08-14 End
-                        entity.stockDate = entity.stockDate.Replace("/", "-");
-                        //2018/1/12
+                        //        entity.stockDate = dt.ToString("yyyy-MM-dd");
+                        //    }
+                        //    //</remark 2022/08/09 End>
+                        //}
+
+                        //else if (entity.True_StockDate.Contains("未定"))
+                        //{
+                        //    entity.stockDate = "2100-01-01";
+                        //}
+
+                        ////<remark 12/13/2019追加　start>
+
+                        ////else if (entity.stockDate.Contains("年") && entity.stockDate.Contains("月"))
+                        ////{
+
+                        ////    int YIndex = entity.stockDate.IndexOf('年');
+                        ////    int MIndex = entity.stockDate.IndexOf('月');
+                        ////    int year = Convert.ToInt32(entity.stockDate.Substring(YIndex - 4, YIndex + 0));
+                        ////    int month = Convert.ToInt32(entity.stockDate.Substring(YIndex + 1, MIndex - 5));
+                        ////    //entity.stockDate = year + "-" + month + "-" + "15";
+                        ////    DateTime dt = new DateTime(year, month, 15);
+                        ////    entity.stockDate = String.Format("{0:yyyy-MM-dd}", dt);
+                        ////}
+                        ////</remark 12/13/2019　end>
+
+                        ////<remark 13/07/2020(変更)>
+                        ////else if ((qty.Equals("☆")) && string.IsNullOrWhiteSpace(entity.stockDate)) { entity.stockDate = "2100-01-10"; }
+                        //else if ((qty.Equals("☆")) && string.IsNullOrWhiteSpace(entity.stockDate)) { entity.stockDate = "2100-02-01"; }
+                        ////</remark>
+
+                        //else if (entity.stockDate.Contains("在庫限り"))
+                        //    entity.stockDate = "2100-02-01";
+                        ////2018-08-14 Start
+
+                        ////else if (entity.stockDate.Contains("月以降"))
+                        ////{
+                        ////    entity.stockDate = Regex.Replace(entity.stockDate, "[^0-9]", string.Empty);
+                        ////    entity.stockDate = new DateTime(DateTime.Now.Year, int.Parse(entity.stockDate), 30).ToString("yyyyMMdd");
+                        ////}
+                        ////2018-08-14 End
+                        //entity.stockDate = entity.stockDate.Replace("/", "-");
+                        
+                        //</remark 2022/08/16 End>
+
                         //<remark Close Logic 2020/25/22 Start>
                         //if ((dt013.Rows[i]["在庫情報"].ToString().Contains("empty") || dt013.Rows[i]["在庫情報"].ToString().Contains("inquriry")) && dt013.Rows[i]["入荷予定"].ToString().Contains("2100-01-10"))
                         //{
