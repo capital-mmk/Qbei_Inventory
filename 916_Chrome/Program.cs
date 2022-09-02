@@ -170,7 +170,8 @@ namespace _916_Chrome
                         {
                             if (i < Lastrow)
                             {
-                                ordercode = dt916.Rows[i]["JANコード"].ToString();
+                                //ordercode = dt916.Rows[i]["JANコード"].ToString();
+                                ordercode = dt916.Rows[i]["発注コード"].ToString();//<remark Edit Logic for Search to 発注コード 2022/09/02 />
                                 //chrome.FindElement(By.Name("header_product_code")).Clear();
                                 //<remark Edit Logic for Link Error Case 2020/11/16 Start>
                                 try
@@ -263,8 +264,9 @@ namespace _916_Chrome
                                             Thread.Sleep(2000);//<remark Add Logic for wait time 2022/01/14 />
                                             for (int i = 1; i <= n; i++)
                                             {
-                                                //i =i+ 1;
-                                                if (chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]")).Text.Contains(ordercode))
+                                                //i =i+ 1;                                           
+                                                //if (chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]")).Text.Contains(ordercode)//<remark Edit Logic for check to 商品番号 2022/09/02 />
+                                                if (chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]/section/dl[1]/div[1]/dd")).Text.Equals(ordercode))
                                                 {
                                                     entity.price = chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]/section/dl[2]/div[2]/dd/span")).Text.Replace("¥", "").Replace(",", "").Trim();
                                                     string stock = chrome.FindElement(By.XPath("/html/body/div[2]/main/ul/li[" + (i) + "]/section/dl[3]/div[1]/dd")).GetAttribute("innerHTML").ToString().Trim();
