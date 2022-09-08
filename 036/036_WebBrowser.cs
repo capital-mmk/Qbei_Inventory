@@ -370,7 +370,12 @@ namespace _36PRインターナショナル
                                            ++d_count;
                                         }
 
-                                        entity.stockDate = entity.stockDate.Normalize(NormalizationForm.FormKC);//<remark Add Logic for change to halfwidth of stockdate 07/09/2022 />
+                                        //<remark Add Logic for change to halfwidth of stockdate 07/09/2022 Start >
+                                        if(entity.stockDate != null)
+                                        { 
+                                            entity.stockDate = entity.stockDate.Normalize(NormalizationForm.FormKC);
+                                        }
+                                        //</remark 07/09/2022 End>
                                         entity.True_StockDate = entity.stockDate;
                                         entity.True_Quantity = entity.qtyStatus;
                                         //if (a.Count<=3)
