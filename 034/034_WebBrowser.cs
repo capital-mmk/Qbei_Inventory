@@ -321,7 +321,8 @@ namespace _34シマノ
                             //<remark 13/07/2020(変更)>
                             //entity.qtyStatus = alt.Contains("×") ? "empty" : only.Contains("在庫限り") ? "small" : alt.Contains("○") ? "good" : alt.Contains("△") ? "empty" : "NO STATUS CODE";
                             //entity.qtyStatus = alt.Contains("×") ? "empty" : alt.Contains("○") ? "good" : alt.Contains("△") ? "empty" : "NO STATUS CODE";
-                            entity.qtyStatus = alt.Contains("×") ? "empty" : alt.Contains("○") ? "good" : alt.Contains("△") ? "small" : "NO STATUS CODE";//<remark ロジックの変更　2022/01/21 />
+                            //entity.qtyStatus = alt.Contains("×") ? "empty" : alt.Contains("○") ? "good" : alt.Contains("△") ? "small" : "NO STATUS CODE";//<remark ロジックの変更　2022/01/21 />
+                            entity.qtyStatus = alt.Contains("×") ? "empty" : alt.Contains("○") ? "small" : alt.Contains("△") ? "small" : "NO STATUS CODE";//<remark ロジックの変更　2022/10/19 />
                             //</remark>
                             //</remark 2020/5/19 End>
                             // 価格は太文字の販売価格(税抜き)
@@ -345,7 +346,8 @@ namespace _34シマノ
                                 //}
                                 //<remark stockdate(編集) 2020/5/19 Start>
                                 //if (alt.Contains("○"))
-                                if (alt.Contains("○"))//<remark ロジックの変更　2022/01/21 />
+                                //if (alt.Contains("○"))//<remark ロジックの変更　2022/01/21 />
+                                if (alt.Contains("○")|| alt.Contains("△"))//<remark ロジックの変更　2022/10/19 />
                                 {
                                     entity.stockDate = "2100-01-01";
                                 }
@@ -371,16 +373,28 @@ namespace _34シマノ
                                 // それ以外の場合は、入荷予定日をそのまま採用（但し、空白・改行等の文字は除去し、yyyy-mm-dd形式にすること）
                                 //else
                                 //{
-                                entity.stockDate = date.Replace("入荷予定日", "");
-                                entity.stockDate = entity.stockDate.Replace("\r\n", "");
-                                entity.stockDate = entity.stockDate.Trim();
-                                entity.stockDate = entity.stockDate.Replace("/", "-");
-                                //}
-                                //</remark>
-                                //<remark 2021/01/06>
-                                entity.True_StockDate = date.Replace("入荷予定日", "").Replace("/", "-").Replace("\r\n", "").Trim();
-                                entity.True_Quantity = alt;
-                                //</remark 2021/01/06>
+                                //<remak Add & Edit Logic for check to ×在庫なし  2022/10/19 Start>
+                                if (alt.Equals("×在庫なし"))
+                                {
+                                    entity.stockDate = "2100-02-01";
+                                    entity.True_StockDate = date;
+                                    entity.True_StockDate = date.Replace("入荷予定日", "").Replace("/", "-").Replace("\r\n", "").Trim();
+                                    entity.True_Quantity = alt;
+                                }
+                                else
+                                {
+                                    entity.stockDate = date.Replace("入荷予定日", "");
+                                    entity.stockDate = entity.stockDate.Replace("\r\n", "");
+                                    entity.stockDate = entity.stockDate.Trim();
+                                    entity.stockDate = entity.stockDate.Replace("/", "-");
+                                    //}
+                                    //</remark>
+                                    //<remark 2021/01/06>
+                                    entity.True_StockDate = date.Replace("入荷予定日", "").Replace("/", "-").Replace("\r\n", "").Trim();
+                                    entity.True_Quantity = alt;
+                                    //</remark 2021/01/06>
+                                }
+                                //</remark 2022/10/19 End>
                             }
                             //</remark end>
 
