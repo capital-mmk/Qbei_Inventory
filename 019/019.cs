@@ -358,7 +358,8 @@ namespace _019深谷_フカヤ_
                                                 //string stockdate = chrome.FindElement(By.ClassName("r_cate_title")).Text;//<remark Edit Logic for stockdate 2021/05/12 />
                                                 string stockdate = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[2]")).Text;
                                                 //if (stockdate.Contains("入荷予定日"))<//remark Edit Logic for check to 廃番× 2022/10/19 />
-                                                if ((stockdate.Contains("入荷予定日"))&&(!qty.Equals("廃番×")))
+                                                //if ((stockdate.Contains("入荷予定日"))&&(!qty.Equals("廃番×")))<//remark Edit Logic for check to 欠品× 2022/10/20 />
+                                                if ((stockdate.Contains("入荷予定日"))&&(!qty.Equals("廃番×")) && (!qty.Equals("欠品×")))
                                                 {
                                                     //entity.stockDate = chrome.FindElement(By.ClassName("availabilityDate")).Text;//<remark Edit Logic for stockdate 2021/05/12 />
                                                     entity.stockDate = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[2]/p[5]")).Text;
