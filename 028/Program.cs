@@ -291,7 +291,8 @@ namespace _028
                                                     //entity.price = price_split[0];
                                                     entity.price = entity.price.Replace("円", " ").Replace(".", string.Empty);
                                                 }
-                                                entity.price = entity.price.Replace("円", " ").Replace(",", string.Empty);                                                                                               
+                                                entity.price = entity.price.Replace("円", " ").Replace(",", string.Empty);
+                                                entity.price = Convert.ToString(Convert.ToInt32(entity.price) * 0.58);//<remark Add Logic for price* 0.58 2022/10/28 />
 
                                                 string start_month= chrome.FindElement(By.XPath("/html/body/form/div[3]/div/div/div/div[2]/div/table/thead/tr/th[6]")).Text;
                                                 int now_month = DateTime.ParseExact(start_month, "MMM", CultureInfo.CreateSpecificCulture("en-GB")).Month;
