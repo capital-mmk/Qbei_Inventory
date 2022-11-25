@@ -192,8 +192,6 @@ namespace _028
                         {
                             string ordercode;
                             ordercode = dt028.Rows[i]["発注コード"].ToString();
-                            //chrome.FindElement(By.Id("SearchParam")).Clear();
-                            //chrome.FindElement(By.Id("SearchParam")).SendKeys(ordercode);
                             try
                             {
                                 chrome.FindElement(By.Id("SearchParam")).Clear();
@@ -285,14 +283,10 @@ namespace _028
                                                 //Check to Price
                                                 //</remark>
                                                 entity.price = chrome.FindElement(By.XPath("/html/body/form/div[3]/div/div/div/div[2]/div/table/tbody/tr[" + j + "]/td[5]")).Text;
-                                                if (entity.price.Contains("."))
-                                                {
-                                                    //string[] price_split = entity.price.Split('.');
-                                                    //entity.price = price_split[0];
-                                                    entity.price = entity.price.Replace("円", " ").Replace(".", string.Empty);
-                                                }
-                                                entity.price = entity.price.Replace("円", " ").Replace(",", string.Empty);
+                                                //entity.price = entity.price.Replace("円", " ").Replace(",", string.Empty);
+                                                entity.price = entity.price.Replace("円", " ").Replace(",", string.Empty).Replace(".", string.Empty);//<remark Edit Logic for "." 2022/11/25 />
                                                 entity.price = Convert.ToString(Convert.ToInt32(entity.price) * 0.58);//<remark Add Logic for price* 0.58 2022/10/28 />
+                                                entity.price = Convert.ToString(Math.Round(Convert.ToDecimal(entity.price), 0, MidpointRounding.AwayFromZero));//<remark Add Logic for price of decimal 2022/11/25 />
 
                                                 string start_month= chrome.FindElement(By.XPath("/html/body/form/div[3]/div/div/div/div[2]/div/table/thead/tr/th[6]")).Text;
                                                 int now_month = DateTime.ParseExact(start_month, "MMM", CultureInfo.CreateSpecificCulture("en-GB")).Month;
