@@ -238,31 +238,51 @@ namespace _051スタイルバイク
                                     chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/section[3]/form/div/input")).SendKeys(ordercode);
                                     chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/section[3]/form/div/button")).Click();
 
-                                    entity = new Qbei_Entity();
-                                    entity.siteID = 51;
-                                    entity.sitecode = "051";
-                                    entity.janCode = dt051.Rows[i]["JANコード"].ToString();
-                                    entity.partNo = dt051.Rows[i]["自社品番"].ToString();
-                                    entity.makerDate = fun.getCurrentDate();
-                                    entity.reflectDate = dt051.Rows[i]["最終反映日"].ToString();
-                                    entity.orderCode = dt051.Rows[i]["発注コード"].ToString().Trim();
-                                    entity.purchaseURL = "https://sb2b.jp/list.php?keyword=" + entity.orderCode;
-
-                                    if (!string.IsNullOrWhiteSpace(entity.orderCode))
+                                    //<remark Add Logic for Check to Advertisemnts 2022/12/02 Start>
+                                    try
                                     {
-                                        body = chrome.FindElement(By.TagName("body")).Text;
-                                        if (body.Contains("お探しの検索条件に合致する商品は見つかりませんでした。"))
+                                        if (chrome.FindElement(By.ClassName("modaal-close")) != null)
                                         {
-                                            entity.qtyStatus = "empty";
-                                            entity.stockDate = "2100-02-01";
-                                            entity.price = dt051.Rows[i]["下代"].ToString();
-                                            entity.True_StockDate = "Not Found";
-                                            entity.True_Quantity = "Not Found";
-                                            fun.Qbei_Inserts(entity);
+                                            string page = chrome.FindElement(By.ClassName("__page-info")).GetAttribute("innerHTML").ToString();
+                                            string[] page_no = page.Split('>');
+                                            page = page_no[3];
+                                            string[] page_last = page.Split('<');
+                                            for (int i = 1; i <= Convert.ToInt32(page_last[0]); ++i)
+                                            {
+                                                Thread.Sleep(2000);
+                                                chrome.FindElement(By.Id("modaal-close")).Click();
+                                            }
+                                            fun.WriteLog("Finished Advertisemnts             ------", "051-");
                                         }
-                                        else
+                                    }
+                                    catch
+                                    {
+                                        //</remark Add Logic for Check to Advertisemnts 2022/12/02 End>
+                                        entity = new Qbei_Entity();
+                                        entity.siteID = 51;
+                                        entity.sitecode = "051";
+                                        entity.janCode = dt051.Rows[i]["JANコード"].ToString();
+                                        entity.partNo = dt051.Rows[i]["自社品番"].ToString();
+                                        entity.makerDate = fun.getCurrentDate();
+                                        entity.reflectDate = dt051.Rows[i]["最終反映日"].ToString();
+                                        entity.orderCode = dt051.Rows[i]["発注コード"].ToString().Trim();
+                                        entity.purchaseURL = "https://sb2b.jp/list.php?keyword=" + entity.orderCode;
+
+                                        //<remark Add Logic for Check to URL 2022/12/02 Start>
+                                        string URL = chrome.Url;
+                                        if (!URL.Equals(entity.purchaseURL))
                                         {
-                                            if (chrome.FindElement(By.ClassName("__photo")) == null)
+                                            Thread.Sleep(4000);
+                                            chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/section[3]/form/div/input")).Clear();
+                                            chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/section[3]/form/div/input")).SendKeys(ordercode);
+                                            chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/section[3]/form/div/button")).Click();
+                                        }
+                                        //</remark Add Logic for Check to URL 2022/12/02 End>
+
+                                        if (!string.IsNullOrWhiteSpace(entity.orderCode))
+                                        {
+                                            body = chrome.FindElement(By.TagName("body")).Text;
+                                            if (body.Contains("お探しの検索条件に合致する商品は見つかりませんでした。"))
                                             {
                                                 entity.qtyStatus = "empty";
                                                 entity.stockDate = "2100-02-01";
@@ -273,9 +293,7 @@ namespace _051スタイルバイク
                                             }
                                             else
                                             {
-                                                int n = chrome.FindElements(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr")).Count();
-
-                                                if (n == 0)
+                                                if (chrome.FindElement(By.ClassName("__photo")) == null)
                                                 {
                                                     entity.qtyStatus = "empty";
                                                     entity.stockDate = "2100-02-01";
@@ -286,77 +304,175 @@ namespace _051スタイルバイク
                                                 }
                                                 else
                                                 {
-                                                    for (int i = 1; i <= n; i++)
-                                                    {
-                                                        if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[1]/span[2]")).Text.Equals("[" + entity.orderCode + "]"))
-                                                        {
-                                                            entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[1]/div/span[1]/span")).Text.Replace("円", "").Replace(",", "").Trim();
-                                                            string stock = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]")).GetAttribute("innerHTML").ToString().Trim();
-                                                            if (stock.Contains("__input"))
-                                                            {
-                                                                //if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[2]/div[3]/dl/dd")) == null)//<remark Edit Logic for Check to Quantity 2021/11/05 />
-                                                                if (!stock.Contains("在庫"))
-                                                                {
-                                                                    //<remark Edit Logic for Stockdate 2022/07/21 Start>
-                                                                    //entity.qtyStatus = "empty";
-                                                                    //entity.stockDate = "2100-02-01";
-                                                                    entity.qtyStatus = "good";
-                                                                    entity.stockDate = "2100-01-01";
-                                                                    //</remark 2022/07/21 End>
-                                                                    entity.True_StockDate = "Not Found";
-                                                                    entity.True_Quantity = "Not Found";
-                                                                }
-                                                                else
-                                                                {
-                                                                    qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[2]/div[3]/dl/dd")).Text;
-                                                                    //entity.qtyStatus = qty.Equals("○") || qty.Contains("最少") ? "good" : qty.Equals("△") ? "empty" : qty.Equals("×") ? "empty" : "unknown status";
-                                                                    entity.qtyStatus = qty.Equals("○") || qty.Contains("最少") ? "good" : qty.Equals("△") ? "small" : qty.Equals("×") ? "empty" : "unknown status";//<remark ロジックの変更　2022/01/21 />
-                                                                    //entity.stockDate = qty.Equals("○") || qty.Contains("最少") ? "2100-01-01" : qty.Equals("△") ? "2100-02-01" : "unknown status";
-                                                                    entity.stockDate = qty.Equals("○") || qty.Equals("△") || qty.Contains("最少") ? "2100-01-01" : "unknown status";//<remark ロジックの変更　2022/01/21 />
-                                                                    entity.True_StockDate = "Not Found";
-                                                                    entity.True_Quantity = qty;
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                entity.qtyStatus = "empty";
-                                                                entity.stockDate = "2100-02-01";
-                                                                entity.True_StockDate = "Not Found";
-                                                                entity.True_Quantity = "Not Found";
-                                                            }
-                                                            break;
-                                                        }
-                                                    }
-                                                    if (entity.price == null || entity.qtyStatus == null || entity.stockDate == null)
+                                                    int n = chrome.FindElements(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr")).Count();
+
+                                                    if (n == 0)
                                                     {
                                                         entity.qtyStatus = "empty";
                                                         entity.stockDate = "2100-02-01";
                                                         entity.price = dt051.Rows[i]["下代"].ToString();
                                                         entity.True_StockDate = "Not Found";
                                                         entity.True_Quantity = "Not Found";
-                                                    }
-                                                    DateTime d = Convert.ToDateTime(entity.stockDate);
-                                                    if (d <= (DateTime.Now))
-                                                    {
-                                                        d = d.AddYears(1);
-                                                    }
-                                                    entity.stockDate = d.ToString("yyyy-MM-dd");
-
-                                                    if ((entity.qtyStatus != "unknown status"))
-                                                    {
                                                         fun.Qbei_Inserts(entity);
                                                     }
                                                     else
                                                     {
-                                                        fun.Qbei_ErrorInsert(51, fun.GetSiteName("051"), "Item doesn't Check!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "051");
+                                                        for (int i = 1; i <= n; i++)
+                                                        {
+                                                            //<remark Add & Edit Logic for Item of List 2022/12/01 Start>
+                                                            //if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[1]/span[2]")).Text.Equals("[" + entity.orderCode + "]"))
+                                                            //{
+                                                            //    entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[1]/div/span[1]/span")).Text.Replace("円", "").Replace(",", "").Trim();
+                                                            //    string stock = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]")).GetAttribute("innerHTML").ToString().Trim();
+                                                            //    if (stock.Contains("__input"))
+                                                            //    {
+                                                            //        //if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[2]/div[3]/dl/dd")) == null)//<remark Edit Logic for Check to Quantity 2021/11/05 />
+                                                            //        if (!stock.Contains("在庫"))
+                                                            //        {
+                                                            //            //<remark Edit Logic for Stockdate 2022/07/21 Start>
+                                                            //            //entity.qtyStatus = "empty";
+                                                            //            //entity.stockDate = "2100-02-01";
+                                                            //            entity.qtyStatus = "good";
+                                                            //            entity.stockDate = "2100-01-01";
+                                                            //            //</remark 2022/07/21 End>
+                                                            //            entity.True_StockDate = "Not Found";
+                                                            //            entity.True_Quantity = "Not Found";
+                                                            //        }
+                                                            //        else
+                                                            //        {
+                                                            //            qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[2]/div[3]/dl/dd")).Text;
+                                                            //            //entity.qtyStatus = qty.Equals("○") || qty.Contains("最少") ? "good" : qty.Equals("△") ? "empty" : qty.Equals("×") ? "empty" : "unknown status";
+                                                            //            entity.qtyStatus = qty.Equals("○") || qty.Contains("最少") ? "good" : qty.Equals("△") ? "small" : qty.Equals("×") ? "empty" : "unknown status";//<remark ロジックの変更　2022/01/21 />
+                                                            //            //entity.stockDate = qty.Equals("○") || qty.Contains("最少") ? "2100-01-01" : qty.Equals("△") ? "2100-02-01" : "unknown status";
+                                                            //            entity.stockDate = qty.Equals("○") || qty.Equals("△") || qty.Contains("最少") ? "2100-01-01" : "unknown status";//<remark ロジックの変更　2022/01/21 />
+                                                            //            entity.True_StockDate = "Not Found";
+                                                            //            entity.True_Quantity = qty;
+                                                            //        }
+                                                            //    }
+                                                            //    else
+                                                            //    {
+                                                            //        entity.qtyStatus = "empty";
+                                                            //        entity.stockDate = "2100-02-01";
+                                                            //        entity.True_StockDate = "Not Found";
+                                                            //        entity.True_Quantity = "Not Found";
+                                                            //    }
+                                                            //    break;
+                                                            //}
+                                                            try
+                                                            {
+                                                                if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[1]/span[2]")).Text.Equals("[" + entity.orderCode + "]"))
+                                                                {
+                                                                    entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[1]/div/span[1]/span")).Text.Replace("円", "").Replace(",", "").Trim();
+                                                                    string stock = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]")).GetAttribute("innerHTML").ToString().Trim();
+                                                                    if (stock.Contains("__input"))
+                                                                    {
+                                                                        //if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[2]/div[3]/dl/dd")) == null)//<remark Edit Logic for Check to Quantity 2021/11/05 />
+                                                                        if (!stock.Contains("在庫"))
+                                                                        {
+                                                                            //<remark Edit Logic for Stockdate 2022/07/21 Start>
+                                                                            //entity.qtyStatus = "empty";
+                                                                            //entity.stockDate = "2100-02-01";
+                                                                            entity.qtyStatus = "good";
+                                                                            entity.stockDate = "2100-01-01";
+                                                                            //</remark 2022/07/21 End>
+                                                                            entity.True_StockDate = "Not Found";
+                                                                            entity.True_Quantity = "Not Found";
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[2]/div[3]/dl/dd")).Text;
+                                                                            //entity.qtyStatus = qty.Equals("○") || qty.Contains("最少") ? "good" : qty.Equals("△") ? "empty" : qty.Equals("×") ? "empty" : "unknown status";
+                                                                            entity.qtyStatus = qty.Equals("○") || qty.Contains("最少") ? "good" : qty.Equals("△") ? "small" : qty.Equals("×") ? "empty" : "unknown status";//<remark ロジックの変更　2022/01/21 />
+                                                                                                                                                                                                                         //entity.stockDate = qty.Equals("○") || qty.Contains("最少") ? "2100-01-01" : qty.Equals("△") ? "2100-02-01" : "unknown status";
+                                                                            entity.stockDate = qty.Equals("○") || qty.Equals("△") || qty.Contains("最少") ? "2100-01-01" : "unknown status";//<remark ロジックの変更　2022/01/21 />
+                                                                            entity.True_StockDate = "Not Found";
+                                                                            entity.True_Quantity = qty;
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        entity.qtyStatus = "empty";
+                                                                        entity.stockDate = "2100-02-01";
+                                                                        entity.True_StockDate = "Not Found";
+                                                                        entity.True_Quantity = "Not Found";
+                                                                    }
+                                                                    break;
+                                                                }
+                                                            }
+                                                            catch
+                                                            {
+                                                                if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li[" + (i) + "]/div/form/table/tbody/tr/td[1]/span")).Text.Contains(entity.orderCode))
+                                                                {
+                                                                    entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li[" + (i) + "]/div/form/table/tbody/tr/td[1]/div/span[1]/span")).Text.Replace("円", "").Replace(",", "").Trim();
+                                                                    string stock = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li[" + (i) + "]/div/form/table/tbody/tr")).GetAttribute("innerHTML").ToString().Trim();
+                                                                    if (stock.Contains("__input"))
+                                                                    {
+                                                                        //if (chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + (i) + "]/td[2]/div[3]/dl/dd")) == null)//<remark Edit Logic for Check to Quantity 2021/11/05 />
+                                                                        if (!stock.Contains("在庫"))
+                                                                        {
+                                                                            //<remark Edit Logic for Stockdate 2022/07/21 Start>
+                                                                            //entity.qtyStatus = "empty";
+                                                                            //entity.stockDate = "2100-02-01";
+                                                                            entity.qtyStatus = "good";
+                                                                            entity.stockDate = "2100-01-01";
+                                                                            //</remark 2022/07/21 End>
+                                                                            entity.True_StockDate = "Not Found";
+                                                                            entity.True_Quantity = "Not Found";
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li[" + (i) + "]/div/form/table/tbody/tr/td[2]/div[3]/dl/dd")).Text;
+                                                                            //entity.qtyStatus = qty.Equals("○") || qty.Contains("最少") ? "good" : qty.Equals("△") ? "empty" : qty.Equals("×") ? "empty" : "unknown status";
+                                                                            entity.qtyStatus = qty.Equals("○") || qty.Contains("最少") ? "good" : qty.Equals("△") ? "small" : qty.Equals("×") ? "empty" : "unknown status";//<remark ロジックの変更　2022/01/21 />
+                                                                                                                                                                                                                         //entity.stockDate = qty.Equals("○") || qty.Contains("最少") ? "2100-01-01" : qty.Equals("△") ? "2100-02-01" : "unknown status";
+                                                                            entity.stockDate = qty.Equals("○") || qty.Equals("△") || qty.Contains("最少") ? "2100-01-01" : "unknown status";//<remark ロジックの変更　2022/01/21 />
+                                                                            entity.True_StockDate = "Not Found";
+                                                                            entity.True_Quantity = qty;
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        entity.qtyStatus = "empty";
+                                                                        entity.stockDate = "2100-02-01";
+                                                                        entity.True_StockDate = "Not Found";
+                                                                        entity.True_Quantity = "Not Found";
+                                                                    }
+                                                                    break;
+                                                                }
+                                                            }
+                                                            //</remark Add & Edit Logic for Item of List 2022/12/01 End>
+                                                        }
+                                                        if (entity.price == null || entity.qtyStatus == null || entity.stockDate == null)
+                                                        {
+                                                            entity.qtyStatus = "empty";
+                                                            entity.stockDate = "2100-02-01";
+                                                            entity.price = dt051.Rows[i]["下代"].ToString();
+                                                            entity.True_StockDate = "Not Found";
+                                                            entity.True_Quantity = "Not Found";
+                                                        }
+                                                        DateTime d = Convert.ToDateTime(entity.stockDate);
+                                                        if (d <= (DateTime.Now))
+                                                        {
+                                                            d = d.AddYears(1);
+                                                        }
+                                                        entity.stockDate = d.ToString("yyyy-MM-dd");
+
+                                                        if ((entity.qtyStatus != "unknown status"))
+                                                        {
+                                                            fun.Qbei_Inserts(entity);
+                                                        }
+                                                        else
+                                                        {
+                                                            fun.Qbei_ErrorInsert(51, fun.GetSiteName("051"), "Item doesn't Check!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "051");
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
-                                    }
-                                    else
-                                    {
-                                        fun.Qbei_ErrorInsert(51, fun.GetSiteName("051"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "051");
+                                        else
+                                        {
+                                            fun.Qbei_ErrorInsert(51, fun.GetSiteName("051"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "051");
+                                        }
                                     }
                                 }
                             }
