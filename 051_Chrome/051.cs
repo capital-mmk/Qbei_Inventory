@@ -243,11 +243,7 @@ namespace _051スタイルバイク
                                     {
                                         if (chrome.FindElement(By.ClassName("modaal-close")) != null)
                                         {
-                                            string page = chrome.FindElement(By.ClassName("__page-info")).GetAttribute("innerHTML").ToString();
-                                            string[] page_no = page.Split('>');
-                                            page = page_no[3];
-                                            string[] page_last = page.Split('<');
-                                            for (int i = 1; i <= Convert.ToInt32(page_last[0]); ++i)
+                                            if (chrome.FindElement(By.ClassName("modaal-container")) != null)
                                             {
                                                 Thread.Sleep(2000);
                                                 chrome.FindElement(By.Id("modaal-close")).Click();
