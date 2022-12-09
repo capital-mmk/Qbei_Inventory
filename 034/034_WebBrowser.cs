@@ -374,8 +374,9 @@ namespace _34シマノ
                                 //else
                                 //{
                                 //<remak Add & Edit Logic for check to ×在庫なし  2022/10/19 Start>
-                                //if (alt.Equals("×在庫なし"))//<remark Edit Logic for check to ×在庫限り 2022/12/06 />
-                                if (alt.Equals("×在庫限り"))
+                                //if (alt.Equals("×在庫なし"))//<remark Edit Logic for check to 在庫限り 2022/12/06 />
+                                //if (only.Equals("在庫限り"))//<remark Edit Logic for check to 在庫限り and × 2022/12/09 />
+                                if (only.Equals("在庫限り") && alt.Contains("×"))
                                 {
                                     entity.stockDate = "2100-02-01";
                                     entity.True_StockDate = date;
