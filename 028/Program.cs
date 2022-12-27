@@ -277,7 +277,21 @@ namespace _028
                                                         qty = " ";
                                                     }
                                                 }
-                                                entity.qtyStatus = qty.Equals(" ") || qty.Equals(null) || qty.Equals("0") || qty.Equals("1") || qty.Equals("2") ? "empty" : qty.Equals("10+") ? "small" : Convert.ToInt32(qty)>=3 ? "small" : "empty";
+                                                //<remark Add Logic for check to quantity of number 2022/12/27 Start>
+                                                string number_qty;                                               
+                                                if (qty == " ")
+                                                {
+                                                    number_qty = qty;
+                                                }
+                                                else
+                                                {
+                                                    var check_number_qty = qty;
+                                                    number_qty = string.Join("", check_number_qty.ToCharArray().Where(Char.IsDigit));
+                                                }                                               
+                                                //</remark 2022/12/27 End>
+
+                                                //entity.qtyStatus = qty.Equals(" ") || qty.Equals(null) || qty.Equals("0") || qty.Equals("1") || qty.Equals("2") ? "empty" : Convert.ToInt32(qty) >= 3 ? "small" : "empty";//<remark Edit Logic for check of quantity number 2022/12/27 />
+                                                entity.qtyStatus = number_qty.Equals(" ") || number_qty.Equals(null) || number_qty.Equals("0") || number_qty.Equals("1") || number_qty.Equals("2") ? "empty" : Convert.ToInt32(number_qty) >= 3 ? "small" : "empty";
 
                                                 //<remark>
                                                 //Check to Price
