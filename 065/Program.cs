@@ -151,6 +151,21 @@ namespace _65野口
                     chrome.FindElement(By.XPath("/html/body/div/div[1]/div/form/div/div[3]/input")).Click();
                     Thread.Sleep(2000);
 
+                    //<remark Add Logic for Check of Login URL 2023/01/16 Start>
+                    string check_URL = chrome.Url;
+                    if (!check_URL.Equals("https://noguchi-shokai.com/News"))
+                    {
+                        Thread.Sleep(4000);
+                        string username_return = dt.Rows[0]["UserName"].ToString();
+                        chrome.FindElement(By.Name("tokuisakicode")).SendKeys(username_return);
+                        string password_return = dt.Rows[0]["Password"].ToString();
+                        chrome.FindElement(By.Name("webloginpassword")).SendKeys(password_return);
+                        fun.WriteLog("Navigation to Site Url success------", "065-");
+                        chrome.FindElement(By.XPath("/html/body/div/div[1]/div/form/div/div[3]/input")).Click();
+                        Thread.Sleep(6000);
+                    }
+                    //</remark 2023/01/16 End>
+
                     string body = chrome.FindElement(By.TagName("body")).Text;
                     if (body.Contains("得意先コードまたはパスワードが正しくありません"))
                     {
@@ -216,16 +231,34 @@ namespace _65野口
                                         }
                                         catch
                                         {
-                                            chrome.Navigate().GoToUrl("https://noguchi-shokai.com/SyohinSearch");
-                                            Thread.Sleep(6000);
-                                            string Check_Message = chrome.FindElement(By.TagName("body")).Text;
-                                            if (Check_Message.Contains("検索条件に該当するデータは存在しません。"))
+                                            //<remark Add&Edit Logic for Check of Message 2023/01/16 Start>
+                                            try
                                             {
-                                                chrome.FindElement(By.CssSelector("body > div.bootbox.modal.fade.bootbox-alert.show > div > div > div.modal-footer > button")).Click();
+                                                chrome.Navigate().GoToUrl("https://noguchi-shokai.com/SyohinSearch");
+                                                Thread.Sleep(6000);
+                                                string Check_Message = chrome.FindElement(By.TagName("body")).Text;
+                                                if (Check_Message.Contains("検索条件に該当するデータは存在しません。"))
+                                                {
+                                                    chrome.FindElement(By.CssSelector("body > div.bootbox.modal.fade.bootbox-alert.show > div > div > div.modal-footer > button")).Click();
+                                                }
+                                                chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[1]/input")).Clear();
+                                                chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[1]/input")).SendKeys(ordercode);
+                                                chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[5]/div/button[1]")).Click();
                                             }
-                                            chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[1]/input")).Clear();
-                                            chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[1]/input")).SendKeys(ordercode);
-                                            chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[5]/div/button[1]")).Click();
+                                            catch
+                                            {
+                                                chrome.Navigate().GoToUrl("https://noguchi-shokai.com/SyohinSearch");
+                                                Thread.Sleep(8000);
+                                                string Check_Message = chrome.FindElement(By.TagName("body")).Text;
+                                                if (Check_Message.Contains("検索条件に該当するデータは存在しません。"))
+                                                {
+                                                    chrome.FindElement(By.CssSelector("body > div.bootbox.modal.fade.bootbox-alert.show > div > div > div.modal-footer > button")).Click();
+                                                }
+                                                chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[1]/input")).Clear();
+                                                chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[1]/input")).SendKeys(ordercode);
+                                                chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[5]/div/button[1]")).Click();
+                                            }
+                                            //</remark 2023/01/16 End>
                                         }
                                         entity.qtyStatus = "empty";
                                         entity.stockDate = "2100-02-01";
