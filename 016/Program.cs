@@ -282,6 +282,7 @@ namespace _016ライトウェイ
                                             entity.qtyStatus = "empty";
                                             entity.stockDate = "2100-02-01";
                                             entity.price = dt016.Rows[i]["下代"].ToString();
+                                            entity.purchaseURL = "https://rpj-ec.com/aec/user/shohin_list";
                                             entity.True_StockDate = "Not Found";
                                             entity.True_Quantity = "Not Found";
                                         }
