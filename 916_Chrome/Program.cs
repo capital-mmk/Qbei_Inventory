@@ -186,7 +186,17 @@ namespace _916_Chrome
                                 chrome.FindElement(By.Name("header_product_code")).SendKeys(ordercode);
                                 //chrome.FindElement(By.XPath("/html/body/header/div/nav/ul/li[2]/form/button")).Click();//<remark Edit Logic for Click Button 2021/11/15 />
                                 //chrome.FindElement(By.XPath("/html/body/header/div/nav/ul/li[2]/form/li[2]/button")).Click();//<remark Edit Logic for Click Button 2023/02/16 />
-                                chrome.FindElement(By.XPath("/html/body/header/div/nav/ul/li[2]/form/li[3]/button")).Click();
+                                //<remak Edit Logic for check to search button of html element 2023/02/24 Start>
+                                //chrome.FindElement(By.XPath("/html/body/header/div/nav/ul/li[2]/form/li[3]/button")).Click();
+                                try
+                                {
+                                    chrome.FindElement(By.XPath("/html/body/header/div/nav/ul/li[2]/form/li[3]/button")).Click();
+                                }
+                                catch
+                                {
+                                    chrome.FindElement(By.XPath("/html/body/header/div/nav/ul/li[2]/form/li[2]/button")).Click();
+                                }
+                                //</remark 2023/02/24 End>
 
                                 entity = new Qbei_Entity();
                                 entity.siteID = 916;
