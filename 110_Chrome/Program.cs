@@ -213,11 +213,14 @@ namespace _110_Chrome
                                         chrome.FindElement(By.XPath("/html/body/center/center/div/div[2]/div[2]/table/tbody/tr[1]/td[3]/form[2]/div/div[4]/ul/li/div/div[1]/a/img")).Click();
                                         string current_url = chrome.Url;//<remark Add Logic for Really URL 2021/06/14 />
                                         entity.purchaseURL = current_url;//<remark Add Logic for Really URL 2021/06/14 />
-                                        entity.price = chrome.FindElement(By.Id("M_member_notaxprice")).GetAttribute("value").ToString().Replace("¥", "").Replace(",", "").Trim();
+                                        //entity.price = chrome.FindElement(By.Id("M_member_notaxprice")).GetAttribute("value").ToString().Replace("¥", "").Replace(",", "").Trim();//<remark Edit & Adit Logic for Html Element of price 2023/03/03 />
+                                        entity.price = chrome.FindElement(By.Id("M_consumer_notaxprice")).GetAttribute("value").ToString().Replace("¥", "").Replace(",", "").Replace("円", "").Trim();
                                         try
                                         {
-                                            string stock = chrome.FindElement(By.ClassName("M_item-stock-instock")).Text.Trim();
-                                            entity.qtyStatus = stock.Equals("○在庫あり") ? "good" : stock.Equals("△残りわずか") ? "small" : "unknown status";
+                                            //string stock = chrome.FindElement(By.ClassName("M_item-stock-instock")).Text.Trim();//<remark Edit & Adit Logic for Html Element of stock 2023/03/03 />
+                                            string stock = chrome.FindElement(By.Id("stockMsg")).Text.Trim();
+                                            //entity.qtyStatus = stock.Equals("○在庫あり") ? "good" : stock.Equals("△残りわずか") ? "small" : "unknown status";//<remark Edit & Adit Logic for entity_stock 2023/03/03 />
+                                            entity.qtyStatus = stock.Contains("○在庫あり") ? "good" : stock.Contains("△残りわずか") ? "small" : stock.Contains("☓在庫なし") ? "empty" : "unknown status";
                                             entity.True_StockDate = "項目無し";
                                             entity.True_Quantity = stock;
                                         }
