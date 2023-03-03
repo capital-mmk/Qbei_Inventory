@@ -371,8 +371,10 @@ namespace _051スタイルバイク
                                                                             entity.qtyStatus = "good";
                                                                             entity.stockDate = "2100-01-01";
                                                                             //</remark 2022/07/21 End>
-                                                                            entity.True_StockDate = "Not Found";
-                                                                            entity.True_Quantity = "Not Found";
+                                                                            //entity.True_StockDate = "Not Found";//<remark Edit Logic for "No Value" 2023/03/03 />
+                                                                            entity.True_StockDate = "No Value";
+                                                                            //entity.True_Quantity = "Not Found";//<remark Edit Logic for "No Value" 2023/03/03 />
+                                                                            entity.True_Quantity = "No Value";
                                                                         }
                                                                         else
                                                                         {
@@ -381,7 +383,8 @@ namespace _051スタイルバイク
                                                                             entity.qtyStatus = qty.Equals("○") || qty.Contains("最少") ? "good" : qty.Equals("△") ? "small" : qty.Equals("×") ? "empty" : "unknown status";//<remark ロジックの変更　2022/01/21 />
                                                                                                                                                                                                                          //entity.stockDate = qty.Equals("○") || qty.Contains("最少") ? "2100-01-01" : qty.Equals("△") ? "2100-02-01" : "unknown status";
                                                                             entity.stockDate = qty.Equals("○") || qty.Equals("△") || qty.Contains("最少") ? "2100-01-01" : "unknown status";//<remark ロジックの変更　2022/01/21 />
-                                                                            entity.True_StockDate = "Not Found";
+                                                                            //entity.True_StockDate = "Not Found";//<remark Edit Logic for "No Value" 2023/03/03 />
+                                                                            entity.True_StockDate = "No Value";
                                                                             entity.True_Quantity = qty;
                                                                         }
                                                                     }
@@ -412,8 +415,10 @@ namespace _051スタイルバイク
                                                                             entity.qtyStatus = "good";
                                                                             entity.stockDate = "2100-01-01";
                                                                             //</remark 2022/07/21 End>
-                                                                            entity.True_StockDate = "Not Found";
-                                                                            entity.True_Quantity = "Not Found";
+                                                                            //entity.True_StockDate = "Not Found";//<remark Edit Logic for "No Value" 2023/03/03 />
+                                                                            entity.True_StockDate = "No Value";
+                                                                            //entity.True_Quantity = "Not Found";//<remark Edit Logic for "No Value" 2023/03/03 />
+                                                                            entity.True_Quantity = "No Value";
                                                                         }
                                                                         else
                                                                         {
@@ -422,7 +427,8 @@ namespace _051スタイルバイク
                                                                             entity.qtyStatus = qty.Equals("○") || qty.Contains("最少") ? "good" : qty.Equals("△") ? "small" : qty.Equals("×") ? "empty" : "unknown status";//<remark ロジックの変更　2022/01/21 />
                                                                                                                                                                                                                          //entity.stockDate = qty.Equals("○") || qty.Contains("最少") ? "2100-01-01" : qty.Equals("△") ? "2100-02-01" : "unknown status";
                                                                             entity.stockDate = qty.Equals("○") || qty.Equals("△") || qty.Contains("最少") ? "2100-01-01" : "unknown status";//<remark ロジックの変更　2022/01/21 />
-                                                                            entity.True_StockDate = "Not Found";
+                                                                            //entity.True_StockDate = "Not Found";//<remark Edit Logic for "No Value" 2023/03/03 />
+                                                                            entity.True_StockDate = "No Value";
                                                                             entity.True_Quantity = qty;
                                                                         }
                                                                     }
