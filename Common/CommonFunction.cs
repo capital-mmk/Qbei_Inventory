@@ -527,7 +527,15 @@ namespace Common
         public DataTable DeleteOldCode(DataTable dtResult, int shopID)
         {
             DataTable dtOrder;
-            if (!dtResult.Equals(null))
+            //<remark Add Logic for check to OldCode 2023/03/28 Start>
+            int check = dtResult.AsEnumerable().Where(x => (x.Field<string>("発注コード").Contains("|"))).Count();
+            if (check == 0)
+            {
+                return dtResult;
+            }
+            //if (!dtResult.Equals(null))
+            //</remark 2023/03/28 End>
+            else if (!dtResult.Equals(null))
             {
                 /// <remark>
                 /// Insert Data into Qbei_ErrorLog
@@ -557,6 +565,7 @@ namespace Common
                 return dtOrder;
             }
             else return null;
+
         }
 
         /// <summary>
