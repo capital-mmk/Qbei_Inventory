@@ -197,12 +197,28 @@ namespace _13ミズタニ
                         {
                             if (i < Lastrow)
                             {
-                                chrome.FindElement(By.Id("btnClear")).Click();
-                                ordercode = dt013.Rows[i]["発注コード"].ToString();                               
-                                chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
-                                chrome.FindElement(By.Id("btnSearch")).Click();
-
-                                Thread.Sleep(2000);
+                                //<remark Add Logic for check to search process 2023/03/28 Start>
+                                //chrome.FindElement(By.Id("btnClear")).Click();
+                                //ordercode = dt013.Rows[i]["発注コード"].ToString();
+                                //chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
+                                //chrome.FindElement(By.Id("btnSearch")).Click();
+                                try
+                                {
+                                    chrome.FindElement(By.Id("btnClear")).Click();
+                                    ordercode = dt013.Rows[i]["発注コード"].ToString();
+                                    chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
+                                    chrome.FindElement(By.Id("btnSearch")).Click();
+                                }
+                                catch
+                                {
+                                    Thread.Sleep(2000);
+                                    chrome.FindElement(By.Id("btnClear")).Click();
+                                    ordercode = dt013.Rows[i]["発注コード"].ToString();
+                                    chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
+                                    chrome.FindElement(By.Id("btnSearch")).Click();
+                                }
+                                //</remark 2023/03/28 End>
+                               
                                 entity = new Qbei_Entity();
                                 entity.siteID = 13;
                                 entity.sitecode = "013";
