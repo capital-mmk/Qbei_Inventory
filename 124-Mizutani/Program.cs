@@ -198,10 +198,6 @@ namespace _124_Mizutani
                             if (i < Lastrow)
                             {
                                 //<remark Add Logic for check to search process 2023/03/28 Start>
-                                //chrome.FindElement(By.Id("btnClear")).Click();
-                                //ordercode = dt0124.Rows[i]["発注コード"].ToString();
-                                //chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
-                                //chrome.FindElement(By.Id("btnSearch")).Click();
                                 try
                                 {
                                     chrome.FindElement(By.Id("btnClear")).Click();
@@ -217,7 +213,51 @@ namespace _124_Mizutani
                                     chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
                                     chrome.FindElement(By.Id("btnSearch")).Click();
                                 }
-                                //</remark 2023/03/28 End>
+
+                                //<remark Add Logic for Check to Error Page 2023/03/29 Start>
+                                string Check_ErrorPage = chrome.FindElement(By.TagName("body")).Text;
+                                if (Check_ErrorPage.Contains("エラーが発生しました。"))
+                                {
+                                    chrome.Url = fun.url;
+                                    Thread.Sleep(4000);
+                                    username = dt.Rows[0]["UserName"].ToString();
+                                    chrome.FindElement(By.Id("tokuisakicode")).SendKeys(username);
+                                    password = dt.Rows[0]["Password"].ToString();
+                                    chrome.FindElement(By.Id("loginpasswd")).SendKeys(password);
+                                    fun.WriteLog("Navigation to Site Url success------", "013-");
+                                    chrome.FindElement(By.Id("btnLogin")).Click();
+                                    Thread.Sleep(2000);
+
+                                    body = chrome.FindElement(By.TagName("body")).Text;
+                                    if (body.Contains("得意先コード、パスワードが正しくありません"))
+                                    {
+                                        fun.WriteLog("Login Failed", "013-");
+                                        chrome.Quit();
+                                        Environment.Exit(0);
+                                    }
+                                    else
+                                    {
+                                        fun.WriteLog("Login success             ------", "013-");
+                                        chrome.Navigate().GoToUrl(fun.url + "/SyohinSearch.aspx");
+                                    }
+                                    try
+                                    {
+                                        chrome.FindElement(By.Id("btnClear")).Click();
+                                        ordercode = dt124.Rows[i]["発注コード"].ToString();
+                                        chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
+                                        chrome.FindElement(By.Id("btnSearch")).Click();
+                                    }
+                                    catch
+                                    {
+                                        Thread.Sleep(2000);
+                                        chrome.FindElement(By.Id("btnClear")).Click();
+                                        ordercode = dt124.Rows[i]["発注コード"].ToString();
+                                        chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
+                                        chrome.FindElement(By.Id("btnSearch")).Click();
+                                    }
+                                    //</remark 2023/03/28 End>
+                                }
+                                //</remark 2023/03/29 End>
 
                                 entity = new Qbei_Entity();
                                 entity.siteID = 124;
