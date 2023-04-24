@@ -112,7 +112,7 @@ namespace _87ダートフリーク
                 fun.Qbei_Delete(87);
                 fun.Qbei_ErrorDelete(87);
                 dt087 = fun.GetDatatable("087");
-               // dt087 = fun.GetOrderData(dt087, "http://www.dirtfreak.co.jp/cycledealer/search_form.php?dfhinbanA=&dfhinbanB=&textsearch=&cataloghinban=", "087", "&submitall=submit"); // 2023/04/24 updated by ct
+               // dt087 = fun.GetOrderData(dt087, "http://www.dirtfreak.co.jp/cycledealer/search_form.php?dfhinbanA=&dfhinbanB=&textsearch=&cataloghinban=", "087", "&submitall=submit"); // 2023/04/24 updated by ct   
                 fun.GetTotalCount("087");
                 ReadData();
             }
