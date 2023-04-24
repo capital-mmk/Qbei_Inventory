@@ -132,7 +132,8 @@ namespace _019深谷_フカヤ_
             chromeOptions.AddArguments("-no-sandbox");//<remark Add Logic for ChormeDriver 2021/09/02 />
             var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);//<remark Add Logic for ChormeDriver 2021/09/02 />                                                                                                                       
             //using (IWebDriver chrome = new ChromeDriver(chromeOptions))
-            using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))//<remark Edit Logic for ChormeDriver 2021/09/02 />
+            //using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))//<remark Edit Logic for ChormeDriver 2021/09/02 />
+            using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromSeconds(30)))//<remark Edit Logic for ChormeDriver 2023/04/21 />
             {
                 DataTable dt = new DataTable();
                 Qbeisetting_BL qubl = new Qbeisetting_BL();
@@ -185,10 +186,57 @@ namespace _019深谷_フカヤ_
                         if (i < Lastrow)
                         {
                             string od;
+                            string Check_URL = chrome.Url;
                             //od = dt019.Rows[i]["JANコード"].ToString();//<Edit Logic for Search 2021/03/24 />
                             od = dt019.Rows[i]["発注コード"].ToString();
                             //chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);//<Edit Logic for Search 2021/03/24 />
-                            chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
+                            //<remark Add Logic for No Loading at wait 180seconds 2023/04/24 Start>
+                            //chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
+                            try
+                            {
+                                chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
+                            }
+                            catch
+                            {
+                                try
+                                {
+                                    chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
+                                    Check_URL = chrome.Url;
+                                    if (Check_URL.Equals("https://webcart.fukaya-nagoya.co.jp/consumer/"))
+                                    {
+                                        chrome.FindElement(By.Name("loginId")).SendKeys(username);
+                                        chrome.FindElement(By.Name("password")).SendKeys(password);
+                                        fun.WriteLog("Navigation to Site Url success------", "037-");
+                                        chrome.FindElement(By.Id("login")).Click();
+                                        Thread.Sleep(8000);
+                                        chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
+                                    }
+                                }
+                                catch
+                                {
+                                    try
+                                    {
+                                        chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
+                                        Check_URL = chrome.Url;
+                                        if (Check_URL.Equals("https://webcart.fukaya-nagoya.co.jp/consumer/"))
+                                        {
+                                            chrome.FindElement(By.Name("loginId")).SendKeys(username);
+                                            chrome.FindElement(By.Name("password")).SendKeys(password);
+                                            fun.WriteLog("Navigation to Site Url success------", "037-");
+                                            chrome.FindElement(By.Id("login")).Click();
+                                            Thread.Sleep(8000);
+                                            chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        fun.WriteLog("Timeout Failed", "019-");
+                                        chrome.Quit();
+                                        Environment.Exit(0);
+                                    }
+                                }
+                            }
+                            //</remark 2023/04/24 End>
                             Thread.Sleep(2000);//<reamark 追加　18/05/2021 />
 
                             entity = new Qbei_Entity();
