@@ -211,7 +211,7 @@ namespace _016ライトウェイ
                                     {                                        
                                         entity.qtyStatus = "empty";
                                         entity.stockDate = "2100-02-01";
-                                        entity.purchaseURL = "https://rpj-ec.com/aec/user/shohin_list";
+                                        entity.purchaseURL = chrome.Url;  //"https://rpj-ec.com/aec/user/shohin_list";  2023/04/24 updated by ct
                                         entity.price = dt016.Rows[i]["下代"].ToString();
                                         entity.True_StockDate = "Not Found";
                                         entity.True_Quantity = "Not Found";
@@ -234,7 +234,7 @@ namespace _016ライトウェイ
                                             if (chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div/form/div/article/section/div/div/div[5]/table/tbody/tr[" + (i) + "]/td[2]/div")).Text.Contains(entity.janCode))
                                             {
                                                 entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div/form/div/article/section/div/div/div[5]/table/tbody/tr[" + (i) + "]/td[7]/div/div/div/p[2]/span[2]")).Text.Replace("円", "").Replace(",", "").Trim();
-                                                entity.purchaseURL = "https://rpj-ec.com/aec/user/shohin_list";
+                                                entity.purchaseURL = chrome.Url;  //"https://rpj-ec.com/aec/user/shohin_list"; 2023/04/24 updated by ct
                                                 string stock = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div/form/div/article/section/div/div/div[5]/table/tbody/tr[" + (i) + "]/td[6]/div/div/div/span/span[1]")).Text;
                                                 entity.qtyStatus = stock.Equals("○") ? "good" : stock.Equals("△") ? "small" : stock.Equals("×") ? "empty" : "unknown status";
                                                 entity.True_Quantity = stock;
@@ -282,7 +282,7 @@ namespace _016ライトウェイ
                                             entity.qtyStatus = "empty";
                                             entity.stockDate = "2100-02-01";
                                             entity.price = dt016.Rows[i]["下代"].ToString();
-                                            entity.purchaseURL = "https://rpj-ec.com/aec/user/shohin_list";
+                                            entity.purchaseURL = chrome.Url;  //"https://rpj-ec.com/aec/user/shohin_list";  2023/04/24 updated by ct
                                             entity.True_StockDate = "Not Found";
                                             entity.True_Quantity = "Not Found";
                                         }
