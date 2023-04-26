@@ -153,7 +153,7 @@ namespace _019深谷_フカヤ_
                 chrome.FindElement(By.Name("loginId")).SendKeys(username);
                 string password = dt.Rows[0]["Password"].ToString();
                 chrome.FindElement(By.Name("password")).SendKeys(password);
-                fun.WriteLog("Navigation to Site Url success------", "037-");
+                fun.WriteLog("Navigation to Site Url success------", "019-");
                 chrome.FindElement(By.Id("login")).Click();
                 Thread.Sleep(8000);
 
@@ -206,7 +206,7 @@ namespace _019深谷_フカヤ_
                                     {
                                         chrome.FindElement(By.Name("loginId")).SendKeys(username);
                                         chrome.FindElement(By.Name("password")).SendKeys(password);
-                                        fun.WriteLog("Navigation to Site Url success------", "037-");
+                                        fun.WriteLog("Navigation to Site Url success------", "019-");
                                         chrome.FindElement(By.Id("login")).Click();
                                         Thread.Sleep(8000);
                                         chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
@@ -222,7 +222,7 @@ namespace _019深谷_フカヤ_
                                         {
                                             chrome.FindElement(By.Name("loginId")).SendKeys(username);
                                             chrome.FindElement(By.Name("password")).SendKeys(password);
-                                            fun.WriteLog("Navigation to Site Url success------", "037-");
+                                            fun.WriteLog("Navigation to Site Url success------", "019-");
                                             chrome.FindElement(By.Id("login")).Click();
                                             Thread.Sleep(8000);
                                             chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
