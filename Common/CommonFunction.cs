@@ -433,11 +433,15 @@ namespace Common
                         //.Select(r => r["入荷予定"] = "2100-02-01").ToList();
                         // dtOrder.AsEnumerable().Where(r => (DateTime.Parse(r.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-9).Date))
                         //.Select(r => r["在庫情報"] = "empty").ToList();
-                        dtOrder.AsEnumerable().Where(r => (DateTime.Parse(r.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-18).Date))
-                       .Select(r => r["入荷予定"] = "2100-02-01").ToList();
-                        dtOrder.AsEnumerable().Where(r => (DateTime.Parse(r.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-18).Date))
-                       .Select(r => r["在庫情報"] = "empty").ToList();
-                        //</remark 2020-01-30 End>
+                        
+                        if (dtOrder != null) //</remark 2023-04-26> "IF CONDITION" added by ct
+                        {
+                            dtOrder.AsEnumerable().Where(r => (DateTime.Parse(r.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-18).Date))
+                           .Select(r => r["入荷予定"] = "2100-02-01").ToList();
+                            dtOrder.AsEnumerable().Where(r => (DateTime.Parse(r.Field<string>("ステータス変更日").ToString()) <= DateTime.Now.AddMonths(-18).Date))
+                           .Select(r => r["在庫情報"] = "empty").ToList();
+                        }
+                        //</remark 2020-01-30 End>   
                         //</remark 2021-06-03 End>
 
                         //<remark Add Logic for Siteid-110 2021/04/09 Start>
