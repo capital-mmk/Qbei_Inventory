@@ -172,8 +172,29 @@ namespace _037
                 if (chrome.FindElement(By.Id("file-download-block")).Displayed)
                 {
                     chrome.FindElement(By.XPath("/html/body/div[1]/div[1]/div/div/article/section/section/table/tbody/tr[2]/td/div[2]/a")).Click();
-                    Thread.Sleep(3000);
+                    Thread.Sleep(15000); //<remark change from 3000 to 15000 2023/05/08 BY CT />
                 }
+
+                //<remark>
+                //Add Thread.Sleep(3000) and Check exist 商品在庫.csv file 2023/05/08 BY CT
+                int counter = 0;
+            label:
+                if (counter < 10)
+                {
+                    string[] filelist = Directory.GetFiles(@"C:\Qbei_Log\037_Download\");
+                    foreach (string file in filelist)
+                    {
+                        string ext = Path.GetExtension(file);
+                        if (!ext.Equals(".csv"))
+                        {
+                            Thread.Sleep(3000);
+                            counter++;
+                            goto label;
+
+                        }
+                    }
+                }
+                //</remark>
 
                 DataTable dt037 = fun.GetDatatable("037");
                 // dt037 = fun.GetOrderData(dt037, "https://ec.tsss.co.jp/aec/user/csv_export_download_info?schedule_id=csv_export_49c35718d482aecec14e92168a955b66", "037", "");//<remark Close Logic 2020/04/28 />
