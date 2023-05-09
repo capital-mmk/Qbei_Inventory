@@ -194,6 +194,22 @@ namespace _037
                         }
                     }
                 }
+
+                string[] flist = Directory.GetFiles(@"C:\Qbei_Log\037_Download\");
+                foreach (string file in flist)
+                {
+                    string ext = Path.GetExtension(file);
+                    if (!ext.Equals(".csv"))
+                    {
+                        qe.starttime = string.Empty;
+                        qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                        qe.flag = 1;
+                        qe.site = 37;
+                        fun.ChangeFlag(qe);
+                        chrome.Quit();
+                        Environment.Exit(0);
+                    }
+                }
                 //</remark>
 
                 DataTable dt037 = fun.GetDatatable("037");
