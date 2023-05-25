@@ -142,7 +142,7 @@ namespace _65野口
                     fun.url = dt.Rows[0]["Url"].ToString();
 
                     chrome.Url = fun.url;
-                    Thread.Sleep(6000); //<remark changed 4 to 6  2023/05/17 Start>
+                    Thread.Sleep(4000); //<remark changed 4 to 6  2023/05/17 Start>
                     string username = dt.Rows[0]["UserName"].ToString();
                     chrome.FindElement(By.Name("tokuisakicode")).SendKeys(username);
                     string password = dt.Rows[0]["Password"].ToString();
@@ -177,7 +177,7 @@ namespace _65野口
                     {
                         fun.WriteLog("Login success             ------", "065-");
                         chrome.Navigate().GoToUrl("https://noguchi-shokai.com/SyohinSearch");
-                        Thread.Sleep(6000); //<remark Add sleep time  2023/05/17 Start>
+                        Thread.Sleep(4000); //<remark Add sleep time  2023/05/17 Start>
                     }
 
 
@@ -193,8 +193,8 @@ namespace _65野口
                                 {
                                     chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[1]/input")).Clear();
                                     chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[1]/input")).SendKeys(ordercode);
-                                    chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[5]/div/button[1]")).Click();
                                     Thread.Sleep(2000); //<remark Add sleep time  2023/05/17 Start>
+                                    chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[5]/div/button[1]")).Click();
                                 }
                                 catch
                                 {
@@ -206,8 +206,9 @@ namespace _65野口
                                     }
                                     chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[1]/input")).Clear();
                                     chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[1]/input")).SendKeys(ordercode);
-                                    chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[5]/div/button[1]")).Click();
                                     Thread.Sleep(2000); //<remark Add sleep time  2023/05/17 Start>
+                                    chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[5]/div/button[1]")).Click();
+                                    
                                 }
                                 Thread.Sleep(2000);
                                 entity = new Qbei_Entity();
@@ -237,7 +238,7 @@ namespace _65野口
                                             //<remark Add&Edit Logic for Check of Message 2023/01/16 Start>
                                             try
                                             {
-                                                //chrome.Navigate().GoToUrl("https://noguchi-shokai.com/SyohinSearch");
+                                                chrome.Navigate().GoToUrl("https://noguchi-shokai.com/SyohinSearch");
                                                 Thread.Sleep(6000);
                                                 string Check_Message = chrome.FindElement(By.TagName("body")).Text;
                                                 if (Check_Message.Contains("検索条件に該当するデータは存在しません。"))
@@ -246,12 +247,13 @@ namespace _65野口
                                                 }
                                                 chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[1]/input")).Clear();
                                                 chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[1]/input")).SendKeys(ordercode);
-                                                chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[5]/div/button[1]")).Click();
                                                 Thread.Sleep(2000); //<remark Add sleep time  2023/05/17 Start>
+                                                chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[5]/div/button[1]")).Click();
+                                                
                                             }
                                             catch
                                             {
-                                                //chrome.Navigate().GoToUrl("https://noguchi-shokai.com/SyohinSearch");
+                                                chrome.Navigate().GoToUrl("https://noguchi-shokai.com/SyohinSearch");
                                                 Thread.Sleep(8000);
                                                 string Check_Message = chrome.FindElement(By.TagName("body")).Text;
                                                 if (Check_Message.Contains("検索条件に該当するデータは存在しません。"))
@@ -260,8 +262,8 @@ namespace _65野口
                                                 }
                                                 chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[1]/input")).Clear();
                                                 chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[1]/input")).SendKeys(ordercode);
-                                                chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[5]/div/button[1]")).Click();
                                                 Thread.Sleep(2000); //<remark Add sleep time  2023/05/17 Start>
+                                                chrome.FindElement(By.XPath("/html/body/div/div[2]/div/div/div[3]/div[5]/div/button[1]")).Click();
                                             }
                                             //</remark 2023/01/16 End>
                                         }
