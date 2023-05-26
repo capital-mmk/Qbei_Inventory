@@ -147,6 +147,7 @@ namespace _019深谷_フカヤ_
                 dt = qubl.Qbei_Setting_Select(qe);
                 string url = dt.Rows[0]["Url"].ToString();
                 chrome.Url = url;
+                Thread.Sleep(2000);
                 string title = chrome.Title;
 
                 string username = dt.Rows[0]["UserName"].ToString();
@@ -195,12 +196,14 @@ namespace _019深谷_フカヤ_
                             try
                             {
                                 chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
+                                Thread.Sleep(2000);
                             }
                             catch
                             {
                                 try
                                 {
                                     chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
+                                    Thread.Sleep(2000);
                                     Check_URL = chrome.Url;
                                     if (Check_URL.Equals("https://webcart.fukaya-nagoya.co.jp/consumer/"))
                                     {
@@ -210,6 +213,7 @@ namespace _019深谷_フカヤ_
                                         chrome.FindElement(By.Id("login")).Click();
                                         Thread.Sleep(8000);
                                         chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
+                                        Thread.Sleep(2000);
                                     }
                                 }
                                 catch
@@ -217,6 +221,7 @@ namespace _019深谷_フカヤ_
                                     try
                                     {
                                         chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
+                                        Thread.Sleep(2000);
                                         Check_URL = chrome.Url;
                                         if (Check_URL.Equals("https://webcart.fukaya-nagoya.co.jp/consumer/"))
                                         {
@@ -226,6 +231,7 @@ namespace _019深谷_フカヤ_
                                             chrome.FindElement(By.Id("login")).Click();
                                             Thread.Sleep(8000);
                                             chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
+                                            Thread.Sleep(2000);
                                         }
                                     }
                                     catch
