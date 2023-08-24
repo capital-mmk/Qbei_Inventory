@@ -228,6 +228,7 @@ namespace _916_Chrome
                                         Thread.Sleep(20000);
                                         chrome.FindElement(By.Name("header_product_code")).Clear();
                                         chrome.FindElement(By.Name("header_product_code")).SendKeys(ordercode);
+                                        Thread.Sleep(50000);        //add sleep time <07/20/2023>
                                         chrome.FindElement(By.XPath("/html/body/header/div/nav/ul/li[2]/form/li[2]/button")).Click();
                                         //</remark 2022/01/19 End>
                                     }
