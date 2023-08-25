@@ -283,14 +283,14 @@ namespace _034_chrome
                                             fun.Qbei_ErrorInsert(34, fun.GetSiteName("034"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "034");
                                         }
                                     }
-                                    qe.site = 34;
-                                    qe.flag = 2;
-                                    qe.starttime = string.Empty;
-                                    qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                                    fun.ChangeFlag(qe);
-                                    chrome.Quit();
-                                    Environment.Exit(0);
                                 }
+                                qe.site = 34;
+                                qe.flag = 2;
+                                qe.starttime = string.Empty;
+                                qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                                fun.ChangeFlag(qe);
+                                chrome.Quit();
+                                Environment.Exit(0);
                             }
                                     
                             catch (Exception ex)
