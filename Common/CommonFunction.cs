@@ -279,7 +279,7 @@ namespace Common
                     //</remark 2021/10/29 End>
                     //
                     //dr = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' OR 発注コード= '--'");<remark Edit Logic for ordercode 2021/04/05 />
-                    dr = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' OR 発注コード= '--' OR 発注コード like '/%' OR 発注コード like '-%'");
+                    dr = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード = 'NULL' OR 発注コード= '-' OR 発注コード= '--' OR 発注コード like '/%' OR 発注コード like '-%'");
                     if (dr.Count() > 0)
                     {
                         //if (!shopID.Equals("036"))
@@ -288,7 +288,7 @@ namespace Common
                             /// Save Data into Qbei_ErrorLog
                             /// </remark>
                             //DataTable dtBlankOrder = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード='-' OR 発注コード= '--'").CopyToDataTable();<remark Edit Logic for ordercode 2021/04/05 />
-                            DataTable dtBlankOrder = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード='-' OR 発注コード= '--'OR 発注コード like '/%' OR 発注コード like '-%'").CopyToDataTable();
+                            DataTable dtBlankOrder = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード = 'NULL' OR 発注コード='-' OR 発注コード= '--'OR 発注コード like '/%' OR 発注コード like '-%'").CopyToDataTable();
                             dtBlankOrder.Columns.Add(dc);
                             int col = dtBlankOrder.Rows.Count;
                             xml = DataTableToXml(dtBlankOrder);
@@ -307,12 +307,12 @@ namespace Common
                     }
 
 
-                    dr = dtTemp.Select("発注コード<>' ' AND 発注コード <> '' AND 発注コード is not NULL AND 発注コード<> '-' AND 発注コード<> '--' ");
+                    dr = dtTemp.Select("発注コード<>' ' AND 発注コード <> '' AND 発注コード is not NULL AND  発注コード <> 'NULL' AND 発注コード<> '-' AND 発注コード<> '--' ");
                     if (dr.Count() > 0)
                     {
                         //if (!shopID.Equals("036"))
                         //{
-                            dtNotNull = dtTemp.Select("発注コード<>' ' AND 発注コード <> '' AND 発注コード is not NULL AND 発注コード<> '-' AND 発注コード<> '--'").CopyToDataTable();
+                            dtNotNull = dtTemp.Select("発注コード<>' ' AND 発注コード <> '' AND 発注コード is not NULL AND 発注コード <> 'NULL' AND 発注コード<> '-' AND 発注コード<> '--'").CopyToDataTable();
                             //Trim 
                             dtNotNull.AsEnumerable().ToList().ForEach(r => r["発注コード"] = r.Field<string>("発注コード").Trim());
                             //<remark Add Logic 2021/05/04 Start>
