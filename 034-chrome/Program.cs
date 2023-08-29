@@ -59,7 +59,7 @@ namespace _034_chrome
                 qe.site = 34;
                 qe.flag = 1;
                 DataTable dtflag = fun.SelectFlag(34);
-                int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
+                int flag = 0;//Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
 
                 /// <summary>
                 /// Flag Number of Check.
@@ -139,6 +139,7 @@ namespace _034_chrome
                 chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");
                 chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
                 chromeOptions.AddArguments("-no-sandbox");
+                chromeOptions.AddArgument("--start-maximized");
 
                 var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);
                 using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))
@@ -150,7 +151,8 @@ namespace _034_chrome
                     qe.SiteID = 34;
                     dt = qubl.Qbei_Setting_Select(qe);
                     fun.url = dt.Rows[0]["Url"].ToString();
-                    chrome.Url = fun.url;
+                    //chrome.Url = fun.url;
+                    chrome.Navigate().GoToUrl(fun.url);
                     string title = chrome.Title;
                     Thread.Sleep(8000);
                     ///<remark>
@@ -160,14 +162,15 @@ namespace _034_chrome
                     try
                     {
                         string username = dt.Rows[0]["UserName"].ToString();
-                        chrome.FindElement(By.Id("login-form-email")).SendKeys(username);
-                        Thread.Sleep(2000);
+                         chrome.FindElement(By.Id("login-form-email")).SendKeys(username);
+                        Thread.Sleep(1000);
                         string password = dt.Rows[0]["Password"].ToString();
                         chrome.FindElement(By.Id("login-form-password")).SendKeys(password);
-                        Thread.Sleep(2000);
+                        Thread.Sleep(1000);
                         fun.WriteLog("Navigation to Site Url success------", "034-");
+                        Thread.Sleep(1000);
                         chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[2]/app-login/div/div/form/div[7]/button")).Click();
-                        Thread.Sleep(2000);
+                        Thread.Sleep(4000);
                         string body = chrome.FindElement(By.TagName("body")).Text;
                         if (body.Contains("メールアドレスまたはパスワードが正しくありません"))
                         {
@@ -186,7 +189,7 @@ namespace _034_chrome
                                 {
                                     if (i < Lastrow)
                                     {
-                                        Thread.Sleep(2000);
+                                        Thread.Sleep(1000);
                                         entity = new Qbei_Entity();
                                         entity.siteID = 34;
                                         entity.sitecode = "034";
@@ -200,10 +203,12 @@ namespace _034_chrome
 
                                         if (!string.IsNullOrWhiteSpace(entity.orderCode))
                                         {
-                                            chrome.Url = entity.purchaseURL;
-                                            Thread.Sleep(8000);
+                                            //chrome.Url = entity.purchaseURL;
+                                            chrome.Navigate().GoToUrl(entity.purchaseURL);
+                                            Thread.Sleep(4000);
+                                            string current_url = chrome.Url;
                                             string NGbody = chrome.FindElement(By.TagName("body")).Text;
-                                            if (NGbody.Contains("販売終了") || chrome.Url.Contains("product-not-found"))
+                                            if (NGbody.Contains("販売終了") || current_url.Contains("product-not-found"))
                                             {
 
                                                 entity.qtyStatus = "empty";
@@ -217,69 +222,83 @@ namespace _034_chrome
                                             {
                                                 try
                                                 {
-                                                    Thread.Sleep(2000);
                                                     int counter = 0;
+                                                    //chrome.Url = entity.purchaseURL;
+                                                    //Thread.Sleep(6000);
                                                 label1:
-                                                    if (counter < 10)
+                                                    if (counter < 2)
                                                     {
-                                                        chrome.Url = entity.purchaseURL;
-                                                        Thread.Sleep(8000);
-
+                                                        Thread.Sleep(2000);
                                                         string date = string.Empty;
                                                         string alt = string.Empty;
                                                         string Stockbody = chrome.FindElement(By.TagName("body")).Text;
+                                                        
                                                         if (Stockbody.Contains("在庫なし") || Stockbody.Contains("在庫あり"))
                                                         {
                                                             alt = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-stock-info/div/span")).Text;
-                                                            Thread.Sleep(2000);
+                                                            Thread.Sleep(1000);
                                                             entity.qtyStatus = alt.Contains("在庫なし") ? "empty" : alt.Contains("在庫あり") ? "good" : "empty";
-                                                        }
-                                                        else
-                                                        {
-                                                            Thread.Sleep(3000);
-                                                            counter++;
-                                                            goto label1;
-                                                        }
+                                                            Thread.Sleep(1000);
+                                                            entity.price = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-pricing/div/div/span")).Text;
+                                                            entity.price = entity.price.Replace("¥", string.Empty).Replace(",", string.Empty);
 
-                                                        entity.price = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-pricing/div/div/span")).Text;
-                                                        Thread.Sleep(2000);
-                                                        entity.price = entity.price.Replace("¥", string.Empty).Replace(",", string.Empty);
-
-
-                                                        string StockTxtbody = chrome.FindElement(By.TagName("body")).Text;
-                                                        if (StockTxtbody.Contains("入荷予定: "))
-                                                        {
-                                                            date = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-stock-info/div/span[2]")).Text;
-                                                        }
-                                                        // 入荷予定日がNULLの時
-                                                        if (string.IsNullOrWhiteSpace(date))
-                                                        {
-
-                                                            entity.stockDate = "2100-02-01";
-                                                            entity.True_StockDate = "項目なし";
-                                                            entity.True_Quantity = alt;
-                                                        }
-                                                        else
-                                                        {
-                                                            if ((!string.IsNullOrWhiteSpace(date)) && alt.Contains("在庫なし"))
+                                                            Thread.Sleep(1000);
+                                                            string StockTxtbody = chrome.FindElement(By.TagName("body")).Text;
+                                                            if (StockTxtbody.Contains("入荷予定: "))
                                                             {
-                                                                string Day = date.Replace("入荷予定:", "").Replace("日後", "").Replace("\r\n", "").Trim();//"入荷予定: 34 日後";
-                                                                string CalDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(int.Parse(Day)).ToString("yyyy-MM-dd");
-                                                                entity.stockDate = CalDate;
-                                                                entity.True_StockDate = date;
+                                                                date = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-stock-info/div/span[2]")).Text;
+                                                            }
+                                                            // 入荷予定日がNULLの時
+                                                            if (string.IsNullOrWhiteSpace(date))
+                                                            {
+
+                                                                entity.stockDate = "2100-02-01";
+                                                                entity.True_StockDate = "項目なし";
                                                                 entity.True_Quantity = alt;
                                                             }
                                                             else
                                                             {
-                                                                entity.stockDate = "2100-02-01";
-                                                                entity.True_StockDate = "項目なし";
-                                                                entity.True_Quantity = alt;
+                                                                if ((!string.IsNullOrWhiteSpace(date)) && alt.Contains("在庫なし"))
+                                                                {
+                                                                    string Day = date.Replace("入荷予定:", "").Replace("日後", "").Replace("\r\n", "").Trim();//"入荷予定: 34 日後";
+                                                                    string CalDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(int.Parse(Day)).ToString("yyyy-MM-dd");
+                                                                    entity.stockDate = CalDate;
+                                                                    entity.True_StockDate = date;
+                                                                    entity.True_Quantity = alt;
+                                                                }
+                                                                else
+                                                                {
+                                                                    entity.stockDate = "2100-02-01";
+                                                                    entity.True_StockDate = "項目なし";
+                                                                    entity.True_Quantity = alt;
+
+                                                                }
 
                                                             }
-
+                                                        }
+                                                        else
+                                                        {
+                                                            
+                                                            entity.qtyStatus = "empty";
+                                                            entity.stockDate = "2100-02-01";
+                                                            entity.price = dt034.Rows[i]["下代"].ToString();
+                                                            entity.True_StockDate = "項目なし";
+                                                            entity.True_Quantity = "項目なし";
+                                                            //fun.Qbei_Inserts(entity);
+                                                            Thread.Sleep(1000);
+                                                            counter++;
+                                                            goto label1;
                                                         }
                                                     }
-                                                    fun.Qbei_Inserts(entity);
+                                                    if (entity.qtyStatus != null)
+                                                    {
+                                                        fun.Qbei_Inserts(entity);
+                                                    }
+                                                    else
+                                                    {
+                                                        fun.Qbei_ErrorInsert(34, fun.GetSiteName("034"), "entity.qtyStatus is null!", entity.janCode, entity.orderCode, 5, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "034");
+                                                    }
+                                                    //fun.Qbei_Inserts(entity);
                                                 }
                                                 catch (Exception ex)
                                                 {
