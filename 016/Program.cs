@@ -148,7 +148,8 @@ namespace _016ライトウェイ
                     string password = dt.Rows[0]["Password"].ToString();
                     chrome.FindElement(By.Name("pw")).SendKeys(password);
                     fun.WriteLog("Navigation to Site Url success------", "016-");
-                    chrome.FindElement(By.XPath("/html/body/div/div[1]/div/form/div/div[8]/button")).Click();
+                    //chrome.FindElement(By.XPath("/html/body/div/div[1]/div/form/div/div[8]/button")).Click();
+                    chrome.FindElement(By.XPath("/html/body/div/div[1]/div/form/div/div[7]/button/span[2]")).Click();
                     Thread.Sleep(2000);
                     
                     string body = chrome.FindElement(By.TagName("body")).Text;
