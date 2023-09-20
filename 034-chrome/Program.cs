@@ -61,7 +61,7 @@ namespace _034_chrome
                 qe.site = 34;
                 qe.flag = 1;
                 DataTable dtflag = fun.SelectFlag(34);
-                int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
+                int flag =Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
 
                 /// <summary>
                 /// Flag Number of Check.
@@ -397,14 +397,16 @@ namespace _034_chrome
                                                                         Thread.Sleep(1000);
                                                                         try
                                                                         {
-                                                                            entity.price = chrome.FindElement(By.ClassName("pdp-price-value")).Text;
+                                                                            //entity.price = chrome.FindElement(By.ClassName("pdp-price-value")).Text;
+                                                                            entity.price = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-pricing/div/div[3]/span")).Text;
                                                                         }
                                                                         catch
                                                                         {
                                                                             try
                                                                             {
                                                                                 Thread.Sleep(2000);
-                                                                                entity.price = chrome.FindElement(By.ClassName("pdp-price-value")).Text;
+                                                                                //entity.price = chrome.FindElement(By.ClassName("pdp-price-value")).Text;
+                                                                                entity.price = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-pricing/div/div[3]/span")).Text;
                                                                             }
                                                                             catch
                                                                             {
@@ -412,19 +414,22 @@ namespace _034_chrome
                                                                                 {
                                                                                     chrome.Navigate().GoToUrl("https://b2b.shimano.com/bike/jp/ja/product/" + od);
                                                                                     Thread.Sleep(2000);
-                                                                                    entity.price = chrome.FindElement(By.ClassName("pdp-price-value")).Text;
+                                                                                    //entity.price = chrome.FindElement(By.ClassName("pdp-price-value")).Text;
+                                                                                    entity.price = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-pricing/div/div[3]/span")).Text;
                                                                                 }
                                                                                 catch
                                                                                 {
                                                                                     try
                                                                                     {
                                                                                         Thread.Sleep(2000);
-                                                                                        entity.price = chrome.FindElement(By.ClassName("pdp-price-value")).Text;
+                                                                                        //entity.price = chrome.FindElement(By.ClassName("pdp-price-value")).Text;
+                                                                                        entity.price = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-pricing/div/div[3]/span")).Text;
                                                                                     }
                                                                                     catch
                                                                                     {
                                                                                         Thread.Sleep(2000);
-                                                                                        entity.price = chrome.FindElement(By.ClassName("pdp-price-value")).Text;
+                                                                                        //entity.price = chrome.FindElement(By.ClassName("pdp-price-value")).Text;
+                                                                                        entity.price = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-pricing/div/div[3]/span")).Text;
                                                                                     }
                                                                                 }
                                                                             }
