@@ -148,8 +148,7 @@ namespace _016ライトウェイ
                     string password = dt.Rows[0]["Password"].ToString();
                     chrome.FindElement(By.Name("pw")).SendKeys(password);
                     fun.WriteLog("Navigation to Site Url success------", "016-");
-                    //chrome.FindElement(By.XPath("/html/body/div/div[1]/div/form/div/div[8]/button")).Click();
-                    chrome.FindElement(By.XPath("/html/body/div/div[1]/div/form/div/div[7]/button/span[2]")).Click();
+                    chrome.FindElement(By.XPath("/html/body/div/div[1]/div/form/div/div[8]/button/span[2]")).Click();
                     Thread.Sleep(2000);
                     
                     string body = chrome.FindElement(By.TagName("body")).Text;
@@ -223,11 +222,13 @@ namespace _016ライトウェイ
                                         try
                                         {
                                             chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div/div[2]/article/section/div[2]/div[3]/div/div/div/div/p[1]/a")).Click();
+                                            
                                         }
                                         catch
                                         {
                                             Thread.Sleep(6000);
                                             chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div/div[2]/article/section/div[2]/div[3]/div/div/div/div/p[1]/a")).Click();
+                                            
                                         }
                                         int n = chrome.FindElements(By.XPath("/html/body/div[1]/div[2]/div/form/div/article/section/div/div/div[5]/table/tbody/tr")).Count();
                                         for (int i = 1; i <= n; i++)
