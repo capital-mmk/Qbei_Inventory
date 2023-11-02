@@ -142,7 +142,7 @@ namespace _65野口
                     fun.url = dt.Rows[0]["Url"].ToString();
 
                     chrome.Url = fun.url;
-                    Thread.Sleep(4000); //<remark changed 4 to 6  2023/05/17 Start>
+                    Thread.Sleep(10000); //<remark changed 4 to 6  2023/05/17 Start>
                     string username = dt.Rows[0]["UserName"].ToString();
                     chrome.FindElement(By.Name("tokuisakicode")).SendKeys(username);
                     string password = dt.Rows[0]["Password"].ToString();
@@ -153,6 +153,7 @@ namespace _65野口
 
                     //<remark Add Logic for Check of Login URL 2023/01/16 Start>
                     string check_URL = chrome.Url;
+                    Thread.Sleep(10000);
                     if (!check_URL.Equals("https://noguchi-shokai.com/News"))
                     {
                         Thread.Sleep(4000);
@@ -162,7 +163,7 @@ namespace _65野口
                         chrome.FindElement(By.Name("webloginpassword")).SendKeys(password_return);
                         fun.WriteLog("Navigation to Site Url success------", "065-");
                         chrome.FindElement(By.XPath("/html/body/div/div[1]/div/form/div/div[3]/input")).Click();
-                        Thread.Sleep(6000);
+                        Thread.Sleep(10000);
                     }
                     //</remark 2023/01/16 End>
 
