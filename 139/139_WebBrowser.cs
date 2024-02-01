@@ -68,7 +68,7 @@ namespace _139
                 entitySetting.site = 139;
                 entitySetting.flag = 1;
                 dtSetting = objCom.SelectFlag(139);
-                intFlag = int.Parse(dtSetting.Rows[0]["FlagIsFinished"].ToString());
+                intFlag = 0; //.Parse(dtSetting.Rows[0]["FlagIsFinished"].ToString());
 
                 /// <summary>
                 /// Flag Number of Check.
@@ -340,17 +340,20 @@ namespace _139
                     }
                     else
                     {
+
                         DataTable Really_Table = dt139.AsEnumerable().Where(y => (y["JANコード"].Equals(Really_jancode) && y["サイズ"].Equals(Really_size))).CopyToDataTable();
                         strSize = Really_Table.Rows[0]["サイズ"].ToString();
                         strData = strSize.Split(new char[] { '（', '(' }, StringSplitOptions.RemoveEmptyEntries);
                         strSize = strData[0].Trim();
+
                         //<remark Add Logic for rellay size 2021/01/06 Start>
                         if (strSize == "ONE_SIZE")
                         {
                             strSize = strSize.Replace("_", " ");
+
                         }
                         //</remark 2021/01/06 End>
-                    }                    
+                    }
                     //</remark 2021/08/06 End>
 
                     entity.partNo = Check_Rows["自社品番"].ToString();
@@ -412,6 +415,7 @@ namespace _139
                                     hdoc.LoadHtml(strdata);
                                     var b = hdoc.DocumentNode.SelectNodes("/tbody/tr");
                                     //Check Size is exist or not
+
                                     if (b.Where(r => r.SelectNodes("td") != null && r.SelectSingleNode("td[1]").InnerText.Equals(strSize)).SingleOrDefault() == null)
                                     {
                                         entity.qtyStatus = "empty";
@@ -424,6 +428,7 @@ namespace _139
                                     }
                                     else
                                     {
+
                                         entity.qtyStatus = b.Where(r => r.SelectNodes("td") != null && r.SelectSingleNode("td[1]").InnerText.Equals(strSize)).Select(z => z.SelectSingleNode("td[2]").InnerText).SingleOrDefault();
                                         if (!string.IsNullOrEmpty(entity.qtyStatus))
                                         {
@@ -654,7 +659,8 @@ namespace _139
             //webBrowser1.DocumentCompleted -= new WebBrowserDocumentCompletedEventHandler(webBrowser1_Item);
             //</remark 2020/10/21 End>
 
-            webBrowser1.Navigate(strUrl);
+            //webBrowser1.Navigate(strUrl);
+            webBrowser1.Navigate(objCom.url + "login");
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser1_Search);
         }
 
