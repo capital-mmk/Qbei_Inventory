@@ -132,7 +132,7 @@ namespace _145_Chrome
             /// Use to ChormeDriver and Data Table and Common Function and Field
             /// </summary>
             var chromeOptions = new ChromeOptions();
-            //chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";//<Add Logic for Chrome Path 2021/05/24 />
+            chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";//<Add Logic for Chrome Path 2021/05/24 />
             chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");//<remark Add Logic for ChormeDriver 2021/09/02 />
             chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");//<remark Add Logic for ChormeDriver 2021/09/02 />
             chromeOptions.AddArguments("-no-sandbox");//<remark Add Logic for ChormeDriver 2021/09/02 />
@@ -253,7 +253,7 @@ namespace _145_Chrome
                             od = dt145.Rows[i]["発注コード"].ToString();
                             //chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);//<Edit Logic for Search 2021/03/24 />
                             chrome.Navigate().GoToUrl("https://manys.i10.bcart.jp/list.php?keyword=" + od);
-                            Thread.Sleep(2000);//<reamark 追加　18/05/2021 />
+                            Thread.Sleep(5000);//<reamark 追加　18/05/2021 />
 
                             entity = new Qbei_Entity();
                             entity.siteID = 145;
