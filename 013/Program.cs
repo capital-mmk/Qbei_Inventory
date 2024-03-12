@@ -132,7 +132,7 @@ namespace _13ミズタニ
             try
             {
                 if (!String.IsNullOrEmpty(strParam))
-                    st = DateTime.Now.ToString();
+                st = DateTime.Now.ToString();
                 fun.setURL("013");
                 fun.Qbei_Delete(13);
                 fun.Qbei_ErrorDelete(13);
@@ -201,8 +201,10 @@ namespace _13ミズタニ
                                 try
                                 {
                                     chrome.FindElement(By.Id("btnClear")).Click();
+                                    Thread.Sleep(1000);
                                     ordercode = dt013.Rows[i]["発注コード"].ToString();
                                     chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
+                                    Thread.Sleep(1000);
                                     chrome.FindElement(By.Id("btnSearch")).Click();
                                 }
                                 catch
@@ -211,6 +213,7 @@ namespace _13ミズタニ
                                     chrome.FindElement(By.Id("btnClear")).Click();
                                     ordercode = dt013.Rows[i]["発注コード"].ToString();
                                     chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
+                                    Thread.Sleep(1000);
                                     chrome.FindElement(By.Id("btnSearch")).Click();
                                 }
 
@@ -249,14 +252,14 @@ namespace _13ミズタニ
                                     }
                                     catch
                                     {
-                                        Thread.Sleep(2000);
+                                        Thread.Sleep(1000);
                                         chrome.FindElement(By.Id("btnClear")).Click();
                                         ordercode = dt013.Rows[i]["発注コード"].ToString();
                                         chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
                                         chrome.FindElement(By.Id("btnSearch")).Click();
                                     }
                                     //</remark 2023/03/28 End>
-                                }                                
+                                }
                                 //</remark 2023/03/29 End>
 
                                 entity = new Qbei_Entity();
@@ -276,6 +279,16 @@ namespace _13ミズタニ
                                 {
                                     string Check_Message = chrome.FindElement(By.TagName("body")).Text;
                                     if (Check_Message.Contains("検索条件に該当する商品は、見つかりませんでした"))
+                                    {
+                                        entity.qtyStatus = "empty";
+                                        entity.stockDate = "2100-02-01";
+                                        entity.purchaseURL = chrome.Url;
+                                        entity.price = dt013.Rows[i]["下代"].ToString();
+                                        entity.True_StockDate = "Not Found";
+                                        entity.True_Quantity = "Not Found";
+                                        fun.Qbei_Inserts(entity);
+                                    }
+                                    else if (chrome.FindElement(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr[2]/td[3]/table/tbody/tr[1]/td/span")).Text != entity.orderCode)
                                     {
                                         entity.qtyStatus = "empty";
                                         entity.stockDate = "2100-02-01";
@@ -382,7 +395,7 @@ namespace _13ミズタニ
                                                 }
                                             }
                                         }
-                                        
+
                                         if (entity.price == null || entity.qtyStatus == null || entity.stockDate == null)
                                         {
                                             entity.qtyStatus = "empty";
