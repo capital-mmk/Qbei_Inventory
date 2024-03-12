@@ -140,18 +140,18 @@ namespace _017_Chrome
                         {
                             if (i < Lastrow)
                             {
-                                jancode = dt017.Rows[i]["JANコード"].ToString();
+                                ordercode = dt017.Rows[i]["発注コード"].ToString();
                                 try
                                 {
                                     chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/div[2]/div/section[2]/ul/li[4]/input")).Clear();
-                                    chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/div[2]/div/section[2]/ul/li[4]/input")).SendKeys(jancode);
+                                    chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/div[2]/div/section[2]/ul/li[4]/input")).SendKeys(ordercode);
                                     chrome.FindElement(By.XPath(" /html/body/div[1]/div/aside/div[2]/div/section[2]/a")).Click();
                                 }
                                 catch
                                 {
                                     chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/div[2]/div/section[2]/ul/li[4]/input")).Clear();
                                     Thread.Sleep(2000);
-                                    chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/div[2]/div/section[2]/ul/li[4]/input")).SendKeys(jancode);
+                                    chrome.FindElement(By.XPath("/html/body/div[1]/div/aside/div[2]/div/section[2]/ul/li[4]/input")).SendKeys(ordercode);
                                     chrome.FindElement(By.XPath(" /html/body/div[1]/div/aside/div[2]/div/section[2]/a")).Click();
                                 }
 
@@ -166,7 +166,7 @@ namespace _017_Chrome
                                 entity.orderCode = dt017.Rows[i]["発注コード"].ToString();
 
 
-                                if (!string.IsNullOrWhiteSpace(entity.janCode))
+                                if (!string.IsNullOrWhiteSpace(entity.orderCode))
                                 {
                                     string Message = chrome.FindElement(By.TagName("body")).Text;
 
@@ -182,12 +182,12 @@ namespace _017_Chrome
                                     }
                                     else
                                     {
-                                        chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/main/section/ul/li/p[2]/a")).Click();
-                                        Thread.Sleep(2000);
-
+                                        chrome.FindElement(By.CssSelector(".item-name > a:nth-child(1)")).Click();
+                                        Thread.Sleep(3000);
                                         try
                                         {
                                             entity.price = chrome.FindElement(By.CssSelector(".item-tax > span:nth-child(1)")).Text;
+                                            Thread.Sleep(2000);
                                             string stock = chrome.FindElement(By.CssSelector(".item-stock")).Text;
                                             entity.qtyStatus = stock.Equals("〇在庫あり") ? "good" : stock.Equals("△残りわずか") ? "small" : "unknown status";
                                             entity.True_Quantity = stock;
@@ -201,6 +201,7 @@ namespace _017_Chrome
                                         catch
                                         {
                                             entity.price = chrome.FindElement(By.CssSelector(".item-tax > span:nth-child(1)")).Text;
+                                            Thread.Sleep(2000);
                                             string stock = chrome.FindElement(By.CssSelector(".restock-btn")).Text;
                                             entity.qtyStatus = "empty";
                                             entity.stockDate = "2100-02-01";
