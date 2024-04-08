@@ -35,6 +35,7 @@ namespace _145_Chrome
         public static CommonFunction fun = new CommonFunction();
         DataTable dtGroupData = new DataTable();
         private static int i;
+        static string strParam = string.Empty;
 
         /// <summary>
         /// System(Start).
@@ -44,7 +45,16 @@ namespace _145_Chrome
         /// </remark>
         static void Main(string[] args)
         {
-            testFlag();
+            if (args.Count() > 0)
+            {
+                strParam = args[0].ToString();
+                testFlag();
+            }
+            else
+            {
+                testFlag();
+            }
+
         }
 
         /// <summary>
@@ -118,8 +128,20 @@ namespace _145_Chrome
                 fun.setURL("145");
                 fun.Qbei_Delete(145);
                 fun.Qbei_ErrorDelete(145);
-                dt145 = fun.GetDatatable("145");
+                if (string.IsNullOrEmpty(strParam))
+                {
+                    dt145 = fun.GetDatatable("145");
+                }
+                else
+                {
+                    dt145 = fun.GetRerunData("145");
+                }
                 fun.GetTotalCount("145");
+                if (dt145 == null)
+                {
+                    Environment.Exit(0);
+                }
+
 
             }
             catch (Exception ex)
@@ -152,9 +174,10 @@ namespace _145_Chrome
                 dt = qubl.Qbei_Setting_Select(qe);
                 string url = dt.Rows[0]["Url"].ToString();
                 chrome.Url = url;
+                Thread.Sleep(4000);  // add time sleep 2023/05/12 BY CT 
                 //<remark Add Logic for Site Page at Maintain 2021/11/30 Start> >
                 string check_page = chrome.FindElement(By.TagName("body")).Text;
-                if (check_page.Contains("棚卸中") ||chrome.Url.Contains("stop.php"))
+                if (check_page.Contains("棚卸中") || chrome.Url.Contains("stop.php"))
                 {
                     int i = 0;
                     while (i <= dt145.Rows.Count - 1)
@@ -172,25 +195,25 @@ namespace _145_Chrome
                             entity.orderCode = dt145.Rows[i]["発注コード"].ToString().Trim();// "8022530007719";                
                             entity.purchaseURL = fun.url + "/shop/g/g" + entity.orderCode + "/";
                             if (dt145.Rows[i]["入荷予定"].ToString().Contains("2100-01-10") && dt145.Rows[i]["在庫情報"].ToString().Contains("empty"))
-                                {
-                                    entity.qtyStatus = "empty";
-                                    entity.stockDate = "2100-01-10";
-                                    entity.price = dt145.Rows[i]["下代"].ToString();
-                                    //<remark 2021/01/06>
-                                    entity.True_StockDate = "Not Found";
-                                    entity.True_Quantity = "Not Found";
-                                    //</remark 2021/01/06>
-                                    fun.Qbei_Inserts(entity);
-                                }
-                             else
-                                {
+                            {
+                                entity.qtyStatus = "empty";
+                                entity.stockDate = "2100-01-10";
+                                entity.price = dt145.Rows[i]["下代"].ToString();
+                                //<remark 2021/01/06>
+                                entity.True_StockDate = "Not Found";
+                                entity.True_Quantity = "Not Found";
+                                //</remark 2021/01/06>
+                                fun.Qbei_Inserts(entity);
+                            }
+                            else
+                            {
                                 entity.qtyStatus = "empty";
                                 entity.stockDate = "2100-02-01";
                                 entity.price = dt145.Rows[i]["下代"].ToString();
                                 entity.True_StockDate = "出荷停止中";
                                 entity.True_Quantity = "出荷停止中";
                                 fun.Qbei_Inserts(entity);
-                                }
+                            }
                             ++i;
                         }
                         catch (Exception ex)
@@ -235,7 +258,7 @@ namespace _145_Chrome
                 {
                     fun.WriteLog("Login success             ------", "145-");
                     chrome.Navigate().GoToUrl("https://manys.i10.bcart.jp/list.php?keyword=");
-                    chrome.FindElement(By.CssSelector("body > div.wrapper.wrapper--column-2.wrapper--product-list.wrapper--bg > div > div > section.__control > div.__view-control > div.__select > form > button")).Click();  
+                    chrome.FindElement(By.CssSelector("body > div.wrapper.wrapper--column-2.wrapper--product-list.wrapper--bg > div > div > section.__control > div.__view-control > div.__select > form > button")).Click();
                 }
 
                 /// <summary>
@@ -253,7 +276,7 @@ namespace _145_Chrome
                             od = dt145.Rows[i]["発注コード"].ToString();
                             //chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);//<Edit Logic for Search 2021/03/24 />
                             chrome.Navigate().GoToUrl("https://manys.i10.bcart.jp/list.php?keyword=" + od);
-                            Thread.Sleep(5000);//<reamark 追加　18/05/2021 />
+                            Thread.Sleep(2000);//<reamark 追加　18/05/2021 />
 
                             entity = new Qbei_Entity();
                             entity.siteID = 145;
@@ -284,7 +307,7 @@ namespace _145_Chrome
                             //Check to  Item is Correct Data 
                             //</remark>
                             string ItemCheck;
-                            ItemCheck= chrome.FindElement(By.TagName("body")).Text;
+                            ItemCheck = chrome.FindElement(By.TagName("body")).Text;
                             //try
                             //{
                             //    ItemCheck = chrome.FindElement(By.CssSelector("body > div.wrapper.wrapper--column-2.wrapper--product-list.wrapper--bg > div > div > section.__pagination.p-pagination > div > span")).Text;
@@ -305,7 +328,7 @@ namespace _145_Chrome
                             if (!string.IsNullOrWhiteSpace(entity.orderCode))
                             {
                                 if (ItemCheck.Contains("お探しの検索条件に合致する商品は見つかりませんでした。"))
-                                {                                   
+                                {
                                     entity.qtyStatus = "empty";
                                     entity.stockDate = "2100-02-01";
                                     entity.price = dt145.Rows[i]["下代"].ToString();
@@ -346,7 +369,7 @@ namespace _145_Chrome
                                                 try
                                                 {
                                                     //</remark Add Logic for Take to Quantity 2021/12/02 Start>
-                                                        qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + i + "]/td[2]/div[2]/dl/dd")).Text;
+                                                    qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + i + "]/td[2]/div[2]/dl/dd")).Text;
                                                     //qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;//<remark Edit Logic for Quantity 2021/05/12 />
                                                     //qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + i + "]/td[2]/div[3]/dl[1]/dd")).Text;
                                                     //<remark 2021/12/02 End>
@@ -378,7 +401,7 @@ namespace _145_Chrome
                                                                 qty = chrome.FindElement(By.XPath("/html/body/div[1]/div/div/section[3]/ul/li/div/form/table/tbody/tr[" + i + "]/td[2]/div[3]/dl[1]/dd")).Text;
                                                             }
                                                             catch
-                                                            {                            
+                                                            {
                                                                 chrome.Navigate().GoToUrl("https://manys.i10.bcart.jp/list.php?keyword=" + od);//<remark Add Logic for Stockdate 2021/11/01 /> 
                                                                 Thread.Sleep(20000);
                                                                 //qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span")).Text;//<remark Edit Logic for Quantity 2021/05/12 />
@@ -458,11 +481,18 @@ namespace _145_Chrome
                                         //</remark 2021/05/11 End>
 
                                         //<remark Add Logic 2021/05/27 />
-                                        if ((entity.qtyStatus != "unknown status"))
+                                        if (entity.qtyStatus != "unknown status")
                                         {
                                             if (entity.qtyStatus != null)
                                             {
-                                                fun.Qbei_Inserts(entity);
+                                                if ((!String.IsNullOrEmpty(strParam)) && ((entity.qtyStatus.Contains("empty") && (String.IsNullOrEmpty(entity.stockDate) || entity.stockDate.Contains("2100-01-01") || entity.stockDate.Contains("2100-02-01"))) || entity.qtyStatus.Contains("inquiry")))
+                                                {
+                                                    fun.RerunOrder(entity);
+                                                }
+                                                else
+                                                {
+                                                    fun.Qbei_Inserts(entity);
+                                                }
                                             }
                                             else
                                             {
