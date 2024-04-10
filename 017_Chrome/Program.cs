@@ -75,7 +75,7 @@ namespace _017_Chrome
             try
             {
                 if (!String.IsNullOrEmpty(strParam))
-                st = DateTime.Now.ToString();
+                    st = DateTime.Now.ToString();
                 fun.setURL("017");
                 fun.Qbei_Delete(17);
                 fun.Qbei_ErrorDelete(17);
@@ -180,6 +180,16 @@ namespace _017_Chrome
                                         entity.True_Quantity = "Not Found";
                                         fun.Qbei_Inserts(entity);
                                     }
+                                    else if (Message.Contains("SOLD OUT"))
+                                    {
+                                        entity.qtyStatus = "empty";
+                                        entity.stockDate = "2100-02-01";
+                                        entity.purchaseURL = chrome.Url;
+                                        entity.price = dt017.Rows[i]["下代"].ToString();
+                                        entity.True_StockDate = "Not Found";
+                                        entity.True_Quantity = "Not Found";
+                                        fun.Qbei_Inserts(entity);
+                                    }
                                     else
                                     {
                                         chrome.FindElement(By.CssSelector(".item-name > a:nth-child(1)")).Click();
@@ -202,7 +212,8 @@ namespace _017_Chrome
                                         {
                                             entity.price = chrome.FindElement(By.CssSelector(".item-tax > span:nth-child(1)")).Text;
                                             Thread.Sleep(2000);
-                                            string stock = chrome.FindElement(By.CssSelector(".restock-btn")).Text;
+                                            string stock = chrome.FindElement(By.CssSelector(".add-cart-btn")).Text;
+                                            Thread.Sleep(2000);
                                             entity.qtyStatus = "empty";
                                             entity.stockDate = "2100-02-01";
                                             entity.purchaseURL = chrome.Url;
