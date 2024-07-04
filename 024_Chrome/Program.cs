@@ -113,9 +113,16 @@ namespace _024_Chrome
                     chrome.FindElement(By.Name("data[MemberLogin][passwd]")).SendKeys(password);
                     fun.WriteLog("Navigation to Site Url success------", "024-");
                     chrome.FindElement(By.CssSelector("#btn")).Click();
-                    
 
-                    Thread.Sleep(2000);
+                    string alert = chrome.FindElement(By.TagName("body")).Text;
+                    if (alert.Contains("出荷指示可能商品があります"))
+                    {
+                        chrome.FindElement(By.XPath("/html/body/div[1]/main/div[3]/div[3]/div[2]")).Click();
+                    }
+                    else
+                    {
+                        Thread.Sleep(2000);
+                    }
 
                     string body = chrome.FindElement(By.TagName("body")).Text;
                     if (body.Contains("ログインできません。ログインID、パスワードを確認してください。"))
