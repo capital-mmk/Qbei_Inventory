@@ -159,7 +159,6 @@ namespace _024_Chrome
                                     chrome.FindElement(By.Id("pc-check_data")).Click();
                                 }
 
-                                Thread.Sleep(2000);
                                 entity = new Qbei_Entity();
                                 entity.siteID = 24;
                                 entity.sitecode = "024";
@@ -177,7 +176,7 @@ namespace _024_Chrome
                                     if (Message.Contains("検索条件に一致する商品はありません。"))
                                     {
                                         entity.qtyStatus = "empty";
-                                        entity.stockDate = "2100-01-01";
+                                        entity.stockDate = "2100-02-01";
                                         entity.purchaseURL = "";
                                         entity.price = dt024.Rows[i]["下代"].ToString();
                                         entity.True_StockDate = "Not Found";
@@ -185,7 +184,7 @@ namespace _024_Chrome
                                         fun.Qbei_Inserts(entity);
                                     }
 
-                                    else if (chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[5]/div/div[3]/div[4]")).Text.Contains(entity.janCode))
+                                    else if (chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[5]/div/div[3]/div[2]")).Text.Contains(entity.orderCode))
                                     {
                                         chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[5]/div/div[3]/a")).Click();
 
@@ -197,7 +196,7 @@ namespace _024_Chrome
                                             string stock = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[7]/form/div/div[1]/div[1]/span[2]")).Text;
                                             entity.qtyStatus = stock.Equals("◎") ? "good" : stock.Equals("○") ? "good" : stock.Equals("△") ? "small" : stock.Equals("×") ? "empty" : stock.Equals("お取寄品") ? "inquiry" : "unknown status";
                                             entity.True_Quantity = stock;
-                                            entity.stockDate = "2100-01-01";
+                                            entity.stockDate = "2100-02-01";
                                             entity.purchaseURL = chrome.Url;
                                             entity.True_StockDate = "Not Found";
                                             fun.Qbei_Inserts(entity);
@@ -206,7 +205,7 @@ namespace _024_Chrome
                                         catch
                                         {
                                             entity.qtyStatus = "empty";
-                                            entity.stockDate = "2100-01-01";
+                                            entity.stockDate = "2100-02-01";
                                             entity.purchaseURL = chrome.Url;
                                             entity.True_StockDate = "Not Found";
                                             fun.Qbei_Inserts(entity);
@@ -227,7 +226,7 @@ namespace _024_Chrome
                                                 string stock = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[7]/form/div/div[1]/div[1]/span[2]")).Text;
                                                 entity.qtyStatus = stock.Equals("◎") ? "good" : stock.Equals("○") ? "good" : stock.Equals("△") ? "small" : stock.Equals("×") ? "empty" : stock.Equals("お取寄品") ? "inquiry" : "unknown status";
                                                 entity.True_Quantity = stock;
-                                                entity.stockDate = "2100-01-01";
+                                                entity.stockDate = "2100-02-01";
                                                 entity.purchaseURL = chrome.Url;
                                                 entity.True_StockDate = "Not Found";
                                                 fun.Qbei_Inserts(entity);
@@ -236,7 +235,7 @@ namespace _024_Chrome
                                             catch
                                             {
                                                 entity.qtyStatus = "empty";
-                                                entity.stockDate = "2100-01-01";
+                                                entity.stockDate = "2100-02-01";
                                                 entity.purchaseURL = chrome.Url;
                                                 entity.True_StockDate = "Not Found";
                                                 fun.Qbei_Inserts(entity);
@@ -256,7 +255,7 @@ namespace _024_Chrome
                                                 string stock = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[7]/form/div/div[1]/div[1]/span[2]")).Text;
                                                 entity.qtyStatus = stock.Equals("◎") ? "good" : stock.Equals("○") ? "good" : stock.Equals("△") ? "small" : stock.Equals("×") ? "empty" : stock.Equals("お取寄品") ? "inquiry" : "unknown status";
                                                 entity.True_Quantity = stock;
-                                                entity.stockDate = "2100-01-01";
+                                                entity.stockDate = "2100-02-01";
                                                 entity.purchaseURL = chrome.Url;
                                                 entity.True_StockDate = "Not Found";
                                                 fun.Qbei_Inserts(entity);
@@ -265,7 +264,7 @@ namespace _024_Chrome
                                             catch
                                             {
                                                 entity.qtyStatus = "empty";
-                                                entity.stockDate = "2100-01-01";
+                                                entity.stockDate = "2100-02-01";
                                                 entity.purchaseURL = chrome.Url;
                                                 entity.True_StockDate = "Not Found";
                                                 fun.Qbei_Inserts(entity);
@@ -276,7 +275,7 @@ namespace _024_Chrome
                                         if (entity.price == null || entity.qtyStatus == null)
                                         {
                                             entity.qtyStatus = "empty";
-                                            entity.stockDate = "2100-01-01";
+                                            entity.stockDate = "2100-02-01";
                                             entity.price = dt024.Rows[i]["下代"].ToString();
                                             entity.purchaseURL = chrome.Url;
                                             entity.True_StockDate = "Not Found";
