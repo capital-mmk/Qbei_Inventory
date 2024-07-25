@@ -263,7 +263,7 @@ namespace _019深谷_フカヤ_
                             if (!chrome.Url.ToString().Contains("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1="))
 
                             {
-                                Thread.Sleep(50000);
+                                Thread.Sleep(20000);
                                 //od = dt019.Rows[i]["JANコード"].ToString();
                                 od = dt019.Rows[i]["発注コード"].ToString();
                                 //chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);//<Edit Logic for Search 2021/03/24 />
@@ -284,7 +284,7 @@ namespace _019深谷_フカヤ_
                                 od = dt019.Rows[i]["発注コード"].ToString();
                                 //chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);//<Edit Logic for Search 2021/03/24 />
                                 chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
-                                Thread.Sleep(20000);
+                                Thread.Sleep(15000);
                                 ItemCheck = chrome.FindElement(By.Id("M_total")).Text;
                             }
 
@@ -368,13 +368,13 @@ namespace _019深谷_フカヤ_
                                                             //<remark Add Logic for Stockdate 2021/04/08 Start>
                                                             try
                                                             {
-                                                                Thread.Sleep(20000);
+                                                                Thread.Sleep(4000);
                                                                 //qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;//<remark Edit Logic for Quantity 2021/05/12 />
                                                                 qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[5]/span[2]")).Text;
                                                             }
                                                             catch
                                                             {
-                                                                Thread.Sleep(2000);
+                                                                Thread.Sleep(4000);
                                                                 //qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span")).Text;//<remark Edit Logic for Quantity 2021/05/12 />
                                                                 qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[5]/span")).Text;
                                                             }
@@ -413,7 +413,7 @@ namespace _019深谷_フカヤ_
                                                 string stockdate = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[2]")).Text;
                                                 //if (stockdate.Contains("入荷予定日"))<//remark Edit Logic for check to 廃番× 2022/10/19 />
                                                 //if ((stockdate.Contains("入荷予定日"))&&(!qty.Equals("廃番×")))<//remark Edit Logic for check to 欠品× 2022/10/20 />
-                                                if ((stockdate.Contains("入荷予定日"))&&(!qty.Equals("廃番×")) && (!qty.Equals("欠品×")))
+                                                if ((stockdate.Contains("入荷予定日")) && (!qty.Equals("廃番×")))  //&& (!qty.Equals("欠品×"))   <remark Edit Logic for remove check to 欠品× 2024/07/25 >
                                                 {
                                                     //entity.stockDate = chrome.FindElement(By.ClassName("availabilityDate")).Text;//<remark Edit Logic for stockdate 2021/05/12 />
                                                     entity.stockDate = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[2]/p[5]")).Text;
@@ -421,6 +421,11 @@ namespace _019深谷_フカヤ_
                                                     //entity.stockDate = entity.stockDate.Replace("/", "-");
                                                     DateTime da = Convert.ToDateTime(entity.stockDate);
                                                     entity.stockDate = da.ToString("yyyy-MM-dd");
+
+                                                    if (entity.stockDate.Contains("2999-12-31") || entity.stockDate.Contains("2999-12-30"))     // <remark stock date change for 欠品× 2024/07/25>
+                                                    {
+                                                        entity.stockDate = "2100-02-01";
+                                                    }
                                                     //<remark 2021/01/06>
                                                     entity.True_StockDate = chrome.FindElement(By.ClassName("availabilityDate")).Text.Replace("入荷予定日:", " ");
                                                     entity.True_Quantity = qty;
