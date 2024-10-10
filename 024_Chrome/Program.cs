@@ -186,6 +186,7 @@ namespace _024_Chrome
 
                                     }
 
+                                    // Start Change Code 10-10-2024
                                     else if (Message.Contains("検索結果：1件"))
                                     {
                                         entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[5]/div/div[4]/div[2]/span[1]")).Text;
@@ -332,6 +333,7 @@ namespace _024_Chrome
                                         fun.Qbei_Inserts(entity);
 
                                     }
+                                    // End Change Code 10-10-2024
 
 
                                     if (entity.price == null || entity.qtyStatus == null)
