@@ -288,16 +288,7 @@ namespace _13ミズタニ
                                         entity.True_Quantity = "Not Found";
                                         fun.Qbei_Inserts(entity);
                                     }
-                                    else if (chrome.FindElement(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr[2]/td[3]/table/tbody/tr[1]/td/span")).Text != entity.orderCode)
-                                    {
-                                        entity.qtyStatus = "empty";
-                                        entity.stockDate = "2100-02-01";
-                                        entity.purchaseURL = chrome.Url;
-                                        entity.price = dt013.Rows[i]["下代"].ToString();
-                                        entity.True_StockDate = "Not Found";
-                                        entity.True_Quantity = "Not Found";
-                                        fun.Qbei_Inserts(entity);
-                                    }
+                                    
                                     else
                                     {
                                         try
@@ -309,7 +300,7 @@ namespace _13ミズタニ
                                                 int n = chrome.FindElements(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr")).Count();
                                                 for (int i = 2; i <= n - 1; i++)
                                                 {
-                                                    if (chrome.FindElement(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr[" + (i) + "]/td[3]/table/tbody/tr[1]/td/span")).Text.Contains(entity.orderCode))
+                                                    if (chrome.FindElement(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr[" + (i) + "]/td[3]/table/tbody/tr[1]/td/span")).Text != entity.orderCode)
                                                     {
                                                         qty = chrome.FindElement(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr[" + (i) + "]/td[5]/span")).Text;
                                                         entity.qtyStatus = qty.Equals("○") ? "good" : qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("☆") || qty.Equals("★") || qty.Equals("？") ? "empty" : "unknown status";                                                                                                                                                                                                                    //</remark>
@@ -357,7 +348,7 @@ namespace _13ミズタニ
                                             int n = chrome.FindElements(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr")).Count();
                                             for (int i = 2; i <= n; i++)
                                             {
-                                                if (chrome.FindElement(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr[" + (i) + "]/td[3]/table/tbody/tr[1]/td/span")).Text.Contains(entity.orderCode))
+                                                if (chrome.FindElement(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr[" + (i) + "]/td[3]/table/tbody/tr[1]/td/span")).Text != entity.orderCode)
                                                 {
                                                     qty = chrome.FindElement(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr[" + (i) + "]/td[5]/span")).Text;
                                                     entity.qtyStatus = qty.Equals("○") ? "good" : qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("☆") || qty.Equals("★") || qty.Equals("？") ? "empty" : "unknown status";                                                                                                                                                                                                                    //</remark>
