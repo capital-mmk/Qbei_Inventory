@@ -112,7 +112,6 @@ namespace _019深谷_フカヤ_
                 fun.Qbei_Delete(19);
                 fun.Qbei_ErrorDelete(19);
                 dt019 = fun.GetDatatable("019");
-                //dt019 = fun.GetOrderData(dt019, "https://webcart.fukaya-nagoya.co.jp/consumer/", "019", "");//<remark Close Logic 2020/05/26 />
                 fun.GetTotalCount("019");
 
             }
@@ -130,9 +129,8 @@ namespace _019深谷_フカヤ_
             chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");//<remark Add Logic for ChormeDriver 2021/09/02 />
             chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");//<remark Add Logic for ChormeDriver 2021/09/02 />
             chromeOptions.AddArguments("-no-sandbox");//<remark Add Logic for ChormeDriver 2021/09/02 />
-            var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);//<remark Add Logic for ChormeDriver 2021/09/02 />                                                                                                                       
-            //using (IWebDriver chrome = new ChromeDriver(chromeOptions))
-            //using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))//<remark Edit Logic for ChormeDriver 2021/09/02 />
+            var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);//<remark Add Logic for ChormeDriver 2021/09/02 />  
+            
             using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromSeconds(30)))//<remark Edit Logic for ChormeDriver 2023/04/21 />
             {
                 DataTable dt = new DataTable();
@@ -243,7 +241,7 @@ namespace _019深谷_フカヤ_
                                 }
                             }
                             //</remark 2023/04/24 End>
-                            Thread.Sleep(2000);//<reamark 追加　18/05/2021 />
+                            Thread.Sleep(1000);//<reamark 追加　18/05/2021 />
 
                             entity = new Qbei_Entity();
                             entity.siteID = 19;
@@ -263,7 +261,7 @@ namespace _019深谷_フカヤ_
                             if (!chrome.Url.ToString().Contains("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1="))
 
                             {
-                                Thread.Sleep(20000);
+                                Thread.Sleep(10000);
                                 //od = dt019.Rows[i]["JANコード"].ToString();
                                 od = dt019.Rows[i]["発注コード"].ToString();
                                 //chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&content1=" + od);//<Edit Logic for Search 2021/03/24 />
@@ -368,13 +366,13 @@ namespace _019深谷_フカヤ_
                                                             //<remark Add Logic for Stockdate 2021/04/08 Start>
                                                             try
                                                             {
-                                                                Thread.Sleep(4000);
+                                                                Thread.Sleep(2000);
                                                                 //qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span[2]")).Text;//<remark Edit Logic for Quantity 2021/05/12 />
                                                                 qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[5]/span[2]")).Text;
                                                             }
                                                             catch
                                                             {
-                                                                Thread.Sleep(4000);
+                                                                Thread.Sleep(5000);
                                                                 //qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[2]/td[5]/span")).Text;//<remark Edit Logic for Quantity 2021/05/12 />
                                                                 qty = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[5]/span")).Text;
                                                             }
