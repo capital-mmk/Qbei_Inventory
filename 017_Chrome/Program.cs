@@ -155,7 +155,7 @@ namespace _017_Chrome
                                     chrome.FindElement(By.XPath(" /html/body/div[1]/div/aside/div[2]/div/section[2]/a")).Click();
                                 }
 
-                                Thread.Sleep(2000);
+                                Thread.Sleep(1000);
                                 entity = new Qbei_Entity();
                                 entity.siteID = 17;
                                 entity.sitecode = "017";
@@ -193,11 +193,11 @@ namespace _017_Chrome
                                     else
                                     {
                                         chrome.FindElement(By.CssSelector(".item-name > a:nth-child(1)")).Click();
-                                        Thread.Sleep(3000);
+                                        Thread.Sleep(2000);
                                         try
                                         {
                                             entity.price = chrome.FindElement(By.CssSelector(".item-tax > span:nth-child(1)")).Text;
-                                            Thread.Sleep(2000);
+                                            Thread.Sleep(1000);
                                             string stock = chrome.FindElement(By.CssSelector(".item-stock")).Text;
                                             entity.qtyStatus = stock.Equals("〇在庫あり") ? "good" : stock.Equals("△残りわずか") ? "small" : "unknown status";
                                             entity.True_Quantity = stock;
@@ -211,8 +211,8 @@ namespace _017_Chrome
                                         catch
                                         {
                                             entity.price = chrome.FindElement(By.CssSelector(".item-tax > span:nth-child(1)")).Text;
-                                            Thread.Sleep(2000);
-                                            string stock = chrome.FindElement(By.CssSelector(".add-cart-btn")).Text;
+                                            Thread.Sleep(1000);
+                                            string stock = chrome.FindElement(By.CssSelector("restock-btn btn")).Text;
                                             Thread.Sleep(2000);
                                             entity.qtyStatus = "empty";
                                             entity.stockDate = "2100-02-01";
