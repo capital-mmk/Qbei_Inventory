@@ -194,7 +194,7 @@ namespace _019深谷_フカヤ_
                             try
                             {
                                 chrome.Navigate().GoToUrl("https://weborder.fukaya-nagoya.co.jp/shop/shopbrand.html?search=&page=&sort=order&originalcode1=" + od);
-                                Thread.Sleep(2000);
+                                Thread.Sleep(1000);
                             }
                             catch
                             {
