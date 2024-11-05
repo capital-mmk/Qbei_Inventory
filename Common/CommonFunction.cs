@@ -277,6 +277,39 @@ namespace Common
                     //    }
                     //}
                     //</remark 2021/10/29 End>
+
+
+                    //<remark Add Logic 2024/10/30 Start>
+                    if (shopID.Equals("019"))
+                    {
+                        DataTable dtpPrice = dtTemp.Select("下代 ='購入いただけない商品で'").CopyToDataTable();
+                        int dtcount = dtpPrice.Rows.Count;
+                        if (dtpPrice != null)
+                        {
+                            /// <remark>
+                            /// Save Data into Qbei_ErrorLog
+                            /// </remark>
+
+                            xml = DataTableToXml(dtpPrice);
+
+                            con = new Connection();
+                            sqlcon = con.GetConnection();
+                            cmd = new SqlCommand("Qbei_ErrorLog_3_InsertXml", sqlcon);
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@xml", xml);
+                            cmd.Parameters.AddWithValue("@sitename", GetSiteName(shopID));
+                            cmd.Parameters.AddWithValue("@Description", "Price doesn't Contain!");
+                            cmd.Parameters.AddWithValue("@ErrorType", 6);
+                            cmd.Parameters.AddWithValue("@SiteCode", shopID);
+                            cmd.CommandTimeout = 600;
+                            cmd.Connection.Open();
+                            cmd.ExecuteNonQuery();
+                            cmd.Connection.Close();
+                            var runData = dtTemp.AsEnumerable().Where(x => !dtpPrice.AsEnumerable().Any(y => y.Field<string>("JANコード") == x.Field<string>("JANコード") && y.Field<string>("発注コード") == x.Field<string>("発注コード")));
+                            dtTemp = runData.Any() ? runData.CopyToDataTable() : null;
+                        }
+                    }
+                    //</remark 2024/10/30 End>
                     //
                     //dr = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' OR 発注コード= '--'");<remark Edit Logic for ordercode 2021/04/05 />
                     dr = dtTemp.Select("発注コード=' ' OR 発注コード = '‐' OR 発注コード like '|%' OR 発注コード = '' OR 発注コード is NULL OR 発注コード = 'NULL' OR 発注コード= '-' OR 発注コード= '--' OR 発注コード like '/%' OR 発注コード like '-%'");
@@ -333,10 +366,10 @@ namespace Common
                         //var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Equals("在庫処分/empty/") || r.Field<string>("発注コード").Equals("在庫更新中止/-") || r.Field<string>("発注コード").Equals("在庫更新中止") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録")));
                         //var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Equals("在庫処分/empty/") || r.Field<string>("発注コード").Equals("在庫更新中止/-") || r.Field<string>("発注コード").Equals("在庫更新中止") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録") || r.Field<string>("発注コード").Contains("#N/A")));//<remark Add Logic for Ordercode 2020/07/30 />
                         var notInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Equals("在庫処分/empty/") || r.Field<string>("発注コード").Equals("在庫処分/empty/-") || r.Field<string>("発注コード").Equals("在庫更新中止/-") || r.Field<string>("発注コード").Equals("在庫更新中止") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録") || r.Field<string>("発注コード").Contains("#N/A") || r.Field<string>("発注コード").Contains("|") || r.Field<string>("発注コード").Contains(".")));//<remark Add Logic for Ordercode 2022/05/24 />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     //2018-05-07 End
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     //2018-08-29 Start
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     //var notInteger2 = notInteger.AsEnumerable().Where(r => (!r.Field<string>("発注コード").Contains("在庫更新中止")));
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     //2018-08-29 End
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  //2018-05-07 End
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  //2018-08-29 Start
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  //var notInteger2 = notInteger.AsEnumerable().Where(r => (!r.Field<string>("発注コード").Contains("在庫更新中止")));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  //2018-08-29 End
                         if (notInteger.Any())
                         {
                             /// <remark>
@@ -348,7 +381,7 @@ namespace Common
                             //dtNotInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Equals("在庫処分/empty/") || r.Field<string>("発注コード").Equals("在庫更新中止/-") || r.Field<string>("発注コード").Equals("在庫更新中止") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録"))).CopyToDataTable();
                             //dtNotInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Equals("在庫処分/empty/") || r.Field<string>("発注コード").Equals("在庫更新中止/-") || r.Field<string>("発注コード").Equals("在庫更新中止") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録") || r.Field<string>("発注コード").Contains("#N/A"))).CopyToDataTable();//<remark Add Logic for Ordercode 2020/07/30 />
                             dtNotInteger = dtNotNull.AsEnumerable().Where(r => (r.Field<string>("発注コード").Equals("在庫処分/empty/") || r.Field<string>("発注コード").Equals("在庫処分/empty/-") || r.Field<string>("発注コード").Equals("在庫更新中止/-") || r.Field<string>("発注コード").Equals("在庫更新中止") || r.Field<string>("発注コード").Contains("発注禁止") || r.Field<string>("発注コード").Contains("東特価") || r.Field<string>("発注コード").Contains("バラ注文") || r.Field<string>("発注コード").Contains("（カワシマ）") || r.Field<string>("発注コード").Contains("データ登録") || r.Field<string>("発注コード").Contains("#N/A") || r.Field<string>("発注コード").Contains("|") || r.Field<string>("発注コード").Contains("."))).CopyToDataTable();//<remark Add Logic for Ordercode 2022/05/24 />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         //2018-05-07 End
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      //2018-05-07 End
                             dc = new DataColumn("SiteName");
                             dc.DefaultValue = GetSiteName(shopID);
                             dtNotInteger.Columns.Add(dc);
@@ -997,24 +1030,24 @@ namespace Common
             /// <remark>
             /// Insert to  Error of Data into Qbei_ErrorLog Table.
             /// </remark>
-                Connection con = new Connection();
-                SqlConnection sqlcon = con.GetConnection();
-                SqlCommand cmd = new SqlCommand("Qbei_ErrorInsert", sqlcon);
-                cmd.CommandType = CommandType.StoredProcedure;
-                // cmd.Parameters.AddWithValue("@id", id);
-                cmd.Parameters.AddWithValue("@site", site);
-                cmd.Parameters.AddWithValue("@sitename", sitename);
-                cmd.Parameters.AddWithValue("@jancode", janCode);
-                cmd.Parameters.AddWithValue("@OrderCode", orderCode);
-                cmd.Parameters.AddWithValue("@Description", description);
-                cmd.Parameters.AddWithValue("@errortype", errortype);
-                cmd.Parameters.AddWithValue("@Date", Date);
-                cmd.Parameters.AddWithValue("@sitecode", sitecode);
+            Connection con = new Connection();
+            SqlConnection sqlcon = con.GetConnection();
+            SqlCommand cmd = new SqlCommand("Qbei_ErrorInsert", sqlcon);
+            cmd.CommandType = CommandType.StoredProcedure;
+            // cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@site", site);
+            cmd.Parameters.AddWithValue("@sitename", sitename);
+            cmd.Parameters.AddWithValue("@jancode", janCode);
+            cmd.Parameters.AddWithValue("@OrderCode", orderCode);
+            cmd.Parameters.AddWithValue("@Description", description);
+            cmd.Parameters.AddWithValue("@errortype", errortype);
+            cmd.Parameters.AddWithValue("@Date", Date);
+            cmd.Parameters.AddWithValue("@sitecode", sitecode);
 
-                //  cmd.Parameters.AddWithValue("@Updated_Date", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
-                cmd.Connection.Open();
-                cmd.ExecuteNonQuery();
-                cmd.Connection.Close();
+            //  cmd.Parameters.AddWithValue("@Updated_Date", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+            cmd.Connection.Open();
+            cmd.ExecuteNonQuery();
+            cmd.Connection.Close();
         }
 
         /// <summary>
