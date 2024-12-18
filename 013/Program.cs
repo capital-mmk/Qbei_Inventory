@@ -300,7 +300,7 @@ namespace _13ミズタニ
                                                 int n = chrome.FindElements(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr")).Count();
                                                 for (int i = 2; i <= n - 1; i++)
                                                 {
-                                                    if (chrome.FindElement(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr[" + (i) + "]/td[3]/table/tbody/tr[1]/td/span")).Text != entity.orderCode)
+                                                    if (chrome.FindElement(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr[" + (i) + "]/td[3]/table/tbody/tr[1]/td/span")).Text == entity.orderCode)
                                                     {
                                                         qty = chrome.FindElement(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr[" + (i) + "]/td[5]/span")).Text;
                                                         entity.qtyStatus = qty.Equals("○") ? "good" : qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("☆") || qty.Equals("★") || qty.Equals("？") ? "empty" : "unknown status";                                                                                                                                                                                                                    //</remark>
@@ -348,7 +348,7 @@ namespace _13ミズタニ
                                             int n = chrome.FindElements(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr")).Count();
                                             for (int i = 2; i <= n; i++)
                                             {
-                                                if (chrome.FindElement(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr[" + (i) + "]/td[3]/table/tbody/tr[1]/td/span")).Text != entity.orderCode)
+                                                if (chrome.FindElement(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr[" + (i) + "]/td[3]/table/tbody/tr[1]/td/span")).Text == entity.orderCode)
                                                 {
                                                     qty = chrome.FindElement(By.XPath("/html/body/form/div[3]/div[4]/table/tbody/tr[" + (i) + "]/td[5]/span")).Text;
                                                     entity.qtyStatus = qty.Equals("○") ? "good" : qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("☆") || qty.Equals("★") || qty.Equals("？") ? "empty" : "unknown status";                                                                                                                                                                                                                    //</remark>
