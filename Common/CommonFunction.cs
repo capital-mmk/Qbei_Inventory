@@ -910,7 +910,7 @@ namespace Common
             ///Check to Data of Downbload CSV from Site.
             ///</remark>
             CachedCsvReader csv;
-            DataTable dtResult = new DataTable(); ;
+            DataTable dtResult = new DataTable(); 
             string[] filelist = Directory.GetFiles(path);
             foreach (string file in filelist)
             {
@@ -1465,6 +1465,7 @@ namespace Common
             string path = string.Empty;
             switch (shopID)
             {
+                case "013": path = @"C:\Qbei_Log\013_Download\"; break;
                 case "014": path = @"C:\Qbei_Log\014_Download\"; break;
                 case "015": path = @"C:\Qbei_Log\015_Download\"; break;
                 case "035": path = @"C:\Qbei_Log\035_Download\"; break;
