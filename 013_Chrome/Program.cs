@@ -156,12 +156,14 @@ namespace _013_Chrome
                     foreach (string file in filelist)
                     {
                         string ext = Path.GetFileName(file);
+                        goto label1;
                     }
                     Thread.Sleep(3000);
                     counter++;
                     goto label;
                 }
 
+            label1:
                 fun.WriteLog("Navigation to Download success------", "013-");
                 
                 string[] flist = Directory.GetFiles(@"C:\Qbei_Log\013_Download\");
@@ -180,8 +182,7 @@ namespace _013_Chrome
 
                 DataTable dt013 = fun.GetDatatable("013");
                 fun.GetTotalCount("013");
-                int countcsv = dt013.Rows.Count;
-                int count = dtItem.Rows.Count;
+
                 fun.WriteLog("Download success match with datatable------", "013-");
                 fun.Qbei_Insert_XML(dt013, dtItem, "Qbei_Insert_Xml_13");
                 fun.WriteLog("Insert data to db success------", "013-");
