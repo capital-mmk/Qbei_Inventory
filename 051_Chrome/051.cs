@@ -168,7 +168,13 @@ namespace _051スタイルバイク
                     fun.WriteLog("Navigation to Site Url success------", "051-");
                     chrome.FindElement(By.Name("login")).Click();
                     Thread.Sleep(8000);
-
+                    
+                    string alert = chrome.FindElement(By.TagName("body")).Text;
+                    if (alert.Contains("Mag-on 商品上代改定について"))
+                    {
+                        chrome.FindElement(By.Id("modaal-close")).Click();
+                        Thread.Sleep(2000);
+                    }
                     /// <summary>
                     /// Check Login
                     /// </summary>
