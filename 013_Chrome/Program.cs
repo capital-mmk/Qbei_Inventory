@@ -48,22 +48,12 @@ namespace _013_Chrome
                 dtSetting = fun.SelectFlag(013);
                 intFlag = int.Parse(dtSetting.Rows[0]["FlagIsFinished"].ToString());
 
-                /// <summary>
-                /// Flag Number of Check.
-                /// </summary>
-                /// <remark>
-                /// Check to flag is "0" or "1" or "2".
-                /// when flag is 0,Change to flag is 1 and Continue to StartRun Process.
-                /// </remark>
                 if (intFlag == 0)
                 {
                     fun.ChangeFlag(qe);
                     startRun();
                 }
 
-                ///<remark>
-                ///when flag is 1,To Continue to StartRun Process.
-                ///</remark>
                 else if (intFlag == 1)
                 {
                     fun.deleteData(013);
@@ -146,7 +136,7 @@ namespace _013_Chrome
                 chrome.FindElement(By.Id("rblImportKey2")).Click();
                 chrome.FindElement(By.Id("btnZaikoExport")).Click();
                 chrome.SwitchTo().Alert().Accept();
-                Thread.Sleep(10000);
+                Thread.Sleep(15000);
 
                 int counter = 0;
             label:
@@ -158,30 +148,33 @@ namespace _013_Chrome
                         string ext = Path.GetFileName(file);
                         goto label1;
                     }
-                    Thread.Sleep(3000);
+                    Thread.Sleep(5000);
                     counter++;
                     goto label;
                 }
 
             label1:
                 fun.WriteLog("Navigation to Download success------", "013-");
-                
-                string[] flist = Directory.GetFiles(@"C:\Qbei_Log\013_Download\");
-                
-                String filename = flist[0].ToString();
-                string csvPath = filename; 
 
-                // Step 1: Convert CSV to DataTable without headers
+                string[] flist = Directory.GetFiles(@"C:\Qbei_Log\013_Download\");
+
+                String filename = flist[0].ToString();
+                string csvPath = filename;
+
                 DataTable dataTable = ConvertCSVToDataTableWithoutHeaders(csvPath);
 
-                // Step 2: Add custom headers
                 AddCustomHeaders(dataTable, new string[] { "商品コード", "JANコード", "在庫数量", "StockDate" });
-                
+
                 DataTable dtItem = new DataTable();
                 dtItem = dataTable;
 
                 DataTable dt013 = fun.GetDatatable("013");
                 fun.GetTotalCount("013");
+                if (dt013 == null)
+                {
+                    chrome.Quit();
+                    Environment.Exit(0);
+                }
 
                 fun.WriteLog("Download success match with datatable------", "013-");
                 fun.Qbei_Insert_XML(dt013, dtItem, "Qbei_Insert_Xml_13");
@@ -197,7 +190,6 @@ namespace _013_Chrome
             }
 
         }
-        
 
         static DataTable ConvertCSVToDataTableWithoutHeaders(string filePath)
         {
@@ -205,20 +197,16 @@ namespace _013_Chrome
 
             using (StreamReader reader = new StreamReader(filePath, Encoding.GetEncoding(932)))
             {
-                // Assume the number of columns is based on the first row
                 string firstLine = reader.ReadLine().Replace("'", String.Empty);
                 string[] values = firstLine.Split(',');
 
-                // Dynamically create columns without headers
                 for (int i = 0; i < values.Length; i++)
                 {
-                    dataTable.Columns.Add($"Column{i + 1}"); // Default column names: Column1, Column2, etc.
+                    dataTable.Columns.Add($"Column{i + 1}");
                 }
-                
-                // Add the first line as a row
+
                 dataTable.Rows.Add(values);
 
-                // Add remaining rows
                 while (!reader.EndOfStream)
                 {
                     string line = reader.ReadLine().Replace("'", String.Empty);
@@ -242,6 +230,6 @@ namespace _013_Chrome
                 table.Columns[i].ColumnName = newHeaders[i];
             }
         }
-        
+
     }
 }
