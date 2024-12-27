@@ -148,7 +148,7 @@ namespace _013_Chrome
                         string ext = Path.GetFileName(file);
                         goto label1;
                     }
-                    Thread.Sleep(5000);
+                    Thread.Sleep(8000);
                     counter++;
                     goto label;
                 }
@@ -177,7 +177,7 @@ namespace _013_Chrome
                 }
 
                 fun.WriteLog("Download success match with datatable------", "013-");
-                fun.Qbei_Insert_XML(dt013, dtItem, "Qbei_Insert_Xml_13");
+                fun.Qbei_Insert_XML(dt013, dtItem, "Qbei_Insert_Xml_013");
                 fun.WriteLog("Insert data to db success------", "013-");
                 qe.starttime = string.Empty;
                 qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
