@@ -242,6 +242,7 @@ namespace _024_Chrome
 
                                     else
                                     {
+                                      //entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[6]/div/div[4]/div[2]/span[1]")).Text;
                                         entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[5]/div/div[4]/div[2]/span[1]")).Text;
                                         entity.price = entity.price.Replace("円", string.Empty).Replace("お渡し価格：", string.Empty).Replace("(税抜)", string.Empty).Replace(",", string.Empty);
 
