@@ -205,27 +205,27 @@ namespace _024_Chrome
 
                                     else if (Message.Contains(entity.janCode))
                                     {
-                                        string n = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[4]/div[1]/span")).Text;
+                                        string n = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[3]/div[1]/span")).Text;
                                         int c = Convert.ToInt32(n);
 
                                         for (int j = 1; j <= c; j++)
                                         {
 
-                                            if (chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[6]/div[" + (j) + "]/div[3]/div[4]")).Text.Contains(entity.janCode))
+                                            if (chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[5]/div[" + (j) + "]/div[3]/div[4]")).Text.Contains(entity.janCode))
                                             {
 
-                                                entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[6]/div[" + (j) + "]/div[4]/div[2]/span[1]")).Text;
+                                                entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[5]/div[" + (j) + "]/div[4]/div[2]/span[1]")).Text;
                                                 entity.price = entity.price.Replace("円", string.Empty).Replace("お渡し価格：", string.Empty).Replace("(税抜)", string.Empty).Replace(",", string.Empty);
 
                                                 try
                                                 {
-                                                    string stock = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[6]/div[" + (j) + "]/div[4]/div[4]/div[1]/span[2]")).Text;
+                                                    string stock = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[5]/div[" + (j) + "]/div[4]/div[4]/div[1]/span[2]")).Text;
                                                     entity.qtyStatus = stock.Equals("◎") ? "good" : stock.Equals("○") ? "good" : stock.Equals("△") ? "small" : stock.Equals("×") ? "empty" : stock.Equals("お取寄品") ? "inquiry" : "unknown status";
                                                     entity.True_Quantity = stock;
                                                 }
                                                 catch
                                                 {
-                                                    string stock = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[6]/div[" + (j) + "]/div[4]/div[5]/div[1]/span[2]")).Text;
+                                                    string stock = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[5]/div[" + (j) + "]/div[4]/div[5]/div[1]/span[2]")).Text;
                                                     entity.qtyStatus = stock.Equals("◎") ? "good" : stock.Equals("○") ? "good" : stock.Equals("△") ? "small" : stock.Equals("×") ? "empty" : stock.Equals("お取寄品") ? "inquiry" : "unknown status";
                                                     entity.True_Quantity = stock;
                                                 }
@@ -242,7 +242,7 @@ namespace _024_Chrome
 
                                     else
                                     {
-                                        entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[6]/div/div[4]/div[2]/span[1]")).Text;
+                                        entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[5]/div/div[4]/div[2]/span[1]")).Text;
                                         entity.price = entity.price.Replace("円", string.Empty).Replace("お渡し価格：", string.Empty).Replace("(税抜)", string.Empty).Replace(",", string.Empty);
 
                                         string stock = chrome.FindElement(By.CssSelector(".stock_value")).Text;
@@ -304,3 +304,4 @@ namespace _024_Chrome
 
     }
 }
+
