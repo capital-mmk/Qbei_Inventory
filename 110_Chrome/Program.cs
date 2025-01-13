@@ -322,6 +322,7 @@ namespace _110_Chrome
                                             else
                                             {
                                                 entity.price = chrome.FindElement(By.XPath("/html/body/center/center/div/div[2]/div[2]/table/tbody/tr[1]/td[3]/form[2]/div/div[1]/div[2]/div[1]/table/tbody/tr[7]/td/div/table[2]/tbody/tr/td[1]/span")).Text;
+                                                Thread.Sleep(1000);
                                                 entity.price = entity.price.Replace(",", string.Empty);
 
                                                 string stock = chrome.FindElement(By.XPath("/html/body/center/center/div/div[2]/div[2]/table/tbody/tr[1]/td[3]/form[2]/div/div[1]/div[2]/div[1]/table/tbody/tr[7]/td/div/table[2]/tbody/tr/td[2]")).Text;
