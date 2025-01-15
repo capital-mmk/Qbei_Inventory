@@ -235,8 +235,9 @@ namespace _110_Chrome
                                                             if (entity.stockDate.Contains("個"))
                                                             {
                                                                 string Item = entity.stockDate;
-                                                                string CutItem = Item.Substring(Item.Length - 10);
-
+                                                                int item = entity.stockDate.IndexOf('個');
+                                                                string CutItem = Item.Substring(item, Item.Length - item).Replace("個", String.Empty);
+                                                                
                                                                 DateTime da = Convert.ToDateTime(CutItem);
                                                                 entity.stockDate = da.ToString("yyyy-MM-dd");
                                                             }
@@ -292,15 +293,15 @@ namespace _110_Chrome
                                                             if (entity.stockDate.Contains("個"))
                                                             {
                                                                 string Item = entity.stockDate;
-                                                                string CutItem = Item.Substring(Item.Length - 10);
+                                                                int item = entity.stockDate.IndexOf('個');
+                                                                string CutItem = Item.Substring(item, Item.Length - item).Replace("個", String.Empty);
 
                                                                 DateTime da = Convert.ToDateTime(CutItem);
                                                                 entity.stockDate = da.ToString("yyyy-MM-dd");
                                                             }
                                                             DateTime d = Convert.ToDateTime(entity.stockDate);
                                                             entity.stockDate = d.ToString("yyyy-MM-dd");
-
-
+                                                            
                                                         }
 
                                                         else
@@ -336,7 +337,8 @@ namespace _110_Chrome
                                                     if (entity.stockDate.Contains("個"))
                                                     {
                                                         string Item = entity.stockDate;
-                                                        string CutItem = Item.Substring(Item.Length - 10);
+                                                        int item = entity.stockDate.IndexOf('個');
+                                                        string CutItem = Item.Substring(item, Item.Length - item).Replace("個", String.Empty);
 
                                                         DateTime da = Convert.ToDateTime(CutItem);
                                                         entity.stockDate = da.ToString("yyyy-MM-dd");
