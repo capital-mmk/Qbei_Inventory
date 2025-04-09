@@ -124,6 +124,7 @@ namespace _916_Chrome
                 chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";//<Add Logic for Chrome Path 2021/05/24 />
                 chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");//<remark Add Logic for ChormeDriver 2021/09/02 />
                 chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");//<remark Add Logic for ChormeDriver 2021/09/02 />
+                chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false); //<remark Add Logic for ChormeDriver 2025/04/08 />
                 chromeOptions.AddArguments("-no-sandbox");//<remark Add Logic for ChormeDriver 2021/09/02 />
                 var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);//<remark Add Logic for ChormeDriver 2021/09/02 />                                                                                                                       
                 //using (IWebDriver chrome = new ChromeDriver(chromeOptions))
@@ -213,11 +214,13 @@ namespace _916_Chrome
                                 //</remark>
                                 if (!string.IsNullOrWhiteSpace(entity.orderCode))
                                 {
+                                    Thread.Sleep(2000);
                                     //<remark Add Logic for website page of list to wait timw 2022/01/17 Start>
                                     try
                                     {
+                                        Thread.Sleep(1000);
                                         if (!chrome.FindElement(By.Id("productsList")).GetAttribute("innerHTML").Contains("products-list-item"))
-                                        {                                           
+                                        {
                                         }
                                     }
                                     catch
