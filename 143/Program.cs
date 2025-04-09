@@ -88,7 +88,7 @@ namespace _143
             entitySetting.starttime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             entitySetting.site = 143;
             entitySetting.flag = 1;
-            dtSetting = fun.SelectFlag(13);
+            dtSetting = fun.SelectFlag(143);
             intFlag = int.Parse(dtSetting.Rows[0]["FlagIsFinished"].ToString());
 
 
