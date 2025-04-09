@@ -137,26 +137,16 @@ namespace _034_chrome
         {
             try
             {
-                //var chromeOptions = new ChromeOptions();
-                //chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
-                //chromeOptions.AddExtension(@"C:\TempCRX\extension_3_3_1_0.crx");
-                //chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");
-                //chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
-                //chromeOptions.AddArguments("-no-sandbox");
-                //chromeOptions.AddArgument("--start-maximized");
-                //chromeOptions.AddArgument(@"--headless");
-                //chromeOptions.AddArguments(@"--log-level=3");
-
-
                 var chromeOptions = new ChromeOptions();
                 chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
                 chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");
                 chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
+                chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false);//<remark Add Logic for ChormeDriver 2025/04/08 />
                 chromeOptions.AddArguments("-no-sandbox");
 
                 var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);
-                 using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromSeconds(30)))
-                 {
+                using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromSeconds(30)))
+                {
                     DataTable dt = new DataTable();
                     Qbeisetting_BL qubl = new Qbeisetting_BL();
                     Qbeisetting_Entity qe = new Qbeisetting_Entity();
@@ -201,7 +191,7 @@ namespace _034_chrome
                                 {
                                     if (i < Lastrow)
                                     {
-                                        string od,Allbody = string.Empty;
+                                        string od, Allbody = string.Empty;
                                         string Check_URL = chrome.Url;
                                         od = dt034.Rows[i]["発注コード"].ToString();
                                         /////////<remark> time out error 
@@ -218,7 +208,7 @@ namespace _034_chrome
                                                 Thread.Sleep(1000);
                                                 fun.WriteLog("Navigation to Site Url success------", "034-");
                                                 chrome.FindElement(By.ClassName("btn-primary")).Click();
-                                                Thread.Sleep(2000);
+                                                Thread.Sleep(1000);
                                                 chrome.Navigate().GoToUrl("https://b2b.shimano.com/bike/jp/ja/product/" + od);
                                                 Thread.Sleep(2000);
                                             }
@@ -238,7 +228,7 @@ namespace _034_chrome
                                                     Thread.Sleep(1000);
                                                     fun.WriteLog("Navigation to Site Url success------", "034-");
                                                     chrome.FindElement(By.ClassName("btn-primary")).Click();
-                                                    Thread.Sleep(2000);
+                                                    Thread.Sleep(1000);
                                                     chrome.Navigate().GoToUrl("https://b2b.shimano.com/bike/jp/ja/product/" + od);
                                                     Thread.Sleep(2000);
                                                 }
@@ -258,7 +248,7 @@ namespace _034_chrome
                                                         Thread.Sleep(1000);
                                                         fun.WriteLog("Navigation to Site Url success------", "034-");
                                                         chrome.FindElement(By.ClassName("btn-primary")).Click();
-                                                        Thread.Sleep(2000);
+                                                        Thread.Sleep(1000);
                                                         chrome.Navigate().GoToUrl("https://b2b.shimano.com/bike/jp/ja/product/" + od);
                                                         Thread.Sleep(2000);
                                                     }
@@ -289,13 +279,13 @@ namespace _034_chrome
 
                                         if (!chrome.Url.ToString().Contains("https://b2b.shimano.com/bike/jp/ja/product/"))
                                         {
-                                            Thread.Sleep(4000);
+                                            Thread.Sleep(3000);
                                         }
 
                                         if (!string.IsNullOrWhiteSpace(entity.orderCode))
                                         {
                                             int t_counter = 0;
-                                            label2:
+                                        label2:
                                             Check_URL = chrome.Url;
                                             if (Check_URL.Equals("https://b2b.shimano.com/bike/jp/ja/login"))
                                             {
@@ -305,16 +295,16 @@ namespace _034_chrome
                                                 Thread.Sleep(1000);
                                                 fun.WriteLog("Navigation to Site Url success------", "034-");
                                                 chrome.FindElement(By.ClassName("btn-primary")).Click();
-                                                Thread.Sleep(2000);
+                                                Thread.Sleep(1000);
                                                 chrome.Navigate().GoToUrl("https://b2b.shimano.com/bike/jp/ja/product/" + od);
-                                                Thread.Sleep(3000);
+                                                Thread.Sleep(2000);
                                             }
                                             if (t_counter < 3)
                                             {
-                                                Thread.Sleep(2000);
+                                                Thread.Sleep(1000);
                                                 Allbody = chrome.FindElement(By.TagName("body")).Text;
                                                 if (!string.IsNullOrWhiteSpace(Allbody))
-                                                { 
+                                                {
                                                     if (Allbody.Contains("End of sale") || Allbody.Contains("販売終了") || chrome.Url.Contains("product-not-found") || Allbody.Contains("在庫なし") || Allbody.Contains("在庫あり"))
                                                     {
                                                         string current_url = chrome.Url;
@@ -344,9 +334,9 @@ namespace _034_chrome
                                                                     Thread.Sleep(1000);
                                                                     fun.WriteLog("Navigation to Site Url success------", "034-");
                                                                     chrome.FindElement(By.ClassName("btn-primary")).Click();
-                                                                    Thread.Sleep(2000);
+                                                                    Thread.Sleep(1000);
                                                                     chrome.Navigate().GoToUrl("https://b2b.shimano.com/bike/jp/ja/product/" + od);
-                                                                    Thread.Sleep(3000);
+                                                                    Thread.Sleep(2000);
                                                                 }
                                                                 if (counter < 3)
                                                                 {
@@ -366,7 +356,7 @@ namespace _034_chrome
                                                                         {
                                                                             try
                                                                             {
-                                                                                Thread.Sleep(2000);
+                                                                                Thread.Sleep(1000);
                                                                                 alt = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-stock-info/div/span")).Text;
                                                                             }
                                                                             catch
@@ -374,19 +364,19 @@ namespace _034_chrome
                                                                                 try
                                                                                 {
                                                                                     chrome.Navigate().GoToUrl("https://b2b.shimano.com/bike/jp/ja/product/" + od);
-                                                                                    Thread.Sleep(3000);
+                                                                                    Thread.Sleep(2000);
                                                                                     alt = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-stock-info/div/span")).Text;
                                                                                 }
                                                                                 catch
                                                                                 {
                                                                                     try
                                                                                     {
-                                                                                        Thread.Sleep(2000);
+                                                                                        Thread.Sleep(1000);
                                                                                         alt = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-stock-info/div/span")).Text;
                                                                                     }
                                                                                     catch
                                                                                     {
-                                                                                        Thread.Sleep(2000);
+                                                                                        Thread.Sleep(1000);
                                                                                         alt = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-stock-info/div/span")).Text;
                                                                                     }
                                                                                 }
@@ -404,7 +394,7 @@ namespace _034_chrome
                                                                         {
                                                                             try
                                                                             {
-                                                                                Thread.Sleep(2000);
+                                                                                Thread.Sleep(1000);
                                                                                 //entity.price = chrome.FindElement(By.ClassName("pdp-price-value")).Text;
                                                                                 entity.price = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-pricing/div/div[3]/span")).Text;
                                                                             }
@@ -421,13 +411,13 @@ namespace _034_chrome
                                                                                 {
                                                                                     try
                                                                                     {
-                                                                                        Thread.Sleep(2000);
+                                                                                        Thread.Sleep(1000);
                                                                                         //entity.price = chrome.FindElement(By.ClassName("pdp-price-value")).Text;
                                                                                         entity.price = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-pricing/div/div[3]/span")).Text;
                                                                                     }
                                                                                     catch
                                                                                     {
-                                                                                        Thread.Sleep(2000);
+                                                                                        Thread.Sleep(1000);
                                                                                         //entity.price = chrome.FindElement(By.ClassName("pdp-price-value")).Text;
                                                                                         entity.price = chrome.FindElement(By.XPath("/html/body/app-root/cx-storefront/main/cx-page-layout/cx-page-slot[1]/app-product-pricing/div/div[3]/span")).Text;
                                                                                     }
@@ -439,7 +429,7 @@ namespace _034_chrome
                                                                         string StockTxtbody = chrome.FindElement(By.TagName("body")).Text;
                                                                         if (StockTxtbody.Contains("入荷予定: "))
                                                                         {
-                                                                           try
+                                                                            try
                                                                             {
                                                                                 date = chrome.FindElement(By.ClassName("leadtime-text")).Text;
                                                                             }
@@ -447,7 +437,7 @@ namespace _034_chrome
                                                                             {
                                                                                 try
                                                                                 {
-                                                                                    Thread.Sleep(2000);
+                                                                                    Thread.Sleep(1000);
                                                                                     date = chrome.FindElement(By.ClassName("leadtime-text")).Text;
                                                                                 }
                                                                                 catch
@@ -455,19 +445,19 @@ namespace _034_chrome
                                                                                     try
                                                                                     {
                                                                                         chrome.Navigate().GoToUrl("https://b2b.shimano.com/bike/jp/ja/product/" + od);
-                                                                                        Thread.Sleep(2000);
+                                                                                        Thread.Sleep(1000);
                                                                                         date = chrome.FindElement(By.ClassName("leadtime-text")).Text;
                                                                                     }
                                                                                     catch
                                                                                     {
                                                                                         try
                                                                                         {
-                                                                                            Thread.Sleep(2000);
+                                                                                            Thread.Sleep(1000);
                                                                                             date = chrome.FindElement(By.ClassName("leadtime-text")).Text;
                                                                                         }
                                                                                         catch
                                                                                         {
-                                                                                            Thread.Sleep(2000);
+                                                                                            Thread.Sleep(1000);
                                                                                             date = chrome.FindElement(By.ClassName("leadtime-text")).Text;
                                                                                         }
                                                                                     }
@@ -503,7 +493,7 @@ namespace _034_chrome
                                                                     }
                                                                     else
                                                                     {
-                                                                        Thread.Sleep(2000);
+                                                                        Thread.Sleep(1000);
                                                                         Stockbody = chrome.FindElement(By.TagName("body")).Text;
                                                                         if (Stockbody.Contains("在庫なし") || Stockbody.Contains("在庫あり"))
                                                                         {
@@ -546,18 +536,18 @@ namespace _034_chrome
                                                     }
                                                     else
                                                     {
-                                                        Thread.Sleep(2000);
+                                                        Thread.Sleep(1000);
                                                         if (Allbody.Contains("Out of stock") || Allbody.Contains("in stock"))
                                                         {
                                                             chrome.Navigate().GoToUrl("https://b2b.shimano.com/bike/jp/ja/product/" + od);
-                                                            Thread.Sleep(2000);
+                                                            Thread.Sleep(1000);
                                                         }
                                                         t_counter++;
                                                         goto label2;
                                                     }
                                                 }
-                                               else
-                                               {
+                                                else
+                                                {
                                                     entity.qtyStatus = "empty";
                                                     entity.stockDate = "2100-02-01";
                                                     entity.price = dt034.Rows[i]["下代"].ToString();
@@ -583,10 +573,10 @@ namespace _034_chrome
                             }
                             catch (Exception ex)
                             {
-                                    fun.Qbei_ErrorInsert(34, fun.GetSiteName("034"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "034");
-                                    fun.WriteLog(ex, "034-", entity.janCode, entity.orderCode);
-                                    chrome.Quit();
-                                    Environment.Exit(0);
+                                fun.Qbei_ErrorInsert(34, fun.GetSiteName("034"), ex.Message, entity.janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "034");
+                                fun.WriteLog(ex, "034-", entity.janCode, entity.orderCode);
+                                chrome.Quit();
+                                Environment.Exit(0);
                             }
                         }
                     }
@@ -607,8 +597,8 @@ namespace _034_chrome
         /// <summary>
         /// Login of Mall.
         /// </summary>
-        
-        
+
+
         public static DataTable GetDataDayOfweek(DataTable dtemp)
         {
             DataTable dt = new DataTable();
