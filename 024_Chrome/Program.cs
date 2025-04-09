@@ -90,6 +90,7 @@ namespace _024_Chrome
                 chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
                 chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");
                 chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
+                chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false);//<remark Add Logic for ChormeDriver 2025/04/08 />
                 chromeOptions.AddArguments("-no-sandbox");
                 var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);
                 using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))
@@ -173,6 +174,7 @@ namespace _024_Chrome
 
                                 if (!string.IsNullOrWhiteSpace(entity.orderCode))
                                 {
+                                    Thread.Sleep(1000);
                                     string Message = chrome.FindElement(By.TagName("body")).Text;
 
                                     if (Message.Contains("検索条件に一致する商品はありません。"))
@@ -242,7 +244,6 @@ namespace _024_Chrome
 
                                     else
                                     {
-                                      //entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[6]/div/div[4]/div[2]/span[1]")).Text;
                                         entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[5]/div/div[4]/div[2]/span[1]")).Text;
                                         entity.price = entity.price.Replace("円", string.Empty).Replace("お渡し価格：", string.Empty).Replace("(税抜)", string.Empty).Replace(",", string.Empty);
 
