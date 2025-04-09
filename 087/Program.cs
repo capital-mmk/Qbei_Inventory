@@ -152,6 +152,7 @@ namespace _87ダートフリーク
                 chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
                 chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");
                 chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
+                chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false);//<remark Add Logic for ChormeDriver 2025/04/08 />
                 chromeOptions.AddArguments("-no-sandbox");
                 var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);
                 using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))
@@ -211,7 +212,8 @@ namespace _87ダートフリーク
                                 }
                                 catch
                                 {
-                                    Thread.Sleep(1000); chrome.FindElement(By.Name("edit")).Click();
+                                    Thread.Sleep(1000);
+                                    chrome.FindElement(By.Name("edit")).Click();
                                     chrome.FindElement(By.Name("cataloghinban")).SendKeys(ordercode);
                                     Thread.Sleep(1000);
                                     chrome.FindElement(By.Name("submitall")).Click();
@@ -230,6 +232,7 @@ namespace _87ダートフリーク
 
                                 if (!string.IsNullOrWhiteSpace(entity.orderCode))
                                 {
+                                    Thread.Sleep(2000);
                                     string Check_Message = chrome.FindElement(By.TagName("body")).Text;
 
                                     if (Check_Message.Contains("検索商品がありませんでした。"))
@@ -246,29 +249,44 @@ namespace _87ダートフリーク
 
                                     else
                                     {
+                                        entity.price = chrome.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]/div/form/table/tbody/tr[2]/td/div/table/tbody/tr/td[7]/font")).Text;
+                                        entity.price = entity.price.Replace("円", string.Empty).Replace(",", string.Empty);
 
-                                        if (chrome.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]/div/form/table/tbody/tr[2]/td/div/table/tbody/tr/td[4]")).Text == entity.orderCode)
+                                        try
                                         {
-                                            entity.price = chrome.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]/div/form/table/tbody/tr[2]/td/div/table/tbody/tr/td[7]")).Text;
-
-                                            qty = chrome.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]/div/form/table/tbody/tr[2]/td/div/table/tbody/tr/td[10]/font")).Text;
-
+                                            qty = chrome.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]/div/form/table/tbody/tr[2]/td/div/table/tbody/tr/td[10]/font/b")).Text;
                                             entity.qtyStatus = qty.Equals("◎") ? "good" : qty.Equals("○") || qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("※") ? "empty" : "invalid status code";
                                             entity.stockDate = qty.Equals("◎") || qty.Equals("○") || qty.Equals("▲") ? "2100-01-01" : qty.Equals("×") || qty.Equals("※") ? "2100-02-01" : "unknown date";
-
-                                            entity.purchaseURL = dt087.Rows[i]["purchaserURL"].ToString();
                                             entity.True_Quantity = qty;
-                                            entity.True_StockDate = "項目無し";
-                                            fun.Qbei_Inserts(entity);
-
                                         }
+                                        catch
+                                        {
+                                            qty = chrome.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]/div/form/table/tbody/tr[2]/td/div/table/tbody/tr/td[10]/font")).Text;
+                                            entity.qtyStatus = qty.Equals("◎") ? "good" : qty.Equals("○") || qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("※") ? "empty" : "invalid status code";
+                                            entity.stockDate = qty.Equals("◎") || qty.Equals("○") || qty.Equals("▲") ? "2100-01-01" : qty.Equals("×") || qty.Equals("※") ? "2100-02-01" : "unknown date";
+                                            entity.True_Quantity = qty;
+                                        }
+                                        entity.purchaseURL = chrome.Url;
+                                        entity.True_StockDate = "項目無し";
+                                        fun.Qbei_Inserts(entity);
 
+                                    }
+
+
+                                    if (entity.price == null || entity.qtyStatus == null)
+                                    {
+                                        entity.qtyStatus = "empty";
+                                        entity.stockDate = "2100-02-01";
+                                        entity.price = dt087.Rows[i]["下代"].ToString();
+                                        entity.purchaseURL = "";
+                                        entity.True_StockDate = "Not Found";
+                                        entity.True_Quantity = "Not Found";
                                     }
 
                                 }
                                 else
                                 {
-                                    fun.Qbei_ErrorInsert(87, fun.GetSiteName("87"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "87");
+                                    fun.Qbei_ErrorInsert(87, fun.GetSiteName("087"), "Order Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "087");
                                 }
                             }
                         }
@@ -284,14 +302,14 @@ namespace _87ダートフリーク
                     {
                         string janCode = dt087.Rows[i]["JANコード"].ToString();
                         ordercode = dt087.Rows[i]["発注コード"].ToString();
-                        fun.Qbei_ErrorInsert(87, fun.GetSiteName("87"), ex.Message, janCode, ordercode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "87");
-                        fun.WriteLog(ex, "87-", janCode, ordercode);
+                        fun.Qbei_ErrorInsert(87, fun.GetSiteName("087"), ex.Message, janCode, ordercode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "087");
+                        fun.WriteLog(ex, "087-", janCode, ordercode);
                     }
                 }
             }
             catch (Exception ex)
             {
-                fun.WriteLog(ex.Message, "87-");
+                fun.WriteLog(ex.Message, "087-");
                 Environment.Exit(0);
             }
         }
