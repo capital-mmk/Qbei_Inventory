@@ -11,7 +11,6 @@ using Common;
 using System.IO;
 using QbeiAgencies_BL;
 using QbeiAgencies_Common;
-using LumenWorks.Framework.IO.Csv;
 
 
 namespace _013_Chrome
@@ -97,7 +96,9 @@ namespace _013_Chrome
             chromeOptions.AddUserProfilePreference("download.default_directory", @"C:\Qbei_Log\013_Download\");
             chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");
             chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
+            chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false); //<remark Add Logic for ChormeDriver 2025/04/08 />
             chromeOptions.AddArguments("-no-sandbox");
+
             var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);
 
             using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))
