@@ -123,7 +123,10 @@ namespace _014_chrome
                 chromeOptions.AddUserProfilePreference("download.default_directory", @"C:\Qbei_Log\014_Download\");
                 chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");
                 chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
-                chromeOptions.AddArguments("-no-sandbox");//<remark Add Logic for ChormeDriver 2021/09/02 />
+
+                chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false);//<remark Add Logic for ChormeDriver 2025/04/08 />
+                chromeOptions.AddArguments("-no-sandbox");
+
 
                 var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);
                 using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))
