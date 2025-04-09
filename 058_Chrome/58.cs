@@ -137,6 +137,7 @@ namespace _058リンエイ
                 chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";//<Add Logic for Chrome Path 2021/05/24 />
                 chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");//<remark Add Logic for ChormeDriver 2021/09/02 />
                 chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");//<remark Add Logic for ChormeDriver 2021/09/02 />
+                chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false);//<remark Add Logic for ChormeDriver 2025/04/08 />
                 chromeOptions.AddArguments("-no-sandbox");//<remark Add Logic for ChormeDriver 2021/09/02 />
                 chromeOptions.AddArgument("--start-maximized");
                 var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);//<remark Add Logic for ChormeDriver 2021/09/02 />                                                                                                                       
@@ -186,7 +187,7 @@ namespace _058リンエイ
                     }
                     else
                     {
-                        fun.WriteLog("Login success             ------", "058-");                       
+                        fun.WriteLog("Login success             ------", "058-");
 
                         /// <summary>
                         /// Inspection of item information at Mall.
@@ -222,7 +223,7 @@ namespace _058リンエイ
                                     entity.makerDate = fun.getCurrentDate();
                                     entity.reflectDate = dt058.Rows[i]["最終反映日"].ToString();
                                     entity.orderCode = dt058.Rows[i]["発注コード"].ToString().Trim();
-                                    entity.purchaseURL = "https://www.rinei-web.jp/products?keyword="+entity.orderCode;
+                                    entity.purchaseURL = "https://www.rinei-web.jp/products?keyword=" + entity.orderCode;
 
                                     if (!string.IsNullOrWhiteSpace(entity.orderCode))
                                     {
@@ -246,7 +247,7 @@ namespace _058リンエイ
                                             fun.Qbei_Inserts(entity);
                                         }
                                         else
-                                        {                 
+                                        {
                                             int n = chrome.FindElements(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr")).Count();
 
                                             if (n == 0)
@@ -277,7 +278,7 @@ namespace _058リンエイ
                                                     entity.True_StockDate = "項目無し";
                                                     entity.True_Quantity = stock;
                                                     string a = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/td[1]")).Text;
-                                                    if (chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/td[1]")).Text.Contains("未定")|| chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/td[1]")).Text.Contains("月"))
+                                                    if (chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/td[1]")).Text.Contains("未定") || chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/td[1]")).Text.Contains("月"))
                                                     {
                                                         entity.stockDate = "2100-02-01";
                                                         entity.True_StockDate = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/td[1]")).Text;
