@@ -157,6 +157,7 @@ namespace _145_Chrome
             chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";//<Add Logic for Chrome Path 2021/05/24 />
             chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");//<remark Add Logic for ChormeDriver 2021/09/02 />
             chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");//<remark Add Logic for ChormeDriver 2021/09/02 />
+            chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false);//<remark Add Logic for ChormeDriver 2025/04/08 />
             chromeOptions.AddArguments("-no-sandbox");//<remark Add Logic for ChormeDriver 2021/09/02 />
             var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);//<remark Add Logic for ChormeDriver 2021/09/02 />                                                                                                                       
             //using (IWebDriver chrome = new ChromeDriver(chromeOptions))
@@ -237,7 +238,7 @@ namespace _145_Chrome
                 chrome.FindElement(By.Name("loginEmail")).SendKeys(username);
                 string password = dt.Rows[0]["Password"].ToString();
                 chrome.FindElement(By.Name("loginPassword")).SendKeys(password);
-                fun.WriteLog("Navigation to Site Url success------", "037-");
+                fun.WriteLog("Navigation to Site Url success------", "145-");
                 chrome.FindElement(By.Name("login")).Click();
                 Thread.Sleep(8000);
 
