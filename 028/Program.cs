@@ -136,6 +136,7 @@ namespace _028
             chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";//<Add Logic for Chrome Path 2021/05/24 />
             chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");//<remark Add Logic for ChormeDriver 2021/09/02 />
             chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");//<remark Add Logic for ChormeDriver 2021/09/02 />
+            chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false);//<remark Add Logic for ChormeDriver 2025/04/08 />
             chromeOptions.AddArguments("-no-sandbox");//<remark Add Logic for ChormeDriver 2021/09/02 />
             var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);//<remark Add Logic for ChormeDriver 2021/09/02 />                                                                                                                       
             //using (IWebDriver chrome = new ChromeDriver(chromeOptions))
@@ -158,7 +159,7 @@ namespace _028
                 chrome.FindElement(By.Id("UserName")).SendKeys(username);
                 string password = dt.Rows[0]["Password"].ToString();
                 chrome.FindElement(By.Id("UserPW")).SendKeys(password);
-                fun.WriteLog("Navigation to Site Url success------", "037-");
+                fun.WriteLog("Navigation to Site Url success------", "028-");
                 chrome.FindElement(By.Id("Button1")).Click();
                 Thread.Sleep(8000);
 
@@ -239,7 +240,7 @@ namespace _028
                                     fun.Qbei_Inserts(entity);
                                 }
                                 else
-                                {   
+                                {
                                     int n = Convert.ToInt32(chrome.FindElements(By.XPath("/html/body/form/div[3]/div/div/div/div[2]/div/table/tbody/tr")).Count());
                                     if (n == 0)
                                     {
@@ -278,7 +279,7 @@ namespace _028
                                                     }
                                                 }
                                                 //<remark Add Logic for check to quantity of number 2022/12/27 Start>
-                                                string number_qty;                                               
+                                                string number_qty;
                                                 if (qty == " ")
                                                 {
                                                     number_qty = qty;
@@ -287,7 +288,7 @@ namespace _028
                                                 {
                                                     var check_number_qty = qty;
                                                     number_qty = string.Join("", check_number_qty.ToCharArray().Where(Char.IsDigit));
-                                                }                                               
+                                                }
                                                 //</remark 2022/12/27 End>
 
                                                 //entity.qtyStatus = qty.Equals(" ") || qty.Equals(null) || qty.Equals("0") || qty.Equals("1") || qty.Equals("2") ? "empty" : Convert.ToInt32(qty) >= 3 ? "small" : "empty";//<remark Edit Logic for check of quantity number 2022/12/27 />
@@ -302,16 +303,16 @@ namespace _028
                                                 entity.price = Convert.ToString(Convert.ToInt32(entity.price) * 0.58);//<remark Add Logic for price* 0.58 2022/10/28 />
                                                 entity.price = Convert.ToString(Math.Round(Convert.ToDecimal(entity.price), 0, MidpointRounding.AwayFromZero));//<remark Add Logic for price of decimal 2022/11/25 />
 
-                                                string start_month= chrome.FindElement(By.XPath("/html/body/form/div[3]/div/div/div/div[2]/div/table/thead/tr/th[6]")).Text;
+                                                string start_month = chrome.FindElement(By.XPath("/html/body/form/div[3]/div/div/div/div[2]/div/table/thead/tr/th[6]")).Text;
                                                 int now_month = DateTime.ParseExact(start_month, "MMM", CultureInfo.CreateSpecificCulture("en-GB")).Month;
-                                                int now_year= Convert.ToInt32(DateTime.Now.Year);
+                                                int now_year = Convert.ToInt32(DateTime.Now.Year);
                                                 int month_colunms = Convert.ToInt32(chrome.FindElements(By.XPath("/html/body/form/div[3]/div/div/div/div[2]/div/table/tbody/tr[" + j + "]/td")).Count());
                                                 string month;
-                                                for (int g = 6; g <=month_colunms ; g++)
+                                                for (int g = 6; g <= month_colunms; g++)
                                                 {
-                                                    string check_month= chrome.FindElement(By.XPath("/html/body/form/div[3]/div/div/div/div[2]/div/table/tbody/tr[" + j + "]/td[" + g + "]")).Text;
+                                                    string check_month = chrome.FindElement(By.XPath("/html/body/form/div[3]/div/div/div/div[2]/div/table/tbody/tr[" + j + "]/td[" + g + "]")).Text;
                                                     month = check_month;
-                                                    if (check_month =="")
+                                                    if (check_month == "")
                                                     {
                                                         entity.stockDate = "2100-01-01";
                                                         entity.True_Quantity = qty;
