@@ -207,7 +207,7 @@ namespace _024_Chrome
 
                                     else if (Message.Contains(entity.janCode))
                                     {
-                                        string n = chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/div[2]/div[3]/div[1]/span")).Text;
+                                        string n = chrome.FindElement(By.CssSelector(".goods_count")).Text;
                                         int c = Convert.ToInt32(n);
 
                                         for (int j = 1; j <= c; j++)
