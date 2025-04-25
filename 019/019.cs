@@ -405,51 +405,66 @@ namespace _019深谷_フカヤ_
                                                 entity.price = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[4]/p[1]/em")).Text;
                                                 entity.price = entity.price.Replace("卸価格：￥", " ").Replace(",", string.Empty);
 
-                                                //<remark>
-                                                //Check to Stockdate
-                                                //</remark>
-                                                //string stockdate = chrome.FindElement(By.ClassName("r_cate_title")).Text;//<remark Edit Logic for stockdate 2021/05/12 />
-                                                string stockdate = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[2]")).Text;
-                                                //if (stockdate.Contains("入荷予定日"))<//remark Edit Logic for check to 廃番× 2022/10/19 />
-                                                //if ((stockdate.Contains("入荷予定日"))&&(!qty.Equals("廃番×")))<//remark Edit Logic for check to 欠品× 2022/10/20 />
-                                                if ((stockdate.Contains("入荷予定日")) && (!qty.Equals("廃番×")))  //&& (!qty.Equals("欠品×"))   <remark Edit Logic for remove check to 欠品× 2024/07/25 >
+                                                if (entity.price == "購入いただけない商品です")
                                                 {
-                                                    //entity.stockDate = chrome.FindElement(By.ClassName("availabilityDate")).Text;//<remark Edit Logic for stockdate 2021/05/12 />
-                                                    entity.stockDate = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[2]/p[5]")).Text;
-                                                    entity.stockDate = entity.stockDate.Replace("入荷予定日:", " ").Replace("/", "-");
-                                                    //entity.stockDate = entity.stockDate.Replace("/", "-");
-                                                    DateTime da = Convert.ToDateTime(entity.stockDate);
-                                                    entity.stockDate = da.ToString("yyyy-MM-dd");
+                                                    entity.price = "0";
 
-                                                    if (entity.stockDate.Contains("2999-12-31") || entity.stockDate.Contains("2999-12-30"))     // <remark stock date change for 欠品× 2024/07/25>
-                                                    {
-                                                        entity.stockDate = "2100-02-01";
-                                                    }
-                                                    //<remark 2021/01/06>
-                                                    entity.True_StockDate = chrome.FindElement(By.ClassName("availabilityDate")).Text.Replace("入荷予定日:", " ");
+                                                    entity.qtyStatus = "empty";
+                                                    entity.stockDate = "2100-02-01";
+
                                                     entity.True_Quantity = qty;
-                                                    //</remark 2021/01/06>
+                                                    entity.True_StockDate = "購入いただけない商品です";
+
                                                 }
                                                 else
                                                 {
                                                     //<remark>
-                                                    //Check to have Digits at Quantity and take Stockdate of Status
+                                                    //Check to Stockdate
                                                     //</remark>
-                                                    if (isDigitPresent == true)
+                                                    //string stockdate = chrome.FindElement(By.ClassName("r_cate_title")).Text;//<remark Edit Logic for stockdate 2021/05/12 />
+                                                    string stockdate = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[2]")).Text;
+                                                    //if (stockdate.Contains("入荷予定日"))<//remark Edit Logic for check to 廃番× 2022/10/19 />
+                                                    //if ((stockdate.Contains("入荷予定日"))&&(!qty.Equals("廃番×")))<//remark Edit Logic for check to 欠品× 2022/10/20 />
+                                                    if ((stockdate.Contains("入荷予定日")) && (!qty.Equals("廃番×")))  //&& (!qty.Equals("欠品×"))   <remark Edit Logic for remove check to 欠品× 2024/07/25 >
                                                     {
-                                                        entity.stockDate = "2100-02-01";
+                                                        //entity.stockDate = chrome.FindElement(By.ClassName("availabilityDate")).Text;//<remark Edit Logic for stockdate 2021/05/12 />
+                                                        entity.stockDate = chrome.FindElement(By.XPath("/html/body/center/center/div[2]/div[7]/form[3]/div/div[3]/div/table/tbody/tr[" + (i + 1) + "]/td[2]/p[5]")).Text;
+                                                        entity.stockDate = entity.stockDate.Replace("入荷予定日:", " ").Replace("/", "-");
+                                                        //entity.stockDate = entity.stockDate.Replace("/", "-");
+                                                        DateTime da = Convert.ToDateTime(entity.stockDate);
+                                                        entity.stockDate = da.ToString("yyyy-MM-dd");
+
+                                                        if (entity.stockDate.Contains("2999-12-31") || entity.stockDate.Contains("2999-12-30"))     // <remark stock date change for 欠品× 2024/07/25>
+                                                        {
+                                                            entity.stockDate = "2100-02-01";
+                                                        }
+                                                        //<remark 2021/01/06>
+                                                        entity.True_StockDate = chrome.FindElement(By.ClassName("availabilityDate")).Text.Replace("入荷予定日:", " ");
+                                                        entity.True_Quantity = qty;
+                                                        //</remark 2021/01/06>
                                                     }
                                                     else
                                                     {
-                                                        entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-01-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";//<remark ロジックの変更　2022/01/20 />
-                                                        //entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-02-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";
+                                                        //<remark>
+                                                        //Check to have Digits at Quantity and take Stockdate of Status
+                                                        //</remark>
+                                                        if (isDigitPresent == true)
+                                                        {
+                                                            entity.stockDate = "2100-02-01";
+                                                        }
+                                                        else
+                                                        {
+                                                            entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-01-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";//<remark ロジックの変更　2022/01/20 />
+                                                                                                                                                                                                                                                                                                                                                       //entity.stockDate = qty.Equals("在庫○") ? "2100-01-01" : qty.Equals("取寄×") ? "2100-02-01" : qty.Equals("在庫△") ? "2100-02-01" : qty.Equals("欠品×") ? "2100-02-01" : qty.Equals("廃番×") ? "2100-02-01" : qty.Equals("廃番(n)") ? "2100-02-01" : qty.Equals("廃番○") ? "2100-02-01" : "unknown status";
+                                                        }
+                                                        //<remark 2021/01/06>
+                                                        entity.True_StockDate = "項目無し";
+                                                        entity.True_Quantity = qty;
+                                                        //</remark 2021/01/06>
                                                     }
-                                                    //<remark 2021/01/06>
-                                                    entity.True_StockDate = "項目無し";
-                                                    entity.True_Quantity = qty;
-                                                    //</remark 2021/01/06>
+                                                    break;
                                                 }
-                                                break;
+
                                             }
                                         }
                                         //</remark 2021/05/11 End>
