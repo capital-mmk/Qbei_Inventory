@@ -1,4 +1,5 @@
 ﻿using System;
+using OfficeOpenXml;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,9 +24,7 @@ namespace _019_Chrome
         DataTable dtGroupData = new DataTable();
         static string strParam = string.Empty;
         public static string st = string.Empty;
-        private static int i;
-        public static string ordercode;
-        DataRow dr;
+
 
         static void Main(string[] args)
         {
@@ -95,7 +94,7 @@ namespace _019_Chrome
             chromeOptions.AddUserProfilePreference("download.default_directory", @"C:\Qbei_Log\019_Download\");
             chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");
             chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
-            chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false); //<remark Add Logic for ChormeDriver 2025/04/08 />
+            chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false);
             chromeOptions.AddArguments("-no-sandbox");
 
             var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);
@@ -107,7 +106,7 @@ namespace _019_Chrome
                 Qbeisetting_Entity qe = new Qbeisetting_Entity();
                 Qbei_Entity entity = new Qbei_Entity();
 
-                
+
                 qe.SiteID = 19;
                 dt = qubl.Qbei_Setting_Select(qe);
                 string url = dt.Rows[0]["Url"].ToString();
@@ -123,7 +122,7 @@ namespace _019_Chrome
                 chrome.FindElement(By.Id("login")).Click();
                 Thread.Sleep(8000);
 
-                
+
                 string orderCode = string.Empty;
                 string body = chrome.FindElement(By.TagName("body")).Text;
 
@@ -142,8 +141,7 @@ namespace _019_Chrome
 
                 chrome.FindElement(By.Id("fnishedType1")).Click();
                 chrome.FindElement(By.CssSelector("button.btn:nth-child(1)")).Click();
-                //chrome.SwitchTo().Alert().Accept();
-                Thread.Sleep(10000);
+                Thread.Sleep(5000);
 
                 int counter = 0;
             label:
@@ -163,23 +161,20 @@ namespace _019_Chrome
             label1:
                 fun.WriteLog("Navigation to Download success------", "019-");
 
-                //string[] flist = Directory.GetFiles(@"C:\Qbei_Log\019_Download\");
-
-                //String filename = flist[0].ToString();
-                //string csvPath = filename;
-                
+                string[] flist = Directory.GetFiles(@"C:\Qbei_Log\019_Download\");
+                String filename = flist[0].ToString();
+                string csvPath = filename;
 
                 DataTable dt019 = fun.GetDatatable("019");
                 fun.GetTotalCount("019");
+                int Count = dt019.Rows.Count;
                 if (dt019 == null)
                 {
                     chrome.Quit();
                     Environment.Exit(0);
                 }
-                
-                string[] str = { "商品コード", "在庫" };
-                DataTable dtItem = fun.GetDatatableFromDownloadPath(@"C:\Qbei_Log\019_Download\", str);
-                Thread.Sleep(2000);
+
+                DataTable dtItem = XlsxToDataTable(csvPath);
                 int count = dtItem.Rows.Count;
 
                 fun.WriteLog("Download success match with datatable------", "019-");
@@ -192,9 +187,33 @@ namespace _019_Chrome
                 fun.ChangeFlag(qe);
                 chrome.Quit();
                 Environment.Exit(0);
-
             }
+        }
+        static DataTable XlsxToDataTable(string filePath)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Important for EPPlus 5+     
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            {
+                var worksheet = package.Workbook.Worksheets[0]; // First worksheet        
+                var dt = new DataTable();
+                // Assume the first row has column names        
+                foreach (var firstRowCell in worksheet.Cells[1, 1, 1, worksheet.Dimension.End.Column])
+                { dt.Columns.Add(firstRowCell.Text); }
 
+                // Start loading data from row 2        
+                for (int rowNum = 2; rowNum <= worksheet.Dimension.End.Row; rowNum++)
+                {
+                    var wsRow = worksheet.Cells[rowNum, 1, rowNum, worksheet.Dimension.End.Column];
+                    DataRow row = dt.NewRow();
+                    int i = 0;
+                    foreach (var cell in wsRow)
+                    {
+                        row[i++] = cell.Text;
+                    }
+                    dt.Rows.Add(row);
+                }
+                return dt;
+            }
         }
 
     }
