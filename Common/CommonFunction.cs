@@ -280,35 +280,35 @@ namespace Common
 
 
                     //<remark Add Logic 2024/10/30 Start>
-                    if (shopID.Equals("019"))
-                    {
-                        DataTable dtpPrice = dtTemp.Select("下代 ='購入いただけない商品で'").CopyToDataTable();
-                        int dtcount = dtpPrice.Rows.Count;
-                        if (dtpPrice != null)
-                        {
-                            /// <remark>
-                            /// Save Data into Qbei_ErrorLog
-                            /// </remark>
+                    //if (shopID.Equals("019"))
+                    //{
+                    //    DataTable dtpPrice = dtTemp.Select("下代 ='購入いただけない商品で'").CopyToDataTable();
+                    //    int dtcount = dtpPrice.Rows.Count;
+                    //    if (dtpPrice != null)
+                    //    {
+                    //        /// <remark>
+                    //        /// Save Data into Qbei_ErrorLog
+                    //        /// </remark>
 
-                            xml = DataTableToXml(dtpPrice);
+                    //        xml = DataTableToXml(dtpPrice);
 
-                            con = new Connection();
-                            sqlcon = con.GetConnection();
-                            cmd = new SqlCommand("Qbei_ErrorLog_3_InsertXml", sqlcon);
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@xml", xml);
-                            cmd.Parameters.AddWithValue("@sitename", GetSiteName(shopID));
-                            cmd.Parameters.AddWithValue("@Description", "Price doesn't Contain!");
-                            cmd.Parameters.AddWithValue("@ErrorType", 6);
-                            cmd.Parameters.AddWithValue("@SiteCode", shopID);
-                            cmd.CommandTimeout = 600;
-                            cmd.Connection.Open();
-                            cmd.ExecuteNonQuery();
-                            cmd.Connection.Close();
-                            var runData = dtTemp.AsEnumerable().Where(x => !dtpPrice.AsEnumerable().Any(y => y.Field<string>("JANコード") == x.Field<string>("JANコード") && y.Field<string>("発注コード") == x.Field<string>("発注コード")));
-                            dtTemp = runData.Any() ? runData.CopyToDataTable() : null;
-                        }
-                    }
+                    //        con = new Connection();
+                    //        sqlcon = con.GetConnection();
+                    //        cmd = new SqlCommand("Qbei_ErrorLog_3_InsertXml", sqlcon);
+                    //        cmd.CommandType = CommandType.StoredProcedure;
+                    //        cmd.Parameters.AddWithValue("@xml", xml);
+                    //        cmd.Parameters.AddWithValue("@sitename", GetSiteName(shopID));
+                    //        cmd.Parameters.AddWithValue("@Description", "Price doesn't Contain!");
+                    //        cmd.Parameters.AddWithValue("@ErrorType", 6);
+                    //        cmd.Parameters.AddWithValue("@SiteCode", shopID);
+                    //        cmd.CommandTimeout = 600;
+                    //        cmd.Connection.Open();
+                    //        cmd.ExecuteNonQuery();
+                    //        cmd.Connection.Close();
+                    //        var runData = dtTemp.AsEnumerable().Where(x => !dtpPrice.AsEnumerable().Any(y => y.Field<string>("JANコード") == x.Field<string>("JANコード") && y.Field<string>("発注コード") == x.Field<string>("発注コード")));
+                    //        dtTemp = runData.Any() ? runData.CopyToDataTable() : null;
+                    //    }
+                    //}
                     //</remark 2024/10/30 End>
                     //
                     //dr = dtTemp.Select("発注コード=' ' OR 発注コード = '' OR 発注コード is NULL OR 発注コード= '-' OR 発注コード= '--'");<remark Edit Logic for ordercode 2021/04/05 />
@@ -910,7 +910,7 @@ namespace Common
             ///Check to Data of Downbload CSV from Site.
             ///</remark>
             CachedCsvReader csv;
-            DataTable dtResult = new DataTable(); 
+            DataTable dtResult = new DataTable();
             string[] filelist = Directory.GetFiles(path);
             foreach (string file in filelist)
             {
@@ -943,6 +943,7 @@ namespace Common
 
                     //}
                 }
+
                 else
                     File.Move(file, @"C:\Qbei_Log\Trash\" + @"\" + Path.GetFileName(file));
                 //File.Move(file, trashPath + @"\" + Path.GetFileName(file));
@@ -1468,6 +1469,8 @@ namespace Common
                 case "013": path = @"C:\Qbei_Log\013_Download\"; break;
                 case "014": path = @"C:\Qbei_Log\014_Download\"; break;
                 case "015": path = @"C:\Qbei_Log\015_Download\"; break;
+                case "019": path = @"C:\Qbei_Log\019_Download\"; break;
+                case "024": path = @"C:\Qbei_Log\024_Download\"; break;
                 case "035": path = @"C:\Qbei_Log\035_Download\"; break;
                 case "916": path = @"C:\Qbei_Log\916_Download"; break;
                 case "037": path = @"C:\Qbei_Log\037_Download"; break;
