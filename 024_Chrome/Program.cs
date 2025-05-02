@@ -68,6 +68,41 @@ namespace _024_Chrome
             }
         }
 
+        static DataTable XlsToDataTable(string filePath)
+        {
+            DataTable dt = new DataTable();
+
+            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                HSSFWorkbook workbook = new HSSFWorkbook(fs);
+                ISheet sheet = workbook.GetSheetAt(0); // First sheet
+
+                // Read header
+                IRow headerRow = sheet.GetRow(0);
+                for (int i = 0; i < headerRow.LastCellNum; i++)
+                {
+                    dt.Columns.Add(headerRow.GetCell(i)?.ToString() ?? $"Column{i + 1}");
+                }
+
+                // Read data
+                for (int i = 1; i <= sheet.LastRowNum; i++)
+                {
+                    IRow row = sheet.GetRow(i);
+                    if (row == null) continue;
+
+                    DataRow dataRow = dt.NewRow();
+                    for (int j = 0; j < row.LastCellNum; j++)
+                    {
+                        dataRow[j] = row.GetCell(j)?.ToString();
+                    }
+                    dt.Rows.Add(dataRow);
+                }
+            }
+
+            return dt;
+        }
+
+
         public static void StartRun()
         {
             try
@@ -87,6 +122,7 @@ namespace _024_Chrome
             {
                 var chromeOptions = new ChromeOptions();
                 chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
+                chromeOptions.AddUserProfilePreference("download.default_directory", @"C:\Qbei_Log\024_Download\");
                 chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");
                 chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
                 chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false);//<remark Add Logic for ChormeDriver 2025/04/08 />
@@ -351,41 +387,6 @@ namespace _024_Chrome
             }
 
         }
-
-        static DataTable XlsToDataTable(string filePath)
-        {
-            DataTable dt = new DataTable();
-
-            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-            {
-                HSSFWorkbook workbook = new HSSFWorkbook(fs);
-                ISheet sheet = workbook.GetSheetAt(0); // First sheet
-
-                // Read header
-                IRow headerRow = sheet.GetRow(0);
-                for (int i = 0; i < headerRow.LastCellNum; i++)
-                {
-                    dt.Columns.Add(headerRow.GetCell(i)?.ToString() ?? $"Column{i + 1}");
-                }
-
-                // Read data
-                for (int i = 1; i <= sheet.LastRowNum; i++)
-                {
-                    IRow row = sheet.GetRow(i);
-                    if (row == null) continue;
-
-                    DataRow dataRow = dt.NewRow();
-                    for (int j = 0; j < row.LastCellNum; j++)
-                    {
-                        dataRow[j] = row.GetCell(j)?.ToString();
-                    }
-                    dt.Rows.Add(dataRow);
-                }
-            }
-
-            return dt;
-        }
-
 
     }
 }
