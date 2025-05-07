@@ -235,19 +235,41 @@ namespace _12カワシマ
 
                                     else
                                     {
+                                        if (chrome.FindElement(By.CssSelector(".selectText_")).Text == entity.janCode)
+                                        {
+                                            entity.price = chrome.FindElement(By.XPath("/html/body/div[3]/div[1]/div[2]/div/div[1]/div[2]/div[2]/table/tbody/tr[7]/td/span")).Text;
+                                            entity.price = entity.price.Replace("￥", string.Empty).Replace(",", string.Empty);
 
-                                        entity.price = chrome.FindElement(By.XPath("/html/body/div[3]/div[1]/div[2]/div/div[1]/div[2]/div[2]/table/tbody/tr[7]/td/span")).Text;
-                                        entity.price = entity.price.Replace("￥", string.Empty).Replace(",", string.Empty);
+                                            qty = chrome.FindElement(By.XPath("/html/body/div[3]/div[1]/div[2]/div/div[1]/div[2]/div[2]/table/tbody/tr[11]/td")).Text;
+                                            entity.qtyStatus = qty.Equals("○") ? "good" : qty.Equals("△") ? "small" : qty.Equals("×") || qty.Equals("終了") || qty.Equals("×(終了)") ? "empty" : "unknown code";
+                                            entity.stockDate = qty.Equals("○") || qty.Equals("△") ? "2100-01-01" : qty.Equals("終了") || qty.Equals("×") || qty.Equals("×(終了)") || qty.Equals("× 残 6") ? "2100-02-01" : "unknown date";
+                                            entity.True_Quantity = qty;
 
-                                        qty = chrome.FindElement(By.XPath("/html/body/div[3]/div[1]/div[2]/div/div[1]/div[2]/div[2]/table/tbody/tr[11]/td")).Text;
-                                        entity.qtyStatus = qty.Equals("○") ? "good" : qty.Equals("△") ? "small" : qty.Equals("×") || qty.Equals("終了") || qty.Equals("×(終了)") ? "empty" : "unknown code";
-                                        entity.stockDate = qty.Equals("○") || qty.Equals("△") ? "2100-01-01" : qty.Equals("終了") || qty.Equals("×") || qty.Equals("×(終了)") || qty.Equals("× 残 6") ? "2100-02-01" : "unknown date";
-                                        entity.True_Quantity = qty;
+                                            //entity.purchaseURL = chrome.Url;
+                                            entity.purchaseURL = dt012.Rows[i]["purchaserURL"].ToString();
+                                            if (entity.purchaseURL == "")
+                                            {
+                                                entity.purchaseURL = chrome.Url;
+                                            }
+                                            entity.True_StockDate = "項目無し";
+                                            fun.Qbei_Inserts(entity);
+                                        }
 
-                                        entity.purchaseURL = chrome.Url;
-                                        entity.True_StockDate = "項目無し";
-                                        fun.Qbei_Inserts(entity);
+                                        else
+                                        {
+                                            //fun.Qbei_ErrorInsert(12, fun.GetSiteName("012"), "JAN Code Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "012");
+                                            entity.price = chrome.FindElement(By.XPath("/html/body/div[3]/div[1]/div[2]/div/div[1]/div[2]/div[2]/table/tbody/tr[7]/td/span")).Text;
+                                            entity.price = entity.price.Replace("￥", string.Empty).Replace(",", string.Empty);
 
+                                            qty = chrome.FindElement(By.XPath("/html/body/div[3]/div[1]/div[2]/div/div[1]/div[2]/div[2]/table/tbody/tr[11]/td")).Text;
+
+                                            entity.qtyStatus = "empty";
+                                            entity.stockDate = "2100-02-01";
+                                            entity.purchaseURL = chrome.Url;
+                                            entity.True_StockDate = "Not Found";
+                                            entity.True_Quantity = qty;
+                                            fun.Qbei_Inserts(entity);
+                                        }
 
                                     }
 
@@ -257,7 +279,8 @@ namespace _12カワシマ
                                         entity.qtyStatus = "empty";
                                         entity.stockDate = "2100-02-01";
                                         entity.price = dt012.Rows[i]["下代"].ToString();
-                                        entity.purchaseURL = chrome.Url;
+                                        entity.purchaseURL = dt012.Rows[i]["purchaserURL"].ToString();
+                                        //entity.purchaseURL = chrome.Url;
                                         entity.True_StockDate = "Not Found";
                                         entity.True_Quantity = "Not Found";
                                     }
