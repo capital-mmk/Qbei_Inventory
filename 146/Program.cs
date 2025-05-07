@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Threading;
+//using OpenQA.Selenium;
+//using OpenQA.Selenium.Firefox;
+//using OpenQA.Selenium.Chrome;
 using Common;
 using System.IO;
 using QbeiAgencies_BL;
@@ -105,6 +108,7 @@ namespace _146
             }
 
             fun.WriteLog("File Not Found-------", "146-");
+            fun.ChangeFlag(qe);
             Environment.Exit(0);
 
         label1:
