@@ -5,9 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Threading;
-//using OpenQA.Selenium;
-//using OpenQA.Selenium.Firefox;
-//using OpenQA.Selenium.Chrome;
 using Common;
 using System.IO;
 using QbeiAgencies_BL;
@@ -22,8 +19,6 @@ namespace _146
         DataTable dt146 = new DataTable();
         public static CommonFunction fun = new CommonFunction();
         DataTable dtGroupData = new DataTable();
-        static string strParam = string.Empty;
-        public static string st = string.Empty;
 
         static void Main(string[] args)
         {
@@ -73,80 +68,79 @@ namespace _146
             try
             {
                 fun.setURL("146");
-                fun.MoveToTrash("146");
-                fun.CreateFileAndFolder();
                 fun.Qbei_Delete(146);
                 fun.Qbei_ErrorDelete(146);
                 ReadData();
             }
             catch (Exception ex)
             {
-                fun.WriteLog(ex, "019-");
+                fun.WriteLog(ex, "146-");
                 Environment.Exit(0);
             }
         }
 
         public static void ReadData()
         {
-            
-                DataTable dt = new DataTable();
-                Qbeisetting_BL qubl = new Qbeisetting_BL();
-                Qbeisetting_Entity qe = new Qbeisetting_Entity();
-                Qbei_Entity entity = new Qbei_Entity();
+            DataTable dt = new DataTable();
+            Qbeisetting_BL qubl = new Qbeisetting_BL();
+            Qbeisetting_Entity qe = new Qbeisetting_Entity();
+            Qbei_Entity entity = new Qbei_Entity();
 
+            qe.SiteID = 146;
+            dt = qubl.Qbei_Setting_Select(qe);
 
-                qe.SiteID = 19;
-                dt = qubl.Qbei_Setting_Select(qe);
-                
-                
-                int counter = 0;
-            label:
-                if (counter < 10)
+            int counter = 0;
+        label:
+            if (counter < 10)
+            {
+                string[] filelist = Directory.GetFiles(@"C:\Qbei_Log\146_Download\");
+                foreach (string file in filelist)
                 {
-                    string[] filelist = Directory.GetFiles(@"C:\Qbei_Log\146_Download\");
-                    foreach (string file in filelist)
-                    {
-                        string ext = Path.GetFileName(file);
-                        goto label1;
-                    }
-                    Thread.Sleep(8000);
-                    counter++;
-                    goto label;
+                    string ext = Path.GetFileName(file);
+                    goto label1;
                 }
+                Thread.Sleep(5000);
+                counter++;
+                goto label;
+            }
 
-            label1:
-                fun.WriteLog("File Already Have------", "019-");
+            fun.WriteLog("File Not Found-------", "146-");
+            Environment.Exit(0);
 
-                string[] flist = Directory.GetFiles(@"C:\Qbei_Log\146_Download\");
-                String filename = flist[0].ToString();
-                string csvPath = filename;
+        label1:
+            fun.WriteLog("File Already Exist-------", "146-");
 
-                DataTable dt146 = fun.GetDatatable("146");
-                fun.GetTotalCount("146");
-                int Count = dt146.Rows.Count;
+            string[] flist = Directory.GetFiles(@"C:\Qbei_Log\146_Download\");
+            String filename = flist[0].ToString();
+            string csvPath = filename;
 
-                if (dt146 == null)
-                {
+            DataTable dt146 = fun.GetDatatable("146");
+            fun.GetTotalCount("146");
+            int Count = dt146.Rows.Count;
+
+            if (dt146 == null)
+            {
                 qe.starttime = string.Empty;
                 qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 qe.flag = 2;
                 qe.site = 146;
                 fun.ChangeFlag(qe);
-                }
-             
-           
-                DataTable dtItem = XlsxToDataTable(csvPath);
-                int count = dtItem.Rows.Count;
+            }
 
-                fun.WriteLog("Download success match with datatable------", "146-");
-                fun.Qbei_Insert_XML(dt146, dtItem, "Qbei_Insert_Xml_146");
-                fun.WriteLog("Insert data to db success------", "146-");
-                qe.starttime = string.Empty;
-                qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                qe.flag = 2;
-                qe.site = 146;
-                fun.ChangeFlag(qe);
-            
+            DataTable dtItem = XlsxToDataTable(csvPath);
+            int count = dtItem.Rows.Count;
+
+            fun.WriteLog("Download success match with datatable------", "146-");
+            fun.Qbei_Insert_XML(dt146, dtItem, "Qbei_Insert_Xml_146");
+            fun.WriteLog("Insert data to db success------", "146-");
+            qe.starttime = string.Empty;
+            qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            qe.flag = 2;
+            qe.site = 146;
+            fun.MoveToTrash("146");
+            fun.ChangeFlag(qe);
+            Environment.Exit(0);
+
         }
         static DataTable XlsxToDataTable(string filePath)
         {
