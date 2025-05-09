@@ -5,9 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Threading;
-//using OpenQA.Selenium;
-//using OpenQA.Selenium.Firefox;
-//using OpenQA.Selenium.Chrome;
 using Common;
 using System.IO;
 using QbeiAgencies_BL;
@@ -96,7 +93,7 @@ namespace _146
         label:
             if (counter < 10)
             {
-                string[] filelist = Directory.GetFiles(@"C:\Qbei_Log\146_Download\");
+                string[] filelist = Directory.GetFiles(@"G:\共有ドライブ\40_物流部\Inventory\146");
                 foreach (string file in filelist)
                 {
                     string ext = Path.GetFileName(file);
@@ -114,7 +111,7 @@ namespace _146
         label1:
             fun.WriteLog("File Already Exist-------", "146-");
 
-            string[] flist = Directory.GetFiles(@"C:\Qbei_Log\146_Download\");
+            string[] flist = Directory.GetFiles(@"G:\共有ドライブ\40_物流部\Inventory\146");
             String filename = flist[0].ToString();
             string csvPath = filename;
 
@@ -141,7 +138,13 @@ namespace _146
             qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             qe.flag = 2;
             qe.site = 146;
-            fun.MoveToTrash("146");
+
+            foreach (string file in flist)
+            {
+                string ext = Path.GetExtension(file);
+                File.Move(file, @"G:\共有ドライブ\40_物流部\Inventory\146\BackUp\" + @"\" + Path.GetFileName(file));
+            }
+
             fun.ChangeFlag(qe);
             Environment.Exit(0);
 
