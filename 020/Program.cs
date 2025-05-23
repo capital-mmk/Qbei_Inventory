@@ -151,6 +151,7 @@ namespace _20ダイアテック_高難易度_
                 chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");
                 chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
                 chromeOptions.AddArguments("-no-sandbox");
+                chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false);
                 var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);
 
                 using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))
@@ -238,7 +239,7 @@ namespace _20ダイアテック_高難易度_
                                             {
 
                                                 entity.price = chrome.FindElement(By.ClassName("goods_detail_price_")).Text;
-                                                entity.price = entity.price.Replace("￥", string.Empty);
+                                                entity.price = entity.price.Replace("￥", string.Empty).Replace("（税抜）", string.Empty);
                                                 entity.price = ((int)(Convert.ToDouble(entity.price) * 0.75)).ToString();
 
                                                 string strQtyStatus = chrome.FindElement(By.XPath("/html/body/div[2]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]/form/div/div[1]/div/div/dl[" + (j) + "]/dd[2]/p")).Text.Replace("在庫：", string.Empty);
