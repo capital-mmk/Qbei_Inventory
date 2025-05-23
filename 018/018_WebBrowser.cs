@@ -348,7 +348,8 @@ namespace _018日直_ニチナオ_
                         //<remark Add Logic for Stockdate 2020/02/04 Start>
                         if (qtypath.Equals("予約"))
                         {
-                            entity.stockDate = "2100-02-01";
+                            //entity.stockDate = "2100-02-01";
+                            entity.stockDate = "2100-01-01";    // <remark  change 22/05/2025>
                         }
                         //</remark 2020/02/04 End>
                     }
