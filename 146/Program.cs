@@ -157,21 +157,44 @@ namespace _146
                 var worksheet = package.Workbook.Worksheets[0]; // First worksheet        
                 var dt = new DataTable();
                 // Assume the first row has column names        
-                foreach (var firstRowCell in worksheet.Cells[1, 1, 1, worksheet.Dimension.End.Column])
-                { dt.Columns.Add(firstRowCell.Text); }
+                //foreach (var firstRowCell in worksheet.Cells[1, 1, 1, worksheet.Dimension.End.Column])
+                //{ dt.Columns.Add(firstRowCell.Text); }
 
-                // Start loading data from row 2        
-                for (int rowNum = 2; rowNum <= worksheet.Dimension.End.Row; rowNum++)
+                //// Start loading data from row 2        
+                //for (int rowNum = 2; rowNum <= worksheet.Dimension.End.Row; rowNum++)
+                //{
+                //    var wsRow = worksheet.Cells[rowNum, 1, rowNum, worksheet.Dimension.End.Column];
+                //    DataRow row = dt.NewRow();
+                //    int i = 0;
+                //    foreach (var cell in wsRow)
+                //    {
+                //        row[i++] = cell.Text;
+                //    }
+                //    dt.Rows.Add(row);
+                //}
+
+                int colCount = worksheet.Dimension.End.Column;
+                int rowCount = worksheet.Dimension.End.Row;
+
+                // Add columns (including spaces)
+                for (int col = 1; col <= colCount; col++)
                 {
-                    var wsRow = worksheet.Cells[rowNum, 1, rowNum, worksheet.Dimension.End.Column];
-                    DataRow row = dt.NewRow();
-                    int i = 0;
-                    foreach (var cell in wsRow)
-                    {
-                        row[i++] = cell.Text;
-                    }
-                    dt.Rows.Add(row);
+                    string colName = worksheet.Cells[1, col].Text.Trim();
+                    dt.Columns.Add(colName);
                 }
+
+                // Add rows
+                for (int row = 2; row <= rowCount; row++)
+                {
+                    var newRow = dt.NewRow();
+                    for (int col = 1; col <= colCount; col++)
+                    {
+                        newRow[col - 1] = worksheet.Cells[row, col].Text;
+                    }
+                    dt.Rows.Add(newRow);
+                }
+
+
                 return dt;
             }
         }
