@@ -154,7 +154,7 @@ namespace _46トライスポーツ
                 chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
                 chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");
                 chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
-                chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false);//<remark Add Logic for ChormeDriver 2025/04/08 />
+                chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false);
                 chromeOptions.AddArguments("-no-sandbox");
                 var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);
                 using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))
@@ -241,6 +241,11 @@ namespace _46トライスポーツ
                                         fun.Qbei_Inserts(entity);
                                     }
 
+                                    else if (Message.Contains("在庫無し"))
+                                    {
+                                        fun.Qbei_ErrorInsert(46, fun.GetSiteName("046"), "OrderCode Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "046");
+                                    }
+
                                     else if (Message.Contains("独自商品コード"))
                                     {
                                         try
@@ -299,38 +304,76 @@ namespace _46トライスポーツ
                                                 {
                                                     int b = Convert.ToInt32(chrome.FindElements(By.XPath("/html/body/div[1]/div[4]/main/div/div[2]/div[3]/table/tbody/tr")).Count());
 
-                                                    for (int j = 2; j <= b; j++)
+                                                    if (b == 0)
                                                     {
+                                                        int a = Convert.ToInt32(chrome.FindElements(By.XPath("/html/body/div[1]/div[5]/main/div/div[2]/div[3]/table/tbody/tr")).Count());
 
-                                                        if (chrome.FindElement(By.XPath("/html/body/div[1]/div[4]/main/div/div[2]/div[3]/table/tbody/tr[" + (j) + "]/td[3]/div[1]/div/p")).Text.Contains(entity.orderCode))
+                                                        for (int j = 2; j <= a; j++)
                                                         {
-                                                            entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div[4]/main/div/div[2]/div[3]/table/tbody/tr[" + (j) + "]/td[3]/div[1]/div/div/p")).Text;
-                                                            entity.price = entity.price.Replace("円(税込)", string.Empty).Replace(",", string.Empty);
-
-                                                            if (Message.Contains("〇在庫あり") || Message.Contains("△残りわずか") || Message.Contains("×在庫なし"))
+                                                            if (chrome.FindElement(By.XPath("/html/body/div[1]/div[5]/main/div/div[2]/div[3]/table/tbody/tr[" + (j) + "]/td[3]/div[1]/div/p")).Text.Contains(entity.orderCode))
                                                             {
-                                                                qty = chrome.FindElement(By.XPath("/html/body/div[1]/div[4]/main/div/div[2]/div[3]/table/tbody/tr[" + (j) + "]/td[2]/p")).Text;
-                                                                entity.qtyStatus = qty.Equals("〇在庫あり") ? "good" : qty.Contains("△残りわずか") ? "small" : qty.Equals("×在庫なし") ? "empty" : "unknown status";
-                                                                entity.stockDate = qty.Equals("〇在庫あり") || qty.Contains("△残りわずか") ? "2100-01-01" : qty.Equals("×在庫なし") ? "2100-02-01" : "unknown date";
-                                                                entity.True_Quantity = qty;
-                                                                entity.True_StockDate = "項目無し";
+                                                                entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div[5]/main/div/div[2]/div[3]/table/tbody/tr[" + (j) + "]/td[3]/div[1]/div/div/p")).Text;
+                                                                entity.price = entity.price.Replace("円(税込)", string.Empty).Replace(",", string.Empty);
+
+                                                                if (Message.Contains("〇在庫あり") || Message.Contains("△残りわずか") || Message.Contains("×在庫なし"))
+                                                                {
+                                                                    qty = chrome.FindElement(By.XPath("/html/body/div[1]/div[5]/main/div/div[2]/div[3]/table/tbody/tr[" + (j) + "]/td[2]/p")).Text;
+                                                                    entity.qtyStatus = qty.Equals("〇在庫あり") ? "good" : qty.Contains("△残りわずか") ? "small" : qty.Equals("×在庫なし") ? "empty" : "unknown status";
+                                                                    entity.stockDate = qty.Equals("〇在庫あり") || qty.Contains("△残りわずか") ? "2100-01-01" : qty.Equals("×在庫なし") ? "2100-02-01" : "unknown date";
+                                                                    entity.True_Quantity = qty;
+                                                                    entity.True_StockDate = "項目無し";
+                                                                }
+
+                                                                else
+                                                                {
+                                                                    entity.qtyStatus = "empty";
+                                                                    entity.stockDate = "2100-02-01";
+                                                                    entity.True_Quantity = "項目無し";
+                                                                    entity.True_StockDate = "項目無し";
+                                                                }
+
+                                                                entity.purchaseURL = chrome.Url;
+                                                                fun.Qbei_Inserts(entity);
+                                                                break;
                                                             }
 
-                                                            else
-                                                            {
-                                                                entity.qtyStatus = "empty";
-                                                                entity.stockDate = "2100-02-01";
-                                                                entity.True_Quantity = "項目無し";
-                                                                entity.True_StockDate = "項目無し";
-                                                            }
-
-                                                            entity.purchaseURL = chrome.Url;
-                                                            fun.Qbei_Inserts(entity);
-                                                            break;
                                                         }
 
-
                                                     }
+                                                    else
+                                                    {
+                                                        for (int j = 2; j <= b; j++)
+                                                        {
+                                                            if (chrome.FindElement(By.XPath("/html/body/div[1]/div[4]/main/div/div[2]/div[3]/table/tbody/tr[" + (j) + "]/td[3]/div[1]/div/p")).Text.Contains(entity.orderCode))
+                                                            {
+                                                                entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div[4]/main/div/div[2]/div[3]/table/tbody/tr[" + (j) + "]/td[3]/div[1]/div/div/p")).Text;
+                                                                entity.price = entity.price.Replace("円(税込)", string.Empty).Replace(",", string.Empty);
+
+                                                                if (Message.Contains("〇在庫あり") || Message.Contains("△残りわずか") || Message.Contains("×在庫なし"))
+                                                                {
+                                                                    qty = chrome.FindElement(By.XPath("/html/body/div[1]/div[4]/main/div/div[2]/div[3]/table/tbody/tr[" + (j) + "]/td[2]/p")).Text;
+                                                                    entity.qtyStatus = qty.Equals("〇在庫あり") ? "good" : qty.Contains("△残りわずか") ? "small" : qty.Equals("×在庫なし") ? "empty" : "unknown status";
+                                                                    entity.stockDate = qty.Equals("〇在庫あり") || qty.Contains("△残りわずか") ? "2100-01-01" : qty.Equals("×在庫なし") ? "2100-02-01" : "unknown date";
+                                                                    entity.True_Quantity = qty;
+                                                                    entity.True_StockDate = "項目無し";
+                                                                }
+
+                                                                else
+                                                                {
+                                                                    entity.qtyStatus = "empty";
+                                                                    entity.stockDate = "2100-02-01";
+                                                                    entity.True_Quantity = "項目無し";
+                                                                    entity.True_StockDate = "項目無し";
+                                                                }
+
+                                                                entity.purchaseURL = chrome.Url;
+                                                                fun.Qbei_Inserts(entity);
+                                                                break;
+                                                            }
+
+                                                        }
+                                                    }
+
                                                 }
 
                                                 else
@@ -364,7 +407,6 @@ namespace _46トライスポーツ
                                                             fun.Qbei_Inserts(entity);
                                                             break;
                                                         }
-
 
                                                     }
                                                 }
@@ -412,8 +454,7 @@ namespace _46トライスポーツ
 
                                         catch
                                         {
-
-                                            if (chrome.FindElement(By.CssSelector(".sku > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(3) > div:nth-child(1) > div:nth-child(1) > p:nth-child(1)")).Text.Contains(entity.orderCode))
+                                            if (chrome.FindElement(By.XPath("/html/body/div[1]/div[3]/main/div/div[2]/div[3]/table/tbody")).Text.Contains(entity.orderCode))
                                             {
                                                 int n = Convert.ToInt32(chrome.FindElements(By.XPath("/html/body/div[1]/div[3]/main/div/div[2]/div[3]/table/tbody/tr")).Count());
 
@@ -446,48 +487,39 @@ namespace _46トライスポーツ
                                                         break;
                                                     }
 
-
-
-                                                }
-                                            }
-
-
-                                            else
-                                            {
-                                                int c = Convert.ToInt32(chrome.FindElements(By.XPath("/html/body/div[1]/div[3]/main/div/div[2]/div[3]/table/tbody/tr")).Count());
-
-                                                for (int i = 2; i <= c; i++)
-                                                {
-                                                    if (chrome.FindElement(By.XPath("/html/body/div[1]/div[3]/main/div/div[2]/div[3]/table/tbody/tr[" + (i) + "]/td[1]/div")).Text.Contains(entity.orderCode))
+                                                    else
                                                     {
-                                                        entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div[3]/main/div/div[2]/div[3]/table/tbody/tr[" + (i) + "]/td[3]/div[1]/div/div/p")).Text;
-                                                        entity.price = entity.price.Replace("円(税込)", string.Empty).Replace(",", string.Empty);
-
-                                                        if (Message.Contains("〇在庫あり") || Message.Contains("△残りわずか") || Message.Contains("×在庫なし"))
+                                                        if (chrome.FindElement(By.XPath("/html/body/div[1]/div[3]/main/div/div[2]/div[3]/table/tbody/tr[" + (j) + "]/td[1]/div")).Text.Contains(entity.orderCode))
                                                         {
-                                                            qty = chrome.FindElement(By.XPath("/html/body/div[1]/div[3]/main/div/div[2]/div[3]/table/tbody/tr[" + (i) + "]/td[2]/p")).Text;
-                                                            entity.qtyStatus = qty.Equals("〇在庫あり") ? "good" : qty.Contains("△残りわずか") ? "small" : qty.Equals("×在庫なし") ? "empty" : "unknown status";
-                                                            entity.stockDate = qty.Equals("〇在庫あり") || qty.Contains("△残りわずか") ? "2100-01-01" : qty.Equals("×在庫なし") ? "2100-02-01" : "unknown date";
-                                                            entity.True_Quantity = qty;
-                                                            entity.True_StockDate = "項目無し";
-                                                        }
+                                                            entity.price = chrome.FindElement(By.XPath("/html/body/div[1]/div[3]/main/div/div[2]/div[3]/table/tbody/tr[" + (j) + "]/td[3]/div[1]/div/div/p")).Text;
+                                                            entity.price = entity.price.Replace("円(税込)", string.Empty).Replace(",", string.Empty);
 
-                                                        else
-                                                        {
-                                                            entity.qtyStatus = "empty";
-                                                            entity.stockDate = "2100-02-01";
-                                                            entity.True_Quantity = "項目無し";
-                                                            entity.True_StockDate = "項目無し";
-                                                        }
+                                                            if (Message.Contains("〇在庫あり") || Message.Contains("△残りわずか") || Message.Contains("×在庫なし"))
+                                                            {
+                                                                qty = chrome.FindElement(By.XPath("/html/body/div[1]/div[3]/main/div/div[2]/div[3]/table/tbody/tr[" + (j) + "]/td[2]/p")).Text;
+                                                                entity.qtyStatus = qty.Equals("〇在庫あり") ? "good" : qty.Contains("△残りわずか") ? "small" : qty.Equals("×在庫なし") ? "empty" : "unknown status";
+                                                                entity.stockDate = qty.Equals("〇在庫あり") || qty.Contains("△残りわずか") ? "2100-01-01" : qty.Equals("×在庫なし") ? "2100-02-01" : "unknown date";
+                                                                entity.True_Quantity = qty;
+                                                                entity.True_StockDate = "項目無し";
+                                                            }
 
-                                                        entity.purchaseURL = chrome.Url;
-                                                        fun.Qbei_Inserts(entity);
-                                                        break;
+                                                            else
+                                                            {
+                                                                entity.qtyStatus = "empty";
+                                                                entity.stockDate = "2100-02-01";
+                                                                entity.True_Quantity = "項目無し";
+                                                                entity.True_StockDate = "項目無し";
+                                                            }
+
+                                                            entity.purchaseURL = chrome.Url;
+                                                            fun.Qbei_Inserts(entity);
+                                                            break;
+                                                        }
                                                     }
+
                                                 }
-
-
                                             }
+
                                         }
                                     }
 
