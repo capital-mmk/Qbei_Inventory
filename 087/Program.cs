@@ -42,12 +42,6 @@ namespace _87ダートフリーク
 {
     class Program
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <remark>
-        /// Data Table and Common Function and Field
-        /// </remark>
 
         Qbeisetting_BL blQbei = new Qbeisetting_BL();
         Qbei_Entity entity = new Qbei_Entity();
@@ -59,27 +53,12 @@ namespace _87ダートフリーク
         private static int i;
         public static string ordercode;
 
-        /// <summary>
-        /// System(Start).
-        /// <remark>
-        /// Continue to testflag process.
-        /// </remark>
-        /// </summary>
-        /// <param name="args">constant string</param>
+
         static void Main(string[] args)
         {
             testflag();
         }
-
-        /// <summary>
-        /// testflag processing.
-        /// </summary>
-        ///<remark>
-        ///"0,1,2"Flage Number of Check. 
-        ///"0" is Start Process.
-        ///"1" is Processing.
-        ///"2" is End Process.
-        ///</remark>
+        
         public static void testflag()
         {
             Qbeisetting_Entity entitySetting = new Qbeisetting_Entity();
@@ -91,24 +70,13 @@ namespace _87ダートフリーク
             dtSetting = fun.SelectFlag(087);
             intFlag = int.Parse(dtSetting.Rows[0]["FlagIsFinished"].ToString());
 
-
-
-            /// <summary>
-            /// Flag Number of Check.
-            /// </summary>
-            /// <remark>
-            /// Check to flag is "0" or "1" or "2".
-            /// when flag is 0,Change to flag is 1 and Continue to StartRun Process.
-            /// </remark>
+            
             if (intFlag == 0)
             {
                 fun.ChangeFlag(entitySetting);
                 StartRun();
             }
-
-            ///<remark>
-            ///when flag is 1,To Continue to StartRun Process.
-            ///</remark>
+            
             else if (intFlag == 1)
             {
                 fun.deleteData(87);
@@ -120,14 +88,7 @@ namespace _87ダートフリーク
                 Environment.Exit(0);
             }
         }
-
-
-        /// <summary>
-        /// Site and Data Table.
-        /// </summary>
-        /// <remark>
-        /// Inspection and processing to Data and Data Table.
-        /// </remark>
+        
         public static void StartRun()
         {
             DataTable dt087 = new DataTable();
