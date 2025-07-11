@@ -232,7 +232,7 @@ namespace _110_Chrome
 
                                                         if (stock.Contains("入荷予定"))
                                                         {
-                                                            entity.stockDate = stock.Replace("入荷予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
+                                                            entity.stockDate = stock.Replace("上旬", "10").Replace("入荷予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
 
                                                             if (entity.stockDate.Contains("個"))
                                                             {
@@ -274,7 +274,7 @@ namespace _110_Chrome
 
                                         catch
                                         {
-                                            int c = chrome.FindElements(By.XPath("/html/body/center/center/div/div[2]/div[2]/table/tbody/tr[1]/td[3]/form[2]/div/div[1]/div[2]/div[1]/table/tbody/tr[5]/td/div/table[2]/tbody")).Count(); ///tr
+                                            int c = chrome.FindElements(By.XPath("/html/body/center/center/div/div[2]/div[2]/table/tbody/tr[1]/td[3]/form[2]/div/div[1]/div[2]/div[1]/table/tbody/tr[5]/td/div/table[2]/tbody/tr")).Count(); ///tr
                                             if (c != 0)
                                             {
                                                 for (int i = 1; i <= c; i++)
@@ -290,7 +290,7 @@ namespace _110_Chrome
 
                                                         if (stock.Contains("入荷予定"))
                                                         {
-                                                            entity.stockDate = stock.Replace("入荷予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
+                                                            entity.stockDate = stock.Replace("上旬", "10").Replace("入荷予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
 
                                                             if (entity.stockDate.Contains("個"))
                                                             {
@@ -338,7 +338,7 @@ namespace _110_Chrome
 
                                                         if (stock.Contains("入荷予定"))
                                                         {
-                                                            entity.stockDate = stock.Replace("入荷予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
+                                                            entity.stockDate = stock.Replace("上旬", "10").Replace("入荷予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
 
                                                             if (entity.stockDate.Contains("個"))
                                                             {
@@ -373,17 +373,94 @@ namespace _110_Chrome
                                         }
 
                                     }
+
+                                    else if (chrome.FindElement(By.CssSelector("#r_searchList")).Text.Contains(entity.orderCode))
+                                    {
+                                        string n = chrome.FindElement(By.CssSelector(".total")).Text.Replace("全", string.Empty).Replace("件", string.Empty);
+                                        int m = Convert.ToInt32(n);
+
+                                        for (int j = 1; j <= m; j++)
+                                        {
+
+                                            if (chrome.FindElement(By.XPath("/html/body/center/center/div/div[2]/div[2]/table/tbody/tr[1]/td[3]/form[2]/div/div[4]/ul/li[" + (j) + "]/div/div[2]/div[1]/ul/li[3]")).Text.Contains(entity.orderCode))
+                                            {
+                                                chrome.FindElement(By.XPath("/html/body/center/center/div/div[2]/div[2]/table/tbody/tr[1]/td[3]/form[2]/div/div[4]/ul/li[" + (j) + "]/div/div[2]/p[1]/a")).Click();
+                                                goto label;
+                                            }
+
+                                        }
+                                    label:
+
+                                        Thread.Sleep(2000);
+                                        if (chrome.FindElement(By.XPath("/html/body/center/center/div/div[2]/div[2]/table/tbody/tr[1]/td[3]/form[2]/div/div[1]/div[2]/div[1]/table/tbody/tr[6]/td/div/table[2]/tbody")).Text.Contains(entity.orderCode))
+                                        {
+                                            int c = chrome.FindElements(By.XPath("/html/body/center/center/div/div[2]/div[2]/table/tbody/tr[1]/td[3]/form[2]/div/div[1]/div[2]/div[1]/table/tbody/tr[6]/td/div/table[2]/tbody/tr")).Count();
+                                            for (int i = 1; i <= c; i++)
+                                            {
+                                                if (chrome.FindElement(By.XPath("/html/body/center/center/div/div[2]/div[2]/table/tbody/tr[1]/td[3]/form[2]/div/div[1]/div[2]/div[1]/table/tbody/tr[6]/td/div/table[2]/tbody/tr[" + (i) + "]/th")).Text.Contains(entity.orderCode))
+                                                {
+                                                    entity.price = chrome.FindElement(By.XPath("/html/body/center/center/div/div[2]/div[2]/table/tbody/tr[1]/td[3]/form[2]/div/div[1]/div[2]/div[1]/table/tbody/tr[6]/td/div/table[2]/tbody/tr[" + (i) + "]/td[1]/span")).Text;
+                                                    entity.price = entity.price.Replace(",", string.Empty);
+
+                                                    string stock = chrome.FindElement(By.XPath("/html/body/center/center/div/div[2]/div[2]/table/tbody/tr[1]/td[3]/form[2]/div/div[1]/div[2]/div[1]/table/tbody/tr[6]/td/div/table[2]/tbody/tr[" + (i) + "]/td[2]")).Text;
+                                                    entity.True_Quantity = stock;
+                                                    entity.qtyStatus = stock.Contains("○") || stock.Contains("〇") ? "good" : stock.Contains("個") && stock.Contains("残り僅か") ? "small" : stock.Contains("個") && stock.Contains("入荷予定") ? "small" : stock.Contains("在庫在") || stock.Contains("在庫有") ? "small" : stock.Contains("在庫なし") ? "empty" : "unknown status";
+
+                                                    if (stock.Contains("入荷予定"))
+                                                    {
+                                                        entity.stockDate = stock.Replace("上旬", "10").Replace("入荷予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
+
+                                                        if (entity.stockDate.Contains("個"))
+                                                        {
+                                                            string Item = entity.stockDate;
+                                                            int item = entity.stockDate.IndexOf('個');
+                                                            string CutItem = Item.Substring(item, Item.Length - item).Replace("個", String.Empty);
+
+                                                            DateTime da = Convert.ToDateTime(CutItem);
+                                                            entity.stockDate = da.ToString("yyyy-MM-dd");
+                                                        }
+
+                                                        DateTime d = Convert.ToDateTime(entity.stockDate);
+                                                        entity.stockDate = d.ToString("yyyy-MM-dd");
+                                                    }
+
+                                                    else
+                                                    {
+                                                        entity.stockDate = entity.qtyStatus.Equals("good") || entity.qtyStatus.Equals("small") ? "2100-01-01" : entity.qtyStatus.Equals("empty") ? "2100-02-01" : "unknown status";
+
+                                                    }
+
+                                                    entity.True_StockDate = "Not Found";
+                                                    string current_url = chrome.Url;
+                                                    entity.purchaseURL = current_url;
+                                                    fun.Qbei_Inserts(entity);
+
+                                                    break;
+                                                }
+                                            }
+
+                                        }
+
+
+                                        else
+                                        {
+                                            fun.Qbei_ErrorInsert(110, fun.GetSiteName("110"), "Order Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "110");
+                                        }
+
+
+
+                                    }
+
                                     else
                                     {
-
                                         fun.Qbei_ErrorInsert(110, fun.GetSiteName("110"), "Order Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "110");
                                     }
 
                                 }
 
+
                                 else
                                 {
-
                                     fun.Qbei_ErrorInsert(110, fun.GetSiteName("110"), "Order Not Found!", entity.janCode, entity.orderCode, 3, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "110");
                                 }
 
