@@ -227,6 +227,7 @@ namespace _058リンエイ
 
                                     if (!string.IsNullOrWhiteSpace(entity.orderCode))
                                     {
+                                        Thread.Sleep(500);
                                         body = chrome.FindElement(By.TagName("body")).Text;
                                         if (body.Contains("検索結果はありません。"))
                                         {
@@ -258,6 +259,7 @@ namespace _058リンエイ
                                                 chrome.FindElement(By.Id("search-button")).Click();
                                             }
                                             body = chrome.FindElement(By.TagName("body")).Text;
+                                            Thread.Sleep(500);
                                             if (body.Contains("検索結果はありません。"))
                                             {
                                                 entity.qtyStatus = "empty";
@@ -273,7 +275,7 @@ namespace _058リンエイ
                                                 {
                                                     entity.price = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/th[3]")).Text.Replace("円", "").Replace(",", "").Replace("@", "").Trim();
                                                     string stock = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr/th[6]")).GetAttribute("innerHTML").ToString().Trim();
-                                                    entity.qtyStatus = stock.Equals("○") ? "good" : stock.Equals("▲") ? "small" : stock.Equals("×") ? "empty" : stock.Contains("入荷予定") ? "empty" : stock.Equals("取り寄せ") ? "empty" : stock.Equals("廃番") ? "empty" : "unknown status";
+                                                    entity.qtyStatus = stock.Equals("○") ? "good" : stock.Equals("▲") ? "small" : stock.Equals("×") ? "empty" : stock.Contains("入荷予定") ? "empty" : stock.Contains("入荷待ち") ? "empty" : stock.Equals("取り寄せ") ? "empty" : stock.Equals("廃番") ? "empty" : "unknown status";
                                                     entity.stockDate = entity.qtyStatus.Equals("good") || entity.qtyStatus.Equals("small") ? "2100-01-01" : entity.qtyStatus.Equals("empty") ? "2100-02-01" : "unknown status";
                                                     entity.True_StockDate = "項目無し";
                                                     entity.True_Quantity = stock;
@@ -295,7 +297,7 @@ namespace _058リンエイ
                                                     {
                                                         entity.price = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr[" + (i) + "]/th[3]")).Text.Replace("円", "").Replace(",", "").Replace("@", "").Trim();
                                                         string stock = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr[" + (i) + "]/th[6]")).GetAttribute("innerHTML").ToString().Trim();
-                                                        entity.qtyStatus = stock.Equals("○") ? "good" : stock.Equals("▲") ? "small" : stock.Equals("×") ? "empty" : stock.Contains("入荷予定") ? "empty" : stock.Equals("取り寄せ") ? "empty" : stock.Equals("廃番") ? "empty" : "unknown status";
+                                                        entity.qtyStatus = stock.Equals("○") ? "good" : stock.Equals("▲") ? "small" : stock.Equals("×") ? "empty" : stock.Contains("入荷予定") ? "empty" : stock.Contains("入荷待ち") ? "empty" : stock.Equals("取り寄せ") ? "empty" : stock.Equals("廃番") ? "empty" : "unknown status";
                                                         entity.stockDate = entity.qtyStatus.Equals("good") || entity.qtyStatus.Equals("small") ? "2100-01-01" : entity.qtyStatus.Equals("empty") ? "2100-02-01" : "unknown status";
                                                         entity.True_StockDate = "項目無し";
                                                         entity.True_Quantity = stock;
