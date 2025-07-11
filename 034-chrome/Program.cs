@@ -28,10 +28,11 @@ namespace _034_chrome
         public static Qbeisetting_Entity qe = new Qbeisetting_Entity();
         public static CommonFunction fun = new CommonFunction();
         public static DataTable dt034 = new DataTable();
-        public static DataTable dtTable034 = new DataTable();
         public static Qbei_Entity entity = new Qbei_Entity();
         public static int i = 0;
         public static ChromeOptions option = new ChromeOptions();
+        static string strParam = string.Empty;
+        public static string st = string.Empty;
 
         /// <summary>
         /// System(Start).
@@ -61,7 +62,7 @@ namespace _034_chrome
                 qe.site = 34;
                 qe.flag = 1;
                 DataTable dtflag = fun.SelectFlag(34);
-                int flag =Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
+                int flag = Convert.ToInt32(dtflag.Rows[0]["FlagIsFinished"].ToString());
 
                 /// <summary>
                 /// Flag Number of Check.
@@ -112,11 +113,27 @@ namespace _034_chrome
                 fun.CreateFileAndFolder();
                 fun.Qbei_Delete(34);
                 fun.Qbei_ErrorDelete(34);
-                dtTable034 = fun.GetDatatable("034");
-                //dt034 = fun.GetOrderData(dt034, "https://sips.shimano.co.jp/front/g/g", "034", string.Empty);
-                dt034 = GetDataDayOfweek(dtTable034);
+                if (String.IsNullOrEmpty(strParam))
+                {
+                    dt034 = fun.GetDatatable("034");
+                }
+                else
+                    dt034 = fun.GetRerunData("034");
                 fun.GetTotalCount("034");
-                ReadData();
+
+                if (dt034 != null)
+                {
+                    ReadData();
+                }
+                else
+                {
+                    qe.site = 34;
+                    qe.flag = 2;
+                    qe.starttime = string.Empty;
+                    qe.endtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    fun.ChangeFlag(qe);
+                    Environment.Exit(0);
+                }
             }
             catch (Exception ex)
             {
@@ -599,102 +616,102 @@ namespace _034_chrome
         /// </summary>
 
 
-        public static DataTable GetDataDayOfweek(DataTable dtemp)
-        {
-            DataTable dt = new DataTable();
-            DataTable dtrows = new DataTable(); dtrows = null;
-            dt = dtemp.AsEnumerable().OrderBy(x => x.Field<string>("JANコード")).CopyToDataTable();
-            DayOfWeek day = DateTime.Now.DayOfWeek;
-            string dayToday = day.ToString();
-            switch (dayToday)
-            {
-                case "Monday"   :
-                    if (dt.Rows.Count > 0)
-                    {
-                        dtrows = (from r in dt.AsEnumerable()
-                                  select r).Skip(0).Take(3000).CopyToDataTable(); //dt = dt.AsEnumerable().Skip(0).Take(50).CopyToDataTable(); break;var rows = table.AsEnumerable().Skip(19).Take(31);
-                    }
-                    break;
+        //public static DataTable GetDataDayOfweek(DataTable dtemp)
+        //{
+        //    DataTable dt = new DataTable();
+        //    DataTable dtrows = new DataTable(); dtrows = null;
+        //    dt = dtemp.AsEnumerable().OrderBy(x => x.Field<string>("JANコード")).CopyToDataTable();
+        //    DayOfWeek day = DateTime.Now.DayOfWeek;
+        //    string dayToday = day.ToString();
+        //    switch (dayToday)
+        //    {
+        //        case "Monday"   :
+        //            if (dt.Rows.Count > 0)
+        //            {
+        //                dtrows = (from r in dt.AsEnumerable()
+        //                          select r).Skip(0).Take(3000).CopyToDataTable(); //dt = dt.AsEnumerable().Skip(0).Take(50).CopyToDataTable(); break;var rows = table.AsEnumerable().Skip(19).Take(31);
+        //            }
+        //            break;
 
-                case "Tuesday":
-                    if (dt.Rows.Count > 2900)
-                    {
-                        dtrows = (from r in dt.AsEnumerable()
-                                  select r).Skip(2900).Take(3100).CopyToDataTable();
-                    }
-                    else
-                    {
-                        dtrows = (from r in dt.AsEnumerable()
-                                  select r).Skip(0).Take(dt.Rows.Count).CopyToDataTable();
-                    }
-                    break; 
+        //        case "Tuesday":
+        //            if (dt.Rows.Count > 2900)
+        //            {
+        //                dtrows = (from r in dt.AsEnumerable()
+        //                          select r).Skip(2900).Take(3100).CopyToDataTable();
+        //            }
+        //            else
+        //            {
+        //                dtrows = (from r in dt.AsEnumerable()
+        //                          select r).Skip(0).Take(dt.Rows.Count).CopyToDataTable();
+        //            }
+        //            break; 
 
-                case "Wednesday":
-                    if (dt.Rows.Count > 5900)
-                    {
-                        dtrows = (from r in dt.AsEnumerable()
-                                  select r).Skip(5900).Take(3100).CopyToDataTable();
-                    }
-                    else
-                    {
-                        dtrows = (from r in dt.AsEnumerable()
-                                  select r).Skip(5900 - dt.Rows.Count).Take(dt.Rows.Count).CopyToDataTable();
-                    }
-                    break; 
+        //        case "Wednesday":
+        //            if (dt.Rows.Count > 5900)
+        //            {
+        //                dtrows = (from r in dt.AsEnumerable()
+        //                          select r).Skip(5900).Take(3100).CopyToDataTable();
+        //            }
+        //            else
+        //            {
+        //                dtrows = (from r in dt.AsEnumerable()
+        //                          select r).Skip(5900 - dt.Rows.Count).Take(dt.Rows.Count).CopyToDataTable();
+        //            }
+        //            break; 
 
-                case "Thursday":
-                    if (dt.Rows.Count > 8900)
-                    {
-                        dtrows = (from r in dt.AsEnumerable()
-                                  select r).Skip(8900).Take(3100).CopyToDataTable();
-                    }
-                    else
-                    {
-                        dtrows = (from r in dt.AsEnumerable()
-                                  select r).Skip(8900 - dt.Rows.Count).Take(dt.Rows.Count).CopyToDataTable();
-                    }
-                    break; 
+        //        case "Thursday":
+        //            if (dt.Rows.Count > 8900)
+        //            {
+        //                dtrows = (from r in dt.AsEnumerable()
+        //                          select r).Skip(8900).Take(3100).CopyToDataTable();
+        //            }
+        //            else
+        //            {
+        //                dtrows = (from r in dt.AsEnumerable()
+        //                          select r).Skip(8900 - dt.Rows.Count).Take(dt.Rows.Count).CopyToDataTable();
+        //            }
+        //            break; 
 
-                case "Friday":
-                    if (dt.Rows.Count > 11900)
-                    {
-                        dtrows = (from r in dt.AsEnumerable()
-                                  select r).Skip(11900).Take(3100).CopyToDataTable();
-                    }
-                    else
-                    {
-                        dtrows = (from r in dt.AsEnumerable()
-                                  select r).Skip(11900 - dt.Rows.Count).Take(dt.Rows.Count).CopyToDataTable();
-                    }
-                    break; 
+        //        case "Friday":
+        //            if (dt.Rows.Count > 11900)
+        //            {
+        //                dtrows = (from r in dt.AsEnumerable()
+        //                          select r).Skip(11900).Take(3100).CopyToDataTable();
+        //            }
+        //            else
+        //            {
+        //                dtrows = (from r in dt.AsEnumerable()
+        //                          select r).Skip(11900 - dt.Rows.Count).Take(dt.Rows.Count).CopyToDataTable();
+        //            }
+        //            break; 
 
-                case "Saturday":
-                    if (dt.Rows.Count > 14900)
-                    {
-                        dtrows = (from r in dt.AsEnumerable()
-                                  select r).Skip(14900).Take(3100).CopyToDataTable();
-                    }
-                    else
-                    {
-                        dtrows = (from r in dt.AsEnumerable()
-                                  select r).Skip(14900 - dt.Rows.Count).Take(dt.Rows.Count).CopyToDataTable();
-                    }
-                    break; 
+        //        case "Saturday":
+        //            if (dt.Rows.Count > 14900)
+        //            {
+        //                dtrows = (from r in dt.AsEnumerable()
+        //                          select r).Skip(14900).Take(3100).CopyToDataTable();
+        //            }
+        //            else
+        //            {
+        //                dtrows = (from r in dt.AsEnumerable()
+        //                          select r).Skip(14900 - dt.Rows.Count).Take(dt.Rows.Count).CopyToDataTable();
+        //            }
+        //            break; 
 
-                case "Sunday":
-                    if (dt.Rows.Count > 17900)
-                    {
-                        dtrows = (from r in dt.AsEnumerable()
-                                  select r).Skip(17900).Take(dt.Rows.Count).CopyToDataTable();
-                    }
-                    else
-                    {
-                        dtrows = (from r in dt.AsEnumerable()
-                                  select r).Skip(17900 - dt.Rows.Count).Take(dt.Rows.Count).CopyToDataTable();
-                    }
-                    break; 
-            }
-             return dtrows;
-        }
+        //        case "Sunday":
+        //            if (dt.Rows.Count > 17900)
+        //            {
+        //                dtrows = (from r in dt.AsEnumerable()
+        //                          select r).Skip(17900).Take(dt.Rows.Count).CopyToDataTable();
+        //            }
+        //            else
+        //            {
+        //                dtrows = (from r in dt.AsEnumerable()
+        //                          select r).Skip(17900 - dt.Rows.Count).Take(dt.Rows.Count).CopyToDataTable();
+        //            }
+        //            break; 
+        //    }
+        //     return dtrows;
+        //}
     }
 }
