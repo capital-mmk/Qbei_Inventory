@@ -151,6 +151,7 @@ namespace _20ダイアテック_高難易度_
                 chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");
                 chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
                 chromeOptions.AddArguments("-no-sandbox");
+                chromeOptions.AddArgument("--start-maximized");
                 chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false);
                 var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);
 
@@ -249,7 +250,7 @@ namespace _20ダイアテック_高難易度_
                                                 if (strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || strQtyStatus.Contains('〇') || strQtyStatus.Contains("未定") || fun.IsGood(strQtyStatus) || strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus))
                                                     entity.stockDate = "2100-01-01";
 
-                                                else if (strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち")  || strQtyStatus.Contains("次回入荷限り") || strQtyStatus.Contains("新型切替") || strQtyStatus.Contains("受注停止中"))
+                                                else if (strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("次回入荷限り") || strQtyStatus.Contains("新型切替") || strQtyStatus.Contains("受注停止中"))
                                                     entity.stockDate = "2100-02-01";
 
                                                 else if (strQtyStatus.Contains("上旬") || strQtyStatus.Contains("中旬") || strQtyStatus.Contains("下旬"))
@@ -268,7 +269,7 @@ namespace _20ダイアテック_高難易度_
 
                                                 entity.True_StockDate = "項目無し";
                                                 entity.True_Quantity = strQtyStatus;
-                                                entity.purchaseURL = dt020.Rows[i]["purchaserURL"].ToString();
+                                                entity.purchaseURL = chrome.Url;
                                                 fun.Qbei_Inserts(entity);
 
                                                 break;
