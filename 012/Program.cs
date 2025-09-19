@@ -245,19 +245,19 @@ namespace _12カワシマ
                                             entity.stockDate = qty.Equals("○") || qty.Equals("△") ? "2100-01-01" : qty.Equals("終了") || qty.Equals("×") || qty.Equals("×(終了)") || qty.Equals("× 残 6") ? "2100-02-01" : "unknown date";
                                             entity.True_Quantity = qty;
 
-                                            if (qty == "×")   // <remark check stock quantity × and 予 約 10-07-2025>
-                                            {
-                                                if (chrome.FindElement(By.CssSelector(".btn_cart_")).GetAttribute("order_type") == "reserve")
-                                                {
-                                                    entity.qtyStatus = "inquiry";
-                                                    entity.stockDate = "2100-01-01";
-                                                }
-                                                else
-                                                {
-                                                    entity.qtyStatus = "empty";
-                                                    entity.stockDate = "2100-02-01";
-                                                }
-                                            }
+                                            //if (qty == "×")   // <remark check stock quantity × and 予 約 10-07-2025>
+                                            //{
+                                            //    if (chrome.FindElement(By.CssSelector(".btn_cart_")).GetAttribute("order_type") == "reserve")
+                                            //    {
+                                            //        entity.qtyStatus = "inquiry";
+                                            //        entity.stockDate = "2100-01-01";
+                                            //    }
+                                            //    else
+                                            //    {
+                                            //        entity.qtyStatus = "empty";
+                                            //        entity.stockDate = "2100-02-01";
+                                            //    }
+                                            //}    <remark close stock quantity check  18-09-2025>
 
                                             entity.purchaseURL = dt012.Rows[i]["purchaserURL"].ToString();
                                             if (entity.purchaseURL == "")
