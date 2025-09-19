@@ -342,7 +342,7 @@ namespace _57モトクロス
                             entity.stockDate = entity.stockDate == null ? string.Empty : entity.stockDate;
                             string qty = fun.GetElement("span", "MainContent_gvSyohin_lblzaikojokyo_0", "ID", webBrowser1).InnerText;
 
-                            entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") || fun.IsNumber(qty) ? "small" : qty.Contains("×") ? "empty" : qty.Contains("☆") ? "inquiry" : "unknown status";
+                            entity.qtyStatus = qty.Contains("○") ? "good" : qty.Contains("△") || fun.IsNumber(qty) ? "small" : qty.Contains("×") || qty.Contains("☆") ? "empty" : "unknown status"; // : qty.Contains("☆") ? "inquiry"  //<remark change inquiry to empty  18-09-2025>
                             entity.price = fun.GetElement("span", "MainContent_gvSyohin_lbltanka_0", "ID", webBrowser1).InnerText.Replace("円", string.Empty).Replace(",", string.Empty);
                             string day = string.Empty;
                             string month = string.Empty;
@@ -361,7 +361,7 @@ namespace _57モトクロス
                             }
                             //</remark 2021/01/06>
 
-                            if (qty.Contains("×"))
+                            if (qty.Contains("×") || qty.Contains("☆"))  // < remark add 'qty.Contains("☆")'  18 - 09 - 2025 > 
                             {
                                 entity.stockDate = "2100-02-01";
                             }
@@ -372,10 +372,10 @@ namespace _57モトクロス
                                     entity.stockDate = "2100-02-01";
                                 }
                                 else
-                                    entity.stockDate = qty.Contains("○") || qty.Contains("△") || fun.IsNumber(qty) || qty.Contains("☆") ? "2100-01-01" : "unknown date";
+                                    entity.stockDate = qty.Contains("○") || qty.Contains("△") || fun.IsNumber(qty)  ? "2100-01-01" : "unknown date";  // < remark delete  || 'qty.Contains("☆")'   18 - 09 - 2025 > 
                             }
 
-                            else if (qty.Contains("○") || qty.Contains("△") || fun.IsNumber(qty) || qty.Contains("☆"))
+                            else if (qty.Contains("○") || qty.Contains("△") || fun.IsNumber(qty)) //  < remark delete  '|| qty.Contains("☆")'   18 - 09 - 2025 > 
                             {
                                 if (entity.stockDate.Contains("ごろ"))
                                 {
