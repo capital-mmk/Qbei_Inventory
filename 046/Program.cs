@@ -174,7 +174,8 @@ namespace _46トライスポーツ
                     chrome.Url = fun.url;
                     Thread.Sleep(4000);
 
-                    chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/aside/div[3]/section[1]/div/ul/li[1]/a")).Click();
+                    //chrome.FindElement(By.XPath("/html/body/div[1]/div[2]/aside/div[3]/section[1]/div/ul/li[1]/a")).Click();
+                    chrome.FindElement(By.XPath("/html/body/div[1]/div/div/div/p/a")).Click();
 
                     string username = dt.Rows[0]["UserName"].ToString();
                     chrome.FindElement(By.Name("id")).SendKeys(username);
