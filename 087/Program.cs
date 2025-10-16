@@ -216,15 +216,15 @@ namespace _87ダートフリーク
                                         try
                                         {
                                             qty = chrome.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]/div/form/table/tbody/tr[2]/td/div/table/tbody/tr/td[10]/font/b")).Text;
-                                            entity.qtyStatus = qty.Equals("◎") ? "good" : qty.Equals("○") || qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("※") ? "empty" : "invalid status code";
-                                            entity.stockDate = qty.Equals("◎") || qty.Equals("○") || qty.Equals("▲") ? "2100-01-01" : qty.Equals("×") || qty.Equals("※") ? "2100-02-01" : "unknown date";
+                                            entity.qtyStatus = qty.Equals("◎") ? "good" : qty.Equals("○") || qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("完") || qty.Equals("※") ? "empty" : "invalid status code";
+                                            entity.stockDate = qty.Equals("◎") || qty.Equals("○") || qty.Equals("▲") ? "2100-01-01" : qty.Equals("×") || qty.Equals("完") || qty.Equals("※") ? "2100-02-01" : "unknown date";
                                             entity.True_Quantity = qty;
                                         }
                                         catch
                                         {
                                             qty = chrome.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]/div/form/table/tbody/tr[2]/td/div/table/tbody/tr/td[10]/font")).Text;
-                                            entity.qtyStatus = qty.Equals("◎") ? "good" : qty.Equals("○") || qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("※") ? "empty" : "invalid status code";
-                                            entity.stockDate = qty.Equals("◎") || qty.Equals("○") || qty.Equals("▲") ? "2100-01-01" : qty.Equals("×") || qty.Equals("※") ? "2100-02-01" : "unknown date";
+                                            entity.qtyStatus = qty.Equals("◎") ? "good" : qty.Equals("○") || qty.Equals("▲") ? "small" : qty.Equals("×") || qty.Equals("完") || qty.Equals("※") ? "empty" : "invalid status code";
+                                            entity.stockDate = qty.Equals("◎") || qty.Equals("○") || qty.Equals("▲") ? "2100-01-01" : qty.Equals("×") || qty.Equals("完") || qty.Equals("※") ? "2100-02-01" : "unknown date";
                                             entity.True_Quantity = qty;
                                         }
                                         entity.purchaseURL = chrome.Url;
