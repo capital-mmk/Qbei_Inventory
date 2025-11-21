@@ -233,48 +233,89 @@ namespace _20ダイアテック_高難易度_
                                     {
                                         int n = Convert.ToInt32(chrome.FindElements(By.XPath("/html/body/div[2]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]/form/div/div[1]/div/div/dl")).Count());
 
-                                        for (int j = 1; j <= n; j++)
+                                        if (n == 0)
                                         {
+                                            entity.price = chrome.FindElement(By.ClassName("goods_detail_price_")).Text;
+                                            entity.price = entity.price.Replace("￥", string.Empty).Replace("（税抜）", string.Empty);
+                                            entity.price = ((int)(Convert.ToDouble(entity.price) * 0.75)).ToString();
 
-                                            if (chrome.FindElement(By.XPath("/html/body/div[2]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]/form/div/div[1]/div/div/dl[" + (j) + "]/dd[1]")).Text.Contains(entity.orderCode))
+                                            string strQtyStatus = chrome.FindElement(By.ClassName("stock_msg_")).Text.Replace("在庫：", string.Empty);
+                                            entity.qtyStatus = strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || strQtyStatus.Contains('〇') || fun.IsGood(strQtyStatus) ? "good" : strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus) ? "small" : strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("上旬") || strQtyStatus.Contains("中旬") || strQtyStatus.Contains("下旬") || strQtyStatus.Contains("未定") || strQtyStatus.Contains("次回入荷限り") || strQtyStatus.Contains("新型切替") || strQtyStatus.Contains("受注停止中") ? "empty" : "unknown status";
+
+
+                                            if (strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || strQtyStatus.Contains('〇') || strQtyStatus.Contains("未定") || fun.IsGood(strQtyStatus) || strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus))
+                                                entity.stockDate = "2100-01-01";
+
+                                            else if (strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("次回入荷限り") || strQtyStatus.Contains("新型切替") || strQtyStatus.Contains("受注停止中"))
+                                                entity.stockDate = "2100-02-01";
+
+                                            else if (strQtyStatus.Contains("上旬") || strQtyStatus.Contains("中旬") || strQtyStatus.Contains("下旬"))
+                                            {
+                                                string strTemp = Regex.Replace(strQtyStatus, "[^0-9]+", string.Empty);
+                                                int intMonth = int.Parse(strTemp);
+                                                if (strQtyStatus.Contains("下旬"))
+                                                    entity.stockDate = new DateTime(DateTime.Now.Year, intMonth, DateTime.DaysInMonth(DateTime.Now.Year, intMonth)).ToString("yyyy-MM-dd");
+                                                else if (strQtyStatus.Contains("中旬"))
+                                                    entity.stockDate = new DateTime(DateTime.Now.Year, intMonth, 20).ToString("yyyy-MM-dd");
+                                                else
+                                                    entity.stockDate = new DateTime(DateTime.Now.Year, intMonth, 10).ToString("yyyy-MM-dd");
+                                            }
+
+                                            else entity.stockDate = "unknown date";
+
+                                            entity.True_StockDate = "項目無し";
+                                            entity.True_Quantity = strQtyStatus;
+                                            entity.purchaseURL = chrome.Url;
+                                            fun.Qbei_Inserts(entity);
+                                        }
+
+                                        else
+                                        {
+                                            for (int j = 1; j <= n; j++)
                                             {
 
-                                                entity.price = chrome.FindElement(By.ClassName("goods_detail_price_")).Text;
-                                                entity.price = entity.price.Replace("￥", string.Empty).Replace("（税抜）", string.Empty);
-                                                entity.price = ((int)(Convert.ToDouble(entity.price) * 0.75)).ToString();
-
-                                                string strQtyStatus = chrome.FindElement(By.XPath("/html/body/div[2]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]/form/div/div[1]/div/div/dl[" + (j) + "]/dd[2]/p")).Text.Replace("在庫：", string.Empty);
-                                                entity.qtyStatus = strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || strQtyStatus.Contains('〇') || fun.IsGood(strQtyStatus) ? "good" : strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus) ? "small" : strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("上旬") || strQtyStatus.Contains("中旬") || strQtyStatus.Contains("下旬") || strQtyStatus.Contains("未定") || strQtyStatus.Contains("次回入荷限り") || strQtyStatus.Contains("新型切替") || strQtyStatus.Contains("受注停止中") ? "empty" : "unknown status";
-
-
-                                                if (strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || strQtyStatus.Contains('〇') || strQtyStatus.Contains("未定") || fun.IsGood(strQtyStatus) || strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus))
-                                                    entity.stockDate = "2100-01-01";
-
-                                                else if (strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("次回入荷限り") || strQtyStatus.Contains("新型切替") || strQtyStatus.Contains("受注停止中"))
-                                                    entity.stockDate = "2100-02-01";
-
-                                                else if (strQtyStatus.Contains("上旬") || strQtyStatus.Contains("中旬") || strQtyStatus.Contains("下旬"))
+                                                if (chrome.FindElement(By.XPath("/html/body/div[2]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]/form/div/div[1]/div/div/dl[" + (j) + "]/dd[1]")).Text.Contains(entity.orderCode))
                                                 {
-                                                    string strTemp = Regex.Replace(strQtyStatus, "[^0-9]+", string.Empty);
-                                                    int intMonth = int.Parse(strTemp);
-                                                    if (strQtyStatus.Contains("下旬"))
-                                                        entity.stockDate = new DateTime(DateTime.Now.Year, intMonth, DateTime.DaysInMonth(DateTime.Now.Year, intMonth)).ToString("yyyy-MM-dd");
-                                                    else if (strQtyStatus.Contains("中旬"))
-                                                        entity.stockDate = new DateTime(DateTime.Now.Year, intMonth, 20).ToString("yyyy-MM-dd");
-                                                    else
-                                                        entity.stockDate = new DateTime(DateTime.Now.Year, intMonth, 10).ToString("yyyy-MM-dd");
+
+                                                    entity.price = chrome.FindElement(By.ClassName("goods_detail_price_")).Text;
+                                                    entity.price = entity.price.Replace("￥", string.Empty).Replace("（税抜）", string.Empty);
+                                                    entity.price = ((int)(Convert.ToDouble(entity.price) * 0.75)).ToString();
+
+                                                    string strQtyStatus = chrome.FindElement(By.XPath("/html/body/div[2]/div[4]/div[1]/div[1]/div[1]/div[1]/div[2]/form/div/div[1]/div/div/dl[" + (j) + "]/dd[2]/p")).Text.Replace("在庫：", string.Empty);
+                                                    entity.qtyStatus = strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || strQtyStatus.Contains('〇') || fun.IsGood(strQtyStatus) ? "good" : strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus) ? "small" : strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("上旬") || strQtyStatus.Contains("中旬") || strQtyStatus.Contains("下旬") || strQtyStatus.Contains("未定") || strQtyStatus.Contains("次回入荷限り") || strQtyStatus.Contains("新型切替") || strQtyStatus.Contains("受注停止中") ? "empty" : "unknown status";
+
+
+                                                    if (strQtyStatus.Contains('◎') || strQtyStatus.Contains('○') || strQtyStatus.Contains('〇') || strQtyStatus.Contains("未定") || fun.IsGood(strQtyStatus) || strQtyStatus.Contains('△') || fun.IsSmall(strQtyStatus))
+                                                        entity.stockDate = "2100-01-01";
+
+                                                    else if (strQtyStatus.Contains("完売") || strQtyStatus.Contains("×") || strQtyStatus.Contains("入荷待ち") || strQtyStatus.Contains("次回入荷限り") || strQtyStatus.Contains("新型切替") || strQtyStatus.Contains("受注停止中"))
+                                                        entity.stockDate = "2100-02-01";
+
+                                                    else if (strQtyStatus.Contains("上旬") || strQtyStatus.Contains("中旬") || strQtyStatus.Contains("下旬"))
+                                                    {
+                                                        string strTemp = Regex.Replace(strQtyStatus, "[^0-9]+", string.Empty);
+                                                        int intMonth = int.Parse(strTemp);
+                                                        if (strQtyStatus.Contains("下旬"))
+                                                            entity.stockDate = new DateTime(DateTime.Now.Year, intMonth, DateTime.DaysInMonth(DateTime.Now.Year, intMonth)).ToString("yyyy-MM-dd");
+                                                        else if (strQtyStatus.Contains("中旬"))
+                                                            entity.stockDate = new DateTime(DateTime.Now.Year, intMonth, 20).ToString("yyyy-MM-dd");
+                                                        else
+                                                            entity.stockDate = new DateTime(DateTime.Now.Year, intMonth, 10).ToString("yyyy-MM-dd");
+                                                    }
+
+                                                    else entity.stockDate = "unknown date";
+
+                                                    entity.True_StockDate = "項目無し";
+                                                    entity.True_Quantity = strQtyStatus;
+                                                    entity.purchaseURL = chrome.Url;
+                                                    fun.Qbei_Inserts(entity);
+
+                                                    break;
                                                 }
-
-                                                else entity.stockDate = "unknown date";
-
-                                                entity.True_StockDate = "項目無し";
-                                                entity.True_Quantity = strQtyStatus;
-                                                entity.purchaseURL = chrome.Url;
-                                                fun.Qbei_Inserts(entity);
-
-                                                break;
                                             }
                                         }
+
+
                                     }
 
 
