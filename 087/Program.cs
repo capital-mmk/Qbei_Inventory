@@ -210,7 +210,8 @@ namespace _87ダートフリーク
 
                                     else
                                     {
-                                        entity.price = chrome.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]/div/form/table/tbody/tr[2]/td/div/table/tbody/tr/td[7]/font")).Text;
+                                        //entity.price = chrome.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]/div/form/table/tbody/tr[2]/td/div/table/tbody/tr/td[7]/font")).Text;
+                                        entity.price = chrome.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]/div/form/table/tbody/tr[2]/td/div/table/tbody/tr/td[8]/font")).Text;  // <remark change price value 07-01-2026>
                                         entity.price = entity.price.Replace("円", string.Empty).Replace(",", string.Empty);
 
                                         try
