@@ -127,6 +127,7 @@ namespace _024_Chrome
                 chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
                 chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false);//<remark Add Logic for ChormeDriver 2025/04/08 />
                 chromeOptions.AddArguments("-no-sandbox");
+                chromeOptions.AddArgument("--start-maximized");
                 var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);
                 using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))
 
@@ -148,7 +149,8 @@ namespace _024_Chrome
                     string password = dt.Rows[0]["Password"].ToString();
                     chrome.FindElement(By.Name("data[MemberLogin][passwd]")).SendKeys(password);
                     fun.WriteLog("Navigation to Site Url success------", "024-");
-                    chrome.FindElement(By.CssSelector("#btn")).Click();
+                    //chrome.FindElement(By.CssSelector("#btn")).Click();
+                    chrome.FindElement(By.Id("btn")).Click();
 
                     string alert = chrome.FindElement(By.TagName("body")).Text;
                     if (alert.Contains("出荷指示可能商品があります"))
