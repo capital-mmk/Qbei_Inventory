@@ -155,6 +155,7 @@ namespace _12カワシマ
                 chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
                 chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false); //<remark Add Logic for ChormeDriver 2025/04/08 />
                 chromeOptions.AddArguments("-no-sandbox");
+                chromeOptions.AddArgument("--start-maximized");
                 var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);
                 using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))
                 {
@@ -213,8 +214,8 @@ namespace _12カワシマ
                                 entity.reflectDate = dt012.Rows[i]["最終反映日"].ToString();
                                 entity.orderCode = dt012.Rows[i]["発注コード"].ToString();
 
-                                chrome.Navigate().GoToUrl(fun.url + "/shop/g/g" + entity.orderCode);
                                 Thread.Sleep(1000);
+                                chrome.Navigate().GoToUrl(fun.url + "/shop/g/g" + entity.orderCode);
 
                                 if (!string.IsNullOrWhiteSpace(entity.orderCode))
                                 {
@@ -235,6 +236,7 @@ namespace _12カワシマ
 
                                     else
                                     {
+                                        Thread.Sleep(500);
                                         if (chrome.FindElement(By.CssSelector(".selectText_")).Text == entity.janCode)
                                         {
                                             entity.price = chrome.FindElement(By.CssSelector(".price_")).Text;
