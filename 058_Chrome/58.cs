@@ -141,7 +141,6 @@ namespace _058リンエイ
                 chromeOptions.AddArguments("-no-sandbox");//<remark Add Logic for ChormeDriver 2021/09/02 />
                 chromeOptions.AddArgument("--start-maximized");
                 var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);//<remark Add Logic for ChormeDriver 2021/09/02 />                                                                                                                       
-                //using (IWebDriver chrome = new ChromeDriver(chromeOptions))
                 using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))//<remark Edit Logic for ChormeDriver 2021/09/02 />
                 {
                     DataTable dt = new DataTable();
@@ -213,7 +212,6 @@ namespace _058リンエイ
                                         chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
                                         chrome.FindElement(By.Id("search-button")).Click();
                                     }
-                                    //Thread.Sleep(4000);
 
                                     entity = new Qbei_Entity();
                                     entity.siteID = 58;
@@ -253,12 +251,31 @@ namespace _058リンエイ
 
                                             if (n == 0)
                                             {
-                                                Thread.Sleep(20000);
+
+                                                Thread.Sleep(18000);
                                                 chrome.FindElement(By.Id("keyword")).Clear();
                                                 chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
                                                 chrome.FindElement(By.Id("search-button")).Click();
                                             }
-                                            body = chrome.FindElement(By.TagName("body")).Text;
+                                            int count = 0;
+                                        Searchagain:
+
+                                            Thread.Sleep(1000);
+                                            try
+                                            {
+                                                body = chrome.FindElement(By.TagName("body")).Text;
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                Thread.Sleep(3000);
+                                                fun.WriteLog(ex.ToString(), "058-");
+                                                count++;
+                                                if (count < 2)
+                                                {
+                                                    goto Searchagain;
+                                                }
+                                                break;
+                                            }
                                             Thread.Sleep(500);
                                             if (body.Contains("検索結果はありません。"))
                                             {
@@ -289,10 +306,8 @@ namespace _058リンエイ
                                             }
                                             else
                                             {
-                                                //Thread.Sleep(2000);
                                                 for (int i = 1; i <= n; i++)
                                                 {
-                                                    //i =i+ 1;
                                                     if (chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr[" + (i) + "]/th[1]")).Text.Contains(entity.orderCode))
                                                     {
                                                         entity.price = chrome.FindElement(By.XPath("/html/body/div/main/div[4]/section/div[2]/div[2]/div[1]/div/form/div[2]/table/tbody/tr[" + (i) + "]/th[3]")).Text.Replace("円", "").Replace(",", "").Replace("@", "").Trim();
