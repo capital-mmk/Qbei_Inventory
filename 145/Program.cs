@@ -19,7 +19,7 @@ namespace _145
     {
         Qbeisetting_BL blQbei = new Qbeisetting_BL();
         Qbei_Entity entity = new Qbei_Entity();
-        DataTable dt087 = new DataTable();
+        DataTable dt145 = new DataTable();
         public static CommonFunction fun = new CommonFunction();
         DataTable dtGroupData = new DataTable();
         static string strParam = string.Empty;
