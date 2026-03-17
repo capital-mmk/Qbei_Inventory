@@ -223,6 +223,8 @@ namespace _145
 
                                     else
                                     {
+                                        string name = dt145.Rows[i]["商品名"].ToString();
+
                                         chrome.FindElement(By.XPath("/html/body/form/div[4]/div/div/div/div[2]/div/div/div/div[2]/div[2]/div[2]/div[1]/div[2]/div/div/div[1]/ul/li[2]/a/p")).Click();
 
                                         entity.price = chrome.FindElement(By.CssSelector("p.productPrice > span:nth-child(1)")).Text;
