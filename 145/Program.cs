@@ -135,7 +135,8 @@ namespace _145
                             if (i < Lastrow)
                             {
                                 jancode = dt145.Rows[i]["JANコード"].ToString();
-                                
+
+
                                 try
                                 {
                                     chrome.FindElement(By.Id("ctl00_BodyHeaderMain_tbSearchWord")).Clear();
@@ -197,34 +198,53 @@ namespace _145
 
                                             }
                                         }
+
                                         catch
                                         {
-                                            entity.price = chrome.FindElement(By.CssSelector("p.productPrice > span:nth-child(1)")).Text;
-                                            entity.price = entity.price.Replace("¥", string.Empty).Replace(",", string.Empty);
+                                            string Check_Message1 = chrome.FindElement(By.TagName("table")).Text;
 
-                                            qty = chrome.FindElement(By.CssSelector(".productStockTextWrap")).Text; 
-                                            entity.qtyStatus = qty.Contains("在庫あり") ? "good" : qty.Contains("在庫わずか") ? "small" : qty.Contains("完売") || qty.Contains("未定") ? "empty" : "invalid status code";
-                                            entity.stockDate = entity.qtyStatus.Equals("good") || entity.qtyStatus.Equals("small") ? "2100-01-01" : entity.qtyStatus.Equals("empty") ? "2100-02-01" : "unknown status";
-                                            entity.True_Quantity = qty;
-
-
-                                            if (qty.Contains("年") && qty.Contains("月"))
+                                            if (!Check_Message1.Contains("カートに入れる"))
                                             {
                                                 entity.qtyStatus = "empty";
-                                                entity.stockDate = qty.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("入荷予定時期：", String.Empty).Replace("年", "-").Replace("月", "-").Replace("日", String.Empty);
-                                                DateTime d = Convert.ToDateTime(entity.stockDate);
-                                                entity.stockDate = d.ToString("yyyy-MM-dd");
+                                                entity.stockDate = "2100-02-01";
+                                                entity.purchaseURL = chrome.Url;
+                                                entity.price = chrome.FindElement(By.CssSelector("p.productPrice > span:nth-child(1)")).Text;
+                                                entity.price = entity.price.Replace("¥", string.Empty).Replace(",", string.Empty);
+                                                entity.True_StockDate = "Not Found";
+                                                entity.True_Quantity = "Not Found";
+                                                fun.Qbei_Inserts(entity);
+
                                             }
-                                            entity.True_StockDate = "項目無し";
-                                            entity.purchaseURL = chrome.Url;
-                                            fun.Qbei_Inserts(entity);
+
+                                            else
+                                            {
+                                                entity.price = chrome.FindElement(By.CssSelector("p.productPrice > span:nth-child(1)")).Text;
+                                                entity.price = entity.price.Replace("¥", string.Empty).Replace(",", string.Empty);
+
+                                                qty = chrome.FindElement(By.CssSelector(".productStockTextWrap")).Text;
+                                                entity.qtyStatus = qty.Contains("在庫あり") ? "good" : qty.Contains("在庫わずか") ? "small" : qty.Contains("完売") || qty.Contains("未定") ? "empty" : "invalid status code";
+                                                entity.stockDate = entity.qtyStatus.Equals("good") || entity.qtyStatus.Equals("small") ? "2100-01-01" : entity.qtyStatus.Equals("empty") ? "2100-02-01" : "unknown status";
+                                                entity.True_Quantity = qty;
+
+                                                if (qty.Contains("年") && qty.Contains("月"))
+                                                {
+                                                    entity.qtyStatus = "empty";
+                                                    entity.stockDate = qty.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("入荷予定時期：", String.Empty).Replace("年", "-").Replace("月", "-").Replace("日", String.Empty);
+                                                    DateTime d = Convert.ToDateTime(entity.stockDate);
+                                                    entity.stockDate = d.ToString("yyyy-MM-dd");
+                                                }
+                                                entity.True_StockDate = "項目無し";
+                                                entity.purchaseURL = chrome.Url;
+                                                fun.Qbei_Inserts(entity);
+
+                                            }
+
                                         }
                                     }
 
                                     else
                                     {
-                                        string name = dt145.Rows[i]["商品名"].ToString();
-
+                                        
                                         chrome.FindElement(By.XPath("/html/body/form/div[4]/div/div/div/div[2]/div/div/div/div[2]/div[2]/div[2]/div[1]/div[2]/div/div/div[1]/ul/li[2]/a/p")).Click();
 
                                         entity.price = chrome.FindElement(By.CssSelector("p.productPrice > span:nth-child(1)")).Text;
