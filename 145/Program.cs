@@ -25,7 +25,7 @@ namespace _145
         static string strParam = string.Empty;
         public static string st = string.Empty;
         private static int i;
-        public static string jancode;
+        public static string ordercode;
 
         static void Main(string[] args)
         {
@@ -134,20 +134,20 @@ namespace _145
                         {
                             if (i < Lastrow)
                             {
-                                jancode = dt145.Rows[i]["JANコード"].ToString();
+                                ordercode = dt145.Rows[i]["発注コード"].ToString();
 
 
                                 try
                                 {
                                     chrome.FindElement(By.Id("ctl00_BodyHeaderMain_tbSearchWord")).Clear();
-                                    chrome.FindElement(By.Id("ctl00_BodyHeaderMain_tbSearchWord")).SendKeys(jancode);
+                                    chrome.FindElement(By.Id("ctl00_BodyHeaderMain_tbSearchWord")).SendKeys(ordercode);
                                     chrome.FindElement(By.Id("ctl00_BodyHeaderMain_lbSearch")).Click();
                                 }
                                 catch
                                 {
                                     Thread.Sleep(1000);
                                     chrome.FindElement(By.Id("ctl00_BodyHeaderMain_tbSearchWord")).Clear();
-                                    chrome.FindElement(By.Id("ctl00_BodyHeaderMain_tbSearchWord")).SendKeys(jancode);
+                                    chrome.FindElement(By.Id("ctl00_BodyHeaderMain_tbSearchWord")).SendKeys(ordercode);
                                     Thread.Sleep(1000);
                                     chrome.FindElement(By.Id("ctl00_BodyHeaderMain_lbSearch")).Click();
                                 }
@@ -218,8 +218,16 @@ namespace _145
 
                                             else
                                             {
-                                                entity.price = chrome.FindElement(By.CssSelector("p.productPrice > span:nth-child(1)")).Text;
-                                                entity.price = entity.price.Replace("¥", string.Empty).Replace(",", string.Empty);
+                                                if (Check_Message1.Contains("会員ランク"))
+                                                {
+                                                    entity.price = chrome.FindElement(By.CssSelector("p.productPrice:nth-child(2)")).Text;
+                                                    entity.price = entity.price.Replace("会員ランク 下代(税抜):¥", string.Empty).Replace(",", string.Empty);
+                                                }
+                                                else
+                                                {
+                                                    entity.price = chrome.FindElement(By.CssSelector("p.productPrice > span:nth-child(1)")).Text;
+                                                    entity.price = entity.price.Replace("¥", string.Empty).Replace(",", string.Empty);
+                                                }
 
                                                 qty = chrome.FindElement(By.CssSelector(".productStockTextWrap")).Text;
                                                 entity.qtyStatus = qty.Contains("在庫あり") ? "good" : qty.Contains("在庫わずか") ? "small" : qty.Contains("完売") || qty.Contains("未定") ? "empty" : "invalid status code";
@@ -236,20 +244,27 @@ namespace _145
                                                 entity.True_StockDate = "項目無し";
                                                 entity.purchaseURL = chrome.Url;
                                                 fun.Qbei_Inserts(entity);
-
                                             }
-
                                         }
                                     }
 
                                     else
                                     {
-                                        
                                         chrome.FindElement(By.XPath("/html/body/form/div[4]/div/div/div/div[2]/div/div/div/div[2]/div[2]/div[2]/div[1]/div[2]/div/div/div[1]/ul/li[2]/a/p")).Click();
 
-                                        entity.price = chrome.FindElement(By.CssSelector("p.productPrice > span:nth-child(1)")).Text;
-                                        entity.price = entity.price.Replace("¥", string.Empty).Replace(",", string.Empty);
+                                        string Check_Message1 = chrome.FindElement(By.TagName("table")).Text;
 
+                                        if (Check_Message1.Contains("会員ランク"))
+                                        {
+                                            entity.price = chrome.FindElement(By.CssSelector("p.productPrice:nth-child(2)")).Text;
+                                            entity.price = entity.price.Replace("会員ランク 下代(税抜):¥", string.Empty).Replace(",", string.Empty);
+                                        }
+                                        else
+                                        {
+                                            entity.price = chrome.FindElement(By.CssSelector("p.productPrice > span:nth-child(1)")).Text;
+                                            entity.price = entity.price.Replace("¥", string.Empty).Replace(",", string.Empty);
+                                        }
+                                        
                                         qty = chrome.FindElement(By.CssSelector(".productStockTextWrap")).Text;
                                         entity.qtyStatus = qty.Contains("在庫あり") ? "good" : qty.Contains("在庫わずか") ? "small" : qty.Contains("完売") || qty.Contains("未定") ? "empty" : "invalid status code";
                                         entity.stockDate = entity.qtyStatus.Equals("good") || entity.qtyStatus.Equals("small") ? "2100-01-01" : entity.qtyStatus.Equals("empty") ? "2100-02-01" : "unknown status";
@@ -298,7 +313,7 @@ namespace _145
                     catch (Exception ex)
                     {
                         string janCode = dt145.Rows[i]["JANコード"].ToString();
-                        jancode = dt145.Rows[i]["発注コード"].ToString();
+                        ordercode = dt145.Rows[i]["発注コード"].ToString();
                         fun.Qbei_ErrorInsert(145, fun.GetSiteName("145"), ex.Message, janCode, entity.orderCode, 4, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), "145");
                         fun.WriteLog(ex, "145-", janCode, entity.orderCode);
                     }
