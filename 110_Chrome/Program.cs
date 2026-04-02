@@ -233,20 +233,20 @@ namespace _110_Chrome
 
                                                         if (stock.Contains("個") && entity.qtyStatus == "unknown status")
                                                         {
-                                                            string item = stock.Replace("個", String.Empty).Replace("在庫限り", String.Empty).Replace(" ", String.Empty);
+                                                            string item = stock.Replace("個", String.Empty).Replace("入荷未定", String.Empty).Replace("在庫限り", String.Empty).Replace(" ", String.Empty);
 
                                                             int s = Convert.ToInt32(item);
 
-                                                            if (s > 1)
+                                                            if (s >= 1)
                                                             {
                                                                 entity.qtyStatus = "good";
                                                                 entity.stockDate = "2100-01-01";
                                                             }
                                                         }
-                                                        //28個 2026/1月下旬入荷予定
-                                                        if (stock.Contains("入荷予定"))
+
+                                                        if (stock.Contains("予定")) 
                                                         {
-                                                            entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("入荷予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
+                                                            entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("入荷予定", String.Empty).Replace("予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
 
                                                             if (entity.stockDate.Contains("個"))
                                                             {
@@ -302,9 +302,22 @@ namespace _110_Chrome
                                                         entity.True_Quantity = stock;
                                                         entity.qtyStatus = stock.Contains("○") || stock.Contains("〇") ? "good" : stock.Contains("個") && stock.Contains("残り僅か") ? "small" : stock.Contains("個") && stock.Contains("入荷予定") ? "small" : stock.Contains("在庫在") || stock.Contains("在庫有") ? "small" : stock.Contains("在庫なし") ? "empty" : "unknown status";
 
-                                                        if (stock.Contains("入荷予定"))
+                                                        if (stock.Contains("個") && entity.qtyStatus == "unknown status")
                                                         {
-                                                            entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("入荷予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
+                                                            string item = stock.Replace("個", String.Empty).Replace("入荷未定", String.Empty).Replace("在庫限り", String.Empty).Replace(" ", String.Empty);
+
+                                                            int s = Convert.ToInt32(item);
+
+                                                            if (s >= 1)
+                                                            {
+                                                                entity.qtyStatus = "good";
+                                                                entity.stockDate = "2100-01-01";
+                                                            }
+                                                        }
+
+                                                        if (stock.Contains("予定"))
+                                                        {
+                                                            entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("入荷予定", String.Empty).Replace("予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
 
                                                             if (entity.stockDate.Contains("個"))
                                                             {
@@ -350,9 +363,22 @@ namespace _110_Chrome
                                                         entity.True_Quantity = stock;
                                                         entity.qtyStatus = stock.Contains("○") || stock.Contains("〇") ? "good" : stock.Contains("個") && stock.Contains("残り僅か") ? "small" : stock.Contains("個") && stock.Contains("入荷予定") ? "small" : stock.Contains("在庫在") || stock.Contains("在庫有") ? "small" : stock.Contains("在庫なし") ? "empty" : "unknown status";
 
-                                                        if (stock.Contains("入荷予定")) //28個 2026/1月下旬入荷予定
+                                                        if (stock.Contains("個") && entity.qtyStatus == "unknown status")
                                                         {
-                                                            entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("入荷予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
+                                                            string item = stock.Replace("個", String.Empty).Replace("入荷未定", String.Empty).Replace("在庫限り", String.Empty).Replace(" ", String.Empty);
+
+                                                            int s = Convert.ToInt32(item);
+
+                                                            if (s >= 1)
+                                                            {
+                                                                entity.qtyStatus = "good";
+                                                                entity.stockDate = "2100-01-01";
+                                                            }
+                                                        }
+
+                                                        if (stock.Contains("予定")) 
+                                                        {
+                                                            entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("入荷予定", String.Empty).Replace("予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
 
                                                             if (entity.stockDate.Contains("個"))
                                                             {
@@ -411,6 +437,7 @@ namespace _110_Chrome
                                         try
                                         {
                                             int c = chrome.FindElements(By.XPath("/html/body/center/center/div/div[2]/div[2]/table/tbody/tr[1]/td[3]/form[2]/div/div[1]/div[2]/div[1]/table/tbody/tr[6]/td/div/table[2]/tbody/tr")).Count();
+
                                             for (int i = 1; i <= c; i++)
                                             {
                                                 if (chrome.FindElement(By.XPath("/html/body/center/center/div/div[2]/div[2]/table/tbody/tr[1]/td[3]/form[2]/div/div[1]/div[2]/div[1]/table/tbody/tr[6]/td/div/table[2]/tbody/tr[" + (i) + "]/th")).Text.Contains(entity.orderCode))
@@ -422,9 +449,22 @@ namespace _110_Chrome
                                                     entity.True_Quantity = stock;
                                                     entity.qtyStatus = stock.Contains("○") || stock.Contains("〇") ? "good" : stock.Contains("個") && stock.Contains("残り僅か") ? "small" : stock.Contains("個") && stock.Contains("入荷予定") ? "small" : stock.Contains("在庫在") || stock.Contains("在庫有") ? "small" : stock.Contains("在庫なし") ? "empty" : "unknown status";
 
-                                                    if (stock.Contains("入荷予定"))
+                                                    if (stock.Contains("個") && entity.qtyStatus == "unknown status")
                                                     {
-                                                        entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("入荷予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
+                                                        string item = stock.Replace("個", String.Empty).Replace("入荷未定", String.Empty).Replace("在庫限り", String.Empty).Replace(" ", String.Empty);
+
+                                                        int s = Convert.ToInt32(item);
+
+                                                        if (s >= 1)
+                                                        {
+                                                            entity.qtyStatus = "good";
+                                                            entity.stockDate = "2100-01-01";
+                                                        }
+                                                    }
+
+                                                    if (stock.Contains("予定"))
+                                                    {
+                                                        entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("入荷予定", String.Empty).Replace("予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
 
                                                         if (entity.stockDate.Contains("個"))
                                                         {
@@ -469,9 +509,22 @@ namespace _110_Chrome
                                                     entity.True_Quantity = stock;
                                                     entity.qtyStatus = stock.Contains("○") || stock.Contains("〇") ? "good" : stock.Contains("個") && stock.Contains("残り僅か") ? "small" : stock.Contains("個") && stock.Contains("入荷予定") ? "small" : stock.Contains("在庫在") || stock.Contains("在庫有") ? "small" : stock.Contains("在庫なし") ? "empty" : "unknown status";
 
-                                                    if (stock.Contains("入荷予定"))
+                                                    if (stock.Contains("個") && entity.qtyStatus == "unknown status")
                                                     {
-                                                        entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("入荷予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
+                                                        string item = stock.Replace("個", String.Empty).Replace("入荷未定", String.Empty).Replace("在庫限り", String.Empty).Replace(" ", String.Empty);
+
+                                                        int s = Convert.ToInt32(item);
+
+                                                        if (s >= 1)
+                                                        {
+                                                            entity.qtyStatus = "good";
+                                                            entity.stockDate = "2100-01-01";
+                                                        }
+                                                    }
+
+                                                    if (stock.Contains("予定"))
+                                                    {
+                                                        entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("入荷予定", String.Empty).Replace("予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
 
                                                         if (entity.stockDate.Contains("個"))
                                                         {
