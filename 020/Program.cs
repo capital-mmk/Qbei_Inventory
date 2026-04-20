@@ -216,6 +216,7 @@ namespace _20ダイアテック_高難易度_
 
                                 if (!string.IsNullOrWhiteSpace(entity.orderCode))
                                 {
+                                    Thread.Sleep(1000);
                                     string Message = chrome.FindElement(By.TagName("body")).Text;
                                     if (Message.Contains("大変申し訳ありませんが、該当ページがございません。") || Message.Contains("申し訳ございません。"))
                                     {
