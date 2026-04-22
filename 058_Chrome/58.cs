@@ -256,6 +256,7 @@ namespace _058リンエイ
                                                 chrome.FindElement(By.Id("keyword")).Clear();
                                                 chrome.FindElement(By.Id("keyword")).SendKeys(ordercode);
                                                 chrome.FindElement(By.Id("search-button")).Click();
+                                                Thread.Sleep(2000);
                                             }
                                             int count = 0;
                                         Searchagain:
