@@ -219,7 +219,7 @@ namespace _12カワシマ
 
                                 if (!string.IsNullOrWhiteSpace(entity.orderCode))
                                 {
-
+                                    Thread.Sleep(800);
                                     string Check_Message = chrome.FindElement(By.TagName("body")).Text;
 
                                     if (Check_Message.Contains("申し訳ございません。"))
