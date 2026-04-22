@@ -169,7 +169,7 @@ namespace _145
 
                                 if (!string.IsNullOrWhiteSpace(entity.orderCode))
                                 {
-                                    Thread.Sleep(1000);
+                                    Thread.Sleep(1500);
                                     string Check_Message = chrome.FindElement(By.TagName("body")).Text;
 
                                     if (Check_Message.Contains("該当する商品がありません。"))
