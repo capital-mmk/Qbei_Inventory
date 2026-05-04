@@ -244,9 +244,9 @@ namespace _110_Chrome
                                                             }
                                                         }
 
-                                                        if (stock.Contains("予定")) 
+                                                        if (stock.Contains("予定"))
                                                         {
-                                                            entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("入荷予定", String.Empty).Replace("予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
+                                                            entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("発売予定", String.Empty).Replace("入荷予定", String.Empty).Replace("予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
 
                                                             if (entity.stockDate.Contains("個"))
                                                             {
@@ -315,7 +315,12 @@ namespace _110_Chrome
                                                             }
                                                         }
 
-                                                        if (stock.Contains("予定"))
+                                                        if (stock.Contains("入荷未定"))
+                                                        {
+                                                            entity.stockDate = "2100-02-01";
+                                                        }
+
+                                                        else if (stock.Contains("予定"))
                                                         {
                                                             entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("入荷予定", String.Empty).Replace("予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
 
@@ -376,7 +381,12 @@ namespace _110_Chrome
                                                             }
                                                         }
 
-                                                        if (stock.Contains("予定")) 
+                                                        if (stock.Contains("入荷未定"))
+                                                        {
+                                                            entity.stockDate = "2100-02-01";
+                                                        }
+
+                                                        else if (stock.Contains("入荷"))
                                                         {
                                                             entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("入荷予定", String.Empty).Replace("予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
 
@@ -391,13 +401,28 @@ namespace _110_Chrome
                                                             }
                                                             DateTime d = Convert.ToDateTime(entity.stockDate);
                                                             entity.stockDate = d.ToString("yyyy-MM-dd");
+                                                        }
 
+                                                        else if (stock.Contains("予定"))
+                                                        {
+                                                            entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
+
+                                                            if (entity.stockDate.Contains("個"))
+                                                            {
+                                                                string Item = entity.stockDate;
+                                                                int item = entity.stockDate.IndexOf('個');
+                                                                string CutItem = Item.Substring(item, Item.Length - item).Replace("個", String.Empty);
+
+                                                                DateTime da = Convert.ToDateTime(CutItem);
+                                                                entity.stockDate = da.ToString("yyyy-MM-dd");
+                                                            }
+                                                            DateTime d = Convert.ToDateTime(entity.stockDate);
+                                                            entity.stockDate = d.ToString("yyyy-MM-dd");
                                                         }
 
                                                         else
                                                         {
                                                             entity.stockDate = entity.qtyStatus.Equals("good") || entity.qtyStatus.Equals("small") ? "2100-01-01" : entity.qtyStatus.Equals("empty") ? "2100-02-01" : "unknown status";
-
                                                         }
 
                                                         entity.True_StockDate = "Not Found";
@@ -462,7 +487,12 @@ namespace _110_Chrome
                                                         }
                                                     }
 
-                                                    if (stock.Contains("予定"))
+                                                    if (stock.Contains("入荷未定"))
+                                                    {
+                                                        entity.stockDate = "2100-02-01";
+                                                    }
+
+                                                    else if(stock.Contains("予定"))
                                                     {
                                                         entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("入荷予定", String.Empty).Replace("予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
 
@@ -522,7 +552,12 @@ namespace _110_Chrome
                                                         }
                                                     }
 
-                                                    if (stock.Contains("予定"))
+                                                    if (stock.Contains("入荷未定"))
+                                                    {
+                                                        entity.stockDate = "2100-02-01";
+                                                    }
+
+                                                    else if(stock.Contains("予定"))
                                                     {
                                                         entity.stockDate = stock.Replace("上旬", "10").Replace("中旬", "20").Replace("下旬", "30").Replace("入荷予定", String.Empty).Replace("予定", String.Empty).Replace("/", "-").Replace("年", "-").Replace("月", "-").Replace("日", String.Empty).Replace("在庫なし ", String.Empty); // .Replace("個", String.Empty) .Replace(" ", String.Empty)
 
