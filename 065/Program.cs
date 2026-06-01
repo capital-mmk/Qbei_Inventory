@@ -126,7 +126,8 @@ namespace _65野口
                 var chromeOptions = new ChromeOptions();
                 chromeOptions.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
                 chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");
-                chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
+                chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true"); 
+                chromeOptions.AddUserProfilePreference("profile.password_manager_leak_detection", false); //<remark Add Logic for ChormeDriver 2025/04/08 />
                 chromeOptions.AddArguments("-no-sandbox");
                 var service = ChromeDriverService.CreateDefaultService(AppDomain.CurrentDomain.BaseDirectory);
                 using (IWebDriver chrome = new ChromeDriver(service, chromeOptions, TimeSpan.FromMinutes(3)))
