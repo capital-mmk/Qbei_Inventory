@@ -214,12 +214,19 @@ namespace _12カワシマ
                                 entity.reflectDate = dt012.Rows[i]["最終反映日"].ToString();
                                 entity.orderCode = dt012.Rows[i]["発注コード"].ToString();
 
-                                Thread.Sleep(1000);
-                                chrome.Navigate().GoToUrl(fun.url + "/shop/g/g" + entity.orderCode);
+                                try
+                                {
+                                    chrome.Navigate().GoToUrl(fun.url + "/shop/g/g" + entity.orderCode);
+                                }
+                                catch
+                                {
+                                    chrome.Navigate().GoToUrl(fun.url + "/shop/g/g" + entity.orderCode);
+                                    Thread.Sleep(3000);
+                                }
 
                                 if (!string.IsNullOrWhiteSpace(entity.orderCode))
                                 {
-                                    Thread.Sleep(800);
+                                    Thread.Sleep(500);
                                     string Check_Message = chrome.FindElement(By.TagName("body")).Text;
 
                                     if (Check_Message.Contains("申し訳ございません。"))
